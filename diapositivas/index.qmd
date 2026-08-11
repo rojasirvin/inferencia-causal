@@ -1,0 +1,24 @@
+---
+title: "Diapositivas"
+toc: false
+---
+
+::: {.p-lede}
+Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña.
+:::
+
+<div class="grid">
+<a class="card" href="./introduccion.html" target="_blank"><div class="num">01</div><h3>Introducción</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./causalidad.html" target="_blank"><div class="num">02</div><h3>Causalidad</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./experimental.html" target="_blank"><div class="num">03</div><h3>Métodos Experimentales</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./regresion.html" target="_blank"><div class="num">04</div><h3>Regresión</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./inferencia-estadistica.html" target="_blank"><div class="num">05</div><h3>Inferencia estadística</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./errores-estandar.html" target="_blank"><div class="num">06</div><h3>Errores estándar e inferencia</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./bootstrap.html" target="_blank"><div class="num">07</div><h3>Bootstrap</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./late.html" target="_blank"><div class="num">08</div><h3>LATE y variables instrumentales</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./multiples-hipotesis.html" target="_blank"><div class="num">09</div><h3>Múltiples hipótesis</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./did.html" target="_blank"><div class="num">10</div><h3>Diferencia en diferencias</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./emparejamiento.html" target="_blank"><div class="num">11</div><h3>Emparejamiento</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./discontinuidades.html" target="_blank"><div class="num">12</div><h3>Discontinuidades</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+<a class="card" href="./sintetico.html" target="_blank"><div class="num">13</div><h3>Control sintético</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
+</div>

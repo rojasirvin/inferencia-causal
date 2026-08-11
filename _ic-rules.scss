@@ -1,0 +1,254 @@
+// ===== Inferencia Causal — reglas compartidas (importadas por theme.scss y theme-dark.scss) =====
+// Todo aquí usa tokens var(--*), definidos por cada tema (claro/oscuro) en su :root.
+
+body{ background:var(--bg); color:var(--ink); }
+.quarto-container, #quarto-content{ background:var(--bg); }
+
+/* ============ sidebar / rail ============ */
+#quarto-sidebar, #quarto-sidebar.sidebar-navigation:not(.rollup){ background:var(--rail-bg) !important; color:var(--rail-ink); border-right:none !important; box-shadow:none !important; }
+#quarto-sidebar .sidebar-title,
+#quarto-sidebar .sidebar-title a{ color:var(--rail-ink); font-weight:800; letter-spacing:-.02em; }
+#quarto-sidebar .sidebar-link{
+  color:var(--rail-ink); opacity:.82; border-left:3px solid transparent; border-radius:0 8px 8px 0;
+  padding:.42rem .7rem; font-weight:500; font-size:.92rem; transition:background .15s,opacity .15s;
+}
+#quarto-sidebar .sidebar-link:hover{ background:rgba(255,255,255,.06); opacity:1; color:var(--rail-ink); }
+#quarto-sidebar .sidebar-link.active{
+  background:rgba(255,255,255,.05); opacity:1; font-weight:700; border-left-color:var(--guinda-ink); color:#fff;
+}
+/* logo + bloque de marca (construido por JS): [logo] Maestría en Economía / Inferencia Causal 2026 */
+#quarto-sidebar .sidebar-header{ display:flex; flex-direction:column; align-items:flex-start; text-align:left; padding:.9rem .6rem .2rem; }
+#quarto-sidebar .sidebar-logo{ border-radius:9px; background:#fff; padding:2px; max-width:42px; }
+#quarto-sidebar .sidebar-logo-link{ display:flex; align-items:center; gap:.6rem; text-decoration:none; justify-content:flex-start; margin:0; }
+#quarto-sidebar .brand-inst{ font-size:.54rem; letter-spacing:.14em; text-transform:uppercase; color:var(--rail-muted); font-weight:700; line-height:1.25; text-align:left; white-space:nowrap; }
+#quarto-sidebar .brand-title{ margin-top:.45rem; font-size:.98rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; color:var(--rail-ink); white-space:nowrap; }
+#quarto-sidebar .brand-title .brand-year{ color:var(--rail-muted); font-weight:700; }
+/* herramientas (github/teams) */
+#quarto-sidebar .sidebar-tool, #quarto-sidebar .sidebar-tools-main a{ color:var(--rail-ink); opacity:.8; }
+#quarto-sidebar .sidebar-tool:hover{ opacity:1; }
+/* búsqueda */
+#quarto-sidebar .aa-Autocomplete .aa-Form, #quarto-sidebar #quarto-search input{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.15); color:var(--rail-ink); }
+
+/* rail como columna flex para empujar herramientas al fondo */
+#quarto-sidebar{ display:flex; flex-direction:column; }
+/* secciones (Curso / Materiales) como etiquetas, no colapsables */
+#quarto-sidebar a[href^="#sidebar-section"] .menu-text{ font-size:.64rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rail-muted); font-weight:700; }
+#quarto-sidebar a[href^="#sidebar-section"]{ pointer-events:none; }
+#quarto-sidebar a[aria-label="Alternar sección"], #quarto-sidebar a[href^="#sidebar-section"] .bi-chevron-right{ display:none; }
+/* íconos de los enlaces */
+#quarto-sidebar .sidebar-link .bi{ margin-right:.55rem; opacity:.85; font-size:.9rem; }
+/* herramientas (github/teams/tema) al fondo del rail */
+#quarto-sidebar .sidebar-tools-main{ margin-top:auto; padding:1rem .3rem .2rem; border-top:1px solid rgba(255,255,255,.12); display:flex; gap:.3rem; justify-content:center; align-items:center; }
+#quarto-sidebar .sidebar-tools-main .quarto-navigation-tool, #quarto-sidebar .sidebar-tools-main .quarto-color-scheme-toggle{ color:var(--rail-ink); opacity:.8; }
+#quarto-sidebar .sidebar-tools-main .quarto-navigation-tool:hover, #quarto-sidebar .sidebar-tools-main .quarto-color-scheme-toggle:hover{ opacity:1; }
+/* ícono visible del toggle claro/oscuro (glifo ◐ como en el mock) */
+#quarto-sidebar .quarto-color-scheme-toggle .bi::before{ content:"◐" !important; background-image:none !important; font-family:inherit !important; font-style:normal; font-size:1.05rem; line-height:1; color:var(--rail-ink); width:auto; height:auto; }
+
+/* ============ tipografía / encabezados de contenido ============ */
+body, #quarto-content, #quarto-sidebar, .sidebar{ font-family:'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.eyebrow{ font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--green-600); font-weight:700; margin-bottom:.7rem; }
+h1.title{ font-size:clamp(2rem,4.2vw,2.9rem); font-weight:800; letter-spacing:-.03em; line-height:1.05; text-wrap:balance; }
+/* eyebrow "CIDE · Maestría en Economía" sobre el título de cada página */
+h1.title::before{ content:"CIDE · Maestría en Economía"; display:block; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--green-600); font-weight:700; margin-bottom:.7rem; }
+.p-lede{ font-size:1.04rem; color:var(--muted); margin:.2rem 0 1.6rem; text-align:justify; }
+
+/* encabezado de sección con contador (programa) */
+.sec-head{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; border-left:4px solid var(--green-600); padding-left:.8rem; margin:2.4rem 0 1.2rem; }
+#quarto-content .sec-head h2{ font-size:1.32rem; font-weight:800; letter-spacing:-.02em; margin:0; border-left:none; padding-left:0; }
+.sec-head .count{ font-size:.78rem; color:var(--muted); font-weight:600; white-space:nowrap; }
+ul.clean{ list-style:none; padding:0; margin:0 0 .6rem; display:flex; flex-direction:column; gap:.6rem; }
+ul.clean li{ position:relative; padding-left:1.35rem; font-size:.97rem; text-align:justify; }
+ul.clean li::before{ content:""; position:absolute; left:0; top:.55em; width:7px; height:7px; border-radius:50%; background:var(--green-600); }
+
+/* barra de acento guinda/verde en encabezados de sección */
+#quarto-content h2{
+  border-left:4px solid var(--green-600); padding-left:.8rem; margin-top:2.4rem; margin-bottom:1.2rem;
+  font-size:1.32rem; font-weight:800; letter-spacing:-.02em; border-bottom:none;
+}
+
+/* ============ hero (index) ============ */
+.hero-lede{ font-size:1.12rem; color:var(--muted); margin:0 0 1.5rem; line-height:1.6; text-align:justify; }
+/* pandoc envuelve los spans sueltos del fenced div en un <p>; el layout flex va en ese <p> */
+.chips{ display:flex; flex-wrap:wrap; gap:.55rem; margin-bottom:1.6rem; }
+.chips > p{ display:flex; flex-wrap:wrap; gap:.55rem; margin:0; width:100%; }
+.chips-v, .chips-v > p{ flex-direction:column; align-items:flex-start; gap:.5rem; }
+.chip{ display:inline-flex; align-items:center; gap:.45rem; font-size:.82rem; font-weight:600;
+  background:var(--surface); border:1px solid var(--line); padding:.4rem .75rem; border-radius:99px; color:var(--ink); box-shadow:var(--shadow); }
+.chip .dot{ width:7px; height:7px; border-radius:50%; background:var(--green-600); }
+
+/* ============ tarjetas (grid diapositivas/index) ============ */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:.8rem; }
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.85rem .95rem;
+  box-shadow:var(--shadow); transition:transform .15s,border-color .15s; display:flex; flex-direction:column; gap:.45rem; min-height:96px; color:var(--ink); }
+.card:hover{ transform:translateY(-3px); border-color:var(--green-600); }
+.card .num{ font-size:.7rem; font-weight:800; color:var(--green-600); font-variant-numeric:tabular-nums; }
+.card h3{ font-size:.94rem; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.2; color:var(--ink); }
+.card .meta{ margin-top:auto; display:flex; align-items:center; gap:.4rem; font-size:.72rem; color:var(--muted); font-weight:600; }
+.card .pill{ font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; font-weight:700; padding:.16rem .42rem; border-radius:5px; background:var(--guinda-tint); color:var(--guinda-ink); }
+
+/* ============ referencias (programa) ============ */
+.ref-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:.8rem; }
+.ref{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.9rem 1rem; box-shadow:var(--shadow); display:flex; gap:.7rem; align-items:flex-start; }
+.ref .abbr{ font-size:.66rem; font-weight:800; color:var(--green-900); background:var(--rail-ink); padding:.28rem .5rem; border-radius:6px; white-space:nowrap; }
+.ref .r-body{ font-size:.86rem; line-height:1.4; }
+.ref .r-body b{ font-weight:700; } .ref .r-body span{ color:var(--muted); }
+
+/* ============ unidades (contenido temático) ============ */
+.unidad{ background:var(--surface); border:1px solid var(--line); border-radius:13px; padding:1.15rem 1.25rem; box-shadow:var(--shadow); margin-bottom:.9rem; }
+.unidad .u-tag{ display:inline-flex; align-items:center; gap:.5rem; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; font-weight:800; color:var(--guinda-ink); margin-bottom:.7rem; }
+.topic{ margin-bottom:.9rem; } .topic:last-child{ margin-bottom:0; }
+.topic .t-name{ font-weight:700; font-size:.96rem; margin-bottom:.3rem; display:flex; align-items:center; gap:.5rem; }
+.topic .t-name::before{ content:""; width:14px; height:2px; background:var(--green-600); border-radius:2px; }
+.topic .subs{ display:flex; flex-wrap:wrap; gap:.4rem; padding-left:1rem; }
+.sub-chip{ font-size:.78rem; color:var(--muted); background:var(--surface-2); border:1px solid var(--line); padding:.22rem .55rem; border-radius:99px; }
+
+/* ============ evaluación (barra apilada 100%) ============ */
+.eval{ display:flex; flex-direction:column; gap:.7rem; background:var(--surface); border:1px solid var(--line); border-radius:13px; padding:1.3rem 1.35rem; box-shadow:var(--shadow); }
+.eval-total{ display:flex; justify-content:space-between; align-items:baseline; font-size:.85rem; color:var(--muted); font-weight:600; }
+.eval-total b{ font-size:1.5rem; color:var(--green-600); font-weight:800; font-variant-numeric:tabular-nums; }
+.stack{ display:flex; height:24px; border-radius:99px; overflow:hidden; border:1px solid var(--line); }
+.stack .seg{ height:100%; } .stack .seg + .seg{ border-left:2px solid var(--surface); }
+.eval-legend{ display:flex; flex-wrap:wrap; gap:.45rem 1.2rem; margin-top:.15rem; }
+.eval-legend{ gap:.35rem .8rem; }
+.eval-legend .lg-item{ display:flex; align-items:center; gap:.4rem; font-size:.72rem; color:var(--ink); font-weight:600; white-space:nowrap; }
+.eval-legend .lg-item i{ width:11px; height:11px; border-radius:3px; flex:none; }
+.eval-foot{ display:flex; justify-content:space-between; gap:1rem; border-top:1px solid var(--line); padding-top:.7rem; margin-top:.3rem; font-size:.82rem; color:var(--muted); }
+
+/* ============ cajas horizontales (programa) ============ */
+.hbox-list{ display:flex; flex-direction:column; gap:.7rem; margin-top:2rem; }
+.hbox{ display:grid; grid-template-columns:140px 1fr; gap:1.1rem; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--green-600); border-radius:12px; padding:1.05rem 1.25rem; box-shadow:var(--shadow); }
+.hbox .hb-tag{ font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; font-weight:800; color:var(--green-600); padding-top:.12rem; }
+.hbox .hb-body{ font-size:.92rem; color:var(--ink); line-height:1.55; text-align:justify; }
+.hbox .hb-body b{ font-weight:700; } .hbox .hb-body .soft{ color:var(--muted); }
+.hbox .hb-body p{ margin:0 0 .6rem; } .hbox .hb-body p:last-child{ margin:0; }
+@media(max-width:640px){ .hbox{ grid-template-columns:1fr; gap:.35rem; } }
+
+.prose p{ font-size:.97rem; margin:0 0 .9rem; color:var(--ink); text-align:justify; }
+
+/* ============ reglas ============ */
+.rules{ display:flex; flex-direction:column; gap:.75rem; }
+.rule{ display:flex; gap:.9rem; align-items:flex-start; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--guinda-ink); border-radius:12px; padding:1rem 1.15rem; box-shadow:var(--shadow); }
+.rule .r-ico{ flex:none; width:30px; height:30px; border-radius:8px; display:grid; place-items:center; background:var(--guinda-tint); color:var(--guinda-ink); font-size:.9rem; font-weight:800; }
+.rule .r-txt{ font-size:.96rem; line-height:1.5; text-align:justify; }
+
+/* ============ lecturas ============ */
+.legend{ display:flex; flex-wrap:wrap; gap:1.2rem; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.9rem 1.1rem; box-shadow:var(--shadow); margin-bottom:1.2rem; }
+.legend .lg{ display:flex; align-items:center; gap:.55rem; font-size:.86rem; color:var(--muted); }
+.mk{ font-weight:800; font-size:.72rem; width:22px; height:22px; border-radius:6px; display:grid; place-items:center; flex:none; }
+.mk.obl{ background:var(--guinda-tint); color:var(--guinda-ink); }
+.mk.exp{ background:rgba(43,114,88,.14); color:var(--green-600); }
+.mk.none{ background:var(--surface-2); border:1px solid var(--line); color:var(--muted); }
+.lg b{ color:var(--ink); font-weight:700; }
+/* semanas colapsables (cada section.level2 recibe .week vía JS) */
+.week{ margin-bottom:.6rem; border:1px solid var(--line); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+#quarto-content .week > h2{ display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; margin:0; padding:.5rem .85rem; cursor:pointer; user-select:none; font-size:.95rem; font-weight:800; letter-spacing:-.01em; line-height:1.2; border-left:none; }
+.week > h2:hover{ background:var(--surface-2); }
+.week > h2 .anchorjs-link{ display:none; }
+.week-num{ font-size:.66rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--rail-ink); background:var(--green-700); padding:.28rem .55rem; border-radius:6px; white-space:nowrap; }
+.week > h2 .chev{ margin-left:auto; color:var(--muted); transition:transform .15s; font-size:.78rem; }
+.week:not(.collapsed) > h2 .chev{ transform:rotate(90deg); }
+.week > h2 .week-label{ font-weight:600; color:var(--muted); font-size:.82rem; flex:1 1 auto; }
+.week.collapsed .week-body{ display:none; }
+.week-body{ padding:.15rem 1rem .85rem; }
+.week-body > ul{ list-style:none; padding-left:0; margin:.4rem 0 0; }
+.week-body > ul > li{ font-weight:800; color:var(--green-600); font-size:.92rem; margin:.9rem 0 .4rem; letter-spacing:-.01em; }
+.week-body ul ul{ list-style:none; padding-left:1rem; border-left:2px solid var(--line); margin:.3rem 0 .5rem .3rem; }
+.week-body ul ul li{ font-weight:400; color:var(--ink); font-size:.88rem; line-height:1.5; margin:.35rem 0; max-width:82ch; }
+.week-body ul ul li em{ color:var(--muted); }
+.week-body a{ color:var(--green-600); border-bottom:1px solid rgba(43,114,88,.3); }
+.week-body a:hover{ border-bottom-color:var(--green-600); }
+/* "Otras lecturas": subtítulo no colapsable + temas colapsables con lista plana de lecturas */
+#quarto-content h2.otras-title{ margin:2.6rem 0 1.1rem; }
+.week.no-subs .week-body > ul{ list-style:none; padding-left:1rem; border-left:2px solid var(--line); margin:.4rem 0 .2rem .3rem; }
+.week.no-subs .week-body > ul > li{ font-weight:400; color:var(--ink); font-size:.88rem; line-height:1.5; margin:.35rem 0; letter-spacing:0; max-width:82ch; }
+.week.no-subs .week-body > ul > li em{ color:var(--muted); }
+
+/* ============ presentaciones (tabla) ============ */
+.tbl-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+table.pres{ border-collapse:collapse; width:100%; min-width:640px; font-size:.9rem; background:var(--surface); }
+table.pres th{ text-align:left; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--rail-ink); background:var(--green-900); padding:.7rem .9rem; font-weight:700; }
+table.pres td{ padding:.7rem .9rem; border-top:1px solid var(--line); vertical-align:top; }
+table.pres tr:nth-child(even) td{ background:var(--surface-2); }
+.topic-tag{ display:inline-block; font-size:.66rem; font-weight:700; padding:.18rem .5rem; border-radius:99px; background:var(--guinda-tint); color:var(--guinda-ink); white-space:nowrap; }
+
+/* ============ tareas (índice) ============ */
+.tareas{ display:flex; flex-direction:column; gap:.85rem; }
+.tarea{ display:flex; gap:1rem; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:13px; padding:1.05rem 1.2rem; box-shadow:var(--shadow); }
+.tarea .t-n{ flex:none; width:44px; height:44px; border-radius:11px; display:grid; place-items:center; background:var(--green-900); color:var(--rail-ink); font-weight:800; font-size:1.05rem; }
+.tarea .t-info{ flex:1; min-width:0; }
+.tarea .t-info h3{ margin:0 0 .2rem; font-size:1.02rem; font-weight:800; border:none; padding:0; }
+.tarea .t-date{ font-size:.84rem; color:var(--muted); font-weight:600; }
+.tarea .t-links{ display:flex; gap:.5rem; flex-wrap:wrap; }
+.tlink{ font-size:.78rem; font-weight:700; padding:.4rem .7rem; border-radius:8px; border:1px solid var(--line-strong); color:var(--ink); transition:.15s; }
+.tlink:hover{ border-color:var(--green-600); color:var(--green-600); }
+.tlink.sol{ background:var(--guinda-tint); border-color:transparent; color:var(--guinda-ink); }
+
+/* ============ listas de enlaces (notas / diapositivas simples) ============ */
+.linklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:.7rem; }
+.ll{ display:flex; align-items:center; gap:.7rem; background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:.85rem 1rem; box-shadow:var(--shadow); transition:.15s; font-weight:600; font-size:.94rem; color:var(--ink); }
+.ll:hover{ transform:translateY(-2px); border-color:var(--green-600); }
+.ll .ll-n{ font-size:.72rem; font-weight:800; color:var(--green-600); font-variant-numeric:tabular-nums; width:1.4rem; }
+.ll .ll-ar{ margin-left:auto; color:var(--muted); }
+
+/* ============ cronograma (calendario HTML) ============ */
+.cron-legend{ display:flex; flex-wrap:wrap; gap:.5rem .9rem; margin-bottom:1.4rem; }
+.cron-legend .lg{ display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem; font-weight:600; color:var(--muted); }
+.cron-legend .lg i{ width:12px; height:12px; border-radius:3px; flex:none; }
+.cron{ display:flex; flex-direction:column; gap:.55rem; }
+.cron-month{ font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; font-weight:800; color:var(--guinda-ink); margin:.9rem 0 .1rem; }
+.cron-month:first-child{ margin-top:0; }
+.cron-week{ display:grid; grid-template-columns:34px 1fr; gap:.6rem; align-items:stretch; }
+.cron-week .wk{ display:grid; place-items:center; font-size:.78rem; font-weight:800; color:var(--green-600); background:var(--surface-2); border:1px solid var(--line); border-radius:9px; font-variant-numeric:tabular-nums; }
+.cron-sessions{ display:grid; grid-template-columns:1fr 1fr; gap:.55rem; }
+.cron-ses{ background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--line-strong); border-radius:10px; padding:.6rem .75rem; display:flex; flex-direction:column; gap:.3rem; box-shadow:var(--shadow); min-height:74px; }
+.cron-ses .cs-date{ font-size:.68rem; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-variant-numeric:tabular-nums; }
+.cron-ses .cs-title{ font-weight:600; font-size:.88rem; line-height:1.25; color:var(--ink); }
+.cron-ses .cs-tags{ display:flex; flex-wrap:wrap; gap:.35rem; margin-top:auto; }
+.cs-tag{ font-size:.62rem; letter-spacing:.05em; text-transform:uppercase; font-weight:800; padding:.15rem .42rem; border-radius:5px; background:var(--surface-2); color:var(--muted); border:1px solid var(--line); }
+.cs-tarea{ font-size:.62rem; letter-spacing:.05em; text-transform:uppercase; font-weight:800; padding:.15rem .42rem; border-radius:5px; background:var(--guinda-tint); color:var(--guinda-ink); }
+.cron-ses.is-expo{ border-left-color:var(--guinda-ink); } .cron-ses.is-expo .cs-tag{ background:var(--guinda-tint); color:var(--guinda-ink); border-color:transparent; }
+.cron-ses.is-lab{ border-left-color:var(--green-600); } .cron-ses.is-lab .cs-tag{ background:rgba(43,114,88,.16); color:var(--green-600); border-color:transparent; }
+.cron-ses.is-examen{ border-left-color:#B45309; } .cron-ses.is-examen .cs-tag{ background:rgba(180,83,9,.15); color:#B45309; border-color:transparent; }
+@media(max-width:640px){ .cron-sessions{ grid-template-columns:1fr; } }
+
+/* ============ documento de tarea (preguntas / respuestas) ============ */
+.due{ display:inline-flex; align-items:center; gap:.45rem; font-size:.82rem; font-weight:700; color:var(--guinda-ink); background:var(--guinda-tint); padding:.32rem .75rem; border-radius:99px; margin-bottom:1.4rem; }
+.doc .datos{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.2rem 0 1.4rem; }
+.doc .datos a{ font-size:.82rem; font-weight:600; color:var(--green-600); background:var(--surface-2); border:1px solid var(--line); padding:.3rem .6rem; border-radius:8px; }
+.qpart{ margin:0 0 1.05rem; padding-left:1.6rem; position:relative; }
+.qpart::before{ content:attr(data-l); position:absolute; left:0; top:.02rem; font-weight:800; color:var(--green-600); font-size:.92rem; }
+.pts{ display:inline-block; font-size:.6rem; font-weight:800; color:var(--guinda-ink); background:var(--guinda-tint); padding:.1rem .42rem; border-radius:5px; margin-right:.45rem; vertical-align:.09em; white-space:nowrap; }
+.eq{ display:block; text-align:center; font-family:Georgia,"Times New Roman",serif; font-style:italic; font-size:1.03rem; margin:.9rem 0; color:var(--ink); }
+.mi{ font-family:Georgia,"Times New Roman",serif; font-style:italic; }
+.ans{ border-left:3px solid var(--guinda-ink); background:var(--guinda-tint); border-radius:0 10px 10px 0; padding:.7rem .95rem; margin:.1rem 0 1.1rem; }
+.ans-l{ font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; font-weight:800; color:var(--guinda-ink); display:block; margin-bottom:.35rem; }
+.ans p{ margin:0 0 .6rem; font-size:.93rem; } .ans p:last-child{ margin:0; }
+.rcode,.rout{ font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace; font-size:.77rem; line-height:1.5; border-radius:9px; overflow-x:auto; margin:.3rem 0 .9rem; white-space:pre; }
+.rcode{ background:var(--green-900); color:#e6efe8; padding:.85rem 2rem .85rem 1rem; }
+.rout{ background:var(--surface-2); color:var(--ink); border:1px solid var(--line); padding:.85rem 1rem; }
+
+/* ============ bloques de código R de Quarto (fondo oscuro, legible) ============ */
+/* El resaltado claro de Quarto dejaba el código con fondo casi blanco (#f8f9fa),
+   ilegible en el sitio oscuro. Lo igualamos a .rcode / a las diapositivas:
+   fondo verde profundo + texto claro + sintaxis on-brand. */
+div.sourceCode{ background:var(--green-900) !important; border-radius:9px; margin:.3rem 0 .9rem; }
+div.sourceCode > pre, div.sourceCode pre.sourceCode{ background:transparent !important; border:none; }
+div.sourceCode pre code, div.sourceCode code.sourceCode{ background:transparent !important; color:#e6efe8; }
+/* tokens SIN color propio (identificadores, variables): claros en ambos temas.
+   En el tema claro, Quarto les ponía #003B4F (azul oscuro) -> invisibles sobre el
+   verde. Los colores de sintaxis de abajo ganan por mayor especificidad (.clase). */
+div.sourceCode code span{ color:#e6efe8 !important; }
+/* colores de sintaxis legibles sobre el verde (con !important para vencer al
+   resaltado de Quarto, sin importar el orden de carga) */
+.sourceCode span.co, .sourceCode span.do, .sourceCode span.cm, .sourceCode span.an{ color:#84A99A !important; font-style:italic; }
+.sourceCode span.st, .sourceCode span.ch, .sourceCode span.sc, .sourceCode span.vs, .sourceCode span.ss{ color:#EFC777 !important; }
+.sourceCode span.kw, .sourceCode span.cf{ color:#F3A6BE !important; }
+.sourceCode span.fu, .sourceCode span.im, .sourceCode span.bu{ color:#8FE3C6 !important; }
+.sourceCode span.dv, .sourceCode span.fl, .sourceCode span.bn, .sourceCode span.cn{ color:#EEA9B8 !important; }
+.sourceCode span.dt, .sourceCode span.at, .sourceCode span.op, .sourceCode span.ot, .sourceCode span.va{ color:#C2E0D3 !important; }
+.sourceCode span.al, .sourceCode span.er, .sourceCode span.wa{ color:#FF9E9E !important; }
+/* salida de R (cell-output): caja que contrasta con el bloque de código */
+.cell-output pre, .cell-output-stdout pre{ background:var(--surface-2) !important; color:var(--ink); border:1px solid var(--line); border-radius:9px; }
+.ptable{ border-collapse:collapse; margin:.5rem 0 1rem; font-size:.86rem; font-variant-numeric:tabular-nums; }
+.ptable td,.ptable th{ border:1px solid var(--line); padding:.28rem .8rem; text-align:center; }
+.ptable th{ background:var(--surface-2); font-weight:700; }

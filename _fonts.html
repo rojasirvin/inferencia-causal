@@ -1,0 +1,30 @@
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var sb = document.getElementById('quarto-sidebar');
+  if(!sb) return;
+
+  // 1) Bloque de marca al estilo del mock: [logo] MAESTRÍA EN ECONOMÍA / Inferencia Causal 2026
+  var logoLink = sb.querySelector('.sidebar-logo-link');
+  var header = sb.querySelector('.sidebar-header');
+  if(logoLink && !logoLink.querySelector('.brand-inst')){
+    var inst = document.createElement('span');
+    inst.className = 'brand-inst';
+    inst.textContent = 'Maestría en Economía';
+    logoLink.appendChild(inst);
+  }
+  if(header && !header.querySelector('.brand-title')){
+    var title = document.createElement('div');
+    title.className = 'brand-title';
+    title.innerHTML = 'Inferencia Causal <span class="brand-year">2026</span>';
+    if(logoLink && logoLink.parentNode === header){
+      logoLink.insertAdjacentElement('afterend', title);
+    } else {
+      header.appendChild(title);
+    }
+  }
+
+  // 2) Herramientas (GitHub/Teams/tema) al fondo del rail
+  var tools = sb.querySelector('.sidebar-tools-main');
+  if(tools) sb.appendChild(tools);
+});
+</script>

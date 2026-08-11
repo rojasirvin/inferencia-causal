@@ -1,0 +1,32 @@
+/*-- scss:defaults --*/
+// ===== Inferencia Causal — tema reveal.js (mismos tokens que el sitio) =====
+// Lienzo lógico: 1600 x 900 (reveal escala al viewport)
+
+// Fuentes (Inter se carga vía _ic-header.html / Google Fonts)
+$mainFont: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$headingFont: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$codeFont: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+// Colores base (modo claro — diapositivas de contenido en papel)
+$backgroundColor: #F5F6F3;
+$mainColor: #16211D;
+$headingColor: #163D34;
+$linkColor: #2B7258;
+$linkColorHover: #163D34;
+$selectionBackgroundColor: rgba(155, 34, 71, .22);
+$selectionColor: #16211D;
+
+// Tipografía
+$mainFontSize: 32px;
+$headingFontWeight: 800;
+$headingLineHeight: 1.05;
+$headingLetterSpacing: -.02em;
+$heading1Size: 2.5em;
+$heading2Size: 1.45em;
+$heading3Size: 1.1em;
+$heading4Size: 1em;
+$headingTextTransform: none;
+
+/* Las reglas (scss:rules) se movieron a un <style> en _ic-header.html por un bug de
+   Quarto 1.9.38 (css-vars falla con temas revealjs que tienen scss:rules). Aquí quedan
+   solo los $defaults, que fijan el look base de reveal sin disparar el bug. */

@@ -1,0 +1,260 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.4/css/academicons.min.css">
+<script>
+/* kableExtra footnote: cuando la nota queda en la 1a celda con celdas vacías al lado (sin colspan),
+   le damos colspan a la 1a celda y quitamos las vacías para que ocupe todo el ancho de la tabla */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('tfoot tr').forEach(function (tr) {
+    var tds = tr.querySelectorAll(':scope > td');
+    if (tds.length > 1) {
+      tds[0].setAttribute('colspan', tds.length);
+      for (var i = tds.length - 1; i >= 1; i--) tds[i].remove();
+    }
+  });
+});
+</script>
+<style>
+/* Reglas del tema Inferencia Causal, movidas aquí desde la sección scss:rules de
+   theme-ic.scss por un bug de Quarto 1.9.38 (su exportador de "css vars" falla ante
+   cualquier tema revealjs con scss:rules). Este <style> se inserta después del <link>
+   del tema, así que gana el cascade igual que antes. */
+/* ============ tokens ============ */
+:root{
+  --main-font:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --head-font:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --code-font:"SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --deep:#163D34; --deep-2:#12332A; --green:#2B7258; --green-700:#215546;
+  --guinda:#9B2247; --paper:#F5F6F3; --ink:#16211D; --muted:#586761;
+  --line:rgba(22,33,29,.12); --line-strong:rgba(22,33,29,.18);
+  --rail:#EAF1ED; --code-ink:#E6EFE8;
+}
+
+.reveal{ font-family:var(--main-font); font-weight:400; color:var(--ink); }
+.reveal .slides{ text-align:left; }
+.reveal .slides section{ text-align:left; height:100%; }
+
+/* ============ encabezados de contenido (h2 = título de diapositiva) ============ */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4{
+  font-family:var(--head-font); font-weight:800; letter-spacing:-.02em; line-height:1.05; color:var(--deep);
+  margin:0 0 .55em; text-transform:none; text-align:left;
+}
+/* barra guinda antes del título de diapositiva (h2 en decks con ##; h1 en decks sin ##) */
+.reveal section > h2:first-child,
+.reveal section:not(.portada):not(.divider):not(.final) > h1:first-child{
+  position:relative; padding-left:.6em; margin-bottom:.7em;
+}
+.reveal section > h2:first-child::before,
+.reveal section:not(.portada):not(.divider):not(.final) > h1:first-child::before{
+  content:""; position:absolute; left:0; top:.1em; bottom:.1em; width:.16em;
+  background:var(--guinda); border-radius:3px;
+}
+/* h1 como título de contenido (decks que usan # para cada diapositiva) */
+.reveal section:not(.portada):not(.divider):not(.final) > h1:first-child{
+  color:var(--deep); font-size:1.6em; line-height:1.05;
+}
+
+/* ============ cuerpo, viñetas ============ */
+.reveal p{ line-height:1.45; margin:0 0 .7em; }
+.reveal ul{ list-style:none !important; margin:0 0 .6em; padding:0; }  /* !important: quita el marcador nativo también en sublistas (reveal pone ■) */
+/* '>' (hijo directo): el punto verde SOLO va en los <li> de un <ul>,
+   nunca en los de una lista numerada (<ol>) anidada bajo una viñeta */
+.reveal ul > li{ position:relative; padding-left:1.4em; margin:.5em 0; line-height:1.4; }
+.reveal ul > li::before{
+  content:""; position:absolute; left:.05em; top:.62em; width:.42em; height:.42em;
+  border-radius:50%; background:var(--green);
+}
+.reveal ul ul{ margin:.35em 0 .3em; }
+.reveal ul ul > li::before{ background:var(--muted); width:.34em; height:.34em; }
+/* listas numeradas anidadas bajo una viñeta: número sí, punto no */
+.reveal ul ol{ margin:.35em 0 .3em; }
+.reveal ol > li{ margin:.4em 0; line-height:1.4; }
+.reveal ol{ padding-left:1.2em; }
+.reveal li{ margin:.45em 0; }
+.reveal strong{ color:var(--deep); font-weight:700; }
+.reveal em{ color:var(--muted); }
+.reveal a{ color:var(--green); text-decoration:none; }
+.reveal a:hover{ color:var(--deep); }
+
+/* ============ columnas ============ */
+.reveal .columns{ display:flex; align-items:center; gap:1.4em; }
+
+/* ============ código (bloque verde vivo, letras claras) ============ */
+.reveal pre{ box-shadow:none; width:100%; margin:.4em 0 .9em; }
+.reveal div.sourceCode{
+  background:var(--deep); border:1px solid rgba(255,255,255,.10);
+  border-radius:10px; margin:.4em 0 .9em;
+}
+.reveal pre code{
+  background:transparent; color:var(--code-ink); border-radius:10px; padding:.8em 1.1em;
+  font-family:var(--code-font); font-size:.7em; line-height:1.55; max-height:none;
+}
+/* Fondos transparentes en pre y code para que se vea el verde del div.sourceCode, y
+   texto base claro. Especificidad alta + !important porque quarto inyecta DESPUÉS sus
+   defaults .reveal pre code{background-color:#fff;color:#222} y code.sourceCode > span. */
+.reveal div.sourceCode > pre,
+.reveal div.sourceCode pre.sourceCode{ background:transparent !important; }
+.reveal div.sourceCode pre code,
+.reveal div.sourceCode pre code.sourceCode{ background:transparent !important; color:var(--code-ink); }
+.reveal div.sourceCode pre code > span,
+.reveal div.sourceCode pre code.sourceCode > span{ color:var(--code-ink); }
+/* resaltado de sintaxis legible sobre el verde profundo (paleta de la marca) */
+.reveal .sourceCode span.co, .reveal .sourceCode span.do,
+.reveal .sourceCode span.cv, .reveal .sourceCode span.an,
+.reveal .sourceCode span.in{ color:#84A99A; font-style:italic; }              /* comentarios */
+.reveal .sourceCode span.st, .reveal .sourceCode span.ch,
+.reveal .sourceCode span.sc, .reveal .sourceCode span.vs,
+.reveal .sourceCode span.ss{ color:#EFC777; }                                 /* cadenas */
+.reveal .sourceCode span.kw, .reveal .sourceCode span.cf{ color:#F3A6BE; }    /* palabras clave */
+.reveal .sourceCode span.fu, .reveal .sourceCode span.im{ color:#8FE3C6; }    /* funciones */
+.reveal .sourceCode span.dv, .reveal .sourceCode span.fl,
+.reveal .sourceCode span.bn, .reveal .sourceCode span.cn{ color:#EEA9B8; }    /* números */
+.reveal .sourceCode span.dt, .reveal .sourceCode span.at,
+.reveal .sourceCode span.ot, .reveal .sourceCode span.va,
+.reveal .sourceCode span.op{ color:#C2E0D3; }                                 /* tipos / args / operadores */
+.reveal .sourceCode span.al, .reveal .sourceCode span.er,
+.reveal .sourceCode span.wa{ color:#FF9E9E; }                                 /* alertas / errores */
+
+.reveal code{ font-family:var(--code-font); color:var(--deep); }  /* código en línea sobre papel */
+/* salida / resultados de R: caja clara para contrastar con el bloque de código verde */
+.reveal .cell-output pre code{ background:#fff; color:var(--ink); border:1px solid var(--line); }
+
+/* ============ tablas ============ */
+.reveal table{ border-collapse:collapse; margin:.4em 0 .8em; font-size:.9em; background:#fff;
+  border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+.reveal table th{
+  background:var(--guinda); color:#fff !important; text-align:center; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; font-size:.78em; padding:.5em .8em; border:none;
+}
+/* el contenido de las celdas de encabezado oscuras (incluido MathJax, que trae su propio color)
+   también en blanco */
+.reveal table th *{ color:#fff !important; }
+.reveal table th svg, .reveal table th svg *{ fill:#fff !important; }
+/* título de tabla (add_header_above con background="white") → fondo blanco, texto negro.
+   Se empata por la presencia del estilo inline background-color (solo lo trae ese título;
+   las celdas guinda reciben su color por CSS, no inline). Sin ':' dentro de la cadena para
+   no romper el analizador de css-vars de Quarto. */
+.reveal table th[style*="background-color"],
+.reveal table th[style*="background-color"] *{
+  color:#141414 !important;
+}
+.reveal table td{ padding:.5em .8em; border-top:1px solid var(--line); text-align:center;
+  font-variant-numeric:tabular-nums; }
+.reveal table tr:nth-child(even) td{ background:#FBFCFB; }
+/* kableExtra scroll_box: una altura en % no resuelve dentro de una diapositiva reveal (no hay
+   padre con altura fija) → forzamos una altura máx. fija para que la tabla haga scroll y quepa */
+.reveal div[style*="overflow-y"]{
+  height:auto !important; max-height:560px !important;
+}
+/* kableExtra footnote: a veces no aplica colspan y la nota queda en la 1a columna con celdas
+   vacías al lado → la hacemos ocupar todo el ancho de la tabla */
+/* kableExtra a veces no le pone colspan a la nota → un script en _ic-header.html se lo pone
+   y quita las celdas vacías; aquí solo la alineamos a la izquierda */
+.reveal tfoot td{ text-align:left !important; }
+
+/* ============ ecuaciones ============ */
+.reveal .MathJax, .reveal mjx-container{ color:var(--deep); }
+
+/* ============ callout / idea clave (Quarto callouts o .idea) ============ */
+.reveal .idea{
+  background:rgba(155,34,71,.07); border:1px solid rgba(155,34,71,.18);
+  border-left:.28em solid var(--guinda); border-radius:0 14px 14px 0; padding:.9em 1.1em;
+}
+.reveal .idea .idea-l{ font-size:.6em; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--guinda); display:block; margin-bottom:.4em; }
+.reveal .idea .idea-big{ font-size:1.2em; font-weight:800; letter-spacing:-.02em; color:var(--deep);
+  line-height:1.15; margin:0; }
+
+/* ============ frase / cita (.phrase): quote centrada en cursiva + fuente abajo-derecha ============ */
+.reveal .phrase{
+  position:relative;
+  background:rgba(155,34,71,.06); border:1px solid rgba(155,34,71,.18);
+  border-left:.28em solid var(--guinda); border-radius:0 14px 14px 0;
+  padding:1.1em 1.7em 1em;
+}
+.reveal .phrase::before{                 /* comilla decorativa sutil, esquina superior izq. */
+  content:"\201C"; position:absolute; top:.06em; left:.32em; pointer-events:none;
+  font-family:Georgia,"Times New Roman",serif; font-size:2.4em; line-height:1; color:var(--guinda); opacity:.25;
+}
+.reveal .phrase p{
+  text-align:center; font-style:italic; font-size:1.18em; color:var(--deep); line-height:1.45; margin:0 0 .45em;
+}
+.reveal .phrase p:last-child{ margin-bottom:0; }
+.reveal .phrase .cite{                   /* la fuente/cita: abajo a la derecha, sin cursiva */
+  display:block; text-align:right; font-style:normal; font-weight:600;
+  font-size:.72em; color:var(--muted); letter-spacing:.02em; margin-top:.8em;
+}
+
+/* ============ cromo: footer, número de diapositiva, logo ============ */
+.reveal .footer{
+  text-align:left !important; left:3.2% !important; right:auto !important; bottom:2.6%; width:auto !important;
+  color:var(--muted); font-size:.5em; font-weight:600; letter-spacing:.03em;
+}
+.reveal .footer p, .reveal .footer > *{ margin:0; text-align:left !important; }
+.reveal .slide-number{
+  background:transparent; color:var(--muted); font-family:var(--main-font); font-weight:700;
+  font-size:.5em; top:auto !important; bottom:2.6% !important; right:3.2% !important; left:auto;
+  font-variant-numeric:tabular-nums; letter-spacing:.04em;
+}
+/* logo CIDE — teja blanca arriba a la derecha en todas las diapositivas */
+.reveal .slide-logo{
+  position:fixed; top:3.4%; right:3%; bottom:auto; max-height:none;
+  height:5.6%; width:auto; aspect-ratio:1; background:#fff; border-radius:8px; padding:.35%;
+  box-shadow:0 1px 4px rgba(0,0,0,.18); object-fit:contain; z-index:40;
+}
+/* ocultar footer y número en portada / divisores / final (data-state="nochrome" → clase en <body>) */
+body.nochrome .footer, body.nochrome .slide-number{ display:none !important; }
+
+/* ============ PORTADA (verde profundo) ============ */
+.reveal section.portada{
+  display:flex !important; flex-direction:column; justify-content:center; align-items:flex-start;
+  height:100%; padding:0 8%; text-align:left;
+}
+.reveal section.portada h1{
+  color:#fff; font-size:4em; line-height:1.02; margin:0; padding:0; letter-spacing:-.03em;
+}
+.reveal section.portada h1::after{
+  content:""; display:block; width:1.9em; height:.16em; background:var(--guinda);
+  border-radius:3px; margin:.7em 0 1em;
+}
+.reveal section.portada .pa-eyebrow{
+  order:-1; font-size:1.15em; font-weight:600; color:#9FD3BB; letter-spacing:.01em; margin-bottom:.85em;
+}
+.reveal section.portada .pa-name{ font-weight:600; color:#fff; font-size:1.35em; }
+.reveal section.portada .pa-icons{ margin-left:.5em; }
+.reveal section.portada .pa-icons a{ color:#E78AA1; margin:0 .2em; font-size:1.35em; }
+.reveal section.portada .pa-icons a:hover{ color:#fff; }
+.reveal section.portada .pa-inst{
+  margin-top:1.3em; color:#9FD3BB; font-size:.92em; font-weight:600; letter-spacing:.14em; text-transform:uppercase; line-height:1.75;
+}
+
+/* ============ DIVISOR DE SECCIÓN (fondo guinda) — marcar el # con {.divider} ============ */
+.reveal section.divider{
+  display:flex !important; flex-direction:column; justify-content:center; align-items:flex-start;
+  height:100%; padding:0 8%;
+}
+.reveal section.divider > h1{ color:#fff; font-size:3.2em; line-height:1.02; margin:0; }
+
+/* ============ SLIDE FINAL (créditos, fondo guinda) ============ */
+.reveal section.final{
+  display:flex !important; flex-direction:column; justify-content:center; align-items:flex-start;
+  height:100%; padding:0 8%; color:#fff;
+}
+.reveal section.final .f-eyebrow{ order:-1; font-size:.86em; font-weight:600; color:#F4C6D2; margin:0 0 .9em; }
+.reveal section.final h1, .reveal section.final h2{ color:#fff; font-size:2.4em; margin:0; padding:0; }
+.reveal section.final h1::before, .reveal section.final h2::before{ display:none; }
+.reveal section.final h1{ font-weight:800; letter-spacing:-.02em; }
+.reveal section.final .f-inst{ font-size:.82em; font-weight:600; letter-spacing:.05em; color:#F1D6DE; margin:.5em 0 0; }
+.reveal section.final .f-inst a{ color:inherit; border-bottom:1px solid rgba(255,255,255,.4); text-decoration:none; }
+.reveal section.final .f-inst a:hover{ border-bottom-color:#fff; }
+.reveal section.final .f-icons{ margin-top:1em; font-size:1.4em; }
+.reveal section.final .f-icons a{ color:#fff; margin:0 .22em; }
+.reveal section.final .f-rule{ width:2.4em; height:.12em; background:rgba(255,255,255,.7); border-radius:2px; margin:1.1em 0; }
+.reveal section.final .f-copy{ font-size:.56em; color:#EAC5CF; margin:0; max-width:40em; line-height:1.5; }
+.reveal section.final .f-copy strong{ color:#fff; }
+
+/* ============ fragmentos ============ */
+.reveal .fragment{ text-align:left; }
+</style>

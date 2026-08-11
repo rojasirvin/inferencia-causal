@@ -1,0 +1,12 @@
+---
+title: "Reglas"
+toc: false
+---
+
+<div class="rules">
+<div class="rule"><div class="r-ico">✳</div><div class="r-txt">No se tolerarán actos de discriminación. Se procura un ambiente de respeto entre todos los miembros de la clase.</div></div>
+<div class="rule"><div class="r-ico">✉</div><div class="r-txt">Toda la comunicación relativa al curso se dará por medio del <b>correo institucional del CIDE</b>.</div></div>
+<div class="rule"><div class="r-ico">↑</div><div class="r-txt">Las tareas y exámenes se entregarán a través de <b>Teams</b>.</div></div>
+<div class="rule"><div class="r-ico">◔</div><div class="r-txt">Los participantes procurarán un ambiente silencioso para el buen desarrollo de la clase.</div></div>
+<div class="rule"><div class="r-ico">§</div><div class="r-txt">Se aplicarán estrictamente los lineamientos generales contenidos en el <a href="https://www.cide.edu/wp-content/uploads/2017/06/CIDE_Codigo_de_Etica_modificaciones_CA_enero_2017.pdf" target="_blank">código de ética del CIDE</a> en términos de plagio y fraude en tareas, exámenes y proyecto final.</div></div>
+</div>

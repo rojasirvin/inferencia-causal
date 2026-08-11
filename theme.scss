@@ -1,0 +1,43 @@
+/*-- scss:defaults --*/
+// ===== Inferencia Causal — tema CLARO (sitio + diapositivas) ===== [rev 5]
+// Fuente
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !default;
+
+// Ancho del rail (sidebar) — como en el mock (~300px) para que la marca quepa en una línea
+$grid-sidebar-width: 300px;
+
+// Paleta base (modo claro)
+$green-900: #163D34;
+$green-700: #215546;
+$green-600: #2B7258;
+$guinda:    #9B2247;
+$offwhite:  #F5F6F3;
+$ink:       #16211D;
+
+// Overrides de Bootstrap / Quarto
+$primary:        $green-600;
+$body-bg:        $offwhite;
+$body-color:     $ink;
+$link-color:     $green-600;
+$link-hover-color: $green-900;
+$link-decoration: none;
+$border-radius:   .7rem;
+$border-radius-lg: .9rem;
+$headings-font-weight: 800;
+$headings-letter-spacing: -.02em;
+
+// Sidebar (rail)
+$sidebar-hl: $guinda;
+
+/*-- scss:rules --*/
+/* ============ tokens de color — modo CLARO ============ */
+:root{
+  --bg:#F5F6F3; --surface:#FFFFFF; --surface-2:#FBFCFB; --ink:#16211D; --muted:#5C6A64;
+  --line:rgba(22,33,29,.10); --line-strong:rgba(22,33,29,.16);
+  --green-900:#163D34; --green-700:#215546; --green-600:#2B7258;
+  --guinda-ink:#9B2247; --guinda-tint:rgba(155,34,71,.09);
+  --rail-bg:#163D34; --rail-ink:#EAF1ED; --rail-muted:#9FBAAF;
+  --shadow:0 1px 2px rgba(22,33,29,.06), 0 8px 24px rgba(22,33,29,.06);
+}
+
+@import "ic-rules";

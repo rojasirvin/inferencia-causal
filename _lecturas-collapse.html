@@ -1,0 +1,81 @@
+<script>
+(function(){
+  function init(){
+    var root = document.querySelector('#quarto-document-content') || document.querySelector('main') || document;
+    var secs = root.querySelectorAll('section.level2');
+    secs.forEach(function(sec){
+      var h2 = sec.querySelector(':scope > h2');
+      if(!h2) return;
+      // secciones marcadas como subtítulo (p. ej. "Otras lecturas...") no se colapsan
+      if(sec.classList.contains('no-collapse') || h2.classList.contains('otras-title')){
+        h2.classList.add('otras-title');
+        return;
+      }
+      sec.classList.add('week','collapsed');
+      var titleText = (h2.textContent || '').trim();
+
+      // mover todo lo que sigue al h2 a un .week-body
+      var body = document.createElement('div');
+      body.className = 'week-body';
+      var n = h2.nextElementSibling;
+      while(n){ var nx = n.nextElementSibling; body.appendChild(n); n = nx; }
+      sec.appendChild(body);
+
+      // subtemas = li de primer nivel que contienen una sublista (lecturas anidadas).
+      // Si ningún li de primer nivel tiene sublista, la sección es una lista plana de
+      // lecturas (p. ej. los temas de "Otras lecturas") → sin etiqueta de subtemas.
+      var hasSubs = false;
+      body.querySelectorAll(':scope > ul > li').forEach(function(li){
+        if(li.querySelector(':scope > ul, :scope > ol')) hasSubs = true;
+      });
+      if(!hasSubs) sec.classList.add('no-subs');
+      var subs = [];
+      if(hasSubs){
+        body.querySelectorAll(':scope > ul > li').forEach(function(li){
+          var t = '';
+          for(var i=0;i<li.childNodes.length;i++){
+            var c = li.childNodes[i];
+            if(c.nodeType===3) t += c.textContent;
+            else if(c.nodeType===1 && c.tagName!=='UL' && c.tagName!=='OL') t += c.textContent;
+            else if(c.nodeType===1 && (c.tagName==='UL'||c.tagName==='OL')) break;
+          }
+          t = t.trim();
+          if(t) subs.push(t);
+        });
+      }
+      // "Semana N" en un chip; otros títulos como texto normal
+      h2.textContent = '';
+      if(/^Semana\b/i.test(titleText)){
+        var num = document.createElement('span');
+        num.className = 'week-num';
+        num.textContent = titleText;
+        h2.appendChild(num);
+      } else {
+        h2.appendChild(document.createTextNode(titleText));
+      }
+
+      if(subs.length){
+        var lbl = document.createElement('span');
+        lbl.className = 'week-label';
+        lbl.textContent = subs.join('  ·  ');
+        h2.appendChild(lbl);
+      }
+
+      var chev = document.createElement('span');
+      chev.className = 'chev';
+      chev.textContent = '▸';
+      h2.appendChild(chev);
+
+      h2.setAttribute('role','button');
+      h2.setAttribute('tabindex','0');
+      var toggle = function(){ sec.classList.toggle('collapsed'); };
+      h2.addEventListener('click', toggle);
+      h2.addEventListener('keydown', function(e){
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }
+      });
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>

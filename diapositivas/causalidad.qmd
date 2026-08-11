@@ -1,0 +1,303 @@
+---
+format:
+  revealjs:
+    theme: ["./theme-ic.scss"]
+    width: 1600
+    height: 900
+    slide-number: c/t
+    center: false
+    scrollable: false
+    title-slide: false
+    logo: logo-CIDE.jpg
+    footer: "Inferencia Causal · Causalidad"
+    include-in-header:
+      - _ic-header.html
+      - fontawesome.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
+library(tidyverse)
+library(magick)
+library(reticulate)
+library(knitr)
+library(kableExtra)
+xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
+```
+
+
+# Causalidad {.portada background-color="#163D34" data-state="nochrome"}
+
+::: {.pa-eyebrow}
+Inferencia Causal
+:::
+
+[Irvin Rojas]{.pa-name} <span class="pa-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.pa-inst}
+Centro de Investigación y Docencia Económicas<br>Maestría en Economía
+:::
+# El concepto de causalidad de este curso {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Programas implementados de forma deliberada
+
+- Gobiernos en todos los niveles implementan programas públicos con distintos objetivos:
+  - Salud
+  - Educación
+  - Empleo
+  - Mejoras urbanas
+- Siempre encontrarán referencias al extinto *PROGRESA* - *OPORTUNIDADES* - *PROSPERA* que fue fundamental para el diseño de programas y evaluaciones alrededor del mundo
+
+## Impacto de otro tipo de cambios exógenos
+
+- Lo que aprenderemos puede aplicarse a otras preguntas causales
+  - El efecto de la aparición en la primera página de una boleta en la probabilidad de ser electo
+  - El efecto de las microfinanzas en los resultados económicos de los hogares
+  - El efecto del cambio de legislación relativa al divorcio o al aborto
+  - El efecto de cambios geopolíticos, como la reunificación de Alemania
+  - El efecto del cambio climático en la productividad
+  
+::: {.fragment}
+- En todas estas preguntas estamos pensando en una idea de **causalidad**
+- Lo que queremos conocer es qué le hubiera pasado a la población que recibió la intervención de no haberla recibido una intervención: el **contrafactual**
+:::
+
+# Un ejemplo desde la epidemiología {.divider background-color="#9B2247" data-state="nochrome"}
+
+## La epidemia de cólera en Londres
+
+- En aquellos tiempos (1854) se creía que el cólera se transmitía por medio del *miasma* en el aire
+- Snow conjeturaba que la causa era un organismo vivo que se introducía en el cuerpo
+- Siguió una estrategia que podemos imitar:
+
+  ::: {.fragment}
+  1. Localizar el primer caso
+  1. Rastrear al segundo y notar que ocupó el mismo espacio que el primero
+  1. Notar las diferencias en la limpieza entre los hogares infectados y los adyacentes
+  1. Creó un mapa para rastrear a los infectados
+  1. Notó que los infectados eran atendidos por la ciertas compañías de agua
+  1. Experimentó cortando el suministro de compañías sospechosas
+  :::  
+
+
+
+## El problema era el agua
+
+:::: {.columns}
+
+::: {.column width="50%}
+- La Tabla 1 nos muestra la idea básica de su **diseño**
+- Es como si hubiera habido un experimento: casas comparativamente iguales recibían agua de distintas compañías
+- Podemos notar las diferencias en el número de muertes por compañía
+- Muchas veces no necesitaremos cosas más complicadas que esto
+- A partir de estos hallazgos se propusieron algunas políticas que eran consistentes con la hipótesis de transmisión
+- En muchos sentidos Snow hizo un trabajo de detective
+:::
+
+::: {.column width="50%}
+```{r table.snow, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+
+ciudad <- c("Southwark y Vauxhall", "Lambeth", "Resto de Londres")
+hogares <- c("40,046","26,107","256,423")
+muertes <- c("1,263","98","1,422")
+muertes10mil <- c("315","37","59")
+
+table.snow <- data.frame(cbind(ciudad, hogares, muertes, muertes10mil))
+
+colnames(table.snow) = c("Ciudad","Hogares","Muertes por cólera", "Muertes / 10 mil hogares")
+
+table.snow %>%
+  kbl(align = "lccc") %>%
+  kable_paper(c("hover", "condensed", "responsive")) %>%
+  add_header_above(c("Tabla XI de Snow" = 4 ),
+                   bold = TRUE,
+                   background = "white") %>% 
+  footnote(general = "Reproducida por Freedman (1991).",
+           general_title = "Nota:",
+           footnote_as_chunk = T)
+```
+:::
+
+::::
+
+## El caso del asbesto
+
+- Un estudio publicado en el *American Journal of Epidemiology* mostraba que la fibra de asbesto **causaba** cáncer de pulmón (Kanarek et al., 1980)
+- Se estudiaron 722 secciones censales en San Francisco
+- Se formuló un modelo econométrico del tipo
+$$tasa=f(sexo,raza,estado\,civil, educación, ingreso, ocupación)$$
+- ¿Qué salió mal?
+
+::: {.fragment}
+- Variable omitida: fumar
+- Se corrieron 200 regresiones y solo en una $p<0.001$
+- Se antepusieron las técnicas estadísticas y los supuestos a la lógica y el razonamiento
+:::
+
+## Asumir causalidad de una regresión
+
+- ¿Confiar más o menos en la KGB te hace más o menos políticamente activo (Bahry y Silver (1987)?
+- ¿Y si la relación es a la inversa?
+- ¿Qué otras cosas como estas no se leen a diario en los periódicos?
+
+::: {.fragment}
+- ¿Los estados en Estados Unidos tienen diferentes *culturas* (Erikson et al. 1987)?
+- ¿Puede una serie de variables *dummy* capturar la diferencia de culturas?
+:::
+
+
+## Nota sobre la *falacia ecológica*
+
+- Término atribuido a [Robinson (1950)](https://academic.oup.com/ije/article/38/2/337/658252?login=true)
+  - Robinson, W. S. (1950). Ecological correlations and the behavior of individuals. *American Sociological Review*.
+- Es asumir algo sobre un individuo a partir de los datos agregados
+- Cuando las conclusiones son distintas cuando el análisis se realiza a nivel individual que cuando se realiza a nivel agrupado, hablamos de una *falacia ecológica*
+- En el caso de Kanarek y coautores, dedujeron causalidad usando datos agregados sobre el contenido de asbesto en el agua
+- [Greenland & Morgenstern (1989)](https://academic.oup.com/ije/article-abstract/18/1/269/616865) argumentan que una de las dos causas de la falacia ecológica son los **confundidores omitidos** 
+  - El hábito de fumar es un confundidor omitido que sesga los resultados atribuidos a otros factores de riesgo
+- Pueden ver más [en este artículo](https://www.nature.com/articles/7500533)
+
+## Conclusión de Freedman sobre la regresión
+
+- Bastante pesimista sobre la utilidad de la econometría
+- Refinamiento técnico no resuelve el problema
+- LaLonde (1986) compara estimadores experimentales vs. no experimentales
+- Crítica a la minería de datos y a correr miles de modelos
+
+::: {.fragment}
+- La regresión no revela por sí sola una causalidad
+- Hay que poner énfasis en el diseño
+:::
+
+::: {.fragment}
+- No seremos tan pesimistas como Freedman en este curso
+:::
+
+
+# Modelo de resultados potenciales {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+## Efecto causal
+
+- Pensemos en un tratamiento binario
+$$T_i=\begin{cases}
+1 \quad\text{tratado} \\
+0 \quad\text{no tratado}
+\end{cases}$$
+- El resultado que cada individuo tendría bajo cada régimen de tratamiento:
+  - $y_{1i}$ con $T_i=1$
+  - $y_{0i}$ con $T_i=0$
+- Supongamos que el tratamiento es recibir un trasplante y el resultado es morir (1) o seguir vivo (0) cinco días después de recibirlo (Hernan & Robins, 2018)
+  - Supongamos que Zeus recibió el trasplante y a los cinco días había fallecido
+  - Por otro lado, Hena no recibió el trasplante y a los cinco días seguía viva
+
+::: {.fragment}  
+- No tardarían nuestros columnistas en decir que hay que prohibir los trasplantes
+:::
+
+
+## Efecto causal
+  
+- Supongamos también que podemos conocer que:
+$$y_{Zeus}=\begin{cases}
+y_{1,Zeus}=1\\
+y_{0,Zeuz}=0
+\end{cases}$$
+es decir, si no hubiera recibo el trasplante, estaría vivo cinco días después
+- Similarmente, conocemos que:
+
+$$y_{Hena}=\begin{cases}
+y_{1,Hena}=0\\
+y_{0,Hena}=0
+\end{cases}$$
+
+- **Efecto causal para un individuo**: el tratamiento tiene un efecto causal para $i$ si $y_{1i}\neq y_{0i}$
+- En nuestro ejemplo, el tratamiento tuvo un efecto causal en Zeus, pero no en Hena
+
+## Resultados potenciales
+- $y_{1i}$ y $y_{0i}$ se conocen como resultados potenciales o contrafactuales
+- El término *potencial* se debe a que solo vemos uno de ellos
+- En nuestro ejemplo, solo observamos que $y_{0,Zeus}=y_{1,Zeus}=1$
+- En general, el efecto causal para un individuo no puede ser identificado
+
+## Efectos causales promedio
+
+- Supongamos que podemos estudiar a la familia de Zeus, $N=20$
+
+```{r table.personas, echo=FALSE, message=FALSE, warnings=FALSE}
+
+personaid <- c("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20")
+y0 <- c(0,1,0,0,0,1,0,0,1,1,0,1,1,0,0,0,1,1,1,1)
+y1 <- c(1,0,0,0,0,0,0,1,1,0,1,1,1,1,1,1,1,0,0,0)
+
+table.personas <- data.frame(cbind(personaid, y0,y1))
+
+colnames(table.personas) = c("Persona","y0","y1")
+
+table.personas %>%
+  kbl(align = "lcc",
+      escape = FALSE,
+      full_width = FALSE) %>%
+  kable_paper(c("hover", "condensed", "responsive")) %>% 
+  add_header_above(c("Efectos individuales" = 3 ),
+                   bold = TRUE,
+                   background = "white") %>% 
+    scroll_box(height = "70%")
+
+```
+
+
+## Efectos causales promedio
+- De la tabla podemos concluir que $P(y_{1i}=1)=10/20=0.5$, es decir, la mitad de quienes reciben el trasplante morirían después de cinco días
+- Y también observamos que $P(y_{0i}=1)=0.5$, es decir, que la probabilidad de morir de no haber recibido el tratamiento es también de 0.5
+
+::: {.fragment}
+- En el anterior ejemplo, el tratamiento no tiene un efecto causal pues la probabilidad de morir con y sin el tratamiento es igual
+- **Efecto causal promedio** en una población: un efecto causal promedio de $T$ en el resultado $y$ está presente si $P(Y_{1i}=1\neq Y_{0i}=1)$ en la población de interés
+- Cuando pensamos en **poblaciones**, podemos usar expectativas para definir el efecto causal promedio: $E(Y_{1i}\neq Y_{0i})$, lo cual permite generalizar a resultados no binarios
+- La ausencia de efectos individuales promedio no implica ausencia de efectos individuales
+:::
+
+::: {.fragment}
+- Cuando no hay efecto causal individual para ningún individuo, $y_{0i}=y_{1i}$, para todo $i$, decimos que la hipótesis **estricta** (*sharp*) de efecto de tratamiento nulo es verdadera
+:::
+
+
+## Variabilidad aleatoria
+
+- En la práctica, casi nunca podemos observar a la población de interés, sino solo a una muestra
+- Por tanto, $P(y_{ti}=y)$ no puede ser observada sino estimada
+- Debido al error muestral, la proporción que muere en la muestra no es numéricamente igual a la proporción que muere en la población
+
+::: {.fragment}
+- La hipótesis que queremos probar es que hay un efecto causal en la población
+- Pero al trabajar con muestras, puede haber diferencias que surjan solo por el muestreo
+- Nuestra tarea es distinguir estas diferencias de los verdaderos efectos causales
+:::
+
+
+
+
+
+# Causalidad {.final background-color="#9B2247" data-state="nochrome"}
+
+::: {.f-eyebrow}
+Inferencia Causal
+:::
+
+::: {.f-inst}
+[Irvin Rojas](https://rojasirvin.github.io/)
+:::
+
+::: {.f-inst}
+CIDE · Maestría en Economía
+:::
+
+<span class="f-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.f-rule}
+:::
+
+::: {.f-copy}
+© 2026 Irvin Rojas. Distribuido bajo licencia Creative Commons **CC BY-NC-SA 4.0**. Los materiales de terceros citados conservan sus propios derechos.
+:::

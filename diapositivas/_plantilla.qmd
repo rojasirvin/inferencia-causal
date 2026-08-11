@@ -1,0 +1,124 @@
+---
+# ============================================================================
+#  PLANTILLA de diapositivas — Inferencia Causal
+#  Cómo usarla:
+#    1. Copia este archivo y renómbralo (p. ej.  mi-tema.qmd)  dentro de diapositivas/
+#    2. Cambia "Título del deck" (aparece en 3 lugares: footer, portada, slide final)
+#    3. Sustituye el contenido de ejemplo por el tuyo
+#  Requiere (ya están en diapositivas/):  theme-ic.scss · _ic-header.html · logo-CIDE.jpg
+#  Convención:   #  = DIVISOR de sección (guinda)   |   ##  = diapositiva de CONTENIDO
+# ============================================================================
+format:
+  revealjs:
+    theme: ["./theme-ic.scss"]
+    width: 1600
+    height: 900
+    slide-number: c/t
+    center: false
+    scrollable: false
+    title-slide: false
+    logo: logo-CIDE.jpg
+    footer: "Inferencia Causal · Título del deck"      # <-- cambia el título del deck
+    include-in-header:
+      - _ic-header.html
+      - fontawesome.html
+---
+
+<!-- ===== SETUP de R — bórralo si el deck no usa R ===== -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.path = "figures/")
+library(tidyverse)
+```
+
+<!-- ========================================================================= -->
+<!--  PORTADA  (una sola vez, al inicio)                                       -->
+<!--  Solo cambia el título; el resto (eyebrow, nombre, iconos, adscripción)   -->
+<!--  es igual en todos los decks.                                             -->
+<!-- ========================================================================= -->
+# Título del deck {.portada background-color="#163D34" data-state="nochrome"}
+
+::: {.pa-eyebrow}
+Inferencia Causal
+:::
+
+[Irvin Rojas]{.pa-name} <span class="pa-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.pa-inst}
+Centro de Investigación y Docencia Económicas<br>Maestría en Economía
+:::
+
+<!-- ========================================================================= -->
+<!--  DIVISOR DE SECCIÓN  (fondo guinda) — usa uno por cada gran parte del tema -->
+<!-- ========================================================================= -->
+# Primera parte {.divider background-color="#9B2247" data-state="nochrome"}
+
+<!-- ===== Diapositiva de CONTENIDO: viñetas ===== -->
+## Título de la diapositiva
+
+- Primer punto, con **negritas** y *cursivas*
+- Segundo punto, con una ecuación en línea $\hat{\beta}$ y un enlace [así](https://ejemplo.com)
+- Tercer punto
+
+<!-- ===== Diapositiva de CONTENIDO: dos columnas (texto + figura o ecuación) ===== -->
+## Dos columnas
+
+:::: {.columns}
+::: {.column width="50%"}
+- Texto a la izquierda
+- La figura o el resultado va a la derecha
+:::
+::: {.column width="50%"}
+$$ y = \beta_0 + \beta_1 x + \varepsilon $$
+:::
+::::
+
+<!-- ===== Diapositiva de CONTENIDO: tabla ===== -->
+## Una tabla
+
+|            | Grupo A | Grupo B | Diferencia |
+|:-----------|:-------:|:-------:|:----------:|
+| Observados |   132   |   121   |    −11     |
+
+<!-- ===== Diapositiva de CONTENIDO: código + resultado ===== -->
+## Código
+
+```r
+feols(y ~ tratado * post, data = d, cluster = ~id)
+```
+
+El coeficiente de interés es $\beta_{DID}$.
+
+<!-- ===== Diapositiva de CONTENIDO: idea clave / callout ===== -->
+## Idea clave
+
+::: {.idea}
+[Supuesto de identificación]{.idea-l}
+[Enuncia aquí la idea central del tema en una sola frase.]{.idea-big}
+:::
+
+<!-- ========================================================================= -->
+<!--  SLIDE FINAL / CRÉDITOS  (una sola vez, al final)                         -->
+<!--  Solo cambia el título; el resto es igual en todos los decks.             -->
+<!-- ========================================================================= -->
+# Título del deck {.final background-color="#9B2247" data-state="nochrome"}
+
+::: {.f-eyebrow}
+Inferencia Causal
+:::
+
+::: {.f-inst}
+[Irvin Rojas](https://rojasirvin.github.io/)
+:::
+
+::: {.f-inst}
+CIDE · Maestría en Economía
+:::
+
+<span class="f-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.f-rule}
+:::
+
+::: {.f-copy}
+© 2026 Irvin Rojas. Distribuido bajo licencia Creative Commons **CC BY-NC-SA 4.0**. Los materiales de terceros citados conservan sus propios derechos.
+:::

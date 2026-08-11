@@ -1,0 +1,27 @@
+---
+title: "Tareas"
+toc: false
+---
+
+<div class="tareas">
+<div class="tarea">
+<div class="t-n">1</div>
+<div class="t-info"><h3>Tarea 1</h3><div class="t-date">Lunes 22 de septiembre · 20:00 · Teams</div></div>
+<div class="t-links"><a class="tlink" href="./tarea-1.html">Preguntas</a><a class="tlink sol" href="./tarea-1-respuestas.html">Respuestas</a></div>
+</div>
+<div class="tarea">
+<div class="t-n">2</div>
+<div class="t-info"><h3>Tarea 2</h3><div class="t-date">Martes 6 de octubre · 20:00 · Teams</div></div>
+<div class="t-links"><a class="tlink" href="./tarea-2.html">Preguntas</a><a class="tlink sol" href="./tarea-2-respuestas.html">Respuestas</a></div>
+</div>
+<div class="tarea">
+<div class="t-n">3</div>
+<div class="t-info"><h3>Tarea 3</h3><div class="t-date">Jueves 5 de noviembre · 20:00 · Teams</div></div>
+<div class="t-links"><a class="tlink" href="./tarea-3.html">Preguntas</a><a class="tlink sol" href="./tarea-3-respuestas.html">Respuestas</a></div>
+</div>
+<div class="tarea">
+<div class="t-n">4</div>
+<div class="t-info"><h3>Tarea 4</h3><div class="t-date">Jueves 3 de diciembre · 20:00 · Teams</div></div>
+<div class="t-links"><a class="tlink" href="./tarea-4.html">Preguntas</a><a class="tlink sol" href="./tarea-4-respuestas.html">Respuestas</a></div>
+</div>
+</div>

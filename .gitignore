@@ -1,0 +1,20 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.quarto/
+/_preview/
+
+# Cachés y basura del SO
+rosm.cache/
+.DS_Store
+Thumbs.db
+
+# Datos crudos pesados: se mantienen locales, NO se versionan (los decks se
+# rinden desde _freeze, no necesitan estos CSV crudos en el repo).
+diapositivas/ENOEN_*.csv
+files/poblacion.csv
+files/ingresos.csv
+files/datos_jcf_analisis.csv
+
+**/*.quarto_ipynb

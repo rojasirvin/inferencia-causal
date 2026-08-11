@@ -1,0 +1,100 @@
+---
+format:
+  revealjs:
+    theme: ["./theme-ic.scss"]
+    width: 1600
+    height: 900
+    slide-number: c/t
+    center: false
+    title-slide: false
+    logo: logo-CIDE.jpg
+    footer: "Inferencia Causal · Diferencia en diferencias"
+    include-in-header:
+      - _ic-header.html
+      - fontawesome.html
+---
+
+# Diferencia en diferencias {.portada background-color="#163D34" data-state="nochrome"}
+
+::: {.pa-eyebrow}
+Inferencia Causal
+:::
+
+[Irvin Rojas]{.pa-name} <span class="pa-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.pa-inst}
+Centro de Investigación y Docencia Económicas<br>Maestría en Economía
+:::
+
+# Adopción escalonada {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Diferencia en diferencias
+
+- Especifica las condiciones bajo las cuales es posible **identificar el efecto del tratamiento** comparando unidades tratadas y no tratadas, con información *antes y después* de la intervención.
+- Se usa ampliamente para analizar el efecto de **leyes y políticas** que afectan a un grupo al mismo tiempo.
+- Es el fundamento de un método donde la investigación actual es muy activa: el *control sintético*.
+
+## Representación gráfica
+
+:::: {.columns}
+::: {.column width="50%"}
+- Del distrito 8 **(no tratado)** obtenemos la pendiente entre 1930 y 1931.
+- Proyectamos esa pendiente sobre el distrito 6 para su *contrafactual*.
+- La brecha entre lo **observado** y el contrafactual es el efecto.
+:::
+::: {.column width="50%"}
+$$m_{NT}=\frac{Y_{8,post}-Y_{8,pre}}{X_{post}-X_{pre}}=\frac{132-165}{1931-1930}=-33$$
+
+$$\tilde{Y}_{6,post}=135+(-33)=102$$
+:::
+::::
+
+## Una primera comparación
+
+|  | Distrito 8 | Distrito 6 | Diferencia |
+|:--|:--:|:--:|:--:|
+| Tratamiento | $T=0$ | $T=1$ | |
+| Bancos tras la crisis | 132 | 121 | −11 |
+
+- La comparación simple sugiere —erróneamente— que dar liquidez *causó* más quiebras: ignora las **condiciones iniciales**.
+
+## Regresión en DID
+
+```r
+# interacción tratado × post
+feols(bancos ~ tratado * post,
+      data = banks,
+      cluster = ~distrito)
+```
+
+El coeficiente de interés es $\beta_{DID}=+20.5$ (e.e. 6.1).
+
+## El supuesto que lo sostiene todo
+
+::: {.idea}
+[Supuesto de identificación]{.idea-l}
+[Tendencias paralelas: sin el tratamiento, tratados y no tratados habrían evolucionado igual.]{.idea-big}
+:::
+
+## Diferencia en diferencias {background-color="#9B2247" data-state="nochrome" .final}
+
+::: {.f-eyebrow}
+Inferencia Causal
+:::
+
+::: {.f-inst}
+[Irvin Rojas](https://rojasirvin.github.io/)
+:::
+
+::: {.f-inst}
+CIDE · Maestría en Economía
+:::
+
+<span class="f-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.f-rule}
+:::
+
+::: {.f-copy}
+© 2026 Irvin Rojas · Inferencia Causal, CIDE — Maestría en Economía. Distribuido bajo licencia Creative Commons **CC BY-NC-SA 4.0**. Los materiales de terceros citados conservan sus propios derechos.
+:::

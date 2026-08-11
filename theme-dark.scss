@@ -1,0 +1,44 @@
+/*-- scss:defaults --*/
+// ===== Inferencia Causal — tema OSCURO (rail verde claro · main verde oscuro, como el mock) ===== [rev 5]
+// Fuente
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !default;
+
+// Ancho del rail (sidebar) — igual que en el tema claro
+$grid-sidebar-width: 300px;
+
+// Paleta base (modo oscuro) — verdes muestreados del mock (rail #1A2B25, main #101614)
+$green-900: #1A2B25;
+$green-700: #22392F;
+$green-600: #5AAE8C;
+$guinda:    #E78AA1;
+$bg-dark:   #101614;
+$ink-dark:  #EAEFEC;
+
+// Overrides de Bootstrap / Quarto (oscuro)
+$primary:        $green-600;
+$body-bg:        $bg-dark;
+$body-color:     $ink-dark;
+$link-color:     $green-600;
+$link-hover-color: #8ED0B4;
+$link-decoration: none;
+$border-radius:   .7rem;
+$border-radius-lg: .9rem;
+$headings-font-weight: 800;
+$headings-letter-spacing: -.02em;
+
+// Sidebar (rail)
+$sidebar-hl: $guinda;
+
+/*-- scss:rules --*/
+/* ============ tokens de color — modo OSCURO ============ */
+/* main = verde más oscuro; rail = verde más claro (como en el mock) */
+:root{
+  --bg:#101614; --surface:#18231E; --surface-2:#141B18; --ink:#EAEFEC; --muted:#9DAAA4;
+  --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.16);
+  --green-900:#1A2B25; --green-700:#22392F; --green-600:#5AAE8C;
+  --guinda-ink:#E78AA1; --guinda-tint:rgba(217,116,142,.14);
+  --rail-bg:#1A2B25; --rail-ink:#E7F0EB; --rail-muted:#93B7A9;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.45);
+}
+
+@import "ic-rules";

@@ -1,0 +1,7 @@
+---
+title: "Tarea 3"
+lang: es
+format: html
+---
+
+**Aún no disponible.** Las preguntas de esta tarea se publicarán más adelante en el semestre.

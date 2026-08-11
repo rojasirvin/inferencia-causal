@@ -1,0 +1,69 @@
+project:
+  type: website
+  output-dir: _preview
+  resources:
+    - fonts/
+
+execute:
+  freeze: auto
+
+website:
+  title: "Inferencia Causal 2026"
+  favicon: favicon.png
+  sidebar:
+    background: dark
+    logo: "logo-CIDE.jpg"
+    pinned: true
+    align: center
+    style: docked
+    search: true
+    tools:
+      - icon: github
+        href: https://github.com/rojasirvin/inferencia-causal
+        text: GitHub
+      - icon: microsoft-teams
+        href: https://teams.microsoft.com
+        text: Microsoft Teams
+    contents:
+      - section: "Curso"
+        contents:
+          - href: index.qmd
+            text: Inicio
+            icon: house
+          - href: programa.qmd
+            text: Programa
+            icon: journal-text
+          - href: reglas.qmd
+            text: Reglas
+            icon: shield-check
+          - href: lecturas.qmd
+            text: Lecturas
+            icon: book
+          - href: presentaciones.qmd
+            text: Presentaciones
+            icon: easel
+          - href: cronograma.qmd
+            text: Cronograma
+            icon: calendar3
+      - section: "Materiales"
+        contents:
+          - href: tareas/index.qmd
+            text: Tareas
+            icon: pencil-square
+          - href: notas/index.qmd
+            text: Notas
+            icon: sticky
+          - href: diapositivas/index.qmd
+            text: Diapositivas
+            icon: easel2
+
+format:
+  html:
+    theme:
+      dark: theme-dark.scss
+      light: theme.scss
+    css: fonts/inter.css
+    toc: false
+    include-in-header: _fonts.html
+    lang: es
+    from: markdown-native_divs-native_spans

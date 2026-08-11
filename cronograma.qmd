@@ -1,0 +1,87 @@
+ ---
+title: "Cronograma"
+toc: false
+---
+
+::: {.p-lede}
+El siguiente cronograma es informativo sobre la organización del curso. Las sesiones son los martes y jueves; el calendario puede ajustarse durante el semestre. Semestre Otoño de 2026.
+:::
+
+<div class="cron-legend">
+<span class="lg"><i style="background:var(--line-strong)"></i>Clase</span>
+<span class="lg"><i style="background:var(--guinda-ink)"></i>Sesión con exposiciones</span>
+<span class="lg"><i style="background:var(--green-600)"></i>Laboratorio (R)</span>
+<span class="lg"><i style="background:#B45309"></i>Examen</span>
+</div>
+
+<div class="cron">
+<div class="cron-month">Agosto</div>
+<div class="cron-week"><div class="wk">1</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 25 Ago</div><div class="cs-title">Introducción</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 27 Ago</div><div class="cs-title">Inferencia causal</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+
+<div class="cron-month">Septiembre</div>
+<div class="cron-week"><div class="wk">2</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 1 Sep</div><div class="cs-title">Métodos experimentales</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-lab"><div class="cs-date">Jue · 3 Sep</div><div class="cs-title">R: repaso de R e introducción a Quarto</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">3</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 8 Sep</div><div class="cs-title">Regresión e inferencia estadística</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 10 Sep</div><div class="cs-title">Errores estándar</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">4</div><div class="cron-sessions">
+<div class="cron-ses is-expo"><div class="cs-date">Mar · 15 Sep</div><div class="cs-title">Aplicaciones: métodos experimentales</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
+<div class="cron-ses is-lab"><div class="cs-date">Jue · 17 Sep</div><div class="cs-title">R: experimental</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">5</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 22 Sep</div><div class="cs-title">Múltiples hipótesis</div><div class="cs-tags"><span class="cs-tag">Clase</span><span class="cs-tarea">Tarea 1</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 24 Sep</div><div class="cs-title">Variables instrumentales y LATE</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">6</div><div class="cron-sessions">
+<div class="cron-ses is-expo"><div class="cs-date">Mar · 29 Sep</div><div class="cs-title">Aplicaciones: LATE</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 1 Oct</div><div class="cs-title">Selección por observables</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+
+<div class="cron-month">Octubre</div>
+<div class="cron-week"><div class="wk">7</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 6 Oct</div><div class="cs-title">Selección por observables</div><div class="cs-tags"><span class="cs-tag">Clase</span><span class="cs-tarea">Tarea 2</span></div></div>
+<div class="cron-ses is-examen"><div class="cs-date">Jue · 8 Oct</div><div class="cs-title">Examen parcial</div><div class="cs-tags"><span class="cs-tag">Examen</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">8</div><div class="cron-sessions">
+<div class="cron-ses is-lab"><div class="cs-date">Mar · 13 Oct</div><div class="cs-title">R: selección por observables</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 15 Oct</div><div class="cs-title">DID</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">9</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 20 Oct</div><div class="cs-title">DID</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 22 Oct</div><div class="cs-title">Aplicaciones: DID</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">10</div><div class="cron-sessions">
+<div class="cron-ses is-lab"><div class="cs-date">Mar · 27 Oct</div><div class="cs-title">R: DID</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 29 Oct</div><div class="cs-title">Métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+
+<div class="cron-month">Noviembre</div>
+<div class="cron-week"><div class="wk">11</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 3 Nov</div><div class="cs-title">Métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 5 Nov</div><div class="cs-title">Aplicaciones: métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 3</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">12</div><div class="cron-sessions">
+<div class="cron-ses is-lab"><div class="cs-date">Mar · 10 Nov</div><div class="cs-title">R: métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 12 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">13</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 17 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 19 Nov</div><div class="cs-title">Aplicaciones: control sintético</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
+</div></div>
+<div class="cron-week"><div class="wk">14</div><div class="cron-sessions">
+<div class="cron-ses is-lab"><div class="cs-date">Mar · 24 Nov</div><div class="cs-title">R: control sintético</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 26 Nov</div><div class="cs-title">Inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+</div></div>
+
+<div class="cron-month">Diciembre</div>
+<div class="cron-week"><div class="wk">15</div><div class="cron-sessions">
+<div class="cron-ses"><div class="cs-date">Mar · 1 Dic</div><div class="cs-title">Inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 3 Dic</div><div class="cs-title">Aplicaciones: inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 4</span></div></div>
+</div></div>
+</div>

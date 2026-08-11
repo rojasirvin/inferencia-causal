@@ -1,0 +1,17 @@
+---
+pagetitle: "Inicio · Inferencia Causal"
+toc: false
+---
+
+# Inferencia Causal {.title}
+
+::: {.hero-lede}
+Este es un sitio para las y los estudiantes del curso de Inferencia Causal de la Maestría en Economía del CIDE. Sin embargo, otras personas pueden encontrar útiles los recursos de este sitio, como el programa del curso, las tareas y la lista de lecturas.
+:::
+
+::: {.chips .chips-v}
+[[·]{.dot} Martes 8:00–11:10]{.chip}
+[[·]{.dot} Microsoft Teams]{.chip}
+[[·]{.dot} Prof. Irvin Rojas · irvin.rojas@cide.edu]{.chip}
+[[·]{.dot} Oficina: Ma/Ju 18:00–19:00]{.chip}
+:::

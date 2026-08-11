@@ -1,0 +1,297 @@
+---
+format:
+  revealjs:
+    theme: ["./theme-ic.scss"]
+    width: 1600
+    height: 900
+    slide-number: c/t
+    center: false
+    scrollable: false
+    title-slide: false
+    logo: logo-CIDE.jpg
+    footer: "Inferencia Causal · Introducción"
+    include-in-header:
+      - _ic-header.html
+      - fontawesome.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
+library(tidyverse)
+library(magick)
+library(reticulate)
+xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
+```
+
+# Introducción {.portada background-color="#163D34" data-state="nochrome"}
+
+::: {.pa-eyebrow}
+Inferencia Causal
+:::
+
+[Irvin Rojas]{.pa-name} <span class="pa-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.pa-inst}
+Centro de Investigación y Docencia Económicas<br>Maestría en Economía
+:::
+
+## Descripción general del curso
+
+1. Programa
+1. Tareas (entregadas en **Teams** sin comprimir)  
+1. Laboratorios  
+1. Presentaciones
+1. Exámenes
+      - Examen parcial: jueves 8 de octubre en horario de clase
+      - Examen final: por definir
+1. Proyecto final  
+1. **Teams** (administrar tareas, exámenes y calificaciones)
+
+## Política sobre IA
+
+- Ustedes conocen el límite entre la IA como herramienta y la IA como fraude
+- Los incentivos del curso están alineados para que ustedes establezcan este límite y no lo crucen si su objetivo es aprender
+
+::: {.idea}
+[Respóndanse en privado]{.idea-l}
+[¿estoy aprendiendo algo nuevo y útil de este curso al utilizar una IA?]{.idea-big}
+:::
+
+
+## Aspectos clave para el curso
+
+- Leer artículos y capítulos de libro antes de clase
+- Tareas preaparatorias para los exámenes
+- Colaborar para las tareas, redactar informes individuales
+- Exámenes presenciales y en papel
+
+# Inferencia Causal: preguntas, diseño y econometría {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Inferencia Causal
+
+- Este curso está enfocado en métodos para identificar relaciones causales  
+- Entre ellas están las relaciones que surgen por la implementación deliberada de programas públicos  
+- Pero no nos limitamos a este tipo de acciones: nos interesa comprender la teoría y la práctica para dar respuesta a relaciones que surgen  
+  - De la legislación nacional o subnacional  
+  - De fenómenos naturales  
+  - Del funcionamiento de los mercados y las instituciones  
+
+::: {.fragment}
+- En el curso enfatizaremos lo siguiente:
+  1. La importancia de las preguntas  
+  2. El diseño para identificar relaciones causales 
+  3. La econometría apropiada para implementar el diseño
+  
+:::
+
+
+# 1. La importancia de las preguntas {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Las preguntas
+
+- Podemos estimar relaciones causales casi de cualquier cosa  
+- Pero no todas las relaciones causales son de interés  
+- Y muchas cosas que son de interés son difíciles de estudiar desde el punto de vista de las relaciones causales
+
+## La importancia de la teoría
+
+- En este curso enfatizaremos el uso de datos para revelar la relación entre dos variables
+- Para los economistas, los datos no *hablan* solos  
+- La teoría es necesaria para establecer la relación entre $x$ y $y$  
+- Tenemos la fortuna de disponer cada vez de mejores datos  
+- Mejores datos nos permiten probar mejor modelos cada vez más ricos
+
+## Series de tiempo vs microeconometría
+
+- Teoría económica usaba modelos y deducía de ellos los efectos de cambios de política  
+- O usaba series de tiempo agregadas que trataban de ser ligadas a modelos con consumidores o empresas representativas  
+
+::: {.fragment}
+- Cosas que han cambiado:  
+  - Disponibilidad de microdatos  
+  - Demanda por probar empíricamente modelos más ricos  
+  - Capacidad de cómputo  
+  
+:::
+
+::: {.fragment}
+- De hecho, algunos macroeconomistas están volteando a ver los métodos de la microeconomía aplicada:
+  - Sorpresas de política
+  - Diferencia en diferencias
+  - Estudios de evento  
+  - Controles sintéticos
+  
+:::
+
+## Tipos de problemas de inferencia
+
+1. *Efectos de tratamiento*
+
+- ¿Cuál es el efecto de $T$ sobre los participantes o no participantes de cierta política?  
+- ¿Funciona un determinado programa?  
+- Se requieren condiciones débiles  
+- No es fácil extrapolar las conclusiones a otros contextos
+
+::: {.fragment}
+2. *Estimación estructural*
+
+- ¿Cuál es el efecto potencial de un nuevo $T$ en una población?  
+- Problema parecido a determinar la demanda de un bien recién introducido al mercado  
+- Se imponen condiciones fuertes  
+- Se trata de estimar un conjunto de parámetros que caracterizan las preferencias y tecnología de individuos, hogares y empresas  
+
+:::
+
+## Ejemplo: impuestos
+
+- Consideremos el cambio en la tasa del impuesto al ingreso $t$  
+- La oferta es función del salario $W$, de características observadas $X$ y de inobservables $U$:  
+  $H=\phi(W,X,U)$  
+- La pregunta de evaluación es encontrar la magnitud de  
+  $\phi(W(1-t'),X,U)-\phi(W(1-t),X,U)$ para cada individuo
+
+::: {.fragment}
+- Tenemos tres posibles tipos de preguntas de investigación, dependiendo del tipo de impuesto y dónde se va a implementar:  
+  1. Un impuesto que ya ha existido antes en una población y queremos saber su efecto en la misma población, caracterizada por su distribución de $(W,X,U)$  
+  2. El impuesto ha existido antes, pero queremos conocer su efecto en una población distinta, con una distribución distinta de $(W,X,U)$  
+  3. El impuesto nunca ha sido implementado y queremos predecir su efecto en la población usada para estimar la oferta laboral o en otra población  
+  
+:::
+
+## Caso 1. Un impuesto ya conocido en la misma población
+
+- Supongamos que la población ha vivido distintos regímenes de impuestos $t_j$, con $j=1,\ldots, J$ y tenemos datos sobre la oferta laboral bajo estos regímenes  
+- Este es un problema relativamente simple pues tenemos los datos para calcular la oferta laboral esperada para cada impuesto:  
+  $$E(H|W,X,t)=\int\phi(W(1-t_j),X,U)dG(U|X,W)$$  
+- No necesitamos un contrafactual pues podemos esperar que lo ocurrido antes aplique para el futuro si $\phi(\cdot)$ y $G(\cdot)$ no cambiaron
+
+## Caso 2. Decir algo sobre una política en un nuevo contexto
+
+- Problema mucho más complicado  
+- Debemos estimar $\phi'(\cdot)$ y $G'(\cdot)$ en el nuevo ambiente, o tratar de determinar la relación entre $\phi$ y $\phi'$ y entre $G$ y $G'$
+
+::: {.phrase}
+La existencia de un problema radica en que el futuro es distinto que el pasado, mientras que la posibilidad de una solución depende de que el futuro se parezca al pasado.
+
+[— Knight (1921)]{.cite}
+:::
+
+::: {.fragment}
+- Este es el tipo de problemas en donde la estimación estructural es de gran valor  
+:::
+
+## Caso 3. Mucho más complicado
+
+- ¿Qué pasa si nunca ha existido un impuesto similar en el país de interés?  
+- ¿Podemos identificar el efecto del impuesto a partir de variaciones en el salario?  
+- Solo si asumimos que el efecto del impuesto actúa vía el salario
+
+# 2. El diseño para identificar relaciones causales {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Causalidad e inferencia
+
+:::: {.columns}
+::: {.column width="60%"}
+- Los diseños experimentales se popularizaron en las primeras décadas del siglo como el *gold standard* para la inferencia causal
+- Los investigadores peleaban por fondos de gobiernos, ONGs y *think tanks* para evaluar políticas realizando asignaciones experimentales de tratamientos
+- Esther Duflo, Michael Kremer y Abhijit Banerjee ganaron el Nobel de Economía en 2019 por sus contribuciones a la lucha contra la pobreza, donde los experimentos tienen un papel primordial
+- El modelo de causal de Rubin o de *resultados potenciales* permite conceptualizar la mayoría de los problemas de inferencia pensando en qué *resultado* obtendría una unidad con y sin intervención
+:::
+::: {.column width="40%"}
+![](https://img2.chinadaily.com.cn/images/201910/15/5da4f055a310cf3e97a13179.png){.r-frame}
+- Sin embargo, el **problema fundamental de la inferencia causal** implica que solo podemos observar a cada unidad en uno de los estados posibles
+:::
+::::
+
+## Sesgo de selección
+
+- En la práctica tenemos que comparar entre unidades que han recibido y que no han recibido el tratamiento
+- Esto da original al *sesgo de selección*, es decir, a la existencia de factores que afectan tanto la asignación del tratamiento como del resultado mismo
+- Veremos cómo la experimentación resuelve el sesgo de selección
+
+::: {.fragment}
+- Pero también estudiaremos una amplia literatura que recae en una serie de supuestos estadísticos bajo los cuales es posible acercarnos a las condiciones de la asignación aleatoria
+- Esta literatura incluye métodos muy estudiados como las técnicas de *matching* y el uso de variables instrumentales
+
+:::
+
+## Avances recientes en la literatura
+
+- Diseños de regresión discontinua
+- Diferencia en diferencias y control sintético
+- Efectos con tratamiento multivariado y con tratamiento continuo
+- Efectos en el largo plazo
+- Efectos de tratamiento heterogéneos
+- Intersección entre inferencia causal, *big data* e IA
+
+# 3. La econometría apropiada para implementar el diseño {.divider background-color="#9B2247" data-state="nochrome"}
+
+## La Revolución de la Causalidad
+
+:::: {.columns}
+::: {.column width="60%"}
+- En 2021 el Nobel de Economía nuevamente fue otorgado a tres economistas que han revolucionado la forma de hacer investigación en economía
+- David Card, Joshua Angrist y Guido Imbens fueron galardonados por su contribución al estudio de relaciones causales empleando datos observacionales, con énfasis en los mercados de trabajo
+- Si revisan los libros con los que tradicionalmente se estudiaba economía notarán un enfoque *estructural*
+- Se enfatizaba la bondad de ajuste y la significancia estadística
+- La *Revolución de la Credibilidad*, iniciada por Card, Angrist, Pischke, Krueger, Imbens, entre otros, cuestionó el paradigma de la investigación empírica dominante hasta finales de los años de 1990
+- Énfasis en la estimación creíble de parámetros con interpretación económica
+:::
+::: {.column width="40%"}
+![](https://static.india.com/wp-content/uploads/2021/10/nobel-economics.jpg?impolicy=Medium_Widthonly&w=700){.r-frame}
+:::
+::::
+
+## La econometría como herramienta
+
+- La complejidad de la econometría no sustituye la calidad de las preguntas y el diseño
+- En muchas ocasiones será suficiente una diferencia de medias o una regresión lineal para identificar parámetros de interés
+- Parte importante de nuestro curso será:
+  * Conocer la teoría que permite la identificación econométrica de efectos causales bajo los distintos diseños
+  * Implementar las estrategias empíricas con datos en *R*
+  * Interpretar y reportar los resultados, con orientación a la investigación aplicada
+
+## Algunos temas que abordaremos en el curso incluyen
+
+- Regresión por MCO, variables instrumentales y modelos no lineales
+- Errores estándar robustos y agrupados
+- Rutinas *bootstrap*
+- Análisis con placebos
+- Prueba de mútiples hipótesis
+- Métodos no paramétricos
+- Métodos de optimización
+
+
+# Habilidades de economista {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Espero que al final del curso puedan
+
+- Identificar relaciones causales
+- Usar datos y programar sus estrategias empíricas
+- Identificar literatura relevante, huecos en ella y avenidas para investigación futura
+- Argumentar y presentar ideas de forma oral y escrita
+- Usar buenas prácticas de reproductibilidad y transparencia en la investigación
+
+
+# Introducción {.final background-color="#9B2247" data-state="nochrome"}
+
+::: {.f-eyebrow}
+Inferencia Causal
+:::
+
+::: {.f-inst}
+[Irvin Rojas](https://rojasirvin.github.io/)
+:::
+
+::: {.f-inst}
+CIDE · Maestría en Economía
+:::
+
+<span class="f-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.f-rule}
+:::
+
+::: {.f-copy}
+© 2026 Irvin Rojas. Distribuido bajo licencia Creative Commons **CC BY-NC-SA 4.0**. Los materiales de terceros citados conservan sus propios derechos.
+:::
