@@ -3,6 +3,12 @@ project:
   output-dir: _preview
   resources:
     - fonts/
+  # Las respuestas de las tareas se versionan pero NO se publican: viven en el
+  # repo y se rinden solo al sacarlas de la exclusión, después de la entrega.
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
+    - "!tareas/*-respuestas.qmd"
 
 execute:
   freeze: auto

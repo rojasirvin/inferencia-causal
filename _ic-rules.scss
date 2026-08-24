@@ -182,6 +182,8 @@ table.pres tr:nth-child(even) td{ background:var(--surface-2); }
 .tlink{ font-size:.78rem; font-weight:700; padding:.4rem .7rem; border-radius:8px; border:1px solid var(--line-strong); color:var(--ink); transition:.15s; }
 .tlink:hover{ border-color:var(--green-600); color:var(--green-600); }
 .tlink.sol{ background:var(--guinda-tint); border-color:transparent; color:var(--guinda-ink); }
+/* Respuestas aún no liberadas: se muestran como etiqueta inerte, sin enlace. */
+.tlink.pend{ background:transparent; border-style:dashed; color:var(--muted); cursor:default; }
 
 /* ============ listas de enlaces (notas / diapositivas simples) ============ */
 .linklist{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:.7rem; }
