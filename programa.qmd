@@ -12,11 +12,10 @@ toc: false
 <li>Conocer los temas que conforman la literatura actual de inferencia causal y su intersección con el aprendizaje automático.</li>
 </ul>
 
-<div class="sec-head"><h2>Referencias</h2><span class="count">7 textos base</span></div>
+<div class="sec-head"><h2>Referencias</h2><span class="count">6 textos base</span></div>
 <div class="ref-grid">
 <div class="ref"><span class="abbr">MHE</span><div class="r-body"><b>Angrist & Pischke (2013).</b> <span>Mostly Harmless Econometrics: An Empiricist’s Companion. Princeton U. Press.</span></div></div>
 <div class="ref"><span class="abbr">MM</span><div class="r-body"><b>Angrist & Pischke (2014).</b> <span>Mastering ’Metrics: The Path from Cause to Effect. Princeton U. Press.</span></div></div>
-<div class="ref"><span class="abbr">CT</span><div class="r-body"><b>Cameron & Trivedi (2005).</b> <span>Microeconometrics: Methods and Applications. Oxford U. Press.</span></div></div>
 <div class="ref"><span class="abbr">MT</span><div class="r-body"><b>Cunningham (2021).</b> <span>Causal Inference: The Mixtape. Yale U. Press.</span></div></div>
 <div class="ref"><span class="abbr">MLE</span><div class="r-body"><b>Gaillac & L’Hour (2025).</b> <span>Machine Learning for Econometrics. Oxford U. Press.</span></div></div>
 <div class="ref"><span class="abbr">CA</span><div class="r-body"><b>Huber (2023).</b> <span>Causal Analysis: Impact Evaluation and Causal Machine Learning with Applications in R. MIT Press.</span></div></div>
