@@ -10,8 +10,9 @@ Este es un sitio para las y los estudiantes del curso de Inferencia Causal de la
 :::
 
 ::: {.chips .chips-v}
-[[·]{.dot} Martes 8:00–11:10]{.chip}
-[[·]{.dot} Microsoft Teams]{.chip}
-[[·]{.dot} Prof. Irvin Rojas · irvin.rojas@cide.edu]{.chip}
-[[·]{.dot} Oficina: Ma/Ju 18:00–19:00]{.chip}
+[[·]{.dot} **Profesor:** Irvin Rojas (irvin.rojas@cide.edu)]{.chip}
+[[·]{.dot} **Horario de clases:** martes y jueves (8:00–9:30)]{.chip}
+[[·]{.dot} **Horario de oficina:** martes y jueves (18:00–19:00)]{.chip}
+[[·]{.dot} **Plataforma de comunicación:** Microsoft Teams]{.chip}
 :::
+
