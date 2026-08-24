@@ -22,70 +22,65 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + Heckman, J. J., & Vytlacil, E. J. (2007). [Econometric evaluation of social programs, part I: Causal models, structural models and econometric policy evaluation](https://doi.org/10.1016/S1573-4412(07)06070-9). *Handbook of econometrics*, 6, 4779-4874.  
 
 * Inferencia causal  
-  + GMPRV, Capítulo 3  
-  + \* MHE, Capítulo 2 (The Experimental Ideal)
+  + CA, Capítulo 2 (Causality and No Causality)  
   + MT, Capítulo 4 (Potential Outcomes Model)
 
 ## Semana 2
 
-+ Evaluación por métodos experimentales  
-  + \* CT, Capítulo 25, Secciones 1, 2  
-  + GMPRV, Capítulo 4  
-  + CT, Capítulo 25, Sección 3  
-
-* Revisión de métodos de regresión
-  + \* MHE, Capítulo 3 (Making  Regression Make Sense)
-  + MM, Capítulo 2 (Regression)
++ Métodos experimentales  
+  + \* MHE, Capítulo 2 (The Experimental Ideal)
+  + MT, Capítulo 4 (Physical Randomization)
 
 * Transparencia y replicabilidad
   + \* Christensen, G., & Miguel, E. (2018). [Transparency, reproducibility, and the credibility of economics research](https://doi.org/10.1257/jel.20171350). *Journal of Economic Literature*, 56(3), 920-80.
 
 ## Semana 3
 
+* Revisión de métodos de regresión
+  * CA, Capítulo 3 (Social Experiments and Linear Regression)
+  + \* MHE, Capítulo 3 (Making  Regression Make Sense)
+  + MM, Capítulo 2 (Regression)
+  
 * Inferencia estadística
   + \* MM, Capítulo 1 (Randomized Trials), Apéndice (Mastering Inference)
   + MT, Capítulo 2 (Probability and Regression Review)
   
 * Errores estándar no estándar
-  + Abadie, A., Athey, S., Imbens, G. W., & Wooldridge, J. M. (2023). [When should you adjust standard errors for clustering?](https://doi.org/10.1093/qje/qjac038). *The Quarterly Journal of Economics*, 138(1), 1-35.
   + \* MHE, Capítulo 8  (Nonstandard Standard Errors Issues)
+  + Abadie, A., Athey, S., Imbens, G. W., & Wooldridge, J. M. (2023). [When should you adjust standard errors for clustering?](https://doi.org/10.1093/qje/qjac038). *The Quarterly Journal of Economics*, 138(1), 1-35.
   + Cameron, A. C., & Miller, D. L. (2015). [A practitioner’s guide to cluster-robust inference](https://doi.org/10.3368/jhr.50.2.317). *Journal of Human Resources*, 50(2), 317-372.
   + Stock, J. H. (2010). [The other transformation in econometric practice: Robust tools for inference](https://doi.org/10.1257/jep.24.2.83). *Journal of Economic Perspectives*, 24(2), 83-94.
 
 ## Semana 4
 
-* Aplicaciones de evaluaciones experimentales  
+* Aplicaciones de métodos experimentales  
+  + Acampora, M., Casaburi, L., & Willis, J. (2025). [Land rental markets: Experimental evidence from Kenya](https://doi.org/10.1257/aer.20221234). *American Economic Review*, 115(3), 727-771.
   + \+ Arceo-Gomez, E. O., & Campos-Vazquez, R. M. (2014). [Race and marriage in the labor market: A discrimination correspondence study in a developing country](https://doi.org/10.1257/aer.104.5.376). *American Economic Review*, 104(5), 376-80.
   + \+ Ascencio, S. J., & Chang, H. I. (2024). [Do primaries improve evaluations of public officials? Experimental evidence from Mexico](https://doi.org/10.1007/s11109-024-09926-w). *Political Behavior*, 1-22.
   + Baird, S., McIntosh, C., & Özler, B. (2011). [Cash or condition? Evidence from a cash transfer experiment](https://doi.org/10.1093/qje/qjr032). The *Quarterly journal of economics*, 126(4), 1709-1753.  
   + \* Banerjee, A., Duflo, E., Goldberg, N., Karlan, D., Osei, R., Parienté, W., Shapiro, J., Thuysbaert, B. & Udry, C. (2015). [A multifaceted program causes lasting progress for the very poor: Evidence from six countries](https://doi.org/10.1126/science.1260799). *Science*, 348(6236), 1260799.
+  + Bjorvatn, K., Ferris, D., Gulesci, S., Nasgowitz, A., Somville, V., & Vandewalle, L. (2025). [Childcare, labor supply, and business development: Experimental evidence from Uganda](https://doi.org/10.1257/app.20230227). *American Economic Journal: Applied Economics*, 17(2), 75-101.
   + Blattman, C., Emeriau, M., & Fiala, N. (2018). [Do anti-poverty programs sway voters? Experimental evidence from Uganda](https://doi.org/10.1162/rest_a_00737). *Review of Economics and Statistics*, 100(5), 891-905.
   + \+ Bruhn, M., Karlan, D., & Schoar, A. (2018). [The impact of consulting services on small and medium enterprises: Evidence from a randomized trial in Mexico](https://doi.org/10.1086/696154). *Journal of Political Economy*, 126(2), 635-687.
+  + Bulte, E., Di Falco, S., Kassie, M., & Vollenweider, X. (2025). [Low-quality seeds, labor supply, and economic returns: Experimental evidence from Tanzania](https://doi.org/10.1162/rest_a_01285). *Review of Economics and Statistics*, 107(3), 845-852.
   + \+ Davies, E., Deffebach, P., Iacovone, L., & Mckenzie, D. (2024). [Training microentrepreneurs over Zoom: Experimental evidence from Mexico](https://doi.org/10.1016/j.jdeveco.2023.103244). *Journal of Development Economics*, 167, 103244.
   + \+ De La O, A. L., Fernández-Vázquez, P. & García, F. M. (2023). [Federal and state audits do not increase compliance with a grant program to improve municipal infrastructure: A pre-registered field experiment](https://www.sciencedirect.com/science/article/abs/pii/S0304387822001857). *Journal of Development Economics*, 162, 103043.
+  + Dell'Acqua, F., Kogut, B., & Perkowski, P. (2025). [Super Mario meets AI: Experimental effects of automation and skills on team performance and coordination](https://doi.org/10.1162/rest_a_01328). *Review of Economics and Statistics*, 107(4), 951-966.
   + Duflo, E., Dupas, P., & Kremer, M. (2015). [Education, HIV, and early fertility: Experimental evidence from Kenya](https://doi.org/10.1257/aer.20121607). *American Economic Review*, 105(9), 2757-97.  
   + Dupas, P. (2011). [Do teenagers respond to HIV risk information? Evidence from a field experiment in Kenya](https://doi.org/10.1257/app.3.1.1). *American Economic Journal*: Applied Economics, 3(1), 1-34.  
+  + Dupas, P., Jayachandran, S., Lleras-Muney, A., & Rossi, P. (2025). [The negligible effect of free contraception on fertility: Experimental evidence from Burkina Faso](https://doi.org/10.1257/aer.20241305). *American Economic Review*, 115(8), 2659-2688.
   + \+ Gertler, P. (2004). [Do conditional cash transfers improve child health? Evidence from PROGRESA's control randomized experiment](https://doi.org/10.1257/0002828041302109). *American economic review*, 94(2), 336-341.
   + \+ Hoyos, R. D., Attanasio, O., & Meghir, C. (2024). [Targeting high school scholarships to the poor: the impact of a program in Mexico](https://doi.org/10.1086/725232). *Economic Development and Cultural Change*, 72(4), 1747-1768.
   + Londoño-Vélez, J., & Querubin, P. (2022). [The Impact of Emergency Cash Assistance in a Pandemic: Experimental Evidence from Colombia](https://doi.org/10.1162/rest_a_01043). *The Review of Economics and Statistics*, 1-27
   + Martínez A, C., Puentes, E., & Ruiz-Tagle, J. (2018). [The effects of micro-entrepreneurship programs on labor market performance: experimental evidence from Chile](https://doi.org/10.1257/app.20150245). *American Economic Journal: Applied Economics*, 10(2), 101-24.
   + Mousa, S. (2020). [Building social cohesion between Christians and Muslims through soccer in post-ISIS Iraq](https://doi.org/10.1126/science.abb3153). *Science*, 369(6505), 866-870.  
+  + Muralidharan, K., Niehaus, P., & Sukhtankar, S. (2025). [Identity verification standards in welfare programs: Experimental evidence from India](https://doi.org/10.1162/rest_a_01296). *Review of Economics and Statistics*, 107(2), 372-392.
   + Poertner, M. (2023). [Does Political Representation Increase Participation? Evidence from Party Candidate Lotteries in Mexico](https://doi.org/10.1017/S0003055422000533). *American Political Science Review*, 117(2), 537-556.
   + \+ Sadka, J., Seira, E., & Woodruff, C. (2024). [Information and Bargaining through Agents: Experimental Evidence from Mexico’s Labour Courts](https://doi.org/10.1093/restud/rdae003). *Review of Economic Studies*, rdae003.
   + \+ Seira, E., Elizondo, A., & Laguna-Müggenburg, E. (2017). [Are information disclosures effective? evidence from the credit card market](https://doi.org/10.1257/pol.20140404). *American Economic Journal: Economic Policy*, 9(1), 277-307.  
   + \+ Tagliati, F. (2022). [Welfare effects of an in-kind transfer program: Evidence from Mexico](https://doi.org/10.1016/j.jdeveco.2021.102753). *Journal of Development Economics*, 154, 102753.
 
-
-
-  
 ## Semana 5
-
-* LATE y variables instrumentales  
-  + CT, Capítulo 25, Sección 7  
-  + GMPRV, Capítulo 5  
-  + MHE, Capítulo 4 (Instrumental Variables in Action)  
-  + \* MM, Capítulo 3 (Instrumental Variables)
-  + MT, Capítulo 7 (Instrumental Variables)
 
 * Corrección por prueba de múltiples hipótesis  
   + \* Angelucci, M., Karlan, D., & Zinman, J. (2015). [Microcredit impacts: Evidence from a randomized microcredit program placement experiment by Compartamos Banco](https://doi.org/10.1257/app.20130537). *American Economic Journal: Applied Economics*, 7(1), 151-82.
@@ -94,11 +89,10 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + Savin, N. E. (1984). [Multiple hypothesis testing](https://doi.org/10.1016/S1573-4412(84)02006-7). Handbook of econometrics, 2, 827-879.  
   + \* Shaffer, J. P. (1995). [Multiple hypothesis testing](https://doi.org/10.1146/annurev.ps.46.020195.003021). *Annual review of psychology*, 46(1), 561-584.  
 
-
-* ANCOVA  
-  + \* McKenzie, D. (2012). [Beyond baseline and follow-up: The case for more T in experiments](https://doi.org/10.1016/j.jdeveco.2012.01.002). *Journal of development Economics*, 99(2), 210-221.
-  + Rojas Valdes, R.I., Wydick, B., & Lybbert, T.J. (2021). [Can Hope Elevate Microfinance? Evidence from Oaxaca, Mexico](https://doi.org/10.1093/oep/gpaa039). *Oxford Economic Papers*.
-
+* LATE y variables instrumentales  
+  + MHE, Capítulo 4 (Instrumental Variables in Action)  
+  + \* MM, Capítulo 3 (Instrumental Variables)
+  + MT, Capítulo 7 (Instrumental Variables)
 
 
 ## Semana 6
@@ -115,29 +109,11 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + Imbens, G. W., & Angrist, J. D. (1994). [Identification and estimation of local average treatment effects](https://doi.org/10.2307/2951620). *Econometrica* (1986-1998), 62(2), 467.
   + Kling, J. R., Liebman, J. B., & Katz, L. F. (2007). [Experimental analysis of neighborhood effects](https://doi.org/10.1111/j.1468-0262.2007.00733.x). *Econometrica*, 75(1), 83-119.
 
-* Diferencia en diferencias  
-  + CT, Capítulo 25, Sección 25.5 
-  + GMPRV, Capítulo 7  
-  + \* MM, Capítulo 5 (Differences-in-differences)
-  + MT, Capítulo 9 (Difference in differences), secciones 1 a 5
-  
-## Semana 7
 
-* DID desfasado
-  + \* MT, Capítulo 9 (Difference in differences), sección 9.6
-  + Baker, A. C., Larcker, D. F., & Wang, C. C. (2022). [How much should we trust staggered difference-in-differences estimates?](https://doi.org/10.1016/j.jfineco.2022.01.004). *Journal of Financial Economics*, 144(2), 370-395.
-  + Callaway, B., & Sant’Anna, P. H. (2021). [Difference-in-differences with multiple time periods](https://doi.org/10.1016/j.jeconom.2020.12.001). *Journal of Econometrics*, 225(2), 200-230.
-  + Goodman-Bacon, A. (2021). [Difference-in-differences with variation in treatment timing](https://doi.org/10.1016/j.jeconom.2021.03.014). *Journal of Econometrics*, 225(2), 254-277.
-  + Marcus, M., & Sant’Anna, P. H. (2021). [The role of parallel trends in event study settings: An application to environmental economics](https://doi.org/10.1086/711509). *Journal of the Association of Environmental and Resource Economists*, 8(2), 235-275.
-  + \* Roth, J., Sant'Anna, P. H., Bilinski, A., & Poe, J. (2023). [What's Trending in Difference-in-Differences? A Synthesis of the Recent Econometrics Literature](https://doi.org/10.1016/j.jeconom.2023.03.008). *Journal of Econometrics*, 235(2), 2218-2244.
-
-  
-* Métodos de pareamiento
-  + GMPRV, Capítulo 8
-  + \* MH, Capítulo 3, Sección 3.3
-  + \* MT, Capítulo 5
-
-
+* Métodos basados en selección por observables
+  + \* CA, Capítulo 4 (Selection on Observables)
+  + \* MHE, Capítulo 3 (Sección 3.3)
+  + \* MT, Capítulo 5 (Matching and Subclassification)
 
 * Aplicaciones del PSM  
   + Abadie, A., & Imbens, G. W. (2016). [Matching on the estimated propensity score](https://doi.org/10.3982/ECTA11293). *Econometrica*, 84(2), 781-807.  
@@ -152,6 +128,27 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + \* LaLonde, R. J. (1986). [Evaluating the econometric evaluations of training programs with experimental data](https://www.jstor.org/stable/1806062). The *American economic review*, 604-620.
   + Wellalage, N. H., & Locke, S. (2020). [Remittance and financial inclusion in refugee migrants: inverse probability of treatment weighting using the propensity score](https://doi.org/10.1080/00036846.2019.1646876). *Applied Economics*, 52(9), 929-950.
   + \+ Stabridis, O., & Salgado-Viveros, C. (2023). [Efectos de género y etnicidad en la brecha salarial entre jornaleros agrícolas del noroeste mexicano](https://doi.org/10.33679/rfn.v1i1.2339). *Frontera Norte*, 35.
+
+  
+## Semana 8
+
+* Diferencia en diferencias  
+  + CT, Capítulo 25, Sección 25.5 
+  + GMPRV, Capítulo 7  
+  + \* MM, Capítulo 5 (Differences-in-differences)
+  + MT, Capítulo 9 (Difference in differences), secciones 1 a 5
+  
+* DID desfasado
+  + \* MT, Capítulo 9 (Difference in differences), sección 9.6
+  + Baker, A. C., Larcker, D. F., & Wang, C. C. (2022). [How much should we trust staggered difference-in-differences estimates?](https://doi.org/10.1016/j.jfineco.2022.01.004). *Journal of Financial Economics*, 144(2), 370-395.
+  + Callaway, B., & Sant’Anna, P. H. (2021). [Difference-in-differences with multiple time periods](https://doi.org/10.1016/j.jeconom.2020.12.001). *Journal of Econometrics*, 225(2), 200-230.
+  + Goodman-Bacon, A. (2021). [Difference-in-differences with variation in treatment timing](https://doi.org/10.1016/j.jeconom.2021.03.014). *Journal of Econometrics*, 225(2), 254-277.
+  + Marcus, M., & Sant’Anna, P. H. (2021). [The role of parallel trends in event study settings: An application to environmental economics](https://doi.org/10.1086/711509). *Journal of the Association of Environmental and Resource Economists*, 8(2), 235-275.
+  + \* Roth, J., Sant'Anna, P. H., Bilinski, A., & Poe, J. (2023). [What's Trending in Difference-in-Differences? A Synthesis of the Recent Econometrics Literature](https://doi.org/10.1016/j.jeconom.2023.03.008). *Journal of Econometrics*, 235(2), 2218-2244.
+  
+* ANCOVA  
+  + \* McKenzie, D. (2012). [Beyond baseline and follow-up: The case for more T in experiments](https://doi.org/10.1016/j.jdeveco.2012.01.002). *Journal of development Economics*, 99(2), 210-221.
+  + Rojas Valdes, R.I., Wydick, B., & Lybbert, T.J. (2021). [Can Hope Elevate Microfinance? Evidence from Oaxaca, Mexico](https://doi.org/10.1093/oep/gpaa039). *Oxford Economic Papers*.
 
 
 ## Semana 9
@@ -171,8 +168,7 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + \+ Gutiérrez Vázquez, E. Y., & Parrado, E. A. (2016). [Abortion legalization and childbearing in Mexico](https://doi.org/10.1111/j.1728-4465.2016.00060.x). *Studies in family planning*, 47(2), 113-128.  
   + Qian, N. (2008). [Missing women and the price of tea in China: The effect of sex-specific earnings on sex imbalance](https://doi.org/10.1162/qjec.2008.123.3.1251). *The Quarterly Journal of Economics*, 123(3), 1251-1285.
   + Wolfers, J. (2006). [Did unilateral divorce laws raise divorce rates? A reconciliation and new results](https://doi.org/10.1257/aer.96.5.1802). *American Economic Review*, 96(5), 1802-1820.
-  + Zhang, R., Li, Y., Zhang, A. L., Wang, Y., & Molina, M. J. (2020). [Identifying airborne transmission as the dominant route for the spread of COVID-19](https://doi.org/10.1073/pnas.2009637117). *Proceedings of the National Academy of Sciences*.  
-  
+  + Zhang, R., Li, Y., Zhang, A. L., Wang, Y., & Molina, M. J. (2020). [Identifying airborne transmission as the dominant route for the spread of COVID-19](https://doi.org/10.1073/pnas.2009637117). *Proceedings of the National Academy of Sciences*. 
 
 ## Semana 10
 
@@ -238,6 +234,7 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
 ## Semana 13
 
 * Aplicaciones de control sintético
+  + Abadie, A., & Zhao, J. (2026). [Synthetic controls for experimental design](https://doi.org/10.1162/rest.a.1837). *Review of Economics and Statistics*, 1-39.
   + Absher, S., Grier, K., & Grier, R. (2020). [The economic consequences of durable left-populist regimes in Latin America](https://doi.org/10.1016/j.jebo.2020.07.001). *Journal of Economic Behavior & Organization*, 177, 787-817.  
   + \* Acemoglu, D., Johnson, S., Kermani, A., Kwak, J., & Mitton, T. (2016). [The value of connections in turbulent times: Evidence from the United States](https://doi.org/10.1016/j.jfineco.2015.10.001). *Journal of Financial Economics*, 121(2), 368-391.
   + Alfano, V., Ercolano, S., & Cicatiello, L. (2021). [School openings and the COVID-19 outbreak in Italy. A provincial-level analysis using the synthetic control method](https://doi.org/10.1016/j.healthpol.2021.06.010). *Health Policy*.
@@ -271,8 +268,6 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
   + Torrats-Espinosa, G. (2021). [Using machine learning to estimate the effect of racial segregation on COVID-19 mortality in the United States](https://doi.org/10.1073/pnas.2015577118). *Proceedings of the National Academy of Sciences*, 118(7).
   + \+ Wager, S., & Athey, S. (2018). [Estimation and inference of heterogeneous treatment effects using random forests](https://doi.org/10.1080/01621459.2017.1319839). *Journal of the American Statistical Association*, 113(523), 1228-1242.
   + \* Varian, H. R. (2014). [Big data: New tricks for econometrics](https://doi.org/10.1257/jep.28.2.3). *Journal of Economic Perspectives*, 28(2), 3-28
-
-
 
   
   
