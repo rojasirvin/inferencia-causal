@@ -85,6 +85,12 @@ ul.clean li::before{ content:""; position:absolute; left:0; top:.55em; width:7px
 .card h3{ font-size:.94rem; font-weight:700; margin:0; letter-spacing:-.01em; line-height:1.2; color:var(--ink); }
 .card .meta{ margin-top:auto; display:flex; align-items:center; gap:.4rem; font-size:.72rem; color:var(--muted); font-weight:600; }
 .card .pill{ font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; font-weight:700; padding:.16rem .42rem; border-radius:5px; background:var(--guinda-tint); color:var(--guinda-ink); }
+/* Diapositivas aún no publicadas: tarjeta inerte, sin enlace ni hover. */
+.card.pend{ background:transparent; border-style:dashed; box-shadow:none; cursor:default; }
+.card.pend:hover{ transform:none; border-color:var(--line); }
+.card.pend .num,
+.card.pend h3{ color:var(--muted); }
+.card.pend .pill{ background:transparent; border:1px dashed var(--line-strong); color:var(--muted); }
 
 /* ============ referencias (programa) ============ */
 .ref-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:.8rem; }
