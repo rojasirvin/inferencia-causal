@@ -58,16 +58,16 @@ El siguiente cronograma es informativo sobre la organización del curso. Las ses
 </div></div>
 <div class="cron-week"><div class="wk">10</div><div class="cron-sessions">
 <div class="cron-ses is-lab"><div class="cs-date">Mar · 27 Oct</div><div class="cs-title">R: DID</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
-<div class="cron-ses"><div class="cs-date">Jue · 29 Oct</div><div class="cs-title">Métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 29 Oct</div><div class="cs-title">Diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
 </div></div>
 
 <div class="cron-month">Noviembre</div>
 <div class="cron-week"><div class="wk">11</div><div class="cron-sessions">
-<div class="cron-ses"><div class="cs-date">Mar · 3 Nov</div><div class="cs-title">Métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
-<div class="cron-ses is-expo"><div class="cs-date">Jue · 5 Nov</div><div class="cs-title">Aplicaciones: métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 3</span></div></div>
+<div class="cron-ses"><div class="cs-date">Mar · 3 Nov</div><div class="cs-title">Diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 5 Nov</div><div class="cs-title">Aplicaciones: diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 3</span></div></div>
 </div></div>
 <div class="cron-week"><div class="wk">12</div><div class="cron-sessions">
-<div class="cron-ses is-lab"><div class="cs-date">Mar · 10 Nov</div><div class="cs-title">R: métodos con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
+<div class="cron-ses is-lab"><div class="cs-date">Mar · 10 Nov</div><div class="cs-title">R: diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
 <div class="cron-ses"><div class="cs-date">Jue · 12 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
 </div></div>
 <div class="cron-week"><div class="wk">13</div><div class="cron-sessions">
@@ -76,12 +76,12 @@ El siguiente cronograma es informativo sobre la organización del curso. Las ses
 </div></div>
 <div class="cron-week"><div class="wk">14</div><div class="cron-sessions">
 <div class="cron-ses is-lab"><div class="cs-date">Mar · 24 Nov</div><div class="cs-title">R: control sintético</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
-<div class="cron-ses"><div class="cs-date">Jue · 26 Nov</div><div class="cs-title">Inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses"><div class="cs-date">Jue · 26 Nov</div><div class="cs-title">Inferencia causal, IA y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
 </div></div>
 
 <div class="cron-month">Diciembre</div>
 <div class="cron-week"><div class="wk">15</div><div class="cron-sessions">
-<div class="cron-ses"><div class="cs-date">Mar · 1 Dic</div><div class="cs-title">Inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
-<div class="cron-ses is-expo"><div class="cs-date">Jue · 3 Dic</div><div class="cs-title">Aplicaciones: inferencia causal y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 4</span></div></div>
+<div class="cron-ses"><div class="cs-date">Mar · 1 Dic</div><div class="cs-title">Inferencia causal, IA y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 3 Dic</div><div class="cs-title">Aplicaciones: inferencia causal, IA y aprendizaje automático</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 4</span></div></div>
 </div></div>
 </div>
