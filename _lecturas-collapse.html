@@ -78,4 +78,21 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+// Las lecturas apuntan a revistas y repositorios externos: se abren en una
+// pestaña nueva para no perder la posición en la lista.
+(function(){
+  function init(){
+    var root = document.querySelector('#quarto-document-content') || document.querySelector('main') || document;
+    root.querySelectorAll('a[href]').forEach(function(a){
+      if(a.target) return;                                  // respeta un target ya definido
+      if(!/^https?:$/.test(a.protocol)) return;             // ignora mailto:, #anclas, etc.
+      if(a.hostname === location.hostname) return;          // los internos se quedan en la pestaña
+      a.target = '_blank';
+      a.rel = (a.rel ? a.rel + ' ' : '') + 'noopener noreferrer';
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
 </script>
