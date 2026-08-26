@@ -18,9 +18,9 @@ Por favor, seleccione una de las lecturas marcadas con una "+" de la lista de le
 
 <tr><td> De la O & García (2023) </td><td><span class="topic-tag">Experimental</span></td><td class="who"> Jhonatan Román </td><td>Martes 15 de septiembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">LATE</span></td><td class="who"> PD </td><td>Martes 29 de septiembre</td></tr>
+<tr><td> De la O (2013) </td><td><span class="topic-tag">LATE</span></td><td class="who"> Sagrario Fuentes </td><td>Martes 29 de septiembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Selección por observables</span></td><td class="who"> PD </td><td>Martes 13 de octubre</td></tr>
+<tr><td> Espinosa & Rubin (2015) </td><td><span class="topic-tag">Selección por observables</span></td><td class="who"> Valeria Servín </td><td>Martes 13 de octubre</td></tr>
 
 <tr><td> Cabrera & Padilla-Romo (2023) </td><td><span class="topic-tag">DID</span></td><td class="who"> Edel Araiza </td><td>Martes 20 de octubre</td></tr>
 
