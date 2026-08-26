@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.38">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>Inferencia Causal 2026 – did</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,10 +20,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -274,6 +277,17 @@
   .reveal div[style*="overflow-y"]{
     height:auto !important; max-height:560px !important;
   }
+  /* Encabezado fijo al hacer scroll dentro de un scroll_box. kableExtra ya marca cada th como
+     sticky, pero dos cosas lo anulaban: el border-collapse:collapse de arriba (Chrome ignora
+     sticky en celdas de tablas colapsadas) y el overflow:hidden de la tabla (la convertía en el
+     ancestro de scroll, en vez del recuadro). Aquí se revierten ambos solo para estas tablas y
+     el sticky se aplica al thead completo, para que las dos filas de encabezado —el título de
+     add_header_above y los nombres de columna— se queden juntas y sin encimarse. */
+  .reveal div[style*="overflow-y"] table{
+    border-collapse:separate !important; border-spacing:0 !important; overflow:visible !important;
+  }
+  .reveal div[style*="overflow-y"] thead{ position:sticky; top:0; z-index:3; }
+  .reveal div[style*="overflow-y"] thead th{ position:static !important; }
   /* kableExtra footnote: a veces no aplica colspan y la nota queda en la 1a columna con celdas
      vacías al lado → la hacemos ocupar todo el ancho de la tabla */
   /* kableExtra a veces no le pone colspan a la nota → un script en _ic-header.html se lo pone
@@ -1224,80 +1238,42 @@ F-statistic:   NaN on 3 and 0 DF,  p-value: NA</code></pre>
       });
     </script>
     
-
     <script>
-
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
       // slide changes (different for each slide format).
-
       (function () {
-
         // dispatch for htmlwidgets
-
         function fireSlideEnter() {
-
           const event = window.document.createEvent("Event");
-
           event.initEvent("slideenter", true, true);
-
           window.document.dispatchEvent(event);
-
         }
-
-    
 
         function fireSlideChanged(previousSlide, currentSlide) {
-
           fireSlideEnter();
 
-    
-
           // dispatch for shiny
-
           if (window.jQuery) {
-
             if (previousSlide) {
-
               window.jQuery(previousSlide).trigger("hidden");
-
             }
-
             if (currentSlide) {
-
               window.jQuery(currentSlide).trigger("shown");
-
             }
-
           }
-
         }
-
-    
 
         // hookup for slidy
-
         if (window.w3c_slidy) {
-
           window.w3c_slidy.add_observer(function (slide_num) {
-
             // slide_num starts at position 1
-
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
           });
-
         }
 
-    
-
       })();
-
     </script>
-
-    
 
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1369,7 +1345,7 @@ F-statistic:   NaN on 3 and 0 DF,  p-value: NA</code></pre>
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/rojasirvin\.github\.io\/inferencia-causal\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

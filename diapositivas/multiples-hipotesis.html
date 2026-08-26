@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.38">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>Inferencia Causal 2026 – multiples-hipotesis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,10 +20,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -340,6 +343,17 @@
   .reveal div[style*="overflow-y"]{
     height:auto !important; max-height:560px !important;
   }
+  /* Encabezado fijo al hacer scroll dentro de un scroll_box. kableExtra ya marca cada th como
+     sticky, pero dos cosas lo anulaban: el border-collapse:collapse de arriba (Chrome ignora
+     sticky en celdas de tablas colapsadas) y el overflow:hidden de la tabla (la convertía en el
+     ancestro de scroll, en vez del recuadro). Aquí se revierten ambos solo para estas tablas y
+     el sticky se aplica al thead completo, para que las dos filas de encabezado —el título de
+     add_header_above y los nombres de columna— se queden juntas y sin encimarse. */
+  .reveal div[style*="overflow-y"] table{
+    border-collapse:separate !important; border-spacing:0 !important; overflow:visible !important;
+  }
+  .reveal div[style*="overflow-y"] thead{ position:sticky; top:0; z-index:3; }
+  .reveal div[style*="overflow-y"] thead th{ position:static !important; }
   /* kableExtra footnote: a veces no aplica colspan y la nota queda en la 1a columna con celdas
      vacías al lado → la hacemos ocupar todo el ancho de la tabla */
   /* kableExtra a veces no le pone colspan a la nota → un script en _ic-header.html se lo pone
@@ -508,11 +522,11 @@
 </ul>
 </div><div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>alpha<span class="ot">=</span><span class="fl">0.05</span></span>
-<span id="cb1-2"><a></a>n <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span></span>
-<span id="cb1-3"><a></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span>(<span class="dv">1</span><span class="sc">-</span>alpha)<span class="sc">^</span>n</span>
-<span id="cb1-4"><a></a></span>
-<span id="cb1-5"><a></a><span class="fu">plot</span>(p,n, <span class="at">xlab=</span><span class="st">"n"</span>, <span class="at">ylab=</span><span class="st">"1-(1-alpha)^n"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>alpha<span class="ot">=</span><span class="fl">0.05</span></span>
+<span id="cb1-2"><a aria-label="2"></a>n <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span></span>
+<span id="cb1-3"><a aria-label="3"></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">-</span>(<span class="dv">1</span><span class="sc">-</span>alpha)<span class="sc">^</span>n</span>
+<span id="cb1-4"><a aria-label="4"></a></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="fu">plot</span>(p,n, <span class="at">xlab=</span><span class="st">"n"</span>, <span class="at">ylab=</span><span class="st">"1-(1-alpha)^n"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -605,14 +619,14 @@
 <div class="columns">
 <div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>data.pvalues<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"./data_benjamini_hochberg.csv"</span>,</span>
-<span id="cb2-2"><a></a>                       <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">"latin1"</span>))  </span>
-<span id="cb2-3"><a></a>n <span class="ot">&lt;-</span> <span class="dv">15</span></span>
-<span id="cb2-4"><a></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-label="1"></a>data.pvalues<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"./data_benjamini_hochberg.csv"</span>,</span>
+<span id="cb2-2"><a aria-label="2"></a>                       <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">"latin1"</span>))  </span>
+<span id="cb2-3"><a aria-label="3"></a>n <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb2-4"><a aria-label="4"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>data.pvalues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>data.pvalues</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15 × 2
    poriginal hipotesis
@@ -641,14 +655,14 @@
 <div class="columns">
 <div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co">#Bonferroni</span></span>
-<span id="cb5-2"><a></a>data.bonferroni <span class="ot">&lt;-</span> data.pvalues <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a></a>  <span class="fu">mutate</span>(<span class="at">bonferroni_alpha=</span>alpha<span class="sc">/</span>n) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a></a>  <span class="fu">mutate</span>(<span class="at">bonferrini_rechazar=</span><span class="fu">ifelse</span>(poriginal<span class="sc">&lt;=</span>bonferroni_alpha,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co">#Bonferroni</span></span>
+<span id="cb5-2"><a aria-label="2"></a>data.bonferroni <span class="ot">&lt;-</span> data.pvalues <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a aria-label="3"></a>  <span class="fu">mutate</span>(<span class="at">bonferroni_alpha=</span>alpha<span class="sc">/</span>n) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a aria-label="4"></a>  <span class="fu">mutate</span>(<span class="at">bonferrini_rechazar=</span><span class="fu">ifelse</span>(poriginal<span class="sc">&lt;=</span>bonferroni_alpha,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>data.bonferroni</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a>data.bonferroni</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15 × 4
    poriginal hipotesis bonferroni_alpha bonferrini_rechazar
@@ -677,14 +691,14 @@
 <div class="columns">
 <div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="co">#Benjamini &amp; Hochberg</span></span>
-<span id="cb8-2"><a></a>data.bh <span class="ot">&lt;-</span> data.pvalues <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a></a>  <span class="fu">mutate</span>(<span class="at">bh_alpha=</span>alpha<span class="sc">*</span>hipotesis<span class="sc">/</span>n) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a></a>  <span class="fu">mutate</span>(<span class="at">bh_rechazar=</span><span class="fu">ifelse</span>(poriginal<span class="sc">&lt;=</span>bh_alpha,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-label="1"></a><span class="co">#Benjamini &amp; Hochberg</span></span>
+<span id="cb8-2"><a aria-label="2"></a>data.bh <span class="ot">&lt;-</span> data.pvalues <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a aria-label="3"></a>  <span class="fu">mutate</span>(<span class="at">bh_alpha=</span>alpha<span class="sc">*</span>hipotesis<span class="sc">/</span>n) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a aria-label="4"></a>  <span class="fu">mutate</span>(<span class="at">bh_rechazar=</span><span class="fu">ifelse</span>(poriginal<span class="sc">&lt;=</span>bh_alpha,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div><div class="column" style="width:&quot;50%;">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a>data.bh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-label="1"></a>data.bh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15 × 4
    poriginal hipotesis bh_alpha bh_rechazar
@@ -1067,7 +1081,7 @@
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/rojasirvin\.github\.io\/inferencia-causal\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.38">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <title>Inferencia Causal 2026 – bootstrap</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,10 +20,13 @@
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
     */
-    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -340,6 +343,17 @@
   .reveal div[style*="overflow-y"]{
     height:auto !important; max-height:560px !important;
   }
+  /* Encabezado fijo al hacer scroll dentro de un scroll_box. kableExtra ya marca cada th como
+     sticky, pero dos cosas lo anulaban: el border-collapse:collapse de arriba (Chrome ignora
+     sticky en celdas de tablas colapsadas) y el overflow:hidden de la tabla (la convertía en el
+     ancestro de scroll, en vez del recuadro). Aquí se revierten ambos solo para estas tablas y
+     el sticky se aplica al thead completo, para que las dos filas de encabezado —el título de
+     add_header_above y los nombres de columna— se queden juntas y sin encimarse. */
+  .reveal div[style*="overflow-y"] table{
+    border-collapse:separate !important; border-spacing:0 !important; overflow:visible !important;
+  }
+  .reveal div[style*="overflow-y"] thead{ position:sticky; top:0; z-index:3; }
+  .reveal div[style*="overflow-y"] thead th{ position:static !important; }
   /* kableExtra footnote: a veces no aplica colspan y la nota queda en la 1a columna con celdas
      vacías al lado → la hacemos ocupar todo el ancho de la tabla */
   /* kableExtra a veces no le pone colspan a la nota → un script en _ic-header.html se lo pone
@@ -508,18 +522,18 @@
 <section id="cómo-hacer-remuestreo-en-r" class="slide level2">
 <h2>¿Cómo hacer remuestreo en R?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">set.seed</span>(<span class="dv">927</span>)</span>
-<span id="cb1-2"><a></a></span>
-<span id="cb1-3"><a></a>data.morocco<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./crepon_morocco_analysis.csv"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a></a>  <span class="fu">select</span>(treatment,client,expense_total )</span>
-<span id="cb1-5"><a></a></span>
-<span id="cb1-6"><a></a>obs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data.morocco)</span>
-<span id="cb1-7"><a></a>obs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">927</span>)</span>
+<span id="cb1-2"><a aria-label="2"></a></span>
+<span id="cb1-3"><a aria-label="3"></a>data.morocco<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./crepon_morocco_analysis.csv"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a aria-label="4"></a>  <span class="fu">select</span>(treatment,client,expense_total )</span>
+<span id="cb1-5"><a aria-label="5"></a></span>
+<span id="cb1-6"><a aria-label="6"></a>obs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data.morocco)</span>
+<span id="cb1-7"><a aria-label="7"></a>obs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4934</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co">#En la muestra original</span></span>
-<span id="cb3-2"><a></a><span class="fu">mean</span>(data.morocco<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co">#En la muestra original</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="fu">mean</span>(data.morocco<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 23294.83</code></pre>
 </div>
@@ -528,17 +542,17 @@
 <section id="cómo-hacer-remuestreo-en-r-1" class="slide level2">
 <h2>¿Cómo hacer remuestreo en R?</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="co">#Una muestra bootstrap</span></span>
-<span id="cb5-2"><a></a>data.b <span class="ot">&lt;-</span>data.morocco[<span class="fu">sample</span>(<span class="fu">nrow</span>(data.morocco),obs, <span class="at">replace =</span> <span class="cn">TRUE</span>),]</span>
-<span id="cb5-3"><a></a></span>
-<span id="cb5-4"><a></a><span class="fu">mean</span>(data.b<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co">#Una muestra bootstrap</span></span>
+<span id="cb5-2"><a aria-label="2"></a>data.b <span class="ot">&lt;-</span>data.morocco[<span class="fu">sample</span>(<span class="fu">nrow</span>(data.morocco),obs, <span class="at">replace =</span> <span class="cn">TRUE</span>),]</span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="fu">mean</span>(data.b<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 24995.96</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="co">#Otra muestra bootstrap</span></span>
-<span id="cb7-2"><a></a>data.b <span class="ot">&lt;-</span>data.morocco[<span class="fu">sample</span>(<span class="fu">nrow</span>(data.morocco),obs, <span class="at">replace =</span> <span class="cn">TRUE</span>),]</span>
-<span id="cb7-3"><a></a></span>
-<span id="cb7-4"><a></a><span class="fu">mean</span>(data.b<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a><span class="co">#Otra muestra bootstrap</span></span>
+<span id="cb7-2"><a aria-label="2"></a>data.b <span class="ot">&lt;-</span>data.morocco[<span class="fu">sample</span>(<span class="fu">nrow</span>(data.morocco),obs, <span class="at">replace =</span> <span class="cn">TRUE</span>),]</span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="fu">mean</span>(data.b<span class="sc">$</span>expense_total)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 25587.57</code></pre>
 </div>
@@ -915,7 +929,7 @@
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp('/' + window.location.host + '/');
+            var filterRegex = new RegExp("https:\/\/rojasirvin\.github\.io\/inferencia-causal\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }
