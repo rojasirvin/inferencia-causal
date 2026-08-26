@@ -12,21 +12,21 @@ Por favor, seleccione una de las lecturas marcadas con una "+" de la lista de le
 <thead><tr><th>Autores</th><th>Tema</th><th>Presentador(a)</th><th>Fecha de exposición</th></tr></thead>
 <tbody>
 
-<tr><td> PD </td><td><span class="topic-tag">Experimental</span></td><td class="who"> PD </td><td>Jueves 10 de septiembre</td></tr>
+<tr><td> Seira, Elizondo & Laguna (2017) </td><td><span class="topic-tag">Experimental</span></td><td class="who"> Oren Nava </td><td>Jueves 10 de septiembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Experimental</span></td><td class="who"> PD </td><td>Martes 15 de septiembre</td></tr>
+<tr><td> Arceo & Campos (2014) </td><td><span class="topic-tag">Experimental</span></td><td class="who"> Jareth Mejía </td><td>Martes 15 de septiembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Experimental</span></td><td class="who"> PD </td><td>Martes 15 de septiembre</td></tr>
+<tr><td> De la O & García (2023) </td><td><span class="topic-tag">Experimental</span></td><td class="who"> Jhonatan Román </td><td>Martes 15 de septiembre</td></tr>
 
 <tr><td> PD </td><td><span class="topic-tag">LATE</span></td><td class="who"> PD </td><td>Martes 29 de septiembre</td></tr>
 
 <tr><td> PD </td><td><span class="topic-tag">Selección por observables</span></td><td class="who"> PD </td><td>Martes 13 de octubre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">DID</span></td><td class="who"> PD </td><td>Martes 20 de octubre</td></tr>
+<tr><td> Cabrera & Padilla-Romo (2023) </td><td><span class="topic-tag">DID</span></td><td class="who"> Edel Araiza </td><td>Martes 20 de octubre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">DID</span></td><td class="who"> PD </td><td>Jueves 22 de octubre</td></tr>
+<tr><td> Samaniego & Fernández (2024) </td><td><span class="topic-tag">DID</span></td><td class="who"> Sandra Martínez </td><td>Jueves 22 de octubre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">DID</span></td><td class="who"> PD </td><td>Jueves 22 de octubre</td></tr>
+<tr><td> Chort & Öktem (2024) </td><td><span class="topic-tag">DID</span></td><td class="who"> Andrea Blake </td><td>Jueves 22 de octubre</td></tr>
 
 <tr><td> PD </td><td><span class="topic-tag">Discontinuidades</span></td><td class="who"> PD </td><td>Jueves 5 de noviembre</td></tr>
 
