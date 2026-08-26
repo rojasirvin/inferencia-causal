@@ -148,6 +148,17 @@ document.addEventListener('DOMContentLoaded', function () {
 .reveal div[style*="overflow-y"]{
   height:auto !important; max-height:560px !important;
 }
+/* Encabezado fijo al hacer scroll dentro de un scroll_box. kableExtra ya marca cada th como
+   sticky, pero dos cosas lo anulaban: el border-collapse:collapse de arriba (Chrome ignora
+   sticky en celdas de tablas colapsadas) y el overflow:hidden de la tabla (la convertía en el
+   ancestro de scroll, en vez del recuadro). Aquí se revierten ambos solo para estas tablas y
+   el sticky se aplica al thead completo, para que las dos filas de encabezado —el título de
+   add_header_above y los nombres de columna— se queden juntas y sin encimarse. */
+.reveal div[style*="overflow-y"] table{
+  border-collapse:separate !important; border-spacing:0 !important; overflow:visible !important;
+}
+.reveal div[style*="overflow-y"] thead{ position:sticky; top:0; z-index:3; }
+.reveal div[style*="overflow-y"] thead th{ position:static !important; }
 /* kableExtra footnote: a veces no aplica colspan y la nota queda en la 1a columna con celdas
    vacías al lado → la hacemos ocupar todo el ancho de la tabla */
 /* kableExtra a veces no le pone colspan a la nota → un script en _ic-header.html se lo pone

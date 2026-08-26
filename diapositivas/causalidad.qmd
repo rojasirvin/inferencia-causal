@@ -238,10 +238,13 @@ table.personas %>%
   kbl(align = "lcc",
       escape = FALSE,
       full_width = FALSE) %>%
-  kable_paper(c("hover", "condensed", "responsive")) %>% 
+  kable_paper(c("hover", "condensed", "responsive")) %>%
+  # scroll_box fija el encabezado y le pone un blanco inline que pisa el guinda
+  # del CSS; lo reponemos aquí para que la tabla se vea como la de Snow.
+  row_spec(0, background = "#9B2247", color = "white") %>%
   add_header_above(c("Efectos individuales" = 3 ),
                    bold = TRUE,
-                   background = "white") %>% 
+                   background = "white") %>%
     scroll_box(height = "70%")
 
 ```
@@ -253,13 +256,10 @@ table.personas %>%
 
 ::: {.fragment}
 - En el anterior ejemplo, el tratamiento no tiene un efecto causal pues la probabilidad de morir con y sin el tratamiento es igual
-- **Efecto causal promedio** en una población: un efecto causal promedio de $T$ en el resultado $y$ está presente si $P(Y_{1i}=1\neq Y_{0i}=1)$ en la población de interés
-- Cuando pensamos en **poblaciones**, podemos usar expectativas para definir el efecto causal promedio: $E(Y_{1i}\neq Y_{0i})$, lo cual permite generalizar a resultados no binarios
+- **Efecto causal promedio** en una población: un efecto causal promedio de $T$ en el resultado $y$ está presente si $P(Y_{1i}=1)\neq P(Y_{0i}=1)$ en la población de interés
+- Cuando pensamos en **poblaciones**, podemos usar expectativas para definir el efecto causal promedio: $E(Y_{1i})\neq E(Y_{0i})$, lo cual permite generalizar a resultados no binarios
 - La ausencia de efectos individuales promedio no implica ausencia de efectos individuales
-:::
-
-::: {.fragment}
-- Cuando no hay efecto causal individual para ningún individuo, $y_{0i}=y_{1i}$, para todo $i$, decimos que la hipótesis **estricta** (*sharp*) de efecto de tratamiento nulo es verdadera
+- Cuando no hay efecto causal individual para ningún individuo, $y_{0i}=y_{1i}$, para todo $i$, decimos que se cumple la hipótesis **estricta** (*sharp*) de efecto de tratamiento nulo
 :::
 
 
@@ -275,7 +275,21 @@ table.personas %>%
 - Nuestra tarea es distinguir estas diferencias de los verdaderos efectos causales
 :::
 
+# Definiciones
 
+## Definiciones
+
+1. **Resultados potenciales**: $Y_{1i}=Y_i(1)$ y $Y_{0i}=Y_i(0)$ son los resultados potenciales del individuo $i$ con y sin tratamiento.
+
+1. **Stable Unit Treatment Value Assumption**: el resultado potencial del individuo $i$ solo depende del estado de tratamiento de $i$.
+
+    $$Y_i(T_i,T_{-i})=Y_i(T_i),\quad T_i\in[0,1] $$
+1. **Efecto causal promedio (ATE)**: es el efecto promedio del tratamiento sobre $Y$ en una población dada.
+
+   $$ATE=E(Y(1))-E(Y(0))$$
+1. **Efecto causal promedio en los tratados (ATET, TOT, TT)**: es el ATE solo en la subpoblación que recibió el tratamiento
+
+   $$ATET=E(Y(1)|T=1)-E(Y(0)|T=1)$$
 
 
 
