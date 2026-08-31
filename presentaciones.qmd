@@ -28,11 +28,11 @@ Por favor, seleccione una de las lecturas marcadas con una "+" de la lista de le
 
 <tr><td> Chort & Öktem (2024) </td><td><span class="topic-tag">DID</span></td><td class="who"> Andrea Blake </td><td>Jueves 22 de octubre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Discontinuidades</span></td><td class="who"> PD </td><td>Jueves 5 de noviembre</td></tr>
+<tr><td> Aguilar & Seira (2021) </td><td><span class="topic-tag">Discontinuidades</span></td><td class="who"> Itzel Lara </td><td>Jueves 5 de noviembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Discontinuidades</span></td><td class="who"> PD </td><td>Jueves 5 de noviembre</td></tr>
+<tr><td> Alcocer, Skillman & Torres (2025) </td><td><span class="topic-tag">Discontinuidades</span></td><td class="who"> Laura Cordero </td><td>Jueves 5 de noviembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> PD </td><td>Jueves 19 de noviembre</td></tr>
+<tr><td> Campos & Esquivel (2023) </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> Leonardo Ortega </td><td>Jueves 19 de noviembre</td></tr>
 
 <tr><td> PD </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> PD </td><td>Jueves 19 de noviembre</td></tr>
 
