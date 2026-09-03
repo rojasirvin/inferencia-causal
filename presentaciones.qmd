@@ -34,9 +34,9 @@ Por favor, seleccione una de las lecturas marcadas con una "+" de la lista de le
 
 <tr><td> Campos & Esquivel (2023) </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> Leonardo Ortega </td><td>Jueves 19 de noviembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> PD </td><td>Jueves 19 de noviembre</td></tr>
+<tr><td> Boly & Sanou (2022) </td><td><span class="topic-tag">Control sintético</span></td><td class="who"> Carlos Vargas </td><td>Jueves 19 de noviembre</td></tr>
 
-<tr><td> PD </td><td><span class="topic-tag">Machine learning</span></td><td class="who"> PD </td><td>Jueves 3 de diciembre</td></tr>
+<tr><td> Cepeda-Francese & Ramírez-Álvarez (2023) </td><td><span class="topic-tag">Control sintético </span></td><td class="who"> Christian Ramírez </td><td> Jueves 19 de noviembre </td></tr>
 
 <tr><td> PD </td><td><span class="topic-tag">Machine learning</span></td><td class="who"> PD </td><td>Jueves 3 de diciembre</td></tr>
 
