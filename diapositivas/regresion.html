@@ -472,7 +472,7 @@
 
 
 <section id="regresión-e-inferencia-estadística" class="title-slide slide level1 portada center" data-background-color="#163D34" data-state="nochrome">
-<h1>Regresión e inferencia estadística</h1>
+<h1>Regresión e Inferencia Estadística</h1>
 <div class="pa-eyebrow">
 <p>Inferencia Causal</p>
 </div>
@@ -638,8 +638,8 @@
 </ul>
 </div>
 </section>
-<section id="en-resumen" class="slide level2">
-<h2>En resumen</h2>
+<section id="resumen-de-lo-que-hemos-visto-hasta-hoy" class="slide level2">
+<h2>Resumen de lo que hemos visto hasta hoy</h2>
 <ul>
 <li><p>Las comparaciones observacionales están contaminadas por el sesgo de selección</p></li>
 <li><p>La aleatorización resuelve el problema de selección, es decir, al comparar la variable de resultados de interés entre individuos tratados y no tratados, obtenemos el efecto causal</p></li>
@@ -647,7 +647,6 @@
 <li><p>La regresión es una aproximación lineal a la FEC, aún cuando la FEC no sea lineal</p></li>
 <li><p>Usaremos regresión como una herramienta para <strong>comparar</strong> la variable de resultados entre grupos</p></li>
 <li><p>La regresión tiene una interpretación causal si la FEC que trata de aproximar es cauusal</p></li>
-<li><p>El SIC le da una interpretación causal a la regresión, pero el SIC es un supuesto fuerte</p></li>
 </ul>
 </section></section>
 <section>
@@ -697,7 +696,7 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 </ul>
 <div class="fragment">
 <ul>
-<li><p>El <strong>error estándar</strong> queda definido como: <span class="math inline">\(SE(\bar{y})=\sigma_y/\sqrt{n}\)</span></p></li>
+<li><p>El <strong>error estándar</strong> se define como: <span class="math inline">\(SE(\bar{y})=\sigma_y/\sqrt{n}\)</span></p></li>
 <li><p>Todos los estimadores que usamos tienen un error estándar, algunos con una forma más complicada que otra, pero todos ellos tienen la misma interpretación: <em>resumen la variabilidad que surge por el muestreo aleatorio</em></p></li>
 </ul>
 </div>
@@ -768,27 +767,27 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 <ul>
 <li>Un intervalo de confianza es el conjunto de valores consistente con los datos:</li>
 </ul>
-<p><span class="math display">\[IC_{0.95}=\{\bar{y}-1.96\times\hat{SE}(\bar{y}),\bar{y}+1.96\times\hat{SE}(\bar{y})\}\]</span></p>
+<p><span class="math display">\[IC_{0.95}=\{\bar{y}-1.96\times\hat{SE}(\bar{y}),\quad \bar{y}+1.96\times\hat{SE}(\bar{y})\}\]</span></p>
 </div>
 <div class="fragment">
 <ul>
 <li><p>Si tuviéramos acceso a muestras repetidas y en cada una calculáramos <span class="math inline">\(\bar{y}\)</span>, esperamos que en el 95% de los casos <span class="math inline">\(E(y_i)\)</span> está en el intervalo de confianza</p></li>
 <li><p>Noten que el IC <strong>no</strong> se interpreta como la probabilidad de que el parámetro se encuentre en cierto rango</p></li>
 <li><p>La interpretación es más sutil, lo que sucedería si tuviéramos distintas muestras de la misma población</p></li>
-<li><p>Regularmente trabajamos con una muestra</p></li>
+<li><p>El problema es que casi siempre tenemos acceso a una sola muestra</p></li>
 </ul>
 </div>
 </section></section>
 <section>
-<section id="breve-nota-sobre-teoría-asintótica-de-mco" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1>Breve nota sobre teoría asintótica de MCO</h1>
+<section id="repaso-de-teoría-asintótica-de-mco" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Repaso de teoría asintótica de MCO</h1>
 
 </section>
 <section id="propiedades-del-estimador-de-mco" class="slide level2">
 <h2>Propiedades del estimador de MCO</h2>
 <ul>
 <li><p>En la práctica, no conocemos la FEC ni la función de regresión poblacional</p></li>
-<li><p>En la clase anterior aprendimos que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer <span class="math inline">\(\beta=E(X_iX_i')^{-1}E(X_iy_i)\)</span>, un objeto poblacional</p></li>
+<li><p>Hemos visto que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer <span class="math inline">\(\beta=E(X_iX_i')^{-1}E(X_iy_i)\)</span>, un objeto poblacional</p></li>
 <li><p>En la práctica aproximamos <span class="math inline">\(\beta\)</span> con su análogo muestral: <span class="math inline">\(\hat{\beta}_{MCO}=(X'X)^{-1}(X'Y)\)</span></p></li>
 </ul>
 <div class="fragment">
@@ -826,7 +825,7 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 <p><span class="math display">\[\hat{V}(\hat{\beta}_{MCO})=(X'X)^{-1}\left(\sum_i \hat{u}_i^2x_ix_i'\right)(X'X)^{-1}\]</span> - Esto es a lo que conocemos como la matriz de varianzas robusta a heterocedasticidad</p>
 <ul>
 <li><p>Son robutos porque no hacemos supuestos sobre la distribución de los errores</p></li>
-<li><p>En muy raras ocasiones, si asumimos errores independientes e idénticamente distribuidos:</p></li>
+<li><p>En un caso particular, casi nunca usado en la práctica, si asumimos errores independientes e idénticamente distribuidos:</p></li>
 </ul>
 <p><span class="math display">\[\hat{V}^H(\hat{\beta}_{MCO})=\hat{s}^2(X'X)^{-1}\]</span> donde <span class="math inline">\(\hat{s}\)</span> es la varianza muestral</p>
 </section>
@@ -845,7 +844,7 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 <section id="prueba-de-hipótess" class="slide level2">
 <h2>Prueba de hipótess</h2>
 <ul>
-<li>En la sesión anterior motivamos el uso de regresión para estimar efectos de tratamiento:</li>
+<li>Anteriormente motivamos el uso de regresión para estimar efectos de tratamiento:</li>
 </ul>
 <p><span class="math display">\[y_i=\alpha+\beta T_i +\gamma_1 x_1 + \gamma_2 x_2 + \ldots + \gamma_{K-2} x_{K-2}  + u_i\]</span></p>
 <ul>
@@ -866,7 +865,7 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 <h2>El valor <span class="math inline">\(p\)</span></h2>
 <ul>
 <li><p>La otra cara de la moneda de los estadísticos de prueba es el valor <span class="math inline">\(p\)</span></p></li>
-<li><p>El valor <span class="math inline">\(p\)</span> es la probabilidad de observar un valor mayor que el estadístico cuando la <span class="math inline">\(H_0\)</span> es verdadera</p></li>
+<li><p>El valor <span class="math inline">\(p\)</span> es la probabilidad de observar un valor más extremo que el estadístico cuando la <span class="math inline">\(H_0\)</span> es verdadera</p></li>
 <li><p>Un valor <span class="math inline">\(p\)</span> muy pequeño indica que es muy poco probable observar el estadístico de prueba bajo la <span class="math inline">\(H_0\)</span>, por lo que hay evidencia para rechazar la <span class="math inline">\(H_0\)</span></p></li>
 <li><p>Otra forma de intepretar el valor <span class="math inline">\(p\)</span> es la probabilidad de que se observen efectos iguales o más grandes a los observados debido al error muestral (<em>por suerte</em>)</p></li>
 </ul>
@@ -928,32 +927,24 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 </ul>
 </div></div>
 </section>
-<section id="prueba-de-hipótesis-en-evaluación" class="slide level2">
-<h2>Prueba de hipótesis en evaluación</h2>
-<ul>
-<li><p>Un camino típico:</p>
+<section id="poniendo-junto-todo-lo-que-hemos-aprendido" class="slide level2">
+<h2>Poniendo junto todo lo que hemos aprendido</h2>
 <ul>
 <li><p>Formulamos una pregunta causal <span class="math inline">\(D_i \to y_i\)</span></p></li>
 <li><p>Tengo razones para asumir que <span class="math inline">\(D_i\)</span> es independiente de <span class="math inline">\(y_i\)</span> (por ejemplo, hice un experimento)</p></li>
-<li><p>De la clase anterior, sé que una regresión me ayudará a hacer comparaciones:</p></li>
-</ul>
-<p><span class="math display">\[y_i=\alpha+\beta D_i + B'X_i + u_i\]</span></p>
-<ul>
+<li><p>Sé que una regresión me ayudará a hacer comparaciones:</p>
+<p><span class="math display">\[y_i=\alpha+\beta D_i + B'X_i + u_i\]</span></p></li>
 <li><p>Formulamos la <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta=0\)</span>, es decir, no hay efecto del tratamiento</p></li>
 <li><p>Estimo la regresión, obtengo <span class="math inline">\(\hat{\beta}\)</span>, y construyo <span class="math inline">\(t=\frac{\hat{\beta}}{\hat{se}(\hat{\beta})}\)</span></p></li>
-</ul></li>
 </ul>
 </section>
-<section id="prueba-de-hipótesis-en-evaluación-1" class="slide level2">
-<h2>Prueba de hipótesis en evaluación</h2>
+<section id="poniendo-junto-todo-lo-que-hemos-aprendido-1" class="slide level2">
+<h2>Poniendo junto todo lo que hemos aprendido</h2>
 <ul>
-<li><p>… un camino típico</p>
-<ul>
-<li><p>El software me arroja: <span class="math inline">\(\hat{\beta}\)</span>, <span class="math inline">\(t(\hat{\beta})\)</span> y <span class="math inline">\(p\)</span></p></li>
+<li><p>El software me permite estimar <span class="math inline">\(\hat{\beta}\)</span>, <span class="math inline">\(t(\hat{\beta})\)</span> y <span class="math inline">\(p\)</span></p></li>
 <li><p><span class="math inline">\(t(\hat{\beta})\)</span> y <span class="math inline">\(p\)</span> son dos caras de la misma moneda</p></li>
 <li><p>Si <span class="math inline">\(p&gt;\alpha\)</span>, hay una probabilidad de observar <span class="math inline">\(\hat{\beta}\)</span> debido al error muestral mayor que <span class="math inline">\(\alpha\)</span></p></li>
 <li><p>O, en términos de <span class="math inline">\(t\)</span>, es altamente probable observar el estadístico bajo la <span class="math inline">\(H_0\)</span>, por lo que no se rechaza la <span class="math inline">\(H_0\)</span></p></li>
-</ul></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -962,12 +953,13 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
 <ul>
 <li>Las características observables están <em>balanceadas</em></li>
 <li>La atrición ocurrió al azar</li>
+<li>Existen efectos de derrame</li>
 </ul></li>
 </ul>
 </div>
 </section></section>
 <section id="regresión-e-inferencia-estadística-1" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
-<h1>Regresión e inferencia estadística</h1>
+<h1>Regresión e Inferencia Estadística</h1>
 <div class="f-eyebrow">
 <p>Inferencia Causal</p>
 </div>
@@ -991,7 +983,7 @@ V(\bar{y})&amp;=V\left(\frac{1}{n}\sum_i y_i\right) \\
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="logo-CIDE.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p>Inferencia Causal · Regresión e inferencia estadística</p>
+<p>Inferencia Causal · Regresión e Inferencia Estadística</p>
 </div>
 </div></div>
 

@@ -837,7 +837,7 @@
     "href": "diapositivas/index.html",
     "title": "Diapositivas",
     "section": "",
-    "text": "Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. Las diapositivas se irán publicando conforme avance el semestre.\n\n\n\n\n01\n\n\nIntroducción\n\n\nSlides revealjs ↗\n\n \n\n02\n\n\nInferencia Causal\n\n\nSlides revealjs ↗\n\n \n\n03\n\n\nMétodos Experimentales\n\n\nSlides revealjs ↗\n\n\n\n\n04\n\n\nRegresión e Inferencia Estadística\n\n\nPróximamente\n\n\n\n\n05\n\n\nErrores Estándar\n\n\nPróximamente\n\n\n\n\n06\n\n\nMúltiples Hipótesis\n\n\nPróximamente\n\n\n\n\n07\n\n\nVariables Instrumentales y LATE\n\n\nPróximamente\n\n\n\n\n08\n\n\nSelección por Observables\n\n\nPróximamente\n\n\n\n\n09\n\n\nDiferencia en Diferencias\n\n\nPróximamente\n\n\n\n\n10\n\n\nDiseños con Discontinuidades\n\n\nPróximamente\n\n\n\n\n11\n\n\nControl Sintético\n\n\nPróximamente\n\n\n\n\n12\n\n\nInferencia Causal, IA y Aprendizaje Automático\n\n\nPróximamente",
+    "text": "Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. Las diapositivas se irán publicando conforme avance el semestre.\n\n\n\n\n01\n\n\nIntroducción\n\n\nSlides revealjs ↗\n\n \n\n02\n\n\nInferencia Causal\n\n\nSlides revealjs ↗\n\n \n\n03\n\n\nMétodos Experimentales\n\n\nSlides revealjs ↗\n\n \n\n04\n\n\nRegresión e Inferencia Estadística\n\n\nSlides revealjs ↗\n\n\n\n\n05\n\n\nErrores Estándar\n\n\nPróximamente\n\n\n\n\n06\n\n\nMúltiples Hipótesis\n\n\nPróximamente\n\n\n\n\n07\n\n\nVariables Instrumentales y LATE\n\n\nPróximamente\n\n\n\n\n08\n\n\nSelección por Observables\n\n\nPróximamente\n\n\n\n\n09\n\n\nDiferencia en Diferencias\n\n\nPróximamente\n\n\n\n\n10\n\n\nDiseños con Discontinuidades\n\n\nPróximamente\n\n\n\n\n11\n\n\nControl Sintético\n\n\nPróximamente\n\n\n\n\n12\n\n\nInferencia Causal, IA y Aprendizaje Automático\n\n\nPróximamente",
     "crumbs": [
       "Materiales",
       "Diapositivas"
@@ -2210,7 +2210,7 @@
     "href": "diapositivas/experimental.html#comparaciones-observacionales",
     "title": "Inferencia Causal 2026",
     "section": "Comparaciones observacionales",
-    "text": "Comparaciones observacionales\n\nPensemos de nuevo en términos del Modelo de Rubin de resultados potenciales\n\n\\[y_{i}=\\begin{cases}\ny_{1i}=1\\quad\\text{si }D_i=1\\\\\ny_{0i}=0 \\quad \\text{si } D_i=0\n\\end{cases}\\]\n\nSolo vemos al individuo en una situación, \\(y_i\\):\n\n\\[y_i=y_{0i}+(y_{1i}-y_{0i})D_i\\]\n\n\n¿Qué nos dicen las comparaciones observacionales?\nSupongamos que tenemos acceso a datos sobre tratados y no tratados\nPodemos calcular \\(E(y_i|D_i=1)-E(y_i|D_i=0)\\):\n\n\\[\n\\begin{aligned}\nE(y_i|D_i=1)-E(y_i|D_i=0)=&E(y_{1i}|D_i=1)-E(y_{oi}|D_i=0)+\\\\& \\underbrace{E(y_{0i}|D_i=1)-E(y_{0i}|D_i=1)}_0\n\\end{aligned}\n\\]"
+    "text": "Comparaciones observacionales\n\nPensemos de nuevo en términos del Modelo de Rubin de resultados potenciales\n\n\\[y_{i}=\\begin{cases}\ny_{1i} \\quad\\text{si }D_i=1\\\\\ny_{0i} \\quad \\text{si } D_i=0\n\\end{cases}\\]\n\nSolo vemos al individuo en una situación, \\(y_i\\):\n\n\\[y_i=y_{0i}+(y_{1i}-y_{0i})D_i\\]\n\n\n¿Qué nos dicen las comparaciones observacionales?\nSupongamos que tenemos acceso a datos sobre tratados y no tratados\nPodemos calcular \\(E(y_i|D_i=1)-E(y_i|D_i=0)\\):\n\n\\[\n\\begin{aligned}\nE(y_i|D_i=1)-E(y_i|D_i=0)=&E(y_{1i}|D_i=1)-E(y_{oi}|D_i=0)+\\\\& \\underbrace{E(y_{0i}|D_i=1)-E(y_{0i}|D_i=1)}_0\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "diapositivas/experimental.html#sesgo-de-selección",
@@ -2745,11 +2745,11 @@
     "text": "Regresión y causalidad\n\nLo que hemos visto hasta ahora nos dice que la regresión es nuestro mejor aproximación lineal a la FEC\nPero la regresión será causal solo si la FEC es causal\nCon lo que hemos visto del modelo de resultados potenciales, podemos tener una interpretación causal de la FEC\n\n\n\nLa FEC es causal cuando describe las diferencias en resultados potenciales promedio para una población de referencia fija (Angrist and Pischke, 2009)\nEn la relación entre educación y salarios, una FEC causal describiría lo que un individuo ganaría con distintos niveles de educación\n\n\n\n\nHay otro caso en el que la regresión puede tener interpretación causal, cuando existe selección basada en observables, que veremos más adelante"
   },
   {
-    "objectID": "diapositivas/regresion.html#en-resumen",
-    "href": "diapositivas/regresion.html#en-resumen",
+    "objectID": "diapositivas/regresion.html#resumen-de-lo-que-hemos-visto-hasta-hoy",
+    "href": "diapositivas/regresion.html#resumen-de-lo-que-hemos-visto-hasta-hoy",
     "title": "Inferencia Causal 2026",
-    "section": "En resumen",
-    "text": "En resumen\n\nLas comparaciones observacionales están contaminadas por el sesgo de selección\nLa aleatorización resuelve el problema de selección, es decir, al comparar la variable de resultados de interés entre individuos tratados y no tratados, obtenemos el efecto causal\nLa FEC nos ayuda a describir la relación entre dos variables, por ejemplo, entre el estado de tratamiento y la variable de resultados\nLa regresión es una aproximación lineal a la FEC, aún cuando la FEC no sea lineal\nUsaremos regresión como una herramienta para comparar la variable de resultados entre grupos\nLa regresión tiene una interpretación causal si la FEC que trata de aproximar es cauusal\nEl SIC le da una interpretación causal a la regresión, pero el SIC es un supuesto fuerte"
+    "section": "Resumen de lo que hemos visto hasta hoy",
+    "text": "Resumen de lo que hemos visto hasta hoy\n\nLas comparaciones observacionales están contaminadas por el sesgo de selección\nLa aleatorización resuelve el problema de selección, es decir, al comparar la variable de resultados de interés entre individuos tratados y no tratados, obtenemos el efecto causal\nLa FEC nos ayuda a describir la relación entre dos variables, por ejemplo, entre el estado de tratamiento y la variable de resultados\nLa regresión es una aproximación lineal a la FEC, aún cuando la FEC no sea lineal\nUsaremos regresión como una herramienta para comparar la variable de resultados entre grupos\nLa regresión tiene una interpretación causal si la FEC que trata de aproximar es cauusal"
   },
   {
     "objectID": "diapositivas/regresion.html#medidas-de-variabilidad",
@@ -2777,7 +2777,7 @@
     "href": "diapositivas/regresion.html#cómo-medimos-la-variabilidad-de-bary-1",
     "title": "Inferencia Causal 2026",
     "section": "¿Cómo medimos la variabilidad de \\(\\bar{y}\\)",
-    "text": "¿Cómo medimos la variabilidad de \\(\\bar{y}\\)\n\nNotemos que la varianza de la media muestral depende de la varianza de \\(y_i\\), \\(\\sigma^2_y\\), pero también de \\(n\\)\nEs aquí donde una LGN tiene un papel, pues cuando \\(n\\to\\infty\\), la varianza de la media muestral tiende a cero\n\n\n\nEl error estándar queda definido como: \\(SE(\\bar{y})=\\sigma_y/\\sqrt{n}\\)\nTodos los estimadores que usamos tienen un error estándar, algunos con una forma más complicada que otra, pero todos ellos tienen la misma interpretación: resumen la variabilidad que surge por el muestreo aleatorio\n\n\n\n\nLa contraparte muestral del error estándar, formalmente llamado error estándar estimado de la media muestral es:\n\n\\[\\hat{SE}(\\bar{y})=\\frac{S(y_i)}{\\sqrt{n}}\\]"
+    "text": "¿Cómo medimos la variabilidad de \\(\\bar{y}\\)\n\nNotemos que la varianza de la media muestral depende de la varianza de \\(y_i\\), \\(\\sigma^2_y\\), pero también de \\(n\\)\nEs aquí donde una LGN tiene un papel, pues cuando \\(n\\to\\infty\\), la varianza de la media muestral tiende a cero\n\n\n\nEl error estándar se define como: \\(SE(\\bar{y})=\\sigma_y/\\sqrt{n}\\)\nTodos los estimadores que usamos tienen un error estándar, algunos con una forma más complicada que otra, pero todos ellos tienen la misma interpretación: resumen la variabilidad que surge por el muestreo aleatorio\n\n\n\n\nLa contraparte muestral del error estándar, formalmente llamado error estándar estimado de la media muestral es:\n\n\\[\\hat{SE}(\\bar{y})=\\frac{S(y_i)}{\\sqrt{n}}\\]"
   },
   {
     "objectID": "diapositivas/regresion.html#el-estadístico-t",
@@ -2805,14 +2805,14 @@
     "href": "diapositivas/regresion.html#intervalos-de-confianza",
     "title": "Inferencia Causal 2026",
     "section": "Intervalos de confianza",
-    "text": "Intervalos de confianza\n\nEn vez de probar si en una muestra la \\(H_0\\) se rechaza o no, para muchos posibles valores de \\(\\mu\\), podemos construir el conjunto de todos los valores de \\(\\mu\\) que son consistentes con los datos\nA esto le llamamos intervalo de confianza de \\(E(y_i)\\)\n\n\n\nUn intervalo de confianza es el conjunto de valores consistente con los datos:\n\n\\[IC_{0.95}=\\{\\bar{y}-1.96\\times\\hat{SE}(\\bar{y}),\\bar{y}+1.96\\times\\hat{SE}(\\bar{y})\\}\\]\n\n\n\nSi tuviéramos acceso a muestras repetidas y en cada una calculáramos \\(\\bar{y}\\), esperamos que en el 95% de los casos \\(E(y_i)\\) está en el intervalo de confianza\nNoten que el IC no se interpreta como la probabilidad de que el parámetro se encuentre en cierto rango\nLa interpretación es más sutil, lo que sucedería si tuviéramos distintas muestras de la misma población\nRegularmente trabajamos con una muestra"
+    "text": "Intervalos de confianza\n\nEn vez de probar si en una muestra la \\(H_0\\) se rechaza o no, para muchos posibles valores de \\(\\mu\\), podemos construir el conjunto de todos los valores de \\(\\mu\\) que son consistentes con los datos\nA esto le llamamos intervalo de confianza de \\(E(y_i)\\)\n\n\n\nUn intervalo de confianza es el conjunto de valores consistente con los datos:\n\n\\[IC_{0.95}=\\{\\bar{y}-1.96\\times\\hat{SE}(\\bar{y}),\\quad \\bar{y}+1.96\\times\\hat{SE}(\\bar{y})\\}\\]\n\n\n\nSi tuviéramos acceso a muestras repetidas y en cada una calculáramos \\(\\bar{y}\\), esperamos que en el 95% de los casos \\(E(y_i)\\) está en el intervalo de confianza\nNoten que el IC no se interpreta como la probabilidad de que el parámetro se encuentre en cierto rango\nLa interpretación es más sutil, lo que sucedería si tuviéramos distintas muestras de la misma población\nEl problema es que casi siempre tenemos acceso a una sola muestra"
   },
   {
     "objectID": "diapositivas/regresion.html#propiedades-del-estimador-de-mco",
     "href": "diapositivas/regresion.html#propiedades-del-estimador-de-mco",
     "title": "Inferencia Causal 2026",
     "section": "Propiedades del estimador de MCO",
-    "text": "Propiedades del estimador de MCO\n\nEn la práctica, no conocemos la FEC ni la función de regresión poblacional\nEn la clase anterior aprendimos que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer \\(\\beta=E(X_iX_i')^{-1}E(X_iy_i)\\), un objeto poblacional\nEn la práctica aproximamos \\(\\beta\\) con su análogo muestral: \\(\\hat{\\beta}_{MCO}=(X'X)^{-1}(X'Y)\\)\n\n\n\nCon algo de álgebra, escribimos el estimador de MCO como \\[\\hat{\\beta}_{MCO}=\\beta +\\left(\\sum x_ix_i'\\right)^{-1}\\left(\\sum x_i u_i\\right)\\]\nMultiplicando por \\((1/N)^{-1}(1/N)=1\\) el segundo término: \\[\\hat{\\beta}_{MCO}=\\beta +\\left(\\frac{1}{N}\\sum x_ix_i'\\right)^{-1}\\left(\\frac{1}{N}\\sum x_i u_i\\right)\\]\nEsta representación con promedios es útil para usar leyes de grandes números (LGN) y teoremas de límite central (TLC)"
+    "text": "Propiedades del estimador de MCO\n\nEn la práctica, no conocemos la FEC ni la función de regresión poblacional\nHemos visto que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer \\(\\beta=E(X_iX_i')^{-1}E(X_iy_i)\\), un objeto poblacional\nEn la práctica aproximamos \\(\\beta\\) con su análogo muestral: \\(\\hat{\\beta}_{MCO}=(X'X)^{-1}(X'Y)\\)\n\n\n\nCon algo de álgebra, escribimos el estimador de MCO como \\[\\hat{\\beta}_{MCO}=\\beta +\\left(\\sum x_ix_i'\\right)^{-1}\\left(\\sum x_i u_i\\right)\\]\nMultiplicando por \\((1/N)^{-1}(1/N)=1\\) el segundo término: \\[\\hat{\\beta}_{MCO}=\\beta +\\left(\\frac{1}{N}\\sum x_ix_i'\\right)^{-1}\\left(\\frac{1}{N}\\sum x_i u_i\\right)\\]\nEsta representación con promedios es útil para usar leyes de grandes números (LGN) y teoremas de límite central (TLC)"
   },
   {
     "objectID": "diapositivas/regresion.html#distribución-asintótica",
@@ -2826,7 +2826,7 @@
     "href": "diapositivas/regresion.html#estimación-de-la-varianza",
     "title": "Inferencia Causal 2026",
     "section": "Estimación de la varianza",
-    "text": "Estimación de la varianza\n\nTenemos que estimar también la varianza del estimador de MCO\nEn un influyente artículo, White (1980) muestra que podemos estimar consistentemente \\(\\hat{V}(\\hat{\\beta}_{MCO})\\) usando:\n\n\\[\\hat{V}(\\hat{\\beta}_{MCO})=(X'X)^{-1}\\left(\\sum_i \\hat{u}_i^2x_ix_i'\\right)(X'X)^{-1}\\] - Esto es a lo que conocemos como la matriz de varianzas robusta a heterocedasticidad\n\nSon robutos porque no hacemos supuestos sobre la distribución de los errores\nEn muy raras ocasiones, si asumimos errores independientes e idénticamente distribuidos:\n\n\\[\\hat{V}^H(\\hat{\\beta}_{MCO})=\\hat{s}^2(X'X)^{-1}\\] donde \\(\\hat{s}\\) es la varianza muestral"
+    "text": "Estimación de la varianza\n\nTenemos que estimar también la varianza del estimador de MCO\nEn un influyente artículo, White (1980) muestra que podemos estimar consistentemente \\(\\hat{V}(\\hat{\\beta}_{MCO})\\) usando:\n\n\\[\\hat{V}(\\hat{\\beta}_{MCO})=(X'X)^{-1}\\left(\\sum_i \\hat{u}_i^2x_ix_i'\\right)(X'X)^{-1}\\] - Esto es a lo que conocemos como la matriz de varianzas robusta a heterocedasticidad\n\nSon robutos porque no hacemos supuestos sobre la distribución de los errores\nEn un caso particular, casi nunca usado en la práctica, si asumimos errores independientes e idénticamente distribuidos:\n\n\\[\\hat{V}^H(\\hat{\\beta}_{MCO})=\\hat{s}^2(X'X)^{-1}\\] donde \\(\\hat{s}\\) es la varianza muestral"
   },
   {
     "objectID": "diapositivas/regresion.html#errores-estándar-del-estimador-de-mco",
@@ -2840,14 +2840,14 @@
     "href": "diapositivas/regresion.html#prueba-de-hipótess",
     "title": "Inferencia Causal 2026",
     "section": "Prueba de hipótess",
-    "text": "Prueba de hipótess\n\nEn la sesión anterior motivamos el uso de regresión para estimar efectos de tratamiento:\n\n\\[y_i=\\alpha+\\beta T_i +\\gamma_1 x_1 + \\gamma_2 x_2 + \\ldots + \\gamma_{K-2} x_{K-2}  + u_i\\]\n\nSupongamos que el tratamiento fue asignado aleatoriamente y el diseño permaneció íntegro\nNos interesa entonces probar la hipótesis nula de que \\(\\beta=0\\)\n\n\n\nUn estadístico \\(t\\) para probar esta hipótesis tiene la forma:\n\n\\[t(\\beta)=\\frac{\\hat{\\beta}}{\\hat{EER}(\\hat{\\beta})}\\] - Bajo la \\(H_0\\), el estadístico \\(t\\) se distribuye asintóticamente normal\n\nPodemos comparar el valor \\(t(\\beta)\\) con la distribución normal teórica para decir qué tan probable es observar dicho valor del estadístico"
+    "text": "Prueba de hipótess\n\nAnteriormente motivamos el uso de regresión para estimar efectos de tratamiento:\n\n\\[y_i=\\alpha+\\beta T_i +\\gamma_1 x_1 + \\gamma_2 x_2 + \\ldots + \\gamma_{K-2} x_{K-2}  + u_i\\]\n\nSupongamos que el tratamiento fue asignado aleatoriamente y el diseño permaneció íntegro\nNos interesa entonces probar la hipótesis nula de que \\(\\beta=0\\)\n\n\n\nUn estadístico \\(t\\) para probar esta hipótesis tiene la forma:\n\n\\[t(\\beta)=\\frac{\\hat{\\beta}}{\\hat{EER}(\\hat{\\beta})}\\] - Bajo la \\(H_0\\), el estadístico \\(t\\) se distribuye asintóticamente normal\n\nPodemos comparar el valor \\(t(\\beta)\\) con la distribución normal teórica para decir qué tan probable es observar dicho valor del estadístico"
   },
   {
     "objectID": "diapositivas/regresion.html#el-valor-p",
     "href": "diapositivas/regresion.html#el-valor-p",
     "title": "Inferencia Causal 2026",
     "section": "El valor \\(p\\)",
-    "text": "El valor \\(p\\)\n\nLa otra cara de la moneda de los estadísticos de prueba es el valor \\(p\\)\nEl valor \\(p\\) es la probabilidad de observar un valor mayor que el estadístico cuando la \\(H_0\\) es verdadera\nUn valor \\(p\\) muy pequeño indica que es muy poco probable observar el estadístico de prueba bajo la \\(H_0\\), por lo que hay evidencia para rechazar la \\(H_0\\)\nOtra forma de intepretar el valor \\(p\\) es la probabilidad de que se observen efectos iguales o más grandes a los observados debido al error muestral (por suerte)"
+    "text": "El valor \\(p\\)\n\nLa otra cara de la moneda de los estadísticos de prueba es el valor \\(p\\)\nEl valor \\(p\\) es la probabilidad de observar un valor más extremo que el estadístico cuando la \\(H_0\\) es verdadera\nUn valor \\(p\\) muy pequeño indica que es muy poco probable observar el estadístico de prueba bajo la \\(H_0\\), por lo que hay evidencia para rechazar la \\(H_0\\)\nOtra forma de intepretar el valor \\(p\\) es la probabilidad de que se observen efectos iguales o más grandes a los observados debido al error muestral (por suerte)"
   },
   {
     "objectID": "diapositivas/regresion.html#valores-p",
@@ -2871,18 +2871,18 @@
     "text": "Nota sobre los valores \\(t\\) críticos\n\n\n\nLos correspondientes valores del estadístico \\(t\\) en muestras grandes para \\(\\alpha\\) de 0.10, 0.05 y 0.01 son 2.56, 1.96 y 1.64\n¿Cómo puedo encontrar el valor \\(p\\) exacto de un estadístico \\(t\\) dado?\n\n\n(1-pnorm(abs(1.644854)))\n\n[1] 0.04999996\n\n\n\nO uno menos arbitrario\n\n\n(1-pnorm(abs(-1.3)))\n\n[1] 0.09680048\n\n\n\n\nY al revés, puedo siempre encontrar el estadístico \\(t\\) asociado a cierto valor \\(p\\)\n\n\nqnorm(1-(.1/2))\n\n[1] 1.644854\n\n\n\nEl 2 en las expresiones anteriores viene de que estamos en pruebas de dos colas con una distribución simétrica"
   },
   {
-    "objectID": "diapositivas/regresion.html#prueba-de-hipótesis-en-evaluación",
-    "href": "diapositivas/regresion.html#prueba-de-hipótesis-en-evaluación",
+    "objectID": "diapositivas/regresion.html#poniendo-junto-todo-lo-que-hemos-aprendido",
+    "href": "diapositivas/regresion.html#poniendo-junto-todo-lo-que-hemos-aprendido",
     "title": "Inferencia Causal 2026",
-    "section": "Prueba de hipótesis en evaluación",
-    "text": "Prueba de hipótesis en evaluación\n\nUn camino típico:\n\nFormulamos una pregunta causal \\(D_i \\to y_i\\)\nTengo razones para asumir que \\(D_i\\) es independiente de \\(y_i\\) (por ejemplo, hice un experimento)\nDe la clase anterior, sé que una regresión me ayudará a hacer comparaciones:\n\n\\[y_i=\\alpha+\\beta D_i + B'X_i + u_i\\]\n\nFormulamos la \\(H_0\\): \\(\\beta=0\\), es decir, no hay efecto del tratamiento\nEstimo la regresión, obtengo \\(\\hat{\\beta}\\), y construyo \\(t=\\frac{\\hat{\\beta}}{\\hat{se}(\\hat{\\beta})}\\)"
+    "section": "Poniendo junto todo lo que hemos aprendido",
+    "text": "Poniendo junto todo lo que hemos aprendido\n\nFormulamos una pregunta causal \\(D_i \\to y_i\\)\nTengo razones para asumir que \\(D_i\\) es independiente de \\(y_i\\) (por ejemplo, hice un experimento)\nSé que una regresión me ayudará a hacer comparaciones:\n\\[y_i=\\alpha+\\beta D_i + B'X_i + u_i\\]\nFormulamos la \\(H_0\\): \\(\\beta=0\\), es decir, no hay efecto del tratamiento\nEstimo la regresión, obtengo \\(\\hat{\\beta}\\), y construyo \\(t=\\frac{\\hat{\\beta}}{\\hat{se}(\\hat{\\beta})}\\)"
   },
   {
-    "objectID": "diapositivas/regresion.html#prueba-de-hipótesis-en-evaluación-1",
-    "href": "diapositivas/regresion.html#prueba-de-hipótesis-en-evaluación-1",
+    "objectID": "diapositivas/regresion.html#poniendo-junto-todo-lo-que-hemos-aprendido-1",
+    "href": "diapositivas/regresion.html#poniendo-junto-todo-lo-que-hemos-aprendido-1",
     "title": "Inferencia Causal 2026",
-    "section": "Prueba de hipótesis en evaluación",
-    "text": "Prueba de hipótesis en evaluación\n\n… un camino típico\n\nEl software me arroja: \\(\\hat{\\beta}\\), \\(t(\\hat{\\beta})\\) y \\(p\\)\n\\(t(\\hat{\\beta})\\) y \\(p\\) son dos caras de la misma moneda\nSi \\(p&gt;\\alpha\\), hay una probabilidad de observar \\(\\hat{\\beta}\\) debido al error muestral mayor que \\(\\alpha\\)\nO, en términos de \\(t\\), es altamente probable observar el estadístico bajo la \\(H_0\\), por lo que no se rechaza la \\(H_0\\)\n\n\n\n\nLas hipótesis no son exclusivamente de efectos de tratamiento\nOtras hipótesis:\n\nLas características observables están balanceadas\nLa atrición ocurrió al azar"
+    "section": "Poniendo junto todo lo que hemos aprendido",
+    "text": "Poniendo junto todo lo que hemos aprendido\n\nEl software me permite estimar \\(\\hat{\\beta}\\), \\(t(\\hat{\\beta})\\) y \\(p\\)\n\\(t(\\hat{\\beta})\\) y \\(p\\) son dos caras de la misma moneda\nSi \\(p&gt;\\alpha\\), hay una probabilidad de observar \\(\\hat{\\beta}\\) debido al error muestral mayor que \\(\\alpha\\)\nO, en términos de \\(t\\), es altamente probable observar el estadístico bajo la \\(H_0\\), por lo que no se rechaza la \\(H_0\\)\n\n\n\nLas hipótesis no son exclusivamente de efectos de tratamiento\nOtras hipótesis:\n\nLas características observables están balanceadas\nLa atrición ocurrió al azar\nExisten efectos de derrame"
   },
   {
     "objectID": "index.html",
