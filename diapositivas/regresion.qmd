@@ -9,7 +9,7 @@ format:
     scrollable: false
     title-slide: false
     logo: logo-CIDE.jpg
-    footer: "Inferencia Causal · Regresión e inferencia estadística"
+    footer: "Inferencia Causal · Regresión e Inferencia Estadística"
     include-in-header:
       - _ic-header.html
       - fontawesome.html
@@ -26,7 +26,7 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 ```
 
 
-# Regresión e inferencia estadística {.portada background-color="#163D34" data-state="nochrome"}
+# Regresión e Inferencia Estadística {.portada background-color="#163D34" data-state="nochrome"}
 
 ::: {.pa-eyebrow}
 Inferencia Causal
@@ -196,7 +196,7 @@ $$y_i=\alpha+\beta_H x_{Hi}+\sum_{j=1}^{\tau} \beta_j c_{ji} + \sum_{j=1}^{\tau}
 :::
 
 
-## En resumen
+## Resumen de lo que hemos visto hasta hoy
 
 - Las comparaciones observacionales están contaminadas por el sesgo de selección
 
@@ -209,12 +209,6 @@ $$y_i=\alpha+\beta_H x_{Hi}+\sum_{j=1}^{\tau} \beta_j c_{ji} + \sum_{j=1}^{\tau}
 - Usaremos regresión como una herramienta para **comparar** la variable de resultados entre grupos
 
 - La regresión tiene una interpretación causal si la FEC que trata de aproximar es cauusal
-
-- El SIC le da una interpretación causal a la regresión, pero el SIC es un supuesto fuerte
-
-
-
-
 
 
 # Inferencia estadística {.divider background-color="#9B2247" data-state="nochrome"}
@@ -272,7 +266,7 @@ donde la última igualdad resulta de la independencia entre las $i$ y dado que l
 
 ::: {.fragment}
 
-- El **error estándar** queda definido como: $SE(\bar{y})=\sigma_y/\sqrt{n}$
+- El **error estándar** se define como: $SE(\bar{y})=\sigma_y/\sqrt{n}$
 
 - Todos los estimadores que usamos tienen un error estándar, algunos con una forma más complicada que otra, pero todos ellos tienen la misma interpretación: *resumen la variabilidad que surge por el muestreo aleatorio*
 
@@ -355,7 +349,7 @@ normal_curve
 
 - Un intervalo de confianza es el conjunto de valores consistente con los datos:
 
-$$IC_{0.95}=\{\bar{y}-1.96\times\hat{SE}(\bar{y}),\bar{y}+1.96\times\hat{SE}(\bar{y})\}$$
+$$IC_{0.95}=\{\bar{y}-1.96\times\hat{SE}(\bar{y}),\quad \bar{y}+1.96\times\hat{SE}(\bar{y})\}$$
 :::
 
 ::: {.fragment}
@@ -366,18 +360,18 @@ $$IC_{0.95}=\{\bar{y}-1.96\times\hat{SE}(\bar{y}),\bar{y}+1.96\times\hat{SE}(\ba
 
 - La interpretación es más sutil, lo que sucedería si tuviéramos distintas muestras de la misma población
 
-- Regularmente trabajamos con una muestra
+- El problema es que casi siempre tenemos acceso a una sola muestra
 :::
 
 
-# Breve nota sobre teoría asintótica de MCO {.divider background-color="#9B2247" data-state="nochrome"}
+# Repaso de teoría asintótica de MCO {.divider background-color="#9B2247" data-state="nochrome"}
 
 
 ## Propiedades del estimador de MCO
 
 - En la práctica, no conocemos la FEC ni la función de regresión poblacional
 
-- En la clase anterior aprendimos que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer $\beta=E(X_iX_i')^{-1}E(X_iy_i)$, un objeto poblacional
+- Hemos visto que una forma de aproximar la FEC es usando regresión, es decir, quisiéramos conocer $\beta=E(X_iX_i')^{-1}E(X_iy_i)$, un objeto poblacional
 
 - En la práctica aproximamos $\beta$ con su análogo muestral: $\hat{\beta}_{MCO}=(X'X)^{-1}(X'Y)$
 
@@ -425,7 +419,7 @@ $$\hat{\beta}_{MCO}\stackrel{a}{\sim}\mathcal{N}\left(\beta,(X'X)^{-1}X'uu'X(X'X
 
 - Son robutos porque no hacemos supuestos sobre la distribución de los errores
 
-- En muy raras ocasiones, si asumimos errores independientes e idénticamente distribuidos:
+- En un caso particular, casi nunca usado en la práctica, si asumimos errores independientes e idénticamente distribuidos:
 
  $$\hat{V}^H(\hat{\beta}_{MCO})=\hat{s}^2(X'X)^{-1}$$
 donde $\hat{s}$ es la varianza muestral
@@ -448,7 +442,7 @@ $$t(\beta_k)=\frac{\hat{\beta}_k-\beta_k}{\hat{EER}(\hat{\beta}_k)}$$
 
 ## Prueba de hipótess
 
-- En la sesión anterior motivamos el uso de regresión para estimar efectos de tratamiento:
+- Anteriormente motivamos el uso de regresión para estimar efectos de tratamiento:
 
 $$y_i=\alpha+\beta T_i +\gamma_1 x_1 + \gamma_2 x_2 + \ldots + \gamma_{K-2} x_{K-2}  + u_i$$
 
@@ -472,7 +466,7 @@ $$t(\beta)=\frac{\hat{\beta}}{\hat{EER}(\hat{\beta})}$$
 
 - La otra cara de la moneda de los estadísticos de prueba es el valor $p$
 
-- El valor $p$ es la probabilidad de observar un valor mayor que el estadístico cuando la $H_0$ es verdadera
+- El valor $p$ es la probabilidad de observar un valor más extremo que el estadístico cuando la $H_0$ es verdadera
 
 - Un valor $p$ muy pequeño indica que es muy poco probable observar el estadístico de prueba bajo la $H_0$, por lo que hay evidencia para rechazar la $H_0$
 
@@ -541,33 +535,29 @@ qnorm(1-(.1/2))
 ::::
 
 
-## Prueba de hipótesis en evaluación
+## Poniendo junto todo lo que hemos aprendido
 
-- Un camino típico:
+- Formulamos una pregunta causal $D_i \to y_i$
 
-  - Formulamos una pregunta causal $D_i \to y_i$
+- Tengo razones para asumir que $D_i$ es independiente de $y_i$ (por ejemplo, hice un experimento)
 
-  - Tengo razones para asumir que $D_i$ es independiente de $y_i$ (por ejemplo, hice un experimento)
-  
-  - De la clase anterior, sé que una regresión me ayudará a hacer comparaciones:
+- Sé que una regresión me ayudará a hacer comparaciones:
   
   $$y_i=\alpha+\beta D_i + B'X_i + u_i$$
-  - Formulamos la $H_0$: $\beta=0$, es decir, no hay efecto del tratamiento
-  
-  - Estimo la regresión, obtengo $\hat{\beta}$, y construyo $t=\frac{\hat{\beta}}{\hat{se}(\hat{\beta})}$
+- Formulamos la $H_0$: $\beta=0$, es decir, no hay efecto del tratamiento
+
+- Estimo la regresión, obtengo $\hat{\beta}$, y construyo $t=\frac{\hat{\beta}}{\hat{se}(\hat{\beta})}$
   
 
-## Prueba de hipótesis en evaluación
+## Poniendo junto todo lo que hemos aprendido
 
-- ... un camino típico
+- El software me permite estimar $\hat{\beta}$, $t(\hat{\beta})$ y $p$
 
-  - El software me arroja: $\hat{\beta}$, $t(\hat{\beta})$ y $p$
+- $t(\hat{\beta})$ y $p$ son dos caras de la misma moneda
 
-  - $t(\hat{\beta})$ y $p$ son dos caras de la misma moneda
-  
-  - Si $p>\alpha$, hay una probabilidad de observar $\hat{\beta}$ debido al error muestral mayor que $\alpha$
-  
-  - O, en términos de $t$, es altamente probable observar el estadístico bajo la $H_0$, por lo que no se rechaza la $H_0$
+- Si $p>\alpha$, hay una probabilidad de observar $\hat{\beta}$ debido al error muestral mayor que $\alpha$
+
+- O, en términos de $t$, es altamente probable observar el estadístico bajo la $H_0$, por lo que no se rechaza la $H_0$
   
 ::: {.fragment}
 
@@ -576,12 +566,13 @@ qnorm(1-(.1/2))
 - Otras hipótesis:
   - Las características observables están *balanceadas*
   - La atrición ocurrió al azar
+  - Existen efectos de derrame
 
 :::
 
 
 
-# Regresión e inferencia estadística {.final background-color="#9B2247" data-state="nochrome"}
+# Regresión e Inferencia Estadística {.final background-color="#9B2247" data-state="nochrome"}
 
 ::: {.f-eyebrow}
 Inferencia Causal
