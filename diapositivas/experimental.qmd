@@ -78,8 +78,8 @@ table.hospital %>%
 - Pensemos de nuevo en términos del *Modelo de Rubin* de resultados potenciales
 
 $$y_{i}=\begin{cases}
-y_{1i}=1\quad\text{si }D_i=1\\
-y_{0i}=0 \quad \text{si } D_i=0
+y_{1i} \quad\text{si }D_i=1\\
+y_{0i} \quad \text{si } D_i=0
 \end{cases}$$
 
 
