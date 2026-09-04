@@ -11,7 +11,7 @@ Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. La
 <a class="card" href="./introduccion.html" target="_blank"><div class="num">01</div><h3>Introducción</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <a class="card" href="./causalidad.html" target="_blank"><div class="num">02</div><h3>Inferencia Causal</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <a class="card" href="./experimental.html" target="_blank"><div class="num">03</div><h3>Métodos Experimentales</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
-<div class="card pend"><div class="num">04</div><h3>Regresión e Inferencia Estadística</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
+<a class="card" href="./regresion.html" target="_blank"><div class="num">04</div><h3>Regresión e Inferencia Estadística</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <div class="card pend"><div class="num">05</div><h3>Errores Estándar</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
 <div class="card pend"><div class="num">06</div><h3>Múltiples Hipótesis</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
 <div class="card pend"><div class="num">07</div><h3>Variables Instrumentales y LATE</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
