@@ -501,19 +501,18 @@
 <h2>Introducción a bootstrap</h2>
 <ul>
 <li><p>A veces es difícil encontrar una expresión analítica de los errores estándar</p></li>
-<li><p>La idea de las técnicas bootstrap es consutrir una distribución empírica del estimador de interés</p></li>
-<li><p>Una muestra bootstrap es una muestra tomada de los mismos datos</p></li>
-<li><p>En las rutinas para errores bootstrap, pensamos en <span class="math inline">\(\{(y_1,x_1),\ldots,(y_N,X_n)\}\)</span> como la población</p></li>
+<li><p>La idea de las técnicas bootstrap es construir una distribución empírica del estimador de interés</p></li>
 <li><p>Una muestra bootstrap es una muestra de tamaño <span class="math inline">\(N\)</span> tomada de la muestra original</p></li>
-<li><p>El procedimiento bootstrap más usado es el bootstrap no paramétrico o boostrap en parejas (nos enfocaremos en este tipo de bootstrap en el curso)</p></li>
-<li><p>La idea es remuestrear la pareja completa <span class="math inline">\((y_i,x_i)\)</span></p></li>
+<li><p>En las rutinas para errores bootstrap, pensamos en <span class="math inline">\(\{(y_1,x_1),\ldots,(y_N,x_N)\}\)</span> como la población</p></li>
+<li><p>El procedimiento bootstrap más usado es el bootstrap no paramétrico o bootstrap en parejas (nos enfocaremos en este tipo de bootstrap en el curso)</p></li>
+<li><p>La idea es remuestrear la pareja completa <span class="math inline">\(W_i=(y_i,x_i)\)</span></p></li>
 </ul>
 </section>
 <section id="algoritmo-para-errores-estándar-bootstrap" class="slide level2">
 <h2>Algoritmo para errores estándar bootstrap</h2>
 <ol type="1">
 <li><p>Dada una muestra <span class="math inline">\(W_1,\ldots,W_N\)</span>, obtener una muestra de tamaño <span class="math inline">\(N\)</span>, remuestreando de la muestra original <strong>con reemplazo</strong></p></li>
-<li><p>Calcular el estadístico <span class="math inline">\(\hat{\theta}_b\)</span> usado con la muestra bootstrap (coeficiente de regresión, diferencia de medias, función de coeficientes)</p></li>
+<li><p>Calcular el estadístico <span class="math inline">\(\hat{\theta}_b\)</span> usando la muestra bootstrap (coeficiente de regresión, diferencia de medias, función de coeficientes)</p></li>
 <li><p>Repetir los pasos 1 y 2 <span class="math inline">\(B\)</span> veces, donde <span class="math inline">\(B\)</span> es lo suficientemente grande (usualmente 1000 es suficiente)</p></li>
 <li><p>Usar las <span class="math inline">\(B\)</span> repeticiones para obtener el error estándar del estadístico como la raíz cuadrada de <span class="math inline">\(s^2_{\hat{\theta},B}\)</span>:</p></li>
 </ol>
@@ -563,9 +562,9 @@
 <ul>
 <li><p>Métodos de varias etapas (por ejemplo, el estimador de dos etapas de Heckman)</p></li>
 <li><p>Funciones de estimadores (aunque aquí el método Delta también podría ser usado)</p></li>
-<li><p>Datos agrupados con pocos grupos (remuestrear grupos en vez de individuos)</p></li>
+<li><p>Datos agrupados con pocos grupos (<em>wild cluster bootstrap</em>)</p></li>
 <li><p>El consejo práctico es usar resultados teóricos cuando se puede (por ejemplo, las matrices robustas descritas antes)</p></li>
-<li><p>Pensemos siempre en la estructura de los datos antes de hacer boostrap</p></li>
+<li><p>Pensemos siempre en la estructura de los datos antes de hacer bootstrap</p></li>
 <li><p>Usar una semilla siempre para poder reproducir sus resultados</p></li>
 </ul>
 </section>
@@ -575,9 +574,9 @@
 <li><p>En presencia de heterocedasticidad se prefiere usar bootstrap salvaje (<em>wild bootstrap</em>) (<a href="https://link.springer.com/chapter/10.1007%2F978-1-4614-1653-1_17#enumeration">MacKinnon, 2012</a>)</p></li>
 <li><p>Propuesto originalmente por Liu (1988), cada muestra bootstrap tiene la siguiente forma:</p></li>
 </ul>
-<p><span class="math display">\[y_i^*=X_i\hat{\beta}+f(\hat{u}_i)v_i^*\]</span> - Noten que mantiene fijos los <span class="math inline">\(X_i\)</span> en cada muestra bootstrap</p>
+<p><span class="math display">\[y_i^*=X_i'\hat{\beta}+f(\hat{u}_i)v_i^*\]</span> - Noten que mantiene fijos los <span class="math inline">\(X_i\)</span> en cada muestra bootstrap</p>
 <ul>
-<li><p>Una especificación comúnmente usada es hacer es <span class="math inline">\(f(\hat{u}_i)=\hat{u}_i\)</span> y <span class="math display">\[v_i^*=\begin{cases} 1 \quad\text{con probabilidad 0.5} \\ -1 \quad\text{con probabilidad 0.5} \end{cases}\]</span></p></li>
+<li><p>Una especificación comúnmente usada es hacer <span class="math inline">\(f(\hat{u}_i)=\hat{u}_i\)</span> y <span class="math display">\[v_i^*=\begin{cases} 1 \quad\text{con probabilidad 0.5} \\ -1 \quad\text{con probabilidad 0.5} \end{cases}\]</span></p></li>
 <li><p><span class="math inline">\(\hat{\beta}\)</span> y <span class="math inline">\(\hat{u}_i\)</span> son estimados con la muestra original</p></li>
 </ul>
 </section>
@@ -595,33 +594,90 @@
 <h2>Refinamiento asintótico</h2>
 <ul>
 <li><p>Una aplicación de las técnicas bootstrap es el <em>refinamiento asintótico</em> de la prueba <span class="math inline">\(t\)</span> de coeficientes de regresión</p></li>
-<li><p>Supongamos que <span class="math inline">\(H_0:\quad \beta=0\)</span> y trabajamos con un nivel <span class="math inline">\(\alpha\)</span></p></li>
-<li><p>En cada repetición bootstrap el estadístico calculado es <span class="math inline">\(t_b\)</span></p></li>
-<li><p>Ordenamos los <span class="math inline">\(B\)</span> estadísticos obtenidos</p></li>
-<li><p>Rechazamos <span class="math inline">\(H_0\)</span> si <span class="math inline">\(|t|\)</span> está por encima del <span class="math inline">\((1-\alpha)\)</span>ésimo percentil de los <span class="math inline">\(|t_b|\)</span> en la distribución bootstrap</p></li>
+<li><p>Supongamos que <span class="math inline">\(H_0:\quad\beta=\beta^0\)</span> y trabajamos con un nivel <span class="math inline">\(\alpha\)</span></p></li>
+<li><p>El estadístico de la muestra original es el de siempre:</p></li>
+</ul>
+<p><span class="math display">\[t=\frac{\hat{\beta}-\beta^0}{se(\hat{\beta})}\]</span></p>
+<ul>
+<li>En cada repetición bootstrap calculamos ese mismo estadístico, pero centrado en <span class="math inline">\(\hat{\beta}\)</span> y no en <span class="math inline">\(\beta^0\)</span>, porque dentro del mundo bootstrap el valor <em>verdadero</em> del parámetro es <span class="math inline">\(\hat{\beta}\)</span>:</li>
+</ul>
+<p><span class="math display">\[t_b^*=\frac{\hat{\beta}_b^*-\hat{\beta}}{se(\hat{\beta}_b^*)}\]</span></p>
+</section>
+<section id="refinamiento-asintótico-1" class="slide level2">
+<h2>Refinamiento asintótico</h2>
+<ul>
+<li><p>Ordenamos los <span class="math inline">\(B\)</span> valores de <span class="math inline">\(|t_b^*|\)</span></p></li>
+<li><p>Rechazamos <span class="math inline">\(H_0\)</span> si <span class="math inline">\(|t|\)</span> está por encima del <span class="math inline">\((1-\alpha)\)</span>ésimo percentil de los <span class="math inline">\(|t_b^*|\)</span> en la distribución bootstrap<sup>1</sup></p></li>
 <li><p>A pesar de sus propiedades teóricas, el refinamiento asintótico es poco usado</p></li>
 </ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Aquí conviene elegir <span class="math inline">\(B\)</span> de modo que <span class="math inline">\(\alpha(B+1)\)</span> sea entero, típicamente 999 o 9999, para que el percentil quede bien definido y no haya que interpolar entre dos estadísticos ordenados.</p></li></ol></aside></section>
+<section id="bootstrap-salvaje-con-refinamiento-asintótico" class="slide level2">
+<h2>Bootstrap salvaje con refinamiento asintótico</h2>
+<ul>
+<li><p>Tres marcas conviven de aquí en adelante: <span class="math inline">\(\hat{\phantom{x}}\)</span> para lo estimado con la muestra original sin restringir, <span class="math inline">\(\tilde{\phantom{x}}\)</span> para lo estimado bajo <span class="math inline">\(H_0\)</span>, y <span class="math inline">\(^*\)</span> para lo calculado dentro de una muestra bootstrap</p></li>
+<li><p>Las dos ideas anteriores se combinan de forma natural: el bootstrap salvaje respeta la heterocedasticidad y el refinamiento mejora la aproximación de la prueba <span class="math inline">\(t\)</span></p></li>
+<li><p>Pero hay una diferencia importante cuando el objetivo es <strong>contrastar</strong> una hipótesis y no solo calcular un error estándar: el proceso generador bootstrap debe <strong>imponer la nula</strong></p></li>
+<li><p>Para ello usamos los residuales del modelo <strong>restringido</strong>:</p></li>
+</ul>
+<p><span class="math display">\[y_i^*=X_i'\tilde{\beta}+\tilde{u}_iv_i^*\]</span> donde <span class="math inline">\(\tilde{\beta}\)</span> y <span class="math inline">\(\tilde{u}_i\)</span> se obtienen estimando el modelo <strong>bajo</strong> <span class="math inline">\(H_0\)</span>, no con la muestra libre</p>
+<div class="fragment">
+<ul>
+<li><p>La razón es que el percentil con el que rechazamos debe venir de una distribución en la que <span class="math inline">\(H_0\)</span> es cierta</p></li>
+<li><p><a href="https://www.sciencedirect.com/science/article/pii/S0304407608000833">Davidson &amp; Flachaire (2008)</a> muestran que esta versión, con residuales restringidos y pesos de Rademacher, es la que mejor se comporta en muestras finitas</p></li>
+</ul>
+</div>
 </section>
-<section id="jacknife" class="slide level2">
-<h2>Jacknife</h2>
+<section id="algoritmo-del-bootstrap-salvaje-restringido" class="slide level2">
+<h2>Algoritmo del bootstrap salvaje restringido</h2>
+<p>Para contrastar <span class="math inline">\(H_0:\beta=\beta^0\)</span>:</p>
+<ol type="1">
+<li><p>Estimar el modelo <strong>sin restringir</strong> y calcular <span class="math inline">\(t=\dfrac{\hat{\beta}-\beta^0}{se(\hat{\beta})}\)</span></p></li>
+<li><p>Estimar el modelo <strong>bajo</strong> <span class="math inline">\(H_0\)</span> y guardar <span class="math inline">\(\tilde{\beta}\)</span> y los residuales restringidos <span class="math inline">\(\tilde{u}_i\)</span></p></li>
+<li><p>Para cada <span class="math inline">\(b=1,\ldots,B\)</span>, generar <span class="math inline">\(y_i^*=X_i'\tilde{\beta}+\tilde{u}_iv_i^*\)</span>, con <span class="math inline">\(v_i^*\)</span> de Rademacher</p></li>
+<li><p>Estimar <strong>sin restringir</strong> con <span class="math inline">\((y^*,X)\)</span> y calcular <span class="math inline">\(t_b^*=\dfrac{\hat{\beta}_b^*-\beta^0}{se(\hat{\beta}_b^*)}\)</span></p></li>
+<li><p>Rechazar <span class="math inline">\(H_0\)</span> si <span class="math inline">\(|t|\)</span> supera el percentil <span class="math inline">\((1-\alpha)\)</span> de los <span class="math inline">\(|t_b^*|\)</span></p></li>
+</ol>
+<div class="fragment">
+<ul>
+<li>Comparación del paso 4 con la diapositiva del refinamiento: allá centrábamos en <span class="math inline">\(\hat{\beta}\)</span> porque el valor <em>verdadero</em> del mundo bootstrap era <span class="math inline">\(\hat{\beta}\)</span>; aquí centramos en <span class="math inline">\(\beta^0\)</span> porque el DGP ya impuso la nula</li>
+</ul>
+</div>
+</section>
+<section id="wild-cluster-bootstrap" class="slide level2">
+<h2>Wild cluster bootstrap</h2>
+<ul>
+<li><p>Con datos agrupados con <strong>pocos</strong> grupos, donde la CRVE subestima los errores estándar, <a href="https://doi.org/10.1162/rest.90.3.414">Cameron, Gelbach y Miller (2008)</a> proponen el <em>wild cluster bootstrap</em></p></li>
+<li><p>El peso aleatorio se asigna <strong>por grupo</strong>, no por individuo</p></li>
+</ul>
+<p><span class="math display">\[y_{ig}^*=X_{ig}'\tilde{\beta}+\tilde{u}_{ig}v_g^*\]</span></p>
+<ul>
+<li><p>Todas las observaciones del grupo <span class="math inline">\(g\)</span> reciben el <strong>mismo</strong> signo <span class="math inline">\(v_g^*\)</span>, con lo que la muestra bootstrap conserva la correlación intragrupo que originó el problema</p></li>
+<li><p>En cada repetición se estima con errores agrupados y se calcula <span class="math inline">\(t_b^*\)</span></p></li>
+<li><p>Se rechaza con el percentil de los <span class="math inline">\(|t_b^*|\)</span>, igual que antes</p></li>
+</ul>
+</section>
+<section id="wild-cluster-bootstrap-1" class="slide level2">
+<h2>Wild cluster bootstrap</h2>
+<ul>
+<li><p>Con <span class="math inline">\(G\)</span> grupos solo existen <span class="math inline">\(2^G\)</span> vectores de signos posibles, por lo que si <span class="math inline">\(G\)</span> es pequeña conviene enumerarlos todos y el valor <span class="math inline">\(p\)</span> solo puede tomar unos pocos valores distintos</p></li>
+<li><p><a href="https://doi.org/10.1111/caje.12661">Webb (2023)</a> propone una distribución de seis puntos en lugar de Rademacher, precisamente para <span class="math inline">\(G\)</span> pequeña</p></li>
+<li><p>En R está implementado en <code>boottest()</code> del paquete <code>fwildclusterboot</code>. Sobre grupos de tamaños muy dispares, ver <a href="https://doi.org/10.1002/jae.2508">MacKinnon y Webb (2017)</a></p></li>
+</ul>
+</section>
+<section id="jackknife" class="slide level2">
+<h2>Jackknife</h2>
 <ul>
 <li><p>Formalmente no es un método bootstrap</p></li>
-<li><p>Una muestra jacknife es una muestra de tamaño <span class="math inline">\(N-1\)</span> construida a partir de la muestra original donde una observación es eliminada a la vez</p></li>
-<li><p>En cada muestra jacknife estimamos el estadístico de interés <span class="math inline">\(\hat{\theta}_{(j)}\)</span> (tendremos <span class="math inline">\(N\)</span> estadísticos)</p></li>
-<li><p>El error estándar jacknife será</p></li>
+<li><p>Una muestra jackknife es una muestra de tamaño <span class="math inline">\(N-1\)</span> construida a partir de la muestra original donde una observación es eliminada a la vez</p></li>
+<li><p>En cada muestra jackknife estimamos el estadístico de interés <span class="math inline">\(\hat{\theta}_{(j)}\)</span> (tendremos <span class="math inline">\(N\)</span> estadísticos)</p></li>
+<li><p>El error estándar jackknife será</p></li>
 </ul>
-<p><span class="math display">\[\hat{se}(\hat{\theta})=\left(\frac{N-1}{N}\sum_{j=1}^N\left(\hat{\theta}_{(j)}-\hat{\theta}\right)^2\right)^{1/2}\]</span></p>
+<p><span class="math display">\[\hat{se}(\hat\theta)=\left(\frac{N-1}{N}\sum_{j=1}^N\left(\hat\theta_{(j)}-\bar\theta_{(\cdot)}\right)^2\right)^{1/2},\qquad \bar\theta_{(\cdot)}=\frac{1}{N}\sum_j\hat\theta_{(j)}\]</span></p>
 <ul>
-<li><p>Funciona bien para <em>estadísticas suaves</em> y funciones lineales</p></li>
-<li><p>Se puede hacer jacknife por bloques <a href="http://jhr.uwpress.org/content/50/2/317.short?casa_token=LU3qZABduyQAAAAA:ULxVXC96LBZLgeri-TafnH4u4KH-N_FxSQ0Cx2gAED5k1yXSvCs1IgLo4sR-4zyM-Pq8yko57aL8">(Cameron y Miller, 2015)</a></p></li>
+<li><p>Funciona bien para <em>estadísticos suaves</em> y funciones lineales</p></li>
+<li><p>Se puede hacer jackknife por bloques <a href="http://jhr.uwpress.org/content/50/2/317.short?casa_token=LU3qZABduyQAAAAA:ULxVXC96LBZLgeri-TafnH4u4KH-N_FxSQ0Cx2gAED5k1yXSvCs1IgLo4sR-4zyM-Pq8yko57aL8">(Cameron y Miller, 2015)</a></p></li>
 </ul>
 </section></section>
-<section id="section" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1></h1>
-<p>Material de clase en versión preliminar.</p>
-<p><strong>No reproducir, no distribuir, no citar.</strong></p>
-</section>
-
 <section id="bootstrap-2" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Bootstrap</h1>
 <div class="f-eyebrow">
@@ -643,6 +699,8 @@
 
 
 </section>
+
+
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="logo-CIDE.jpg" class="slide-logo"></p>
@@ -859,6 +917,44 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
