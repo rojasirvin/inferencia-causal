@@ -9,7 +9,7 @@ format:
     scrollable: false
     title-slide: false
     logo: logo-CIDE.jpg
-    footer: "Inferencia Causal · Errores estándar"
+    footer: "Inferencia Causal · Errores Estándar"
     include-in-header:
       - _ic-header.html
       - fontawesome.html
@@ -17,7 +17,7 @@ format:
 
 
 
-# Errores estándar {.portada background-color="#163D34" data-state="nochrome"}
+# Errores Estándar {.portada background-color="#163D34" data-state="nochrome"}
 
 ::: {.pa-eyebrow}
 Inferencia Causal
@@ -28,26 +28,11 @@ Inferencia Causal
 ::: {.pa-inst}
 Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 :::
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 
-library(tidyverse)
-library(janitor)
-library(sandwich)
-library(clubSandwich)
-library(modelsummary)
-
-xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
-```
-
-```{css, echo = FALSE}
-.huge .remark-code { /*Change made here*/
-  font-size: 200% !important;
-}
-.tiny .remark-code { /*Change made here*/
-  font-size: 60% !important;
-}
-```
+<style>
+.huge .remark-code { font-size: 200% !important; }
+.tiny .remark-code { font-size: 60% !important; }
+</style>
 
 
 
@@ -58,48 +43,32 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 
 - Recordemos que con errores homocedásticos, la matriz de varianzas del estimador de MCO puede ser estimada como:
 
-$$\hat{V}(\beta_{MCO}^H)=\hat{\sigma}^2(X'X)^{-1}$$
-donde $\hat{\sigma}^2=\frac{1}{N-k}\hat{u}_i^2$ y $\hat{u}_i^2=(y_i-X_i'\hat{\beta}_{MCO})^2$
+$$\hat{V}(\hat{\beta}_{MCO}^H)=\hat{\sigma}^2(X'X)^{-1}$$
+donde $\hat\sigma^2=\frac{1}{N-k}\sum_i\hat u_i^2$ y $\hat{u}_i^2=(y_i-X_i'\hat{\beta}_{MCO})^2$
 
 ::: {.fragment}
-- Una primera *desviación*  respecto a los errores clásicos ocurre cuando relajamos el supuesto de homocedasticidad
-- En la [clase 3](https://eps-2021.netlify.app/clases/clase_5.html#20) estudiamos de manera general las propiedades asintóticas del estimador de MCO
+- Una primera generalización  respecto a los errores clásicos ocurre cuando relajamos el supuesto de homocedasticidad
+- Es posible relajar los supuestos sobre la distribución de los errores para derivar las propiedades asintóticas del estimador de MCO
 - La varianza asintótica es:
 
 
 $$V(\hat{\beta}_{MCO}^{R})=(X'X)^{-1}X'\Omega X(X'X)^{-1}$$
-::::
+donde $\Omega$ es la matriz de varianzas de los errores
+
+:::
 
 
 ## Errores robustos a la heterocedasticidad
 
 - Un estimador de la varianza del estimador de MCO que no asume homocedasticidad es el estimador propuesto por White (1980)
-- Sabemos que la matriz de varianzas del estimador de MCO robusta a la heterocedasticidad es:
-$$\hat{V}(\beta_{MCO}^R)=(X'X)^{-1}\left(\sum_i\hat{u}_i^2x_ix_i'\right)(X'X)^{-1}$$
+- Sabemos que un estimador para la matriz de varianzas del estimador de MCO robusta a la heterocedasticidad es:
+$$\hat{V}(\hat{\beta}_{MCO}^R)=(X'X)^{-1}\left(\sum_i\hat{u}_i^2x_ix_i'\right)(X'X)^{-1}$$
 - [Aquí un recordatorio](http://mlwiki.org/index.php/Matrix-Matrix_Multiplication) de por qué podemos escribir $X'uu'X$ como una sumatoria
 - Consideremos la *carnita* del sándwich
-$$\sum_i\hat{u}_i^2x_ix_i \equiv \sum_i \hat{\psi}_i x_ix_i'$$
 
+$$\sum_i\hat{u}_i^2x_ix_i' \equiv \sum_i \hat{\psi}_i x_ix_i'$$
 
-
-## Errores estándar robustos
-
-- Dependiendo de cómo se especifique $\hat{\psi}_i$, obtenemos distintas versiones del estimador de varianzas robusto
-
-- La propuesta de White original es:
-
-$$HC0:\quad\hat{\psi}_i=\hat{u}_i^2$$
-
-- Este estimador asintóticamente consistente
-
-::: {.fragment}
-
-- En muestras pequeñas, muchas veces se emplea la siguiente corrección:
-
-$$HC1:\quad\hat{\psi}_i=\frac{N}{N-k}\hat{u}_i^2$$
-:::
-
-## Desviación a la influencia
+## Un paréntesis sobre la influencia
 
 - Un par de resultados nos ayudarán a entender qué hacen las otras correcciones a la matriz robusta en el software
 
@@ -117,6 +86,32 @@ es decir, que la influencia se incrementa cuando $x_i$ se aleja de la media
 - La influencia es un número entre 0 y 1 y además $\sum_i h_{ii}=k$, siendo $k$ el número de regresores
 
 
+## El sesgo de $\hat{V}$
+
+- De la teoría de los cursos introductorios de econometría sabemos que la matriz de varianzas clásica tiene un sesgo
+
+- Ese sesgo desaparece al hacer la *corrección por grados de libertad* y dividir por $N-k$ en lugar de solo $N$ en la expresión para $\hat{\sigma}^2$
+
+- Sin embargo, también el estimador de la matriz de varianzas robusta a heterocedasticidad tiene un sesgo que es, en general, más grande que el de la matriz clásica
+
+- En la práctica, se implementan correcciones que buscan reducir el sesgo en la estimación de la matriz de varianzas robustas
+
+## Errores estándar robustos
+
+- Dependiendo de cómo se especifique $\hat{\psi}_i$, obtenemos distintas versiones del estimador de varianzas robusto
+
+- La propuesta de White original es:
+
+$$HC0:\quad\hat{\psi}_i=\hat{u}_i^2$$
+
+- Este estimador es consistente
+
+::: {.fragment}
+
+- En muestras pequeñas, muchas veces se emplea la siguiente corrección:
+
+$$HC1:\quad\hat{\psi}_i=\frac{N}{N-k}\hat{u}_i^2$$
+:::
 
 ## Errores estándar robustos
 
@@ -161,8 +156,6 @@ $$y_{ig}=\beta_0+\beta_1 x_g+e_{ig}$$
 
 ## Errores agrupados
 
-- Podemos mostrar que la correlación de errores entre dos observaciones $i$ y $j$ que pertenecen a $g$ es $$E(e_{ig}e_{jg})=\overbrace{\rho_e}^{\substack{\text{coeficiente de correlación} \\ \text{intraclase residual}}} \underbrace{\sigma_e^2}_{\text{varianza residual}}$$
-
 - Le damos una estructura aditiva a los errores:
 
 $$e_{ig}=\nu_g+\eta_{ig}$$
@@ -170,7 +163,10 @@ donde $\nu_g$ captura toda la correlación dentro del grupo
 
 - $\eta_{ig}$ es un error idiosincrático con media cero e independiente de cualquier otro $\eta_{jg}$
 
-- Como queremos analizar el problema del agrupamiento, asumimos que tanto $v_g$ y $\eta_{ig}$ son homocedásticos
+- Como queremos analizar el problema del agrupamiento, asumimos que tanto $\nu_g$ como $\eta_{ig}$ son homocedásticos
+
+- Escribamos la covarianza entre los errores de dos observaciones $i$ y $j$, $i \neq j$,  que pertenecen a $g$ como $$E(e_{ig}e_{jg})=\overbrace{\rho_e}^{\substack{\text{coeficiente de correlación} \\ \text{intraclase residual}}} \underbrace{\sigma_e^2}_{\text{varianza residual}}$$
+
 
 
 
@@ -180,7 +176,7 @@ donde $\nu_g$ captura toda la correlación dentro del grupo
 - Con esta estructura de errores, el coeficiente de correlación intraclase es:
 
 $$\rho_e=\frac{\sigma_{\nu}^2}{\sigma_{\nu}^2+\sigma_{\eta}^2}$$
-- Deberíamos calcular la matriz de varianzas $V_C(\hat{\beta})$ tomando en cuenta esta estructura
+- Deberíamos calcular la matriz de varianzas $V_A(\hat{\beta})$ tomando en cuenta esta estructura
 
 
 ::: {.fragment}
@@ -188,12 +184,13 @@ $$\rho_e=\frac{\sigma_{\nu}^2}{\sigma_{\nu}^2+\sigma_{\eta}^2}$$
 - ¿Qué pasa si hacemos MCO en el contexto de este problema?
 
 
-- Moulton (1984) muestra que:
+- Moulton (1986) muestra que:
 
-$$\frac{V_C(\hat{\beta})}{V_{MCO}(\hat{\beta})}=1+(n-1)\rho_e$$
-- A $\sqrt{\frac{V_C(\hat{\beta})}{V_{MCO}(\hat{\beta})}}$ se le conoce como el *factor de Moulton*
+$$\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}=1+(n-1)\rho_e$$
+- A $\sqrt{\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}}$ se le conoce como el *factor de Moulton*
 
 :::
+
 
 ## Factor de Moulton
 
@@ -201,7 +198,7 @@ $$\frac{V_C(\hat{\beta})}{V_{MCO}(\hat{\beta})}=1+(n-1)\rho_e$$
 
 - Visto de otro modo:
 
-$$V_C(\hat{\beta})=\left(1+(n-1)\rho_e\right)V_{MCO}(\hat{\beta})$$
+$$V_A(\hat{\beta}_1)=\left(1+(n-1)\rho_e\right)V_{MCO}(\hat{\beta}_1)$$
 
 - Es decir entre más grande sea la correlación dentro de los grupos, más deberíamos *inflar* los errores de MCO
 
@@ -213,7 +210,7 @@ $$V_C(\hat{\beta})=\left(1+(n-1)\rho_e\right)V_{MCO}(\hat{\beta})$$
 
 - Visto de otro modo, la matriz de varianzas correcta se obtendría multiplicando por $n$ la matriz $V_{MCO}(\hat{\beta})$
 
-$$V_C(\hat{\beta})=n V_{MCO}(\hat{\beta})$$
+$$V_A(\hat{\beta})=n V_{MCO}(\hat{\beta})$$
 :::
 
 ## Errores agrupados en general
@@ -222,7 +219,7 @@ $$V_C(\hat{\beta})=n V_{MCO}(\hat{\beta})$$
 
 - En este caso, el factor de Moulton es la raíz cuadrada de:
 
-$$\frac{V_C(\hat{\beta})}{V_{MCO}(\hat{\beta})}=1+\left(\frac{V(n_g)}{\bar{n}}+\bar{n}-1\right)\rho_x\rho_e$$
+$$\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}=1+\left(\frac{V(n_g)}{\bar{n}}+\bar{n}-1\right)\rho_x\rho_e$$
 donde $\bar{n}$ es el tamaño promedio del grupo y $\rho_x$ es la correlación intraclase de $x_{ig}$
 
 - No es necesario asumir una forma para $\rho_x$ (se puede calcular)
@@ -231,7 +228,7 @@ donde $\bar{n}$ es el tamaño promedio del grupo y $\rho_x$ es la correlación i
 
 - Noten que el error que cometemos es más grande entre más heterogéneo es el tamaño de grupos y entre más grande es $\rho_x$
 
-- Por tanto, cuando el tratamiento no varía entre grupos, este error es grande
+- Por tanto, cuando el tratamiento no varía dentro de los grupos, este error es grande
 
 :::
 
@@ -239,7 +236,7 @@ donde $\bar{n}$ es el tamaño promedio del grupo y $\rho_x$ es la correlación i
 
 - Solución paramétrica: calcular directamente el factor de Moulton e inflar los errores de MCO
 
-- Bootstrap por bloques: en vez de hacer muestras bootrstrap remuestreando individuos, se remuestrean grupos
+- Bootstrap por bloques: en vez de hacer muestras bootstrap remuestreando individuos, se remuestrean grupos
 
 - Estimar los errores agrupados (*clustered standard errors*)
 
@@ -252,18 +249,20 @@ donde $\bar{n}$ es el tamaño promedio del grupo y $\rho_x$ es la correlación i
 $$
 \begin{aligned}
 \hat{\beta}&=\beta+(X'X)^{-1}X'u \\
-&=(X'X)^{-1}\left(\sum_{g=1}^G X_gu_g\right)
+&=\beta+(X'X)^{-1}\left(\sum_{g=1}^G X_g'u_g\right)
 \end{aligned}
 $$
+
+
 - Suponiendo independencia entre $g$ y correlación dentro de cada grupo:
 
-$$E(u_{ig}u_{jg'}|x_{ig}x_{jg'})=0$$
+$$E(u_{ig}u_{jg'}|x_{ig},x_{jg'})=0$$
 excepto cuando $g=g'$
 
 
-- En este caso, el estimador de MCO tiene una varianza asintótica dada por
+- En este caso, el estimador de la varianza del estimador de MCO está dado por
 
-$$V({\hat{\beta}}_{MCO})=(X'X)^{-1}\left(\sum_{g=1}^G X_g'u_gu_g'X\right)(X'X)^{-1}$$
+$$\hat{V}({\hat{\beta}}_{MCO})=(X'X)^{-1}\left(\sum_{g=1}^G X_g'u_gu_g'X_g\right)(X'X)^{-1}$$
 
 
 ## Errores estándar agrupados
@@ -274,7 +273,7 @@ $$\hat{V}(\hat{\beta}_{R})=(X'X)^{-1}X'\hat{\Sigma} X (X'X)^{-1}$$
 
 - Donde
 
-$$\hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1}^2 & 0  & 0  & \ldots & 0 \\ 0 & \hat{u}_{2}^2 & 0 & \ldots & 0 \\ \vdots & & & & \\ 0 & & &  \ldots & \hat{u}_{n}^2\end{matrix}\right)$$
+$$\hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1}^2 & 0  & 0  & \ldots & 0 \\ 0 & \hat{u}_{2}^2 & 0 & \ldots & 0 \\ \vdots & & & & \\ 0 & & &  \ldots & \hat{u}_{N}^2\end{matrix}\right)$$
 
 
 ## Errores estándar agrupados
@@ -284,7 +283,7 @@ $$\hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1}^2 & 0  & 0  & \ldots & 0 \\ 0 & 
 - Si $G\to\infty$, el estimador de la matriz de errores agrupados robusta (CRVE) es consistente para estimar $V(\hat{\beta})$:
 
 $$\hat{V}_{CR}(\hat{\beta})=(X'X)^{-1}\left(\sum_{g=1}^G X_g'\hat{u}_g\hat{u}_g'X_g\right)(X'X)^{-1}$$
-donde $\hat{u}_g\hat{u}_g'$ es la matriz de varianzas para los individuos del grupo $g$
+donde $\hat{u}_g\hat{u}_g'$ estima la matriz de varianzas para los individuos del grupo $g$
 
 - De manera compacta
 
@@ -297,7 +296,7 @@ $$\hat{V}_{CR}(\hat{\beta})=(X'X)^{-1}X'\hat{\Sigma} X(X'X)^{-1}$$
 - Y en este caso la matriz $\hat{\Sigma}$ tiene una estructura agrupada
 
 $$\small \hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1,1}^2 & \hat{u}_{1,1}\hat{u}_{2,1} & \ldots & \hat{u}_{1,1} \hat{u}_{n,1}& 0 & 0 & \ldots &  0 & \ldots & 0 & 0 & \ldots &  0 \\ \hat{u}_{2,1}\hat{u}_{1,1} & \hat{u}_{2,1}^2 & \ldots & \hat{u}_{2,1}\hat{u}_{n,1} & 0 & 0 & \ldots & 0 & \ldots  & 0 & 0 & \ldots &  0\\ 
-\vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\ \hat{u}_{n,1}\hat{u}_{1,1} & \hat{u}_{n,1}\hat{u}_{2,1}& \ldots & \hat{u}_{n,1}^2& 0 & 0 &\ldots & 0 & \ldots & 0 & 0 & \ldots &  0 \\  0 & 0 & \ldots &  0 & \hat{u}_{1,2}^2 & \hat{u}_{1,2}\hat{u}_{2,2} & \ldots & \hat{u}_{1,2}\hat{u}_{n,2} &\ldots & 0 & 0 & \ldots &  0  \\ 0 & 0 & \ldots &  0 & \hat{u}_{2,2}\hat{u}_{1,2} & \hat{u}_{2,2}^2 & \ldots & \hat{u}_{2,2}\hat{u}_{n,2} &\ldots & 0 & 0 & \ldots &  0 \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots  \\ 0 & 0 & \ldots &  0 & \hat{u}_{n,2}\hat{u}_{1,2} & \hat{u}_{n,2}\hat{u}_{2,2} & \ldots & \hat{u}_{n,2}^2 &\ldots & 0 & 0 & \ldots &  0 \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\ 0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{1,G}^2 & \hat{u}_{12,G}\hat{u}_{2,G} & \ldots &  \hat{u}_{1,G}\hat{u}_{n,G} \\  0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{2,G}\hat{u}_{1,G} & \hat{u}_{2,G}^2 & \ldots &  \hat{u}_{2,G}\hat{u}_{n,G} \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\  0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{n,G}\hat{u}_{1,G} & \hat{u}_{n,G}\hat{u}_{2,G} & \ldots &  \hat{u}_{n,G}^2 \end{matrix}\right)$$
+\vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\ \hat{u}_{n,1}\hat{u}_{1,1} & \hat{u}_{n,1}\hat{u}_{2,1}& \ldots & \hat{u}_{n,1}^2& 0 & 0 &\ldots & 0 & \ldots & 0 & 0 & \ldots &  0 \\  0 & 0 & \ldots &  0 & \hat{u}_{1,2}^2 & \hat{u}_{1,2}\hat{u}_{2,2} & \ldots & \hat{u}_{1,2}\hat{u}_{n,2} &\ldots & 0 & 0 & \ldots &  0  \\ 0 & 0 & \ldots &  0 & \hat{u}_{2,2}\hat{u}_{1,2} & \hat{u}_{2,2}^2 & \ldots & \hat{u}_{2,2}\hat{u}_{n,2} &\ldots & 0 & 0 & \ldots &  0 \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots  \\ 0 & 0 & \ldots &  0 & \hat{u}_{n,2}\hat{u}_{1,2} & \hat{u}_{n,2}\hat{u}_{2,2} & \ldots & \hat{u}_{n,2}^2 &\ldots & 0 & 0 & \ldots &  0 \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\ 0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{1,G}^2 & \hat{u}_{1,G}\hat{u}_{2,G} & \ldots &  \hat{u}_{1,G}\hat{u}_{n,G} \\  0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{2,G}\hat{u}_{1,G} & \hat{u}_{2,G}^2 & \ldots &  \hat{u}_{2,G}\hat{u}_{n,G} \\ \vdots & \vdots  & & \vdots & \vdots & \vdots  & &  \vdots& & \vdots & \vdots &  &  \vdots \\  0 & 0 & \ldots &  0 & 0 &  0 & \ldots & 0 &\ldots & \hat{u}_{n,G}\hat{u}_{1,G} & \hat{u}_{n,G}\hat{u}_{2,G} & \ldots &  \hat{u}_{n,G}^2 \end{matrix}\right)$$
 
 
 
@@ -306,9 +305,9 @@ $$\small \hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1,1}^2 & \hat{u}_{1,1}\hat{u
 
 - El resultado asintótico de consistencia depende de que $G\to\infty$
 
-- Si $G$ está fijo, no importa qué tan grande sea $N$, $\hat{V}_{CRVE}(\hat{\beta})$ no será consistente
+- Si $G$ está fijo, no importa qué tan grande sea $N$, $\hat{V}_{CR}(\hat{\beta})$ no será consistente
 
-- Algunos paquetes ajustan esta matriz de varianzas haciendo una corrección parecida a $HC1$, pero ahora tomando en cuanta también $G$ y no solo $N$ (ver por ejemplo, *vcovCR* en R)
+- Algunos paquetes ajustan esta matriz de varianzas haciendo una corrección parecida a $HC1$, pero ahora tomando en cuenta también $G$ y no solo $N$ (ver por ejemplo, *vcovCR* en R)
 
 ::: {.fragment}
 
@@ -335,7 +334,7 @@ Material de clase en versión preliminar.
 
 
 
-# Errores estándar {.final background-color="#9B2247" data-state="nochrome"}
+# Errores Estándar {.final background-color="#9B2247" data-state="nochrome"}
 
 ::: {.f-eyebrow}
 Inferencia Causal
