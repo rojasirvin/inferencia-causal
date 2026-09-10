@@ -2029,28 +2029,35 @@
     "href": "diapositivas/errores-estandar.html#errores-estándar-robustos",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar robustos",
-    "text": "Errores estándar robustos\n\nRecordemos que con errores homocedásticos, la matriz de varianzas del estimador de MCO puede ser estimada como:\n\n\\[\\hat{V}(\\beta_{MCO}^H)=\\hat{\\sigma}^2(X'X)^{-1}\\] donde \\(\\hat{\\sigma}^2=\\frac{1}{N-k}\\hat{u}_i^2\\) y \\(\\hat{u}_i^2=(y_i-X_i'\\hat{\\beta}_{MCO})^2\\)\n\n\nUna primera desviación respecto a los errores clásicos ocurre cuando relajamos el supuesto de homocedasticidad\nEn la clase 3 estudiamos de manera general las propiedades asintóticas del estimador de MCO\nLa varianza asintótica es:\n\n\\[V(\\hat{\\beta}_{MCO}^{R})=(X'X)^{-1}X'\\Omega X(X'X)^{-1}\\]"
+    "text": "Errores estándar robustos\n\nRecordemos que con errores homocedásticos, la matriz de varianzas del estimador de MCO puede ser estimada como:\n\n\\[\\hat{V}(\\hat{\\beta}_{MCO}^H)=\\hat{\\sigma}^2(X'X)^{-1}\\] donde \\(\\hat\\sigma^2=\\frac{1}{N-k}\\sum_i\\hat u_i^2\\) y \\(\\hat{u}_i^2=(y_i-X_i'\\hat{\\beta}_{MCO})^2\\)\n\n\nUna primera generalización respecto a los errores clásicos ocurre cuando relajamos el supuesto de homocedasticidad\nEs posible relajar los supuestos sobre la distribución de los errores para derivar las propiedades asintóticas del estimador de MCO\nLa varianza asintótica es:\n\n\\[V(\\hat{\\beta}_{MCO}^{R})=(X'X)^{-1}X'\\Omega X(X'X)^{-1}\\] donde \\(\\Omega\\) es la matriz de varianzas de los errores"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-robustos-a-la-heterocedasticidad",
     "href": "diapositivas/errores-estandar.html#errores-robustos-a-la-heterocedasticidad",
     "title": "Inferencia Causal 2026",
     "section": "Errores robustos a la heterocedasticidad",
-    "text": "Errores robustos a la heterocedasticidad\n\nUn estimador de la varianza del estimador de MCO que no asume homocedasticidad es el estimador propuesto por White (1980)\nSabemos que la matriz de varianzas del estimador de MCO robusta a la heterocedasticidad es: \\[\\hat{V}(\\beta_{MCO}^R)=(X'X)^{-1}\\left(\\sum_i\\hat{u}_i^2x_ix_i'\\right)(X'X)^{-1}\\]\nAquí un recordatorio de por qué podemos escribir \\(X'uu'X\\) como una sumatoria\nConsideremos la carnita del sándwich \\[\\sum_i\\hat{u}_i^2x_ix_i \\equiv \\sum_i \\hat{\\psi}_i x_ix_i'\\]"
+    "text": "Errores robustos a la heterocedasticidad\n\nUn estimador de la varianza del estimador de MCO que no asume homocedasticidad es el estimador propuesto por White (1980)\nSabemos que un estimador para la matriz de varianzas del estimador de MCO robusta a la heterocedasticidad es: \\[\\hat{V}(\\hat{\\beta}_{MCO}^R)=(X'X)^{-1}\\left(\\sum_i\\hat{u}_i^2x_ix_i'\\right)(X'X)^{-1}\\]\nAquí un recordatorio de por qué podemos escribir \\(X'uu'X\\) como una sumatoria\nConsideremos la carnita del sándwich\n\n\\[\\sum_i\\hat{u}_i^2x_ix_i' \\equiv \\sum_i \\hat{\\psi}_i x_ix_i'\\]"
+  },
+  {
+    "objectID": "diapositivas/errores-estandar.html#un-paréntesis-sobre-la-influencia",
+    "href": "diapositivas/errores-estandar.html#un-paréntesis-sobre-la-influencia",
+    "title": "Inferencia Causal 2026",
+    "section": "Un paréntesis sobre la influencia",
+    "text": "Un paréntesis sobre la influencia\n\nUn par de resultados nos ayudarán a entender qué hacen las otras correcciones a la matriz robusta en el software\nDefinimos la influencia de la observación \\(i\\) como:\n\n\\[h_{ii}=X_i'(X'X)^{-1}X_i\\]\n\n\\(h_{ii}\\) nos dice qué tanto jala la observación \\(i\\) a la línea de regresión\nEn una regresión con un solo regresor \\(x\\), se puede mostrar que la influencia de la observación \\(i\\) es:\n\n\\[h_{ii}=\\frac{1}{N}+\\frac{(x_i-\\bar{x})^2}{\\sum(x_j-\\bar{x})^2}\\] es decir, que la influencia se incrementa cuando \\(x_i\\) se aleja de la media\n\nLa influencia es un número entre 0 y 1 y además \\(\\sum_i h_{ii}=k\\), siendo \\(k\\) el número de regresores"
+  },
+  {
+    "objectID": "diapositivas/errores-estandar.html#el-sesgo-de-hatv",
+    "href": "diapositivas/errores-estandar.html#el-sesgo-de-hatv",
+    "title": "Inferencia Causal 2026",
+    "section": "El sesgo de \\(\\hat{V}\\)",
+    "text": "El sesgo de \\(\\hat{V}\\)\n\nDe la teoría de los cursos introductorios de econometría sabemos que la matriz de varianzas clásica tiene un sesgo\nEse sesgo desaparece al hacer la corrección por grados de libertad y dividir por \\(N-k\\) en lugar de solo \\(N\\) en la expresión para \\(\\hat{\\sigma}^2\\)\nSin embargo, también el estimador de la matriz de varianzas robusta a heterocedasticidad tiene un sesgo que es, en general, más grande que el de la matriz clásica\nEn la práctica, se implementan correcciones que buscan reducir el sesgo en la estimación de la matriz de varianzas robustas"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-robustos-1",
     "href": "diapositivas/errores-estandar.html#errores-estándar-robustos-1",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar robustos",
-    "text": "Errores estándar robustos\n\nDependiendo de cómo se especifique \\(\\hat{\\psi}_i\\), obtenemos distintas versiones del estimador de varianzas robusto\nLa propuesta de White original es:\n\n\\[HC0:\\quad\\hat{\\psi}_i=\\hat{u}_i^2\\]\n\nEste estimador asintóticamente consistente\n\n\n\nEn muestras pequeñas, muchas veces se emplea la siguiente corrección:\n\n\\[HC1:\\quad\\hat{\\psi}_i=\\frac{N}{N-k}\\hat{u}_i^2\\]"
-  },
-  {
-    "objectID": "diapositivas/errores-estandar.html#desviación-a-la-influencia",
-    "href": "diapositivas/errores-estandar.html#desviación-a-la-influencia",
-    "title": "Inferencia Causal 2026",
-    "section": "Desviación a la influencia",
-    "text": "Desviación a la influencia\n\nUn par de resultados nos ayudarán a entender qué hacen las otras correcciones a la matriz robusta en el software\nDefinimos la influencia de la observación \\(i\\) como:\n\n\\[h_{ii}=X_i'(X'X)^{-1}X_i\\]\n\n\\(h_{ii}\\) nos dice qué tanto jala la observación \\(i\\) a la línea de regresión\nEn una regresión con un solo regresor \\(x\\), se puede mostrar que la influencia de la observación \\(i\\) es:\n\n\\[h_{ii}=\\frac{1}{N}+\\frac{(x_i-\\bar{x})^2}{\\sum(x_j-\\bar{x})^2}\\] es decir, que la influencia se incrementa cuando \\(x_i\\) se aleja de la media\n\nLa influencia es un número entre 0 y 1 y además \\(\\sum_i h_{ii}=k\\), siendo \\(k\\) el número de regresores"
+    "text": "Errores estándar robustos\n\nDependiendo de cómo se especifique \\(\\hat{\\psi}_i\\), obtenemos distintas versiones del estimador de varianzas robusto\nLa propuesta de White original es:\n\n\\[HC0:\\quad\\hat{\\psi}_i=\\hat{u}_i^2\\]\n\nEste estimador es consistente\n\n\n\nEn muestras pequeñas, muchas veces se emplea la siguiente corrección:\n\n\\[HC1:\\quad\\hat{\\psi}_i=\\frac{N}{N-k}\\hat{u}_i^2\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-robustos-2",
@@ -2071,77 +2078,77 @@
     "href": "diapositivas/errores-estandar.html#errores-agrupados-2",
     "title": "Inferencia Causal 2026",
     "section": "Errores agrupados",
-    "text": "Errores agrupados\n\nPodemos mostrar que la correlación de errores entre dos observaciones \\(i\\) y \\(j\\) que pertenecen a \\(g\\) es \\[E(e_{ig}e_{jg})=\\overbrace{\\rho_e}^{\\substack{\\text{coeficiente de correlación} \\\\ \\text{intraclase residual}}} \\underbrace{\\sigma_e^2}_{\\text{varianza residual}}\\]\nLe damos una estructura aditiva a los errores:\n\n\\[e_{ig}=\\nu_g+\\eta_{ig}\\] donde \\(\\nu_g\\) captura toda la correlación dentro del grupo\n\n\\(\\eta_{ig}\\) es un error idiosincrático con media cero e independiente de cualquier otro \\(\\eta_{jg}\\)\nComo queremos analizar el problema del agrupamiento, asumimos que tanto \\(v_g\\) y \\(\\eta_{ig}\\) son homocedásticos"
+    "text": "Errores agrupados\n\nLe damos una estructura aditiva a los errores:\n\n\\[e_{ig}=\\nu_g+\\eta_{ig}\\] donde \\(\\nu_g\\) captura toda la correlación dentro del grupo\n\n\\(\\eta_{ig}\\) es un error idiosincrático con media cero e independiente de cualquier otro \\(\\eta_{jg}\\)\nComo queremos analizar el problema del agrupamiento, asumimos que tanto \\(\\nu_g\\) como \\(\\eta_{ig}\\) son homocedásticos\nEscribamos la covarianza entre los errores de dos observaciones \\(i\\) y \\(j\\), \\(i \\neq j\\), que pertenecen a \\(g\\) como \\[E(e_{ig}e_{jg})=\\overbrace{\\rho_e}^{\\substack{\\text{coeficiente de correlación} \\\\ \\text{intraclase residual}}} \\underbrace{\\sigma_e^2}_{\\text{varianza residual}}\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-agrupados-3",
     "href": "diapositivas/errores-estandar.html#errores-agrupados-3",
     "title": "Inferencia Causal 2026",
     "section": "Errores agrupados",
-    "text": "Errores agrupados\n\nCon esta estructura de errores, el coeficiente de correlación intraclase es:\n\n\\[\\rho_e=\\frac{\\sigma_{\\nu}^2}{\\sigma_{\\nu}^2+\\sigma_{\\eta}^2}\\] - Deberíamos calcular la matriz de varianzas \\(V_C(\\hat{\\beta})\\) tomando en cuenta esta estructura\n\n\n¿Qué pasa si hacemos MCO en el contexto de este problema?\nMoulton (1984) muestra que:\n\n\\[\\frac{V_C(\\hat{\\beta})}{V_{MCO}(\\hat{\\beta})}=1+(n-1)\\rho_e\\] - A \\(\\sqrt{\\frac{V_C(\\hat{\\beta})}{V_{MCO}(\\hat{\\beta})}}\\) se le conoce como el factor de Moulton"
+    "text": "Errores agrupados\n\nCon esta estructura de errores, el coeficiente de correlación intraclase es:\n\n\\[\\rho_e=\\frac{\\sigma_{\\nu}^2}{\\sigma_{\\nu}^2+\\sigma_{\\eta}^2}\\] - Deberíamos calcular la matriz de varianzas \\(V_A(\\hat{\\beta})\\) tomando en cuenta esta estructura\n\n\n¿Qué pasa si hacemos MCO en el contexto de este problema?\nMoulton (1986) muestra que:\n\n\\[\\frac{V_A(\\hat{\\beta}_1)}{V_{MCO}(\\hat{\\beta}_1)}=1+(n-1)\\rho_e\\] - A \\(\\sqrt{\\frac{V_A(\\hat{\\beta}_1)}{V_{MCO}(\\hat{\\beta}_1)}}\\) se le conoce como el factor de Moulton"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#factor-de-moulton",
     "href": "diapositivas/errores-estandar.html#factor-de-moulton",
     "title": "Inferencia Causal 2026",
     "section": "Factor de Moulton",
-    "text": "Factor de Moulton\n\nEl factor de Moulton nos dice qué tanto sobrestimamos la precisión al ignorar la correlación intra-clase\nVisto de otro modo:\n\n\\[V_C(\\hat{\\beta})=\\left(1+(n-1)\\rho_e\\right)V_{MCO}(\\hat{\\beta})\\]\n\nEs decir entre más grande sea la correlación dentro de los grupos, más deberíamos inflar los errores de MCO\n\n\n\nConsideremos el caso extremo de que \\(\\rho_e=1\\), es decir, que todas las \\(y_{ig}\\) dentro del mismo \\(g\\) son iguales\nEntonces el factor de Moulton es simplemente \\(\\sqrt{n}\\)\nVisto de otro modo, la matriz de varianzas correcta se obtendría multiplicando por \\(n\\) la matriz \\(V_{MCO}(\\hat{\\beta})\\)\n\n\\[V_C(\\hat{\\beta})=n V_{MCO}(\\hat{\\beta})\\]"
+    "text": "Factor de Moulton\n\nEl factor de Moulton nos dice qué tanto sobrestimamos la precisión al ignorar la correlación intra-clase\nVisto de otro modo:\n\n\\[V_A(\\hat{\\beta}_1)=\\left(1+(n-1)\\rho_e\\right)V_{MCO}(\\hat{\\beta}_1)\\]\n\nEs decir entre más grande sea la correlación dentro de los grupos, más deberíamos inflar los errores de MCO\n\n\n\nConsideremos el caso extremo de que \\(\\rho_e=1\\), es decir, que todas las \\(y_{ig}\\) dentro del mismo \\(g\\) son iguales\nEntonces el factor de Moulton es simplemente \\(\\sqrt{n}\\)\nVisto de otro modo, la matriz de varianzas correcta se obtendría multiplicando por \\(n\\) la matriz \\(V_{MCO}(\\hat{\\beta})\\)\n\n\\[V_A(\\hat{\\beta})=n V_{MCO}(\\hat{\\beta})\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-agrupados-en-general",
     "href": "diapositivas/errores-estandar.html#errores-agrupados-en-general",
     "title": "Inferencia Causal 2026",
     "section": "Errores agrupados en general",
-    "text": "Errores agrupados en general\n\nEn general, \\(x_{ig}\\) varía a nivel individual y tenemos grupos de tamaño \\(n_g\\)\nEn este caso, el factor de Moulton es la raíz cuadrada de:\n\n\\[\\frac{V_C(\\hat{\\beta})}{V_{MCO}(\\hat{\\beta})}=1+\\left(\\frac{V(n_g)}{\\bar{n}}+\\bar{n}-1\\right)\\rho_x\\rho_e\\] donde \\(\\bar{n}\\) es el tamaño promedio del grupo y \\(\\rho_x\\) es la correlación intraclase de \\(x_{ig}\\)\n\nNo es necesario asumir una forma para \\(\\rho_x\\) (se puede calcular)\n\n\n\nNoten que el error que cometemos es más grande entre más heterogéneo es el tamaño de grupos y entre más grande es \\(\\rho_x\\)\nPor tanto, cuando el tratamiento no varía entre grupos, este error es grande"
+    "text": "Errores agrupados en general\n\nEn general, \\(x_{ig}\\) varía a nivel individual y tenemos grupos de tamaño \\(n_g\\)\nEn este caso, el factor de Moulton es la raíz cuadrada de:\n\n\\[\\frac{V_A(\\hat{\\beta}_1)}{V_{MCO}(\\hat{\\beta}_1)}=1+\\left(\\frac{V(n_g)}{\\bar{n}}+\\bar{n}-1\\right)\\rho_x\\rho_e\\] donde \\(\\bar{n}\\) es el tamaño promedio del grupo y \\(\\rho_x\\) es la correlación intraclase de \\(x_{ig}\\)\n\nNo es necesario asumir una forma para \\(\\rho_x\\) (se puede calcular)\n\n\n\nNoten que el error que cometemos es más grande entre más heterogéneo es el tamaño de grupos y entre más grande es \\(\\rho_x\\)\nPor tanto, cuando el tratamiento no varía dentro de los grupos, este error es grande"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#soluciones-para-errores-agrupados",
     "href": "diapositivas/errores-estandar.html#soluciones-para-errores-agrupados",
     "title": "Inferencia Causal 2026",
     "section": "Soluciones para errores agrupados",
-    "text": "Soluciones para errores agrupados\n\nSolución paramétrica: calcular directamente el factor de Moulton e inflar los errores de MCO\nBootstrap por bloques: en vez de hacer muestras bootrstrap remuestreando individuos, se remuestrean grupos\nEstimar los errores agrupados (clustered standard errors)"
+    "text": "Soluciones para errores agrupados\n\nSolución paramétrica: calcular directamente el factor de Moulton e inflar los errores de MCO\nBootstrap por bloques: en vez de hacer muestras bootstrap remuestreando individuos, se remuestrean grupos\nEstimar los errores agrupados (clustered standard errors)"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-agrupados",
     "href": "diapositivas/errores-estandar.html#errores-estándar-agrupados",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar agrupados",
-    "text": "Errores estándar agrupados\n\nCon errores agrupados podemos escribir el estimador de MCO como\n\n\\[\n\\begin{aligned}\n\\hat{\\beta}&=\\beta+(X'X)^{-1}X'u \\\\\n&=(X'X)^{-1}\\left(\\sum_{g=1}^G X_gu_g\\right)\n\\end{aligned}\n\\] - Suponiendo independencia entre \\(g\\) y correlación dentro de cada grupo:\n\\[E(u_{ig}u_{jg'}|x_{ig}x_{jg'})=0\\] excepto cuando \\(g=g'\\)\n\nEn este caso, el estimador de MCO tiene una varianza asintótica dada por\n\n\\[V({\\hat{\\beta}}_{MCO})=(X'X)^{-1}\\left(\\sum_{g=1}^G X_g'u_gu_g'X\\right)(X'X)^{-1}\\]"
+    "text": "Errores estándar agrupados\n\nCon errores agrupados podemos escribir el estimador de MCO como\n\n\\[\n\\begin{aligned}\n\\hat{\\beta}&=\\beta+(X'X)^{-1}X'u \\\\\n&=\\beta+(X'X)^{-1}\\left(\\sum_{g=1}^G X_g'u_g\\right)\n\\end{aligned}\n\\]\n\nSuponiendo independencia entre \\(g\\) y correlación dentro de cada grupo:\n\n\\[E(u_{ig}u_{jg'}|x_{ig},x_{jg'})=0\\] excepto cuando \\(g=g'\\)\n\nEn este caso, el estimador de la varianza del estimador de MCO está dado por\n\n\\[\\hat{V}({\\hat{\\beta}}_{MCO})=(X'X)^{-1}\\left(\\sum_{g=1}^G X_g'u_gu_g'X_g\\right)(X'X)^{-1}\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-agrupados-1",
     "href": "diapositivas/errores-estandar.html#errores-estándar-agrupados-1",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar agrupados",
-    "text": "Errores estándar agrupados\n\nCon errores heterocedásticos, pero sin agrupamiento, la matriz de varianzas de White (1980) tiene una estructura como sigue:\n\n\\[\\hat{V}(\\hat{\\beta}_{R})=(X'X)^{-1}X'\\hat{\\Sigma} X (X'X)^{-1}\\]\n\nDonde\n\n\\[\\hat{\\Sigma}=\\left(\\begin{matrix} \\hat{u}_{1}^2 & 0  & 0  & \\ldots & 0 \\\\ 0 & \\hat{u}_{2}^2 & 0 & \\ldots & 0 \\\\ \\vdots & & & & \\\\ 0 & & &  \\ldots & \\hat{u}_{n}^2\\end{matrix}\\right)\\]"
+    "text": "Errores estándar agrupados\n\nCon errores heterocedásticos, pero sin agrupamiento, la matriz de varianzas de White (1980) tiene una estructura como sigue:\n\n\\[\\hat{V}(\\hat{\\beta}_{R})=(X'X)^{-1}X'\\hat{\\Sigma} X (X'X)^{-1}\\]\n\nDonde\n\n\\[\\hat{\\Sigma}=\\left(\\begin{matrix} \\hat{u}_{1}^2 & 0  & 0  & \\ldots & 0 \\\\ 0 & \\hat{u}_{2}^2 & 0 & \\ldots & 0 \\\\ \\vdots & & & & \\\\ 0 & & &  \\ldots & \\hat{u}_{N}^2\\end{matrix}\\right)\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-agrupados-2",
     "href": "diapositivas/errores-estandar.html#errores-estándar-agrupados-2",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar agrupados",
-    "text": "Errores estándar agrupados\n\nPara estimar la varianza con errores agrupados empleamos una generalización de la propuesta de White para errores robustos\nSi \\(G\\to\\infty\\), el estimador de la matriz de errores agrupados robusta (CRVE) es consistente para estimar \\(V(\\hat{\\beta})\\):\n\n\\[\\hat{V}_{CR}(\\hat{\\beta})=(X'X)^{-1}\\left(\\sum_{g=1}^G X_g'\\hat{u}_g\\hat{u}_g'X_g\\right)(X'X)^{-1}\\] donde \\(\\hat{u}_g\\hat{u}_g'\\) es la matriz de varianzas para los individuos del grupo \\(g\\)\n\nDe manera compacta\n\n\\[\\hat{V}_{CR}(\\hat{\\beta})=(X'X)^{-1}X'\\hat{\\Sigma} X(X'X)^{-1}\\]"
+    "text": "Errores estándar agrupados\n\nPara estimar la varianza con errores agrupados empleamos una generalización de la propuesta de White para errores robustos\nSi \\(G\\to\\infty\\), el estimador de la matriz de errores agrupados robusta (CRVE) es consistente para estimar \\(V(\\hat{\\beta})\\):\n\n\\[\\hat{V}_{CR}(\\hat{\\beta})=(X'X)^{-1}\\left(\\sum_{g=1}^G X_g'\\hat{u}_g\\hat{u}_g'X_g\\right)(X'X)^{-1}\\] donde \\(\\hat{u}_g\\hat{u}_g'\\) estima la matriz de varianzas para los individuos del grupo \\(g\\)\n\nDe manera compacta\n\n\\[\\hat{V}_{CR}(\\hat{\\beta})=(X'X)^{-1}X'\\hat{\\Sigma} X(X'X)^{-1}\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-agrupados-3",
     "href": "diapositivas/errores-estandar.html#errores-estándar-agrupados-3",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar agrupados",
-    "text": "Errores estándar agrupados\n\nY en este caso la matriz \\(\\hat{\\Sigma}\\) tiene una estructura agrupada\n\n\\[\\small \\hat{\\Sigma}=\\left(\\begin{matrix} \\hat{u}_{1,1}^2 & \\hat{u}_{1,1}\\hat{u}_{2,1} & \\ldots & \\hat{u}_{1,1} \\hat{u}_{n,1}& 0 & 0 & \\ldots &  0 & \\ldots & 0 & 0 & \\ldots &  0 \\\\ \\hat{u}_{2,1}\\hat{u}_{1,1} & \\hat{u}_{2,1}^2 & \\ldots & \\hat{u}_{2,1}\\hat{u}_{n,1} & 0 & 0 & \\ldots & 0 & \\ldots  & 0 & 0 & \\ldots &  0\\\\\n\\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\ \\hat{u}_{n,1}\\hat{u}_{1,1} & \\hat{u}_{n,1}\\hat{u}_{2,1}& \\ldots & \\hat{u}_{n,1}^2& 0 & 0 &\\ldots & 0 & \\ldots & 0 & 0 & \\ldots &  0 \\\\  0 & 0 & \\ldots &  0 & \\hat{u}_{1,2}^2 & \\hat{u}_{1,2}\\hat{u}_{2,2} & \\ldots & \\hat{u}_{1,2}\\hat{u}_{n,2} &\\ldots & 0 & 0 & \\ldots &  0  \\\\ 0 & 0 & \\ldots &  0 & \\hat{u}_{2,2}\\hat{u}_{1,2} & \\hat{u}_{2,2}^2 & \\ldots & \\hat{u}_{2,2}\\hat{u}_{n,2} &\\ldots & 0 & 0 & \\ldots &  0 \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots  \\\\ 0 & 0 & \\ldots &  0 & \\hat{u}_{n,2}\\hat{u}_{1,2} & \\hat{u}_{n,2}\\hat{u}_{2,2} & \\ldots & \\hat{u}_{n,2}^2 &\\ldots & 0 & 0 & \\ldots &  0 \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\ 0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{1,G}^2 & \\hat{u}_{12,G}\\hat{u}_{2,G} & \\ldots &  \\hat{u}_{1,G}\\hat{u}_{n,G} \\\\  0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{2,G}\\hat{u}_{1,G} & \\hat{u}_{2,G}^2 & \\ldots &  \\hat{u}_{2,G}\\hat{u}_{n,G} \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\  0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{n,G}\\hat{u}_{1,G} & \\hat{u}_{n,G}\\hat{u}_{2,G} & \\ldots &  \\hat{u}_{n,G}^2 \\end{matrix}\\right)\\]"
+    "text": "Errores estándar agrupados\n\nY en este caso la matriz \\(\\hat{\\Sigma}\\) tiene una estructura agrupada\n\n\\[\\small \\hat{\\Sigma}=\\left(\\begin{matrix} \\hat{u}_{1,1}^2 & \\hat{u}_{1,1}\\hat{u}_{2,1} & \\ldots & \\hat{u}_{1,1} \\hat{u}_{n,1}& 0 & 0 & \\ldots &  0 & \\ldots & 0 & 0 & \\ldots &  0 \\\\ \\hat{u}_{2,1}\\hat{u}_{1,1} & \\hat{u}_{2,1}^2 & \\ldots & \\hat{u}_{2,1}\\hat{u}_{n,1} & 0 & 0 & \\ldots & 0 & \\ldots  & 0 & 0 & \\ldots &  0\\\\\n\\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\ \\hat{u}_{n,1}\\hat{u}_{1,1} & \\hat{u}_{n,1}\\hat{u}_{2,1}& \\ldots & \\hat{u}_{n,1}^2& 0 & 0 &\\ldots & 0 & \\ldots & 0 & 0 & \\ldots &  0 \\\\  0 & 0 & \\ldots &  0 & \\hat{u}_{1,2}^2 & \\hat{u}_{1,2}\\hat{u}_{2,2} & \\ldots & \\hat{u}_{1,2}\\hat{u}_{n,2} &\\ldots & 0 & 0 & \\ldots &  0  \\\\ 0 & 0 & \\ldots &  0 & \\hat{u}_{2,2}\\hat{u}_{1,2} & \\hat{u}_{2,2}^2 & \\ldots & \\hat{u}_{2,2}\\hat{u}_{n,2} &\\ldots & 0 & 0 & \\ldots &  0 \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots  \\\\ 0 & 0 & \\ldots &  0 & \\hat{u}_{n,2}\\hat{u}_{1,2} & \\hat{u}_{n,2}\\hat{u}_{2,2} & \\ldots & \\hat{u}_{n,2}^2 &\\ldots & 0 & 0 & \\ldots &  0 \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\ 0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{1,G}^2 & \\hat{u}_{1,G}\\hat{u}_{2,G} & \\ldots &  \\hat{u}_{1,G}\\hat{u}_{n,G} \\\\  0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{2,G}\\hat{u}_{1,G} & \\hat{u}_{2,G}^2 & \\ldots &  \\hat{u}_{2,G}\\hat{u}_{n,G} \\\\ \\vdots & \\vdots  & & \\vdots & \\vdots & \\vdots  & &  \\vdots& & \\vdots & \\vdots &  &  \\vdots \\\\  0 & 0 & \\ldots &  0 & 0 &  0 & \\ldots & 0 &\\ldots & \\hat{u}_{n,G}\\hat{u}_{1,G} & \\hat{u}_{n,G}\\hat{u}_{2,G} & \\ldots &  \\hat{u}_{n,G}^2 \\end{matrix}\\right)\\]"
   },
   {
     "objectID": "diapositivas/errores-estandar.html#errores-estándar-agrupados-4",
     "href": "diapositivas/errores-estandar.html#errores-estándar-agrupados-4",
     "title": "Inferencia Causal 2026",
     "section": "Errores estándar agrupados",
-    "text": "Errores estándar agrupados\n\nEl resultado asintótico de consistencia depende de que \\(G\\to\\infty\\)\nSi \\(G\\) está fijo, no importa qué tan grande sea \\(N\\), \\(\\hat{V}_{CRVE}(\\hat{\\beta})\\) no será consistente\nAlgunos paquetes ajustan esta matriz de varianzas haciendo una corrección parecida a \\(HC1\\), pero ahora tomando en cuanta también \\(G\\) y no solo \\(N\\) (ver por ejemplo, vcovCR en R)\n\n\n\nCon pocos grupos, subestimamos los errores estándar y rechazamos la \\(H_0\\) más veces de lo que deberíamos (over-rejection)\nSi tenemos pocos grupos, recurrimos a otras soluciones (ver Cameron y Miller, 2015)\n\nInflar los errores con un corrector de sesgo\nBootstrap agrupado con refinamiento asintótico\n\nLa recomendación práctica es que se tomen en serio el problema de los pocos clusters\n¿Cuánto es poco? Cameron y Miller (2015) citan 50. (¡Qué raro, el número de estados en EUA!)"
+    "text": "Errores estándar agrupados\n\nEl resultado asintótico de consistencia depende de que \\(G\\to\\infty\\)\nSi \\(G\\) está fijo, no importa qué tan grande sea \\(N\\), \\(\\hat{V}_{CR}(\\hat{\\beta})\\) no será consistente\nAlgunos paquetes ajustan esta matriz de varianzas haciendo una corrección parecida a \\(HC1\\), pero ahora tomando en cuenta también \\(G\\) y no solo \\(N\\) (ver por ejemplo, vcovCR en R)\n\n\n\nCon pocos grupos, subestimamos los errores estándar y rechazamos la \\(H_0\\) más veces de lo que deberíamos (over-rejection)\nSi tenemos pocos grupos, recurrimos a otras soluciones (ver Cameron y Miller, 2015)\n\nInflar los errores con un corrector de sesgo\nBootstrap agrupado con refinamiento asintótico\n\nLa recomendación práctica es que se tomen en serio el problema de los pocos clusters\n¿Cuánto es poco? Cameron y Miller (2015) citan 50. (¡Qué raro, el número de estados en EUA!)"
   },
   {
     "objectID": "diapositivas/index.html",
     "href": "diapositivas/index.html",
     "title": "Diapositivas",
     "section": "",
-    "text": "Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. Las diapositivas se irán publicando conforme avance el semestre.\n\n\n\n\n01\n\n\nIntroducción\n\n\nSlides revealjs ↗\n\n \n\n02\n\n\nInferencia Causal\n\n\nSlides revealjs ↗\n\n \n\n03\n\n\nMétodos Experimentales\n\n\nSlides revealjs ↗\n\n \n\n04\n\n\nRegresión e Inferencia Estadística\n\n\nSlides revealjs ↗\n\n\n\n\n05\n\n\nErrores Estándar\n\n\nPróximamente\n\n\n\n\n06\n\n\nMúltiples Hipótesis\n\n\nPróximamente\n\n\n\n\n07\n\n\nVariables Instrumentales y LATE\n\n\nPróximamente\n\n\n\n\n08\n\n\nSelección por Observables\n\n\nPróximamente\n\n\n\n\n09\n\n\nDiferencia en Diferencias\n\n\nPróximamente\n\n\n\n\n10\n\n\nDiseños con Discontinuidades\n\n\nPróximamente\n\n\n\n\n11\n\n\nControl Sintético\n\n\nPróximamente\n\n\n\n\n12\n\n\nInferencia Causal, IA y Aprendizaje Automático\n\n\nPróximamente",
+    "text": "Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. Las diapositivas se irán publicando conforme avance el semestre.\n\n\n\n\n01\n\n\nIntroducción\n\n\nSlides revealjs ↗\n\n \n\n02\n\n\nInferencia Causal\n\n\nSlides revealjs ↗\n\n \n\n03\n\n\nMétodos Experimentales\n\n\nSlides revealjs ↗\n\n \n\n04\n\n\nRegresión e Inferencia Estadística\n\n\nSlides revealjs ↗\n\n \n\n05\n\n\nErrores Estándar\n\n\nSlides revealjs ↗\n\n\n\n\n06\n\n\nMúltiples Hipótesis\n\n\nPróximamente\n\n\n\n\n07\n\n\nVariables Instrumentales y LATE\n\n\nPróximamente\n\n\n\n\n08\n\n\nSelección por Observables\n\n\nPróximamente\n\n\n\n\n09\n\n\nDiferencia en Diferencias\n\n\nPróximamente\n\n\n\n\n10\n\n\nDiseños con Discontinuidades\n\n\nPróximamente\n\n\n\n\n11\n\n\nControl Sintético\n\n\nPróximamente\n\n\n\n\n12\n\n\nInferencia Causal, IA y Aprendizaje Automático\n\n\nPróximamente",
     "crumbs": [
       "Materiales",
       "Diapositivas"
