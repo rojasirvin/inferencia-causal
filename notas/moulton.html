@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Notas – Inferencia Causal 2026</title>
+<title>Factor de Moulton – Inferencia Causal 2026</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -106,6 +106,35 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../fonts/inter.css">
 </head>
@@ -279,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tareas/index.html">Materiales</a></li><li class="breadcrumb-item"><a href="../notas/index.html">Notas</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Factor de Moulton</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -381,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function(){
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../notas/index.html" class="sidebar-item-text sidebar-link active"><i class="bi bi-sticky" role="img">
+  <a href="../notas/index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-sticky" role="img">
 </i> 
  <span class="menu-text">Notas</span></a>
   </div>
@@ -405,9 +434,9 @@ document.addEventListener('DOMContentLoaded', function(){
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../tareas/index.html">Materiales</a></li><li class="breadcrumb-item"><a href="../notas/index.html">Notas</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Notas</h1>
+<h1 class="title">Factor de Moulton</h1>
 </div>
 
 
@@ -424,14 +453,107 @@ document.addEventListener('DOMContentLoaded', function(){
 </header>
 
 
-<div class="p-lede">
-<p>Notas complementarias del curso.</p>
-</div>
-<div class="linklist">
-<a class="ll" href="./moulton.html"><span class="ll-n">01</span> Factor de Moulton <span class="ll-ar">→</span></a> <a class="ll" href="./late.html"><span class="ll-n">02</span> LATE <span class="ll-ar">→</span></a> <a class="ll" href="./múltiples-hipótesis.html"><span class="ll-n">03</span> Múltiples hipótesis <span class="ll-ar">→</span></a>
-</div>
+<section id="la-matriz-de-varianzas-con-errores-agrupados" class="level2">
+<h2 class="anchored" data-anchor-id="la-matriz-de-varianzas-con-errores-agrupados">La matriz de varianzas con errores agrupados</h2>
+<p>Consideremos el siguiente modelo:</p>
+<p><span class="math display">\[y_{ig}=\beta_0+\beta_1 x_g+e_{ig}\]</span></p>
+<p>con <span class="math inline">\(x_g\)</span> invariante sobre los individuos del mismo grupo <span class="math inline">\(g\)</span> y observaciones agrupadas en <span class="math inline">\(G\)</span> grupos, todos de igual tamaño <span class="math inline">\(n\)</span>, por lo que <span class="math inline">\(N=nG\)</span>.</p>
+<p>Asumimos una estructura aditiva para los errores, <span class="math inline">\(e_{ig}=\nu_g+\eta_{ig}\)</span>, donde <span class="math inline">\(\nu_g\)</span> y <span class="math inline">\(\eta_{ig}\)</span> son independientes entre sí, tienen media cero y son homocedásticos. Se asume también que <span class="math inline">\(\nu_g\)</span> es independiente entre grupos y que <span class="math inline">\(\eta_{ig}\)</span> es independiente entre individuos.</p>
+<p>Asumimos que la covarianza de errores para dos observaciones <span class="math inline">\(i\)</span> y <span class="math inline">\(j\)</span>, <span class="math inline">\(i\neq j\)</span>, que pertenecen a <span class="math inline">\(g\)</span> es:</p>
+<p><span class="math display">\[E(e_{ig}e_{jg})=\overbrace{\rho_e}^{\substack{\text{coeficiente de correlación} \\ \text{intraclase residual}}} \underbrace{\sigma_e^2}_{\text{varianza residual}}\]</span></p>
+<p>Para derivar el <strong>factor de Moulton</strong> debemos encontrar la forma de la matriz de varianzas que resulta al tomar en cuenta esta estructura en los errores. Usemos el subíndice <span class="math inline">\(A\)</span> para denotar a la matriz de varianzas agrupada:</p>
+<p><span class="math display">\[V_A(\hat{\beta})=(X'X)^{-1}X'\Omega_A X(X'X)^{-1}\]</span> donde <span class="math inline">\(\Omega_A=E(ee'|X)\)</span>, siendo <span class="math inline">\(e\)</span> el vector de <span class="math inline">\(N\times 1\)</span> que apila los errores ordenados por grupo, <span class="math inline">\(e=(e_{1,1},\ldots,e_{n,1},e_{1,2},\ldots,e_{n,2},\ldots,e_{1,G},\ldots,e_{n,G})'\)</span>. El elemento típico de la matriz <span class="math inline">\(\Omega_A\)</span>, en el renglón <span class="math inline">\((i,g)\)</span> y la columna <span class="math inline">\((j,g')\)</span>, es: <span class="math display">\[E(e_{ig}e_{jg'})\]</span> Cuando <span class="math inline">\(i=j\)</span> y <span class="math inline">\(g=g'\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+E(e_{ig}^2)&amp;=V(e_{ig})=E\left[(\nu_g+\eta_{ig})^2\right]\\
+&amp;=\underbrace{E(\nu_g^2)}_{\sigma^2_{\nu}}+2\underbrace{E(\nu_g\eta_{ig})}_{0}+\underbrace{E(\eta_{ig}^2)}_{\sigma^2_{\eta}}\\
+&amp;=\sigma^2_{\nu}+\sigma^2_{\eta}\equiv\sigma^2_e
+\end{align*}
+\]</span></p>
+<p>Para dos individuos <span class="math inline">\(i\neq j\)</span> del mismo grupo <span class="math inline">\(g\)</span>, sabemos que lo único que tienen en común es <span class="math inline">\(\nu_g\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+E(e_{ig}e_{jg})&amp;=E\left[(\nu_g+\eta_{ig})(\nu_g+\eta_{jg})\right]\\
+&amp;=E(\nu_g^2)+\underbrace{E(\nu_g\eta_{jg})+E(\eta_{ig}\nu_g)+E(\eta_{ig}\eta_{jg})}_{0}\\
+&amp;=\sigma^2_{\nu}
+\end{align*}
+\]</span> Como por definición <span class="math inline">\(E(e_{ig}e_{jg})=\rho_e\sigma^2_e\)</span>, entonces:</p>
+<p><span class="math display">\[\rho_e\left(\sigma^2_{\nu}+\sigma^2_{\eta}\right)=\sigma^2_{\nu}\quad\Rightarrow\quad\rho_e=\frac{\sigma^2_{\nu}}{\sigma^2_{\nu}+\sigma^2_{\eta}}\]</span> es decir, <span class="math inline">\(\rho_e\)</span> es la fracción de la varianza total del error que se explica por el componente común al grupo.</p>
+<p>Finalmente, cuando <span class="math inline">\(g\neq g'\)</span>:</p>
+<p><span class="math display">\[E(e_{ig}e_{jg'})=0\]</span></p>
+<p>En resumen:</p>
+<p><span class="math display">\[
+\begin{align*}
+E(e_{ig}e_{jg'})=\begin{cases}\sigma^2_{\nu}+\sigma^2_{\eta}=\sigma^2_e &amp; \text{si } i=j,\;g=g' \\ \sigma^2_{\nu}=\rho_e\sigma^2_e &amp; \text{si } i\neq j,\;g=g' \\ 0 &amp; \text{si } g\neq g'
+\end{cases}
+\end{align*}
+\]</span></p>
+<p>Lo anterior implica que podemos escribir <span class="math inline">\(\Omega_A\)</span> como una matriz <strong>diagonal por bloques</strong>, con <span class="math inline">\(G\)</span> bloques de <span class="math inline">\(n\times n\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+\small
+\Omega_A=\left(\begin{matrix} \Omega_g &amp; 0 &amp; \ldots &amp; 0 \\ 0 &amp; \Omega_g &amp; \ldots &amp; 0 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \ldots &amp; \Omega_g \end{matrix}\right)\quad\text{con}\quad \Omega_g=\sigma^2_e\left(\begin{matrix} 1 &amp; \rho_e &amp; \ldots &amp; \rho_e \\ \rho_e &amp; 1 &amp; \ldots &amp; \rho_e \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \rho_e &amp; \rho_e &amp; \ldots &amp; 1\end{matrix}\right)
+\end{align*}
+\]</span></p>
+<p>Los <span class="math inline">\(G\)</span> bloques son idénticos porque todos los grupos tienen tamaño <span class="math inline">\(n\)</span> y asumimos que <span class="math inline">\(\nu_g\)</span> y <span class="math inline">\(\eta_{ig}\)</span> son homocedásticos.</p>
+<p>Notemos que, dado que <span class="math inline">\(\sigma^2_e =\sigma^2_{\nu}+\sigma^2_{\eta}\)</span>, podemos reescribir de forma compacta:</p>
+<p><span class="math display">\[\Omega_g=\sigma^2_{\eta}I_n+\sigma^2_{\nu}\iota_n\iota_n'\]</span> donde <span class="math inline">\(\iota_n\)</span> es un vector de unos.</p>
+<p>De forma similar, y para seguir a Moulton (1986), se puede escribir <span class="math inline">\(\Omega_g\)</span> de forma compacta factorizando <span class="math inline">\(\sigma^2_e\)</span>:</p>
+<p><span class="math display">\[\Omega_g=\sigma^2_e\left[(1-\rho_e)I_n+\rho_e\,\iota_n\iota_n'\right]\]</span> Noten que es la misma matriz. En la diagonal queda: <span class="math display">\[\sigma^2_e\left[(1-\rho_e)+\rho_e\right]=\sigma^2_e\]</span></p>
+<p>Y fuera de la diagonal queda:</p>
+<p><span class="math display">\[\sigma^2_e\rho_e=\sigma^2_{\nu}\]</span></p>
+</section>
+<section id="comparación-con-la-matriz-con-errores-clásicos" class="level2">
+<h2 class="anchored" data-anchor-id="comparación-con-la-matriz-con-errores-clásicos">Comparación con la matriz con errores clásicos</h2>
+<p>Siguiendo a Moulton (1986), buscamos lo siguiente</p>
+<p><span class="math display">\[f(\hat{\beta}_1)=\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}\]</span> donde <span class="math inline">\(V(\hat{\beta}_1)\)</span> se refiere al segundo elemento de la diagonal de la matriz <span class="math inline">\(V(\hat{\beta})\)</span>.</p>
+<p>Para obtener la varianza de <span class="math inline">\(\hat{\beta}_1\)</span> conviene escribir al estimador en desviaciones respecto a la media. Esto es una aplicación del <strong>teorema de Frisch-Waugh-Lovell (FWL)</strong> y siguiendo el resultado para la pendiente de una regresión bivariada, tenemos:</p>
+<p><span class="math display">\[\hat{\beta}_1=\frac{\sum_{g}\sum_{i}(x_g-\bar{x})(y_{ig}-\bar{y})}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}\]</span></p>
+<p>Notemos que <span class="math inline">\(\bar{y}=\beta_0+\beta_1\bar{x}+\bar{e}\)</span>. Con esto resulta que <span class="math inline">\(y_{ig}-\bar{y}=\beta_1(x_g-\bar{x})+(e_{ig}-\bar{e})\)</span>.</p>
+<p>Al sustituir arriba en el numerador y simplificar términos:</p>
+<p><span class="math display">\[\hat{\beta}_1=\beta_1+\frac{\sum_{g}\sum_{i}(x_g-\bar{x})(e_{ig}-\bar{e})}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}\]</span></p>
+<p>El término con <span class="math inline">\(\bar{e}\)</span> desaparece porque <span class="math inline">\(\sum_{g}\sum_{i}(x_g-\bar{x})\bar{e}=\bar{e}\sum_{g}\sum_{i}(x_g-\bar{x})=0\)</span>, es decir, las desviaciones respecto a la media suman cero. Por tanto:</p>
+<p><span class="math display">\[\hat{\beta}_1-\beta_1=\frac{\sum_{g}\sum_{i}(x_g-\bar{x})e_{ig}}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}\]</span></p>
+<p>Como <span class="math inline">\(x_g\)</span> <strong>no varía dentro del grupo</strong>, cada grupo aporta <span class="math inline">\(n\)</span> veces el mismo término y el denominador es:</p>
+<p><span class="math display">\[\sum_{g}\sum_{i}(x_g-\bar{x})^2=n\sum_{g}(x_g-\bar{x})^2\]</span></p>
+<p>Por su parte, el numerador puede reescribirse como una suma sobre grupos:</p>
+<p><span class="math display">\[\sum_{g}\sum_{i}(x_g-\bar{x})e_{ig}=\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}\]</span></p>
+<p>Obtengamos ahora la varianza del estimador, recordando que <span class="math inline">\(V(\hat{\beta}_1)=V(\hat{\beta}_1-\beta_1)\)</span> porque <span class="math inline">\(\beta_1\)</span> es una constante:</p>
+<p><span class="math display">\[V_A(\hat{\beta}_1)=V\left\{\frac{\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}}{n\sum_{g}(x_g-\bar{x})^2}\right\}\]</span></p>
+<p>Como <span class="math inline">\(\nu_g\)</span> es independiente entre grupos y <span class="math inline">\(\eta_{ig}\)</span> entre individuos, los <span class="math inline">\(G\)</span> términos del numerador son independientes entre sí, por lo que la varianza del numerador es la suma de las varianzas:</p>
+<p><span class="math display">\[V\left(\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}\right)=\sum_{g}(x_g-\bar{x})^2\,V\left(\sum_{i}e_{ig}\right)\]</span></p>
+<p>El denominador es una constante, así que sale al cuadrado. La expresión para la varianza del estimador queda como:</p>
+<p><span class="math display">\[V_A(\hat{\beta}_1)=\frac{\sum_{g}(x_g-\bar{x})^2\,V\left(\sum_{i}e_{ig}\right)}{\left(n\sum_{g}(x_g-\bar{x})^2\right)^2}\]</span></p>
+<p>Todo se reduce entonces a obtener <span class="math inline">\(V\left(\sum_{i}e_{ig}\right)\)</span>, que es la misma para todos los grupos. Y es justo aquí donde el agrupamiento importa: los errores <strong>dentro</strong> de un grupo no son independientes, así que a la suma de varianzas hay que añadirle los términos cruzados:</p>
+<p><span class="math display">\[
+\begin{align*}
+V\left(\sum_{i=1}^{n}e_{ig}\right)&amp;=\sum_{i}V(e_{ig})+\sum_{i\neq j}E(e_{ig}e_{jg})\\
+&amp;=n\sigma^2_e+n(n-1)\rho_e\sigma^2_e\\
+&amp;=n\sigma^2_e\left[1+(n-1)\rho_e\right]
+\end{align*}
+\]</span></p>
+<p>donde el factor <span class="math inline">\(n(n-1)\)</span> es el número de términos cruzados. Sustituyendo en la expresión de la varianza del estimador:</p>
+<p><span class="math display">\[
+\begin{align*}
+V_A(\hat{\beta}_1)&amp;=\frac{\sum_{g}(x_g-\bar{x})^2n\sigma^2_e\left[1+(n-1)\rho_e\right]}{(n\sum_{g}(x_g-\bar{x})^2)^2}\\
+&amp;=\frac{\sigma^2_e\left[1+(n-1)\rho_e\right]}{n\sum_{g}(x_g-\bar{x})^2}
+\end{align*}
+\]</span></p>
+<p>Si en cambio asumimos errores clásicos, imponemos <span class="math inline">\(\Omega_{MCO}=\sigma^2_e I_N\)</span>, es decir, ignoramos los términos fuera de la diagonal de cada bloque. Al sustituir en el <em>sándwich</em>, la <em>carnita</em> colapsa a:</p>
+<p><span class="math display">\[
+\begin{align*}
+V_{MCO}(\hat{\beta})&amp;=(X'X)^{-1}\sigma^2_e X'X(X'X)^{-1}\\&amp;=\sigma^2_e(X'X)^{-1}
+\end{align*}
+\]</span></p>
+<p>El software reporta el segundo elemento de la diagonal de esta matriz, que para este modelo es:</p>
+<p><span class="math display">\[V_{MCO}(\hat{\beta}_1)=\frac{\sigma^2_e}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}=\frac{\sigma^2_e}{n\sum_{g}(x_g-\bar{x})^2}\]</span></p>
+<p>Noten que eso es lo mismo que resulta al evaluar <span class="math inline">\(V_A(\hat{\beta}_1)\)</span> en <span class="math inline">\(\rho_e=0\)</span>.</p>
+<p>El cociente es el resultado de Moulton (1986):</p>
+<p><span class="math display">\[f(\hat{\beta}_1)=\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}=1+(n-1)\rho_e\]</span></p>
+<p><span class="math inline">\(\sqrt{f(\hat{\beta}_1)}\)</span> es el <strong>factor de Moulton</strong>.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
