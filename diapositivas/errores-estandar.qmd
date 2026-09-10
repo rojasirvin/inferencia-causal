@@ -324,16 +324,6 @@ $$\small \hat{\Sigma}=\left(\begin{matrix} \hat{u}_{1,1}^2 & \hat{u}_{1,1}\hat{u
 :::
 
 
-
-# {.divider background-color="#9B2247" data-state="nochrome"}
-
-Material de clase en versión preliminar.
-
-**No reproducir, no distribuir, no citar.**
-
-
-
-
 # Errores Estándar {.final background-color="#9B2247" data-state="nochrome"}
 
 ::: {.f-eyebrow}

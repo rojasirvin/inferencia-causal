@@ -58,25 +58,24 @@ xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 
 - A veces es difícil encontrar una expresión analítica de los errores estándar
 
-- La idea de las técnicas bootstrap es consutrir una distribución empírica del estimador de interés
-
-- Una muestra bootstrap es una muestra tomada de los mismos datos
-
-
-- En las rutinas para errores bootstrap, pensamos en $\{(y_1,x_1),\ldots,(y_N,X_n)\}$ como la población
+- La idea de las técnicas bootstrap es construir una distribución empírica del estimador de interés
 
 - Una muestra bootstrap es una muestra de tamaño $N$ tomada de la muestra original
 
 
-- El procedimiento bootstrap más usado es el bootstrap no paramétrico o boostrap en parejas (nos enfocaremos en este tipo de bootstrap en el curso)
+- En las rutinas para errores bootstrap, pensamos en $\{(y_1,x_1),\ldots,(y_N,x_N)\}$ como la población
 
-- La idea es remuestrear la pareja completa $(y_i,x_i)$
+
+
+- El procedimiento bootstrap más usado es el bootstrap no paramétrico o bootstrap en parejas (nos enfocaremos en este tipo de bootstrap en el curso)
+
+- La idea es remuestrear la pareja completa $W_i=(y_i,x_i)$
 
 ## Algoritmo para errores estándar bootstrap
 
 1. Dada una muestra $W_1,\ldots,W_N$, obtener una muestra de tamaño $N$, remuestreando de la muestra original **con reemplazo**
 
-1. Calcular el estadístico $\hat{\theta}_b$ usado con la muestra bootstrap (coeficiente de regresión, diferencia de medias, función de coeficientes)
+1. Calcular el estadístico $\hat{\theta}_b$ usando la muestra bootstrap (coeficiente de regresión, diferencia de medias, función de coeficientes)
 
 1. Repetir los pasos 1 y 2 $B$ veces, donde $B$ es lo suficientemente grande (usualmente 1000 es suficiente)
 
@@ -130,11 +129,11 @@ mean(data.b$expense_total)
 
 - Funciones de estimadores (aunque aquí el método Delta también podría ser usado)
 
-- Datos agrupados con pocos grupos (remuestrear grupos en vez de individuos)
+- Datos agrupados con pocos grupos (*wild cluster bootstrap*)
 
 - El consejo práctico es usar resultados teóricos cuando se puede (por ejemplo, las matrices robustas descritas antes)
 
-- Pensemos siempre en la estructura de los datos antes de hacer boostrap
+- Pensemos siempre en la estructura de los datos antes de hacer bootstrap
 
 - Usar una semilla siempre para poder reproducir sus resultados
 
@@ -146,11 +145,11 @@ mean(data.b$expense_total)
 
 - Propuesto originalmente por Liu (1988), cada muestra bootstrap tiene la siguiente forma:
 
-$$y_i^*=X_i\hat{\beta}+f(\hat{u}_i)v_i^*$$
+$$y_i^*=X_i'\hat{\beta}+f(\hat{u}_i)v_i^*$$
 - Noten que mantiene fijos los $X_i$ en cada muestra bootstrap
 
 
-- Una especificación comúnmente usada es hacer es $f(\hat{u}_i)=\hat{u}_i$ y 
+- Una especificación comúnmente usada es hacer $f(\hat{u}_i)=\hat{u}_i$ y 
 $$v_i^*=\begin{cases} 1 \quad\text{con probabilidad 0.5} \\ -1 \quad\text{con probabilidad 0.5} \end{cases}$$
 
 - $\hat{\beta}$ y $\hat{u}_i$ son estimados con la muestra original
@@ -173,39 +172,110 @@ $$v_i^*=\begin{cases} 1 \quad\text{con probabilidad 0.5} \\ -1 \quad\text{con pr
 
 - Una aplicación de las técnicas bootstrap es el *refinamiento asintótico* de la prueba $t$ de coeficientes de regresión
 
-- Supongamos que $H_0:\quad \beta=0$ y trabajamos con un nivel $\alpha$ 
+- Supongamos que $H_0:\quad\beta=\beta^0$ y trabajamos con un nivel $\alpha$
 
-- En cada repetición bootstrap el estadístico calculado es $t_b$
+- El estadístico de la muestra original es el de siempre:
 
-- Ordenamos los $B$ estadísticos obtenidos
+$$t=\frac{\hat{\beta}-\beta^0}{se(\hat{\beta})}$$
 
-- Rechazamos $H_0$ si $|t|$ está por encima del $(1-\alpha)$ésimo percentil de los $|t_b|$ en la distribución bootstrap
+- En cada repetición bootstrap calculamos ese mismo estadístico, pero centrado en $\hat{\beta}$ y no en $\beta^0$, porque dentro del mundo bootstrap el valor *verdadero* del parámetro es $\hat{\beta}$:
+
+$$t_b^*=\frac{\hat{\beta}_b^*-\hat{\beta}}{se(\hat{\beta}_b^*)}$$
+
+## Refinamiento asintótico
+
+- Ordenamos los $B$ valores de $|t_b^*|$
+
+- Rechazamos $H_0$ si $|t|$ está por encima del $(1-\alpha)$ésimo percentil de los $|t_b^*|$ en la distribución bootstrap^[Aquí conviene elegir $B$ de modo que $\alpha(B+1)$ sea entero, típicamente 999 o 9999, para que el percentil quede bien definido y no haya que interpolar entre dos estadísticos ordenados.]
 
 - A pesar de sus propiedades teóricas, el refinamiento asintótico es poco usado
 
+## Bootstrap salvaje con refinamiento asintótico
 
-## Jacknife
+- Tres marcas conviven de aquí en adelante: $\hat{\phantom{x}}$ para lo estimado con la muestra original sin restringir, $\tilde{\phantom{x}}$ para lo estimado bajo $H_0$, y $^*$ para lo calculado dentro de una muestra bootstrap
+
+
+- Las dos ideas anteriores se combinan de forma natural: el bootstrap salvaje respeta la heterocedasticidad y el refinamiento mejora la aproximación de la prueba $t$
+
+- Pero hay una diferencia importante cuando el objetivo es **contrastar** una hipótesis y no solo calcular un error estándar: el proceso generador bootstrap debe **imponer la nula**
+
+- Para ello usamos los residuales del modelo **restringido**:
+
+$$y_i^*=X_i'\tilde{\beta}+\tilde{u}_iv_i^*$$
+donde $\tilde{\beta}$ y $\tilde{u}_i$ se obtienen estimando el modelo **bajo** $H_0$, no con la muestra libre
+
+::: {.fragment}
+
+- La razón es que el percentil con el que rechazamos debe venir de una distribución en la que $H_0$ es cierta
+
+- [Davidson & Flachaire (2008)](https://www.sciencedirect.com/science/article/pii/S0304407608000833) muestran que esta versión, con residuales restringidos y pesos de Rademacher, es la que mejor se comporta en muestras finitas
+
+:::
+
+## Algoritmo del bootstrap salvaje restringido
+
+Para contrastar $H_0:\beta=\beta^0$:
+
+1. Estimar el modelo **sin restringir** y calcular $t=\dfrac{\hat{\beta}-\beta^0}{se(\hat{\beta})}$
+
+1. Estimar el modelo **bajo** $H_0$ y guardar $\tilde{\beta}$ y los residuales restringidos $\tilde{u}_i$
+
+1. Para cada $b=1,\ldots,B$, generar $y_i^*=X_i'\tilde{\beta}+\tilde{u}_iv_i^*$, con $v_i^*$ de Rademacher
+
+1. Estimar **sin restringir** con $(y^*,X)$ y calcular $t_b^*=\dfrac{\hat{\beta}_b^*-\beta^0}{se(\hat{\beta}_b^*)}$
+
+1. Rechazar $H_0$ si $|t|$ supera el percentil $(1-\alpha)$ de los $|t_b^*|$
+
+::: {.fragment}
+
+- Comparación del paso 4 con la diapositiva del refinamiento: allá centrábamos en $\hat{\beta}$ porque el valor *verdadero* del mundo bootstrap era $\hat{\beta}$; aquí centramos en $\beta^0$ porque el DGP ya impuso la nula
+
+:::
+
+## Wild cluster bootstrap
+
+- Con datos agrupados con **pocos** grupos, donde la CRVE subestima los errores estándar, [Cameron, Gelbach y Miller (2008)](https://doi.org/10.1162/rest.90.3.414) proponen el *wild cluster bootstrap*
+
+- El peso aleatorio se asigna **por grupo**, no por individuo
+
+$$y_{ig}^*=X_{ig}'\tilde{\beta}+\tilde{u}_{ig}v_g^*$$
+
+- Todas las observaciones del grupo $g$ reciben el **mismo** signo $v_g^*$, con lo que la muestra bootstrap conserva la correlación intragrupo que originó el problema
+
+- En cada repetición se estima con errores agrupados y se calcula $t_b^*$
+
+- Se rechaza con el percentil de los $|t_b^*|$, igual que antes
+
+## Wild cluster bootstrap
+
+- Con $G$ grupos solo existen $2^G$ vectores de signos posibles, por lo que si $G$ es pequeña conviene enumerarlos todos y el valor $p$ solo puede tomar unos pocos valores distintos
+
+- [Webb (2023)](https://doi.org/10.1111/caje.12661) propone una distribución de seis puntos en lugar de Rademacher, precisamente para $G$ pequeña
+
+- En R está implementado en `boottest()` del paquete `fwildclusterboot`. Sobre grupos de tamaños muy dispares, ver [MacKinnon y Webb (2017)](https://doi.org/10.1002/jae.2508)
+
+
+
+## Jackknife
 
 - Formalmente no es un método bootstrap
 
-- Una muestra jacknife es una muestra de tamaño $N-1$ construida a partir de la muestra original donde una observación es eliminada a la vez
+- Una muestra jackknife es una muestra de tamaño $N-1$ construida a partir de la muestra original donde una observación es eliminada a la vez
 
-- En cada muestra jacknife estimamos el estadístico de interés $\hat{\theta}_{(j)}$ (tendremos $N$ estadísticos)
+- En cada muestra jackknife estimamos el estadístico de interés $\hat{\theta}_{(j)}$ (tendremos $N$ estadísticos)
 
-- El error estándar jacknife será
-
-$$\hat{se}(\hat{\theta})=\left(\frac{N-1}{N}\sum_{j=1}^N\left(\hat{\theta}_{(j)}-\hat{\theta}\right)^2\right)^{1/2}$$
-
-- Funciona bien para *estadísticas suaves* y funciones lineales
-
-- Se puede hacer jacknife por bloques [(Cameron y Miller, 2015)](http://jhr.uwpress.org/content/50/2/317.short?casa_token=LU3qZABduyQAAAAA:ULxVXC96LBZLgeri-TafnH4u4KH-N_FxSQ0Cx2gAED5k1yXSvCs1IgLo4sR-4zyM-Pq8yko57aL8)
+- El error estándar jackknife será
 
 
-# {.divider background-color="#9B2247" data-state="nochrome"}
+$$\hat{se}(\hat\theta)=\left(\frac{N-1}{N}\sum_{j=1}^N\left(\hat\theta_{(j)}-\bar\theta_{(\cdot)}\right)^2\right)^{1/2},\qquad \bar\theta_{(\cdot)}=\frac{1}{N}\sum_j\hat\theta_{(j)}$$
 
-Material de clase en versión preliminar.
 
-**No reproducir, no distribuir, no citar.**
+
+
+
+- Funciona bien para *estadísticos suaves* y funciones lineales
+
+- Se puede hacer jackknife por bloques [(Cameron y Miller, 2015)](http://jhr.uwpress.org/content/50/2/317.short?casa_token=LU3qZABduyQAAAAA:ULxVXC96LBZLgeri-TafnH4u4KH-N_FxSQ0Cx2gAED5k1yXSvCs1IgLo4sR-4zyM-Pq8yko57aL8)
 
 
 
