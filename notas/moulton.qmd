@@ -1,0 +1,182 @@
+---
+title: "Factor de Moulton"
+lang: es
+---
+
+## La matriz de varianzas con errores agrupados
+
+Consideremos el siguiente modelo:
+
+$$y_{ig}=\beta_0+\beta_1 x_g+e_{ig}$$
+
+con $x_g$ invariante sobre los individuos del mismo grupo $g$ y observaciones agrupadas en $G$ grupos, todos de igual tamaño $n$, por lo que $N=nG$.
+
+Asumimos una estructura aditiva para los errores, $e_{ig}=\nu_g+\eta_{ig}$, donde $\nu_g$ y $\eta_{ig}$ son independientes entre sí, tienen media cero y son homocedásticos. Se asume también que $\nu_g$ es independiente entre grupos y que $\eta_{ig}$ es independiente entre individuos.
+
+Asumimos que la covarianza de errores para dos observaciones $i$ y $j$, $i\neq j$, que pertenecen a $g$ es:
+
+$$E(e_{ig}e_{jg})=\overbrace{\rho_e}^{\substack{\text{coeficiente de correlación} \\ \text{intraclase residual}}} \underbrace{\sigma_e^2}_{\text{varianza residual}}$$
+
+Para derivar el **factor de Moulton** debemos encontrar la forma de la matriz de varianzas que resulta al tomar en cuenta esta estructura en los errores. Usemos el subíndice $A$ para denotar a la matriz de varianzas agrupada:
+
+$$V_A(\hat{\beta})=(X'X)^{-1}X'\Omega_A X(X'X)^{-1}$$
+donde $\Omega_A=E(ee'|X)$, siendo $e$ el vector de $N\times 1$ que apila los errores ordenados por grupo,
+$e=(e_{1,1},\ldots,e_{n,1},e_{1,2},\ldots,e_{n,2},\ldots,e_{1,G},\ldots,e_{n,G})'$. El elemento típico de la matriz $\Omega_A$, en el renglón $(i,g)$ y la columna $(j,g')$, es:
+$$E(e_{ig}e_{jg'})$$
+Cuando $i=j$ y $g=g'$:
+
+$$
+\begin{align*}
+E(e_{ig}^2)&=V(e_{ig})=E\left[(\nu_g+\eta_{ig})^2\right]\\
+&=\underbrace{E(\nu_g^2)}_{\sigma^2_{\nu}}+2\underbrace{E(\nu_g\eta_{ig})}_{0}+\underbrace{E(\eta_{ig}^2)}_{\sigma^2_{\eta}}\\
+&=\sigma^2_{\nu}+\sigma^2_{\eta}\equiv\sigma^2_e
+\end{align*}
+$$
+
+Para dos individuos $i\neq j$ del mismo grupo $g$, sabemos que lo único que tienen en común es $\nu_g$: 
+
+$$
+\begin{align*}
+E(e_{ig}e_{jg})&=E\left[(\nu_g+\eta_{ig})(\nu_g+\eta_{jg})\right]\\
+&=E(\nu_g^2)+\underbrace{E(\nu_g\eta_{jg})+E(\eta_{ig}\nu_g)+E(\eta_{ig}\eta_{jg})}_{0}\\
+&=\sigma^2_{\nu}
+\end{align*}
+$$
+Como por definición $E(e_{ig}e_{jg})=\rho_e\sigma^2_e$, entonces:
+
+$$\rho_e\left(\sigma^2_{\nu}+\sigma^2_{\eta}\right)=\sigma^2_{\nu}\quad\Rightarrow\quad\rho_e=\frac{\sigma^2_{\nu}}{\sigma^2_{\nu}+\sigma^2_{\eta}}$$
+es decir, $\rho_e$ es la fracción de la varianza total del error que se explica por el componente común al grupo.
+
+
+Finalmente, cuando $g\neq g'$:
+
+$$E(e_{ig}e_{jg'})=0$$
+
+
+
+En resumen:
+
+$$
+\begin{align*}
+E(e_{ig}e_{jg'})=\begin{cases}\sigma^2_{\nu}+\sigma^2_{\eta}=\sigma^2_e & \text{si } i=j,\;g=g' \\ \sigma^2_{\nu}=\rho_e\sigma^2_e & \text{si } i\neq j,\;g=g' \\ 0 & \text{si } g\neq g'
+\end{cases}
+\end{align*}
+$$
+
+
+Lo anterior implica que podemos escribir $\Omega_A$ como una matriz **diagonal por bloques**, con $G$ bloques de $n\times n$:
+
+$$
+\begin{align*}
+\small
+\Omega_A=\left(\begin{matrix} \Omega_g & 0 & \ldots & 0 \\ 0 & \Omega_g & \ldots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \ldots & \Omega_g \end{matrix}\right)\quad\text{con}\quad \Omega_g=\sigma^2_e\left(\begin{matrix} 1 & \rho_e & \ldots & \rho_e \\ \rho_e & 1 & \ldots & \rho_e \\ \vdots & \vdots & \ddots & \vdots \\ \rho_e & \rho_e & \ldots & 1\end{matrix}\right)
+\end{align*}
+$$
+
+Los $G$ bloques son idénticos porque todos los grupos tienen tamaño $n$ y asumimos que $\nu_g$ y $\eta_{ig}$ son homocedásticos.
+
+Notemos que, dado que $\sigma^2_e =\sigma^2_{\nu}+\sigma^2_{\eta}$, podemos reescribir de forma compacta:
+
+$$\Omega_g=\sigma^2_{\eta}I_n+\sigma^2_{\nu}\iota_n\iota_n'$$
+donde $\iota_n$ es un vector de unos.
+
+De forma similar, y para seguir a Moulton (1986), se puede escribir $\Omega_g$ de forma compacta factorizando $\sigma^2_e$:
+
+$$\Omega_g=\sigma^2_e\left[(1-\rho_e)I_n+\rho_e\,\iota_n\iota_n'\right]$$
+Noten que es la misma matriz. En la diagonal queda:
+$$\sigma^2_e\left[(1-\rho_e)+\rho_e\right]=\sigma^2_e$$
+
+Y fuera de la diagonal queda:
+
+$$\sigma^2_e\rho_e=\sigma^2_{\nu}$$
+
+## Comparación con la matriz con errores clásicos
+
+Siguiendo a Moulton (1986), buscamos lo siguiente
+
+$$f(\hat{\beta}_1)=\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}$$
+donde $V(\hat{\beta}_1)$ se refiere al segundo elemento de la diagonal de la matriz $V(\hat{\beta})$.
+
+
+Para obtener la varianza de $\hat{\beta}_1$ conviene escribir al estimador en desviaciones respecto a la media. Esto es una aplicación del **teorema de Frisch-Waugh-Lovell (FWL)** y siguiendo el resultado para la pendiente de una regresión bivariada, tenemos:
+
+$$\hat{\beta}_1=\frac{\sum_{g}\sum_{i}(x_g-\bar{x})(y_{ig}-\bar{y})}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}$$
+
+Notemos que $\bar{y}=\beta_0+\beta_1\bar{x}+\bar{e}$. Con esto resulta que $y_{ig}-\bar{y}=\beta_1(x_g-\bar{x})+(e_{ig}-\bar{e})$.
+
+Al sustituir arriba en el numerador y simplificar términos:
+
+$$\hat{\beta}_1=\beta_1+\frac{\sum_{g}\sum_{i}(x_g-\bar{x})(e_{ig}-\bar{e})}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}$$
+
+El término con $\bar{e}$ desaparece porque $\sum_{g}\sum_{i}(x_g-\bar{x})\bar{e}=\bar{e}\sum_{g}\sum_{i}(x_g-\bar{x})=0$, es decir, las desviaciones respecto a la media suman cero. Por tanto:
+
+$$\hat{\beta}_1-\beta_1=\frac{\sum_{g}\sum_{i}(x_g-\bar{x})e_{ig}}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}$$
+
+
+Como $x_g$ **no varía dentro del grupo**, cada grupo aporta $n$ veces el mismo término y el denominador es:
+
+
+$$\sum_{g}\sum_{i}(x_g-\bar{x})^2=n\sum_{g}(x_g-\bar{x})^2$$
+
+
+Por su parte, el numerador puede reescribirse como una suma sobre grupos:
+
+$$\sum_{g}\sum_{i}(x_g-\bar{x})e_{ig}=\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}$$
+
+Obtengamos ahora la varianza del estimador, recordando que $V(\hat{\beta}_1)=V(\hat{\beta}_1-\beta_1)$ porque $\beta_1$ es una constante:
+
+$$V_A(\hat{\beta}_1)=V\left\{\frac{\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}}{n\sum_{g}(x_g-\bar{x})^2}\right\}$$
+
+
+Como $\nu_g$ es independiente entre grupos y $\eta_{ig}$ entre individuos, los $G$ términos del numerador son independientes entre sí, por lo que la varianza del numerador es la suma de las varianzas:
+
+$$V\left(\sum_{g}(x_g-\bar{x})\sum_{i}e_{ig}\right)=\sum_{g}(x_g-\bar{x})^2\,V\left(\sum_{i}e_{ig}\right)$$
+
+El denominador es una constante, así que sale al cuadrado. La expresión para la varianza del estimador queda como:
+
+$$V_A(\hat{\beta}_1)=\frac{\sum_{g}(x_g-\bar{x})^2\,V\left(\sum_{i}e_{ig}\right)}{\left(n\sum_{g}(x_g-\bar{x})^2\right)^2}$$
+
+Todo se reduce entonces a obtener $V\left(\sum_{i}e_{ig}\right)$, que es la misma para todos los grupos. Y es justo aquí donde el agrupamiento importa: los errores **dentro** de un grupo no son independientes, así que a la suma de varianzas hay que añadirle los términos cruzados:
+
+$$
+\begin{align*}
+V\left(\sum_{i=1}^{n}e_{ig}\right)&=\sum_{i}V(e_{ig})+\sum_{i\neq j}E(e_{ig}e_{jg})\\
+&=n\sigma^2_e+n(n-1)\rho_e\sigma^2_e\\
+&=n\sigma^2_e\left[1+(n-1)\rho_e\right]
+\end{align*}
+$$
+
+donde el factor $n(n-1)$ es el número de términos cruzados. Sustituyendo en la expresión de la varianza del estimador:
+
+$$
+\begin{align*}
+V_A(\hat{\beta}_1)&=\frac{\sum_{g}(x_g-\bar{x})^2n\sigma^2_e\left[1+(n-1)\rho_e\right]}{(n\sum_{g}(x_g-\bar{x})^2)^2}\\
+&=\frac{\sigma^2_e\left[1+(n-1)\rho_e\right]}{n\sum_{g}(x_g-\bar{x})^2}
+\end{align*}
+$$
+
+Si en cambio asumimos errores clásicos, imponemos $\Omega_{MCO}=\sigma^2_e I_N$, es decir, ignoramos los términos fuera de la diagonal de cada bloque. Al sustituir en el *sándwich*, la *carnita* colapsa a:
+
+$$
+\begin{align*}
+V_{MCO}(\hat{\beta})&=(X'X)^{-1}\sigma^2_e X'X(X'X)^{-1}\\&=\sigma^2_e(X'X)^{-1}
+\end{align*}
+$$
+
+El software reporta el segundo elemento de la diagonal de esta matriz, que para este modelo es:
+
+$$V_{MCO}(\hat{\beta}_1)=\frac{\sigma^2_e}{\sum_{g}\sum_{i}(x_g-\bar{x})^2}=\frac{\sigma^2_e}{n\sum_{g}(x_g-\bar{x})^2}$$
+
+Noten que eso es lo mismo que resulta al evaluar $V_A(\hat{\beta}_1)$ en $\rho_e=0$.
+
+El cociente es el resultado de Moulton (1986):
+
+$$f(\hat{\beta}_1)=\frac{V_A(\hat{\beta}_1)}{V_{MCO}(\hat{\beta}_1)}=1+(n-1)\rho_e$$
+
+$\sqrt{f(\hat{\beta}_1)}$ es el **factor de Moulton**.
+
+
+
+
+
+
