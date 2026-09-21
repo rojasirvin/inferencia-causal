@@ -9,6 +9,6 @@ Notas complementarias del curso.
 
 <div class="linklist">
 <a class="ll" href="./moulton.html"><span class="ll-n">01</span> Factor de Moulton <span class="ll-ar">→</span></a>
-<a class="ll" href="./late.html"><span class="ll-n">02</span> LATE <span class="ll-ar">→</span></a>
-<a class="ll" href="./múltiples-hipótesis.html"><span class="ll-n">03</span> Múltiples hipótesis <span class="ll-ar">→</span></a>
+<a class="ll" href="./múltiples-hipótesis.html"><span class="ll-n">02</span> Múltiples hipótesis <span class="ll-ar">→</span></a>
+<a class="ll" href="./late.html"><span class="ll-n">03</span> LATE <span class="ll-ar">→</span></a>
 </div>
