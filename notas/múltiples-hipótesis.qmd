@@ -5,7 +5,7 @@ lang: es
 
 ```{r setup}
 #| echo: false
-#| warning: false 
+#| warning: false
 #| message: false
 knitr::opts_chunk$set(echo = TRUE,
                       warning = FALSE,
@@ -24,14 +24,14 @@ library(gtExtras)
 
 En el contexto de evaluación, cometemos el **error tipo I** al concluir que hay un efecto de tratamiento cuando la $H_0$ es verdadera, es decir, cuando $H_0:\;\beta_i=0$. En una investigación fijamos $\alpha$, la probabilidad de rechazar $H_0$ cuando $H_0$ es cierta. Por ejemplo, en economía trabajamos con $\alpha=0.05$ o $\alpha=0.01$.
 
-El problema con probar múltiples hipótesis es que inflamos la tasa de error tipo I. Por ejemplo, si tenemos 100 hipótesis y si usamos un valor estándar de $\alpha=0.05$, esperaríamos rechazar 5 hipótesis *por suerte*.
+El problema con probar múltiples hipótesis es que inflamos la tasa de error tipo I. Por ejemplo, si tenemos 100 hipótesis en las que la $H_0$ es cierta y si usamos un valor estándar de $\alpha=0.05$, esperaríamos rechazar 5 hipótesis *por suerte*.
 
 
 Si realizamos una prueba, la probabilidad de cometer un error es $\alpha$ y la de no cometer un error es $1-\alpha$.
 
 Si realizamos $n$ pruebas, la probabilidad de no cometer un error es $(1-\alpha)^n$ y la probabilidad de cometer al menos un error es $1-(1-\alpha)^n$.
 
-Es decir, la probabilidad de cometer al menos un error se incrementa exponencialmente.
+Es decir, la probabilidad de cometer al menos un error crece rápidamente y se acerca a 1.
 
 Veamos esto gráficamente:
 
@@ -41,7 +41,7 @@ alpha=0.05
 n <- 1:1000
 p <- 1-(1-alpha)^n
 
-plot(p,n, xlab="n", ylab="1-(1-alpha)^n")
+plot(n,p, xlab="n", ylab="1-(1-alpha)^n")
 
 ```
 
@@ -49,33 +49,33 @@ plot(p,n, xlab="n", ylab="1-(1-alpha)^n")
 Para enfrentar este problema seguimos dos estrategias:
 
   - Controlar o ajustar $\alpha$
-  
+
   - Crear índices que agreguen varias variables
-  
+
 
 ## Control del error tipo I
 
-Siguiendo a Popper (1995), definimos *familias* de variables y haremos el ajuste *hacia adentro* de estas familias. Por ejemplo, en el artículo que estudiamos de Banerjee et al. (2015), las familias son:
+Siguiendo a Shaffer (1995), definimos *familias* de variables y haremos el ajuste *hacia adentro* de estas familias. Por ejemplo, en el artículo que estudiamos de Banerjee et al. (2015), las familias son:
 
   - Seguridad alimentaria
   - Consumo
   - Activos
   - Salud mental
-  
-Dentro de cada familia tenemos $n$ hipótesis $H_i$, con un valor $p$ asociado $p_i$. Recordemos que $p_i$ es la probabilidad de que el estadístico $T_i$ exceda el valor teórico $t_i$. Ordenemos las hipótesis de menor a mayor,con $p_1$ siendo el valor más pequeño: $p_1\leq p_2\ldots \leq p_n$.
+
+Dentro de cada familia tenemos $n$ hipótesis $H_i$, con un valor $p$ asociado $p_i$. Recordemos que $p_i$ se define como la probabilidad de observar un estadístico al menos tan extremo como el observado, bajo la $H_0$. Ordenemos las hipótesis de menor a mayor, con $p_1$ siendo el valor más pequeño: $p_1\leq p_2\ldots \leq p_n$.
 
 
 ### Método de Bonferroni
 
-El método propuesto por Bonferroni controla la **tasa de error por familia** (FEWR por *family-wise error rate*) definida como la probabilidad de cometer al menos un error tipo I.
+El método propuesto por Bonferroni controla la **tasa de error por familia** (FWER por *family-wise error rate*) definida como la probabilidad de cometer al menos un error tipo I.
 
 Este método consiste en rechazar $H_i$ si $p_i\leq \alpha_i$, donde $\alpha_i$ se escoge de forma que $\sum_i\alpha_i=\alpha$. Usualmente se hace $\alpha_i=\frac{\alpha}{n}$.
 
-Por ejemplo, con dos tests y $\alpha=0.05$, $\alpha_i^B=0.025$.
+Por ejemplo, con dos pruebas y $\alpha=0.05$, $\alpha_i^B=0.025$.
 
 Noten que esta corrección es bastante conservadora.
 
-Alternativamente, podemos ver esta correción como crear unos valores $p^B$ ajustados: $p_i^B=p_i\times n$.
+De forma equivalente, podemos ver este método como crear unos valores $p^B$ ajustados: $p_i^B=\min(p_i\times n,1)$.
 
 ¿Por qué preocuparnos por la FWER?
 
@@ -83,81 +83,125 @@ La idea de la FWER tiene sentido si nos preocupa tener incluso un solo falso pos
 
 ### Método de Benjamini y Hochberg
 
-Este método controla la tasa de falso descubrimiento. Si $V$ es el número de falsos rechazos (cuando rechazamos la $H_0$ que es verdadera) y si $R$ es el número total de rechazos, entonces $Q=V/R$ es la proporción de falsos rechazos.
+Este método controla la tasa de falso descubrimiento. Si $V$ es el número de falsos rechazos (cuando rechazamos la $H_0$ que es verdadera) y si $R$ es el número total de rechazos, entonces $Q=V/R$ es la proporción de falsos rechazos (por convención $Q=0$ si $R=0$).
 
-Al valor esperado de $Q$ se le conoce como **tasa de falsos rechazos** (FDR por *false discovery rate*).
+Al valor esperado de $Q$ se le conoce como **tasa de falso descubrimiento** (FDR por *false discovery rate*).
 
 Sea $k$ el más grande de los $i$ tal que
 
 $$p_i\leq\frac{i}{n}\alpha$$
-entonces la corrección consiste en rechazar todos los $H_i$ para $i=1,2,\ldots,k$. En la práctica usamos R
+entonces la corrección consiste en rechazar todos los $H_i$ para $i=1,2,\ldots,k$.
+
+Noten que esto **no** es lo mismo que comparar cada $p_i$ contra su propio umbral: una vez encontrado $k$, se rechazan *todas* las hipótesis hasta $k$, aunque alguna intermedia no cumpla la desigualdad.
+
+En la práctica usamos algún software para programar algoritmos o funciones ya definidas.
 
 
 ### Ejemplo: Benjamini & Hochberg (1995)
 
-Usemos los [datos del artículo](../files/data_benjamini_hochberg.csv) de Benjamini & Hochberg (1995), que tienen 15 hipótesis y trabajan con $\alpha=0.05$:
+Usemos los [datos del artículo](../files/data_benjamini_hochberg.csv) de Benjamini & Hochberg (1995), que tienen 15 hipótesis (ya ordenadas) y trabajan con $\alpha=0.05$:
 
 ```{r}
 
 data.pvalues<-read_csv("../files/data_benjamini_hochberg.csv",
-                       locale = locale(encoding = "latin1"))  
-n <- 15
+                       locale = locale(encoding = "latin1"))
+n <- nrow(data.pvalues)
 alpha <- 0.05
 
 data.pvalues
 ```
 
-Si hacemos la correción de Bonferroni:
+Si hacemos la corrección de Bonferroni:
 
 ```{r}
-data.bonferroni <- data.pvalues %>% 
-  mutate(bonferroni_alpha=alpha/n) %>% 
-  mutate(bonferrini_rechazar=ifelse(poriginal<=bonferroni_alpha,1,0))
+data.bonferroni <- data.pvalues %>%
+  mutate(bonferroni_alpha=alpha/n) %>%
+  mutate(bonferroni_rechazar=ifelse(poriginal<=bonferroni_alpha,1,0))
 
 data.bonferroni
 ```
 
 
-Pero si ahora hacemos la de Benjamini & Hochberg
+Pero si ahora hacemos la de Benjamini & Hochberg:
 
 ```{r}
-data.bh <- data.pvalues %>% 
-  mutate(bh_alpha=alpha*hipotesis/n) %>% 
-  mutate(bh_rechazar=ifelse(poriginal<=bh_alpha,1,0))
+data.bh <- data.pvalues %>%
+  mutate(bh_alpha    = alpha*hipotesis/n,
+         cumple      = poriginal <= bh_alpha,
+         k           = max(hipotesis[cumple]),
+         bh_rechazar = ifelse(hipotesis <= k, 1, 0))
 
 data.bh
 ```
 
+La columna `k` sale constante porque $k$ es un solo número para toda la familia. Con estos datos `cumple` y `bh_rechazar` coinciden, pero no tienen por qué hacerlo: si alguna hipótesis intermedia no cumpliera la desigualdad, de todas formas se rechazaría por estar antes de $k$.
+
+Bonferroni rechaza tres hipótesis y Benjamini & Hochberg rechaza cuatro.
+
+### Los mismos resultados con `p.adjust`
+
+En lugar de comparar cada $p_i$ contra su umbral, `p.adjust` devuelve los valores $p$ **ajustados**, que comparamos contra $\alpha$:
+
+```{r}
+data.ajustados <- data.pvalues %>%
+  mutate(p_bonferroni    = p.adjust(poriginal, "bonferroni"),
+         p_bh            = p.adjust(poriginal, "BH"),
+         rech_bonferroni = ifelse(p_bonferroni <= alpha, 1, 0),
+         rech_bh         = ifelse(p_bh         <= alpha, 1, 0))
+
+data.ajustados
+```
+
+Se obtienen exactamente las mismas conclusiones que calculando los umbrales a mano.
+
 ## Creación de índices
 
-Otra forma comúnmente usada de evitar el problema de las múltiples hipótesis es crear índices. Kling, Liebmand y Katz (2007) proponen el siguiente promedio de los $z$-score para generar un solo índice. Para ello, se sigue el siguiente procedimiento:
+### Índice de Kling, Liebman y Katz
 
-1. Definir las familias y las variables que componen cada familia, donde $y_{ij}$ es la $j$ésima variable en la familia con $J$ variables.
-  
-1. Definir las varibles $y_{ij}$ de tal forma que mayores valores se interpreten como *mejora*.
-  
-1. Crear $z_{ij}$ como $z_{ij}=\frac{y_{ij}-\bar{y_j}^C}{sd(y_j)^C}\sim(0,1)$, es decir, estandarizar cada una de las $J$ variables usando al grupo de control como referencia.
-  
-1. Crear $z_i$, un solo índice para cada individuo que agregue los $J$ índices creados antes
+Otra forma comúnmente usada de evitar el problema de las múltiples hipótesis es crear índices. Kling, Liebman y Katz (2007) proponen el siguiente promedio de los $z$-score para generar un solo índice. Para ello, se sigue el siguiente procedimiento:
+
+1. Definir las familias y las variables o indicadores que componen cada familia, donde $y_{ij}$ es la $j$-ésima variable en la familia con $J$ variables.
+
+1. Definir las variables $y_{ij}$ de tal forma que mayores valores se interpreten como *mejora*.
+
+1. Crear $z_{ij}$ como $z_{ij}=\frac{y_{ij}-\bar{y}_j^C}{sd(y_j)^C}\sim(0,1)$, es decir, estandarizar cada una de las $J$ variables usando al grupo de control como referencia, de modo que en ese grupo tenga media 0 y varianza 1.
+
+1. Crear $z_i$, un solo índice para cada individuo que agregue los $J$ $z$-*scores* creados antes.
 
 El procedimiento descrito en Banerjee et al. (2015) es bastante general, pues incluye el caso donde hay varias rondas de seguimiento y varios países.
-  
+
 Podemos escribir el índice descrito como:
 
-   $$z_i=\frac{(\frac{1}{J}\sum_j z_{ij})-\bar{z}_j^C}{sd(z_j^C)}$$
+$$z_i=\frac{\bar{z}_i-\overline{\bar{z}}^C}{sd(\bar{z}^C)}$$
+
+donde $\bar{z}_i=\frac{1}{J}\sum_{j=1}^{J} z_{ij}$ y $\overline{\bar{z}}^C$ y $sd(\bar{z}^C)$ son la media y la desviación estándar de $\bar{z}_i$ en el grupo de control.
+
+Es importante notar que la reestandarización se hace sobre el **promedio** $\bar{z}_i$, no sobre cada $z_{ij}$. Cada $z_{ij}$ ya tiene media 0 y desviación estándar 1 en el control por construcción, así que estandarizarlos otra vez no haría nada. El promedio, en cambio, tiene desviación estándar menor que 1, y cuánto menor depende de las correlaciones entre las variables de la familia.
 
 Esta transformación tiene la ventaja de que en la siguiente regresión de efecto de tratamiento
 
-$$z_i=\alpha+\beta T_i + X_i'\gamma+\varepsilon_i$$
+$$z_i=\phi+\beta T_i + X_i'\gamma+\varepsilon_i$$
 
-el coeficiente $\beta$ se interpreta como el efecto del tratamiento medido en desviaciones estándar con respecto a la media del grupo de control.
+el coeficiente $\beta$ se interpreta como el efecto del tratamiento expresado en desviaciones estándar del grupo de control ($\beta=0.2$ significa que el tratamiento mueve el índice 0.2 desviaciones estándar).
 
-Noten que todos las variables dentro de la familia *pesan* igual. Quizás nos gustaría tomar en cuenta la correlación entre las variables dentro del índice
+Noten que todas las variables dentro de la familia *pesan* igual. Quizás nos gustaría tomar en cuenta la correlación entre las variables dentro del índice.
 
 ### Índice de Anderson
 
 [Anderson (2008)](https://are.berkeley.edu/~mlanderson/pdf/Anderson%202008a.pdf) propone el siguiente índice, que puede verse como una generalización del de Kling:
 
-$$\bar{s}_i=\frac{1}{W_{i}}\sum_{j\in J} w_j z_{ij}$$
+$$\bar{s}_i=\frac{1}{W_{i}}\sum_{j\in J_i} w_{j} z_{ij}$$
 
-En este índice, $w_j$ es el peso para la variable $j$ y $W_i=\sum_{j\in J}w_{j}$. Los pesos son una función de la matriz de covarianzas entre las variables que conforman la familia. Diversos software ya incluyen funciones para obtener los índices de Anderson (2008).
+donde $w_{j}$ es el peso para la variable o indicador $j$ y $W_i=\sum_{j\in J_i}w_{j}$, con $J_i$ el conjunto de variables observadas para el individuo $i$.
+
+En este índice, $w_{j}$ es la suma de la $j$-ésima fila de $\Sigma^{-1}$, la inversa de la matriz de covarianzas de $z_{ij}$. Esto lo hace más eficiente que el índice de Kling, al otorgar menor peso a las variables más correlacionadas entre sí: las variables poco correlacionadas aportan información nueva y por eso pesan más.
+
+Además usa toda la información disponible, pues las variables faltantes simplemente se ignoran y los pesos restantes se renormalizan, de modo que las variables con menos valores faltantes terminan pesando más. En la práctica, $\bar{s}_i$ puede estandarizarse con respecto al grupo de control para facilitar su interpretación.
+
+Anderson (2008) muestra que podemos calcular $\bar{s}_i$ como:
+
+$$\bar{s}_i=(\mathbf{1}'\Sigma^{-1}\mathbf{1})^{-1}(\mathbf{1}'\Sigma^{-1}\mathbf{z}_{i})$$
+
+donde $\mathbf{1}$ es un vector columna de unos y $\mathbf{z}_i$ es un vector columna de las variables estandarizadas de $i$. Esta expresión funciona cuando no hay valores faltantes, pero es también fácil extender el resultado cuando sí los hay.
+
+Diversos software ya incluyen funciones para obtener los índices de Anderson (2008).
