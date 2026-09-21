@@ -97,7 +97,7 @@ a. [5 puntos] Realice una figura análoga a la figura 3.1.1 en MHE, usando los d
 
 ## Pregunta 5
 
-Use los datos del archivo **merged_all_surveys.dta** para este problema. En este problema replicará la fila correspondiente a la variable *Sales in past month* (ventas del mes anterior) de la Tabla 1 en [Davies et al. (2023)](https://www.sciencedirect.com/science/article/pii/S0304387823002006?casa_token=r-z1U7TSZIsAAAAA:HSQyyO487njqBaaqvdO9jarzo8maMxnJRijeb3YsQhj8R4yF9jAxxdvwmRpd3P2KAYwx75ivFS4).[^1]
+Use los datos del archivo **merged_all_surveys.dta** para este problema. En este problema replicará la fila correspondiente a la variable *Sales in past month* (ventas del mes anterior) de la Tabla 1 en [Davies et al. (2023)](https://doi.org/10.1016/j.jdeveco.2023.103244).[^1]
   
 [^1]: Davies, E., Deffebach, P., Iacovone, L., & Mckenzie, D. (2024). Training Microentrepreneurs Over Zoom: Experimental Evidence from Mexico. *Journal of Development Economics*, 167, 103244.
 

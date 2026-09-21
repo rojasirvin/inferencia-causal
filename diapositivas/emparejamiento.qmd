@@ -1187,7 +1187,7 @@ Existen muchas maneras de explotar la muestra emparejada. Aquí veremos la más 
 
 Dependiendo de si el emparejamiento ocurre con o sin reemplazo, y de la naturaleza de la variable dependiente, se recomiendan distintas maneras de estimar el efecto del tratamiento y hacer inferencia. Una buena guía está en la documentación de [MatchIt](https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html).
 
-Por ejemplo, cuando se realiza el emparejamiento sin reemplazo, [Abadie & Spiess (2019)](https://www.tandfonline.com/doi/full/10.1080/01621459.2020.1840383?casa_token=7VdQFPydVtIAAAAA%3A3VRshT4TmqjnyzS2Nz2EBmFi54NlHDIWdtD-mDdAdPHuv51BhbXh1qYOwsRo8yH_WhA1UoUbvP0Kqg) muestran que podemos estimar los errores estándar simplemente agrupando a nivel de pareja (o grupo) emparejado (**subclass** es una columna que enumera a las parejas o grupos emparejados y es construida automáticamente por *matchit*).
+Por ejemplo, cuando se realiza el emparejamiento sin reemplazo, [Abadie & Spiess (2022)](https://doi.org/10.1080/01621459.2020.1840383) muestran que podemos estimar los errores estándar simplemente agrupando a nivel de pareja (o grupo) emparejado (**subclass** es una columna que enumera a las parejas o grupos emparejados y es construida automáticamente por *matchit*).
 
 
 ## Efecto de tratamiento

@@ -88,6 +88,7 @@ Las lecturas obligatorias (marcadas con “*”) permiten una discusión informa
 ## Semana 5
 
 * Corrección por prueba de múltiples hipótesis  
+  + Anderson, M. L. (2008). [Multiple inference and gender differences in the effects of early intervention: A reevaluation of the Abecedarian, Perry Preschool, and Early Training Projects](https://doi.org/10.1198/016214508000000841). *Journal of the American statistical Association*, 103(484), 1481-1495.
   + Angelucci, M., Karlan, D., & Zinman, J. (2015). [Microcredit impacts: Evidence from a randomized microcredit program placement experiment by Compartamos Banco](https://doi.org/10.1257/app.20130537). *American Economic Journal: Applied Economics*, 7(1), 151-82.
   + Benjamini, Y., & Hochberg, Y. (1995). [Controlling the false discovery rate: a practical and powerful approach to multiple testing](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x). *Journal of the royal statistical society. Series B (Methodological)*, 289-300.  
   + Brodeur, A., Lé, M., Sangnier, M., & Zylberberg, Y. (2016). [Star Wars: The empirics strike back](https://doi.org/10.1257/app.20150044). *American Economic Journal: Applied Economics*, 8(1), 1-32. 
