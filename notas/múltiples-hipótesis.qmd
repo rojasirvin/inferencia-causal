@@ -22,7 +22,7 @@ library(gtExtras)
 
 # El problema de probar múltiples hipótesis
 
-En el contexto de evaluación, cometemos el **error tipo I** al concluir que hay un efecto de tratamiento cuando la $H_0$ es verdadera, es decir, cuando $H_0:\;\beta_i=0$. En una investigación fijamos $\alpha$, la probabilidad de rechazar $H_0$ cuando $H_0$ es cierta. Por ejemplo, en economía trabajamos con $\alpha=0.05$ o $\alpha=0.01$.
+En el contexto de inferencia causal, cometemos el **error tipo I** al concluir que hay un efecto cuando la $H_0$ es verdadera, es decir, cuando $H_0:\;\beta_i=0$. En una investigación fijamos $\alpha$, la probabilidad de rechazar $H_0$ cuando $H_0$ es cierta. Por ejemplo, en economía trabajamos con $\alpha=0.05$ o $\alpha=0.01$.
 
 El problema con probar múltiples hipótesis es que inflamos la tasa de error tipo I. Por ejemplo, si tenemos 100 hipótesis en las que la $H_0$ es cierta y si usamos un valor estándar de $\alpha=0.05$, esperaríamos rechazar 5 hipótesis *por suerte*.
 
@@ -188,7 +188,7 @@ Noten que todas las variables dentro de la familia *pesan* igual. Quizás nos gu
 
 ### Índice de Anderson
 
-[Anderson (2008)](https://are.berkeley.edu/~mlanderson/pdf/Anderson%202008a.pdf) propone el siguiente índice, que puede verse como una generalización del de Kling:
+Anderson (2008) propone el siguiente índice, que puede verse como una generalización del de Kling:
 
 $$\bar{s}_i=\frac{1}{W_{i}}\sum_{j\in J_i} w_{j} z_{ij}$$
 
@@ -196,12 +196,22 @@ donde $w_{j}$ es el peso para la variable o indicador $j$ y $W_i=\sum_{j\in J_i}
 
 En este índice, $w_{j}$ es la suma de la $j$-ésima fila de $\Sigma^{-1}$, la inversa de la matriz de covarianzas de $z_{ij}$. Esto lo hace más eficiente que el índice de Kling, al otorgar menor peso a las variables más correlacionadas entre sí: las variables poco correlacionadas aportan información nueva y por eso pesan más.
 
-Además usa toda la información disponible, pues las variables faltantes simplemente se ignoran y los pesos restantes se renormalizan, de modo que las variables con menos valores faltantes terminan pesando más. En la práctica, $\bar{s}_i$ puede estandarizarse con respecto al grupo de control para facilitar su interpretación.
+Además usa toda la información disponible, pues las variables faltantes simplemente se ignoran y los pesos restantes se renormalizan, de modo que las variables con menos valores faltantes terminan pesando más. En la práctica, $\bar{s}_i$ puede estandarizarse con respecto al grupo de control para facilitar su interpretación. Anderson (2008) no lo menciona explícitamente, pero diversos programas incluyen la opción para hacerlo.
 
 Anderson (2008) muestra que podemos calcular $\bar{s}_i$ como:
 
 $$\bar{s}_i=(\mathbf{1}'\Sigma^{-1}\mathbf{1})^{-1}(\mathbf{1}'\Sigma^{-1}\mathbf{z}_{i})$$
 
-donde $\mathbf{1}$ es un vector columna de unos y $\mathbf{z}_i$ es un vector columna de las variables estandarizadas de $i$. Esta expresión funciona cuando no hay valores faltantes, pero es también fácil extender el resultado cuando sí los hay.
+donde $\mathbf{1}$ es un vector columna de unos y $\mathbf{z}_i$ es un vector columna de las variables estandarizadas de $i$. Tal como está escrita, esta expresión supone que el individuo $i$ tiene observadas las $J$ variables.
 
-Diversos software ya incluyen funciones para obtener los índices de Anderson (2008).
+Para el caso general basta introducir una **matriz de selección**. Sea
+
+$$M_i=\text{diag}(m_{i1},\ldots,m_{iJ}), \qquad m_{ij}=\begin{cases}1 & \text{si la variable } j \text{ está observada para } i\\ 0 & \text{si falta}\end{cases}$$
+
+Entonces el índice para cualquier patrón de valores faltantes es
+
+$$\bar{s}_i=(\mathbf{1}'\Sigma^{-1}M_i\mathbf{1})^{-1}(\mathbf{1}'\Sigma^{-1}M_i\mathbf{z}_{i})$$
+
+La matriz $M_i$ hace dos cosas a la vez. En el numerador, $M_i\mathbf{z}_i$ pone en cero las entradas faltantes, de modo que sólo las variables observadas contribuyen a la suma. En el denominador, $M_i\mathbf{1}$ deja únicamente los pesos de esas mismas variables, así que el normalizador es exactamente $W_i=\sum_{j\in J_i}w_j$. Como $\Sigma^{-1}$ es simétrica, $M_i$ ocupa la misma posición en ambos factores.
+
+Cuando no hay valores faltantes, $M_i$ es la matriz identidad y recuperamos la expresión anterior. Noten además que los pesos $w_j$ se calculan **una sola vez** a partir de la $\Sigma^{-1}$ de la familia completa: lo que cambia entre individuos no son los pesos sino su normalización. Poner un cero donde falta un dato equivale a suponer que esa persona está en la media del grupo de control en esa variable, lo cual es razonable justamente porque los $z_{ij}$ están centrados en esa media.
