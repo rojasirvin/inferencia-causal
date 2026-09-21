@@ -799,7 +799,7 @@ E(Y(0)|D=1,X)=E(Y(0)|D=0,X)
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/grafica_tratados-1.png" width="672"></p>
+<p><img data-src="figures/grafica_tratados-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -810,7 +810,7 @@ E(Y(0)|D=1,X)=E(Y(0)|D=0,X)
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/grafica_notratados-1.png" width="672"></p>
+<p><img data-src="figures/grafica_notratados-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1555,18 +1555,6 @@ X \perp  D|P(X)
 <section id="matchit-para-realizar-los-emparejamientos" class="slide level2">
 <h2><em>matchit</em> para realizar los emparejamientos</h2>
 <p>La función que usaremos para hacer los emparejamientos es <em>matchit</em> de la librería <em>MatchIt</em>. Antes de hacer los emparejamientos, construimos la dummy de tratamiento, <strong>smoke</strong>, una dummy para mujeres casadas, <strong>married</strong>, y una dummy para si el caso en cuestión es el primer bebé, <strong>firstbaby</strong>:</p>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 4642 Columns: 24
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (5): mmarried, msmoke, mbsmoke, fbaby, prenatal1
-dbl (19): bweight, mhisp, fhisp, foreign, alcohol, deadkids, mage, medu, fag...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
 </section>
 <section id="comparación-observacional-1" class="slide level2">
 <h2>Comparación observacional</h2>
@@ -1789,7 +1777,7 @@ Discarded       0       0</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/unnamed-chunk-21-1.png" width="672"></p>
+<p><img data-src="figures/unnamed-chunk-21-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1803,7 +1791,7 @@ Discarded       0       0</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/unnamed-chunk-22-1.png" width="672"></p>
+<p><img data-src="figures/unnamed-chunk-22-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1836,20 +1824,13 @@ Discarded       0       0</code></pre>
 <section id="loveplot" class="slide level2">
 <h2><em>Loveplot</em></h2>
 <p>Usando la librería <em>cobalt</em> podemos construir un <em>love plot</em> que representa gráficamente las diferencias antes y después del emparejamiento</p>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in love.plot(bal.tab(m.out), threshold = 0.1): Standardized mean differences and raw mean differences are present in the same
-plot. Use the `stars` argument to distinguish between them and appropriately
-label the x-axis. See `love.plot()` for details.</code></pre>
-</div>
 
-</div>
-<img data-src="figures/unnamed-chunk-24-1.png" width="672" class="r-stretch"></section>
+<img data-src="figures/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
 <section id="efecto-de-tratamiento" class="slide level2">
 <h2>Efecto de tratamiento</h2>
 <p>Existen muchas maneras de explotar la muestra emparejada. Aquí veremos la más sencilla. Simplemente consideremos a la muestra emparejada como si viniera de un experimento. Sin embargo, debemos poner especial atención a la forma de hacer inferencia pues no debemos ignorar que el PS es estimado.</p>
 <p>Dependiendo de si el emparejamiento ocurre con o sin reemplazo, y de la naturaleza de la variable dependiente, se recomiendan distintas maneras de estimar el efecto del tratamiento y hacer inferencia. Una buena guía está en la documentación de <a href="https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html">MatchIt</a>.</p>
-<p>Por ejemplo, cuando se realiza el emparejamiento sin reemplazo, <a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2020.1840383?casa_token=7VdQFPydVtIAAAAA%3A3VRshT4TmqjnyzS2Nz2EBmFi54NlHDIWdtD-mDdAdPHuv51BhbXh1qYOwsRo8yH_WhA1UoUbvP0Kqg">Abadie &amp; Spiess (2019)</a> muestran que podemos estimar los errores estándar simplemente agrupando a nivel de pareja (o grupo) emparejado (<strong>subclass</strong> es una columna que enumera a las parejas o grupos emparejados y es construida automáticamente por <em>matchit</em>).</p>
+<p>Por ejemplo, cuando se realiza el emparejamiento sin reemplazo, <a href="https://doi.org/10.1080/01621459.2020.1840383">Abadie &amp; Spiess (2022)</a> muestran que podemos estimar los errores estándar simplemente agrupando a nivel de pareja (o grupo) emparejado (<strong>subclass</strong> es una columna que enumera a las parejas o grupos emparejados y es construida automáticamente por <em>matchit</em>).</p>
 </section>
 <section id="efecto-de-tratamiento-1" class="slide level2">
 <h2>Efecto de tratamiento</h2>
@@ -2154,6 +2135,44 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
