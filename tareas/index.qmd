@@ -7,7 +7,7 @@ toc: false
 <div class="tarea">
 <div class="t-n">1</div>
 <div class="t-info"><h3>Tarea 1</h3><div class="t-date">Lunes 22 de septiembre · 20:00 · Teams</div></div>
-<div class="t-links"><a class="tlink" href="./tarea-1.html">Preguntas</a><span class="tlink pend" title="Se publicarán después de la fecha de entrega">Respuestas</span></div>
+<div class="t-links"><a class="tlink" href="./tarea-1.html">Preguntas</a><a class="tlink" href="./tarea-1-respuestas.html">Respuestas</a></div>
 </div>
 <div class="tarea">
 <div class="t-n">2</div>

@@ -8,7 +8,15 @@ project:
   render:
     - "*.qmd"
     - "**/*.qmd"
-    - "!tareas/*-respuestas.qmd"
+    # Las respuestas se excluyen UNA POR UNA, no con un glob: Quarto no permite
+    # reincorporar un archivo después de excluirlo con un patrón, así que para
+    # publicar una tarea hay que borrar su línea de aquí.
+    # OJO: al crear tareas/tarea-N-respuestas.qmd hay que AGREGARLA a esta lista,
+    # o se publicará sin que nadie lo note.
+    # Tarea 1 publicada el 23 de septiembre de 2026 (entrega: lunes 22).
+    - "!tareas/tarea-2-respuestas.qmd"
+    - "!tareas/tarea-3-respuestas.qmd"
+    - "!tareas/tarea-4-respuestas.qmd"
 
 execute:
   freeze: auto

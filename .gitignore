@@ -21,3 +21,15 @@ files/datos_jcf_analisis.csv
 
 # Configuracion local de herramientas de IA: no se versiona.
 .claude/
+
+# Simulación de los datos del ejercicio de índices: el script revela los
+# parámetros (qué familias tienen efecto y cuáles no), así que NO se publica.
+# El CSV resultante sí vive en files/ porque los estudiantes lo necesitan.
+/simulacion/
+
+# Render local de las respuestas de tareas. El .qmd sí se versiona (ver la nota
+# en _quarto.yml), pero el HTML renderizado NO: contiene las respuestas
+# completas y basta un `git add .` para que entre al historial de un repo
+# público. En agosto de 2026 hubo que reescribir el historial por esto.
+tareas/*-respuestas.html
+tareas/*-respuestas_files/
