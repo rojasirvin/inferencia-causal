@@ -33,7 +33,7 @@ $$\text{Efecto de la asignación en } Y=(\text{Efecto de la asignación en la ad
 
 Por tanto:
 
-$$\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de las asignación en la adopción}}$$
+$$\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de la asignación en la adopción}}$$
 
 Ahora derivaremos formalmente este resultado, pero la intuición es importante: el efecto causal de la adopción es el efecto de la asignación, *escalado* por el efecto de la asignación en la adopción
 
@@ -49,7 +49,7 @@ Si $Y_i$ variable de resultados, nos importa el efecto de $D_i$ sobre $Y_i$.
 
 $D_i(Z)$ es el indicador de cumplir, dada la asignación $Z$, por lo que con cumplimiento perfecto tendríamos $D_i(Z)=Z_i$. En general, hay asignados que no cumplen y no asignados que cumplen.
 
-Con esta notación podemos escribir la variable de pacto de $i$ como $Y_i(Z,D)$.
+Con esta notación podemos escribir la variable de impacto de $i$ como $Y_i(Z,D)$.
 
 Noten que $Y_i(Z,D)$ y $D_i(Z)$ son resultados potenciales.
 
@@ -68,7 +68,9 @@ $$D_i(Z)=D_i(Z_i)$$
 
 La asignación de $Z_i$ es aleatoria, es decir:
 
-$$P(Z=C)=P(Z=C')\quad \forall\quad C,C'$$
+$$P(Z=C)=P(Z=C')$$
+
+para todo par de vectores de asignación $C$ y $C'$ **con el mismo número de tratados**.
 
 Los supuestos 1 y 2 nos permiten identificar los efectos causales de $Z$ en $Y$ y de $Z$ en $D$ calculando diferencias de medias por grupos de $Z$:
 
@@ -82,7 +84,7 @@ Hasta ahora el supuesto crítico es la asignación aleatoria de $Z$. Sin embargo
 
 **Supuesto 3**: restricción de exclusión
 
-Este supuestos indica que la asignación al tratamiento es independiente de los resultados potenciales:
+Este supuesto indica que cualquier efecto de la asignación sobre los resultados debe ocurrir **a través** del cumplimiento, y no por otra vía:
 
 $$Y(Z,D)=Y(Z',D)\quad \forall \quad Z,Z',D$$
 
@@ -90,7 +92,7 @@ Este supuesto implica que podemos escribir:
 
 $$Y_i(1,d)=Y_i(0,d) \quad d=\{0,1\}$$
 
-Es decir, la exclusión resuleve el problema contrafactual.
+Es decir, la exclusión permite escribir $Y$ en función solo de $D$.
 
 Además, con el supuesto 3 podemos escribir:
 
@@ -151,7 +153,7 @@ Sustituyendo $D$ en $Y$:
 $$
 \begin{aligned}
 Y(D(Z))&=Y(0)+(D(0)+Z(D(1)-D(0)))(Y(1)-Y(0)) \\
-&=Y(0)D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
+&=Y(0)+D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
 \end{aligned}
 $$
 
@@ -160,7 +162,7 @@ Podemos evaluar entonces los dos valores de $Z$ y obtener:
 $$
 \begin{aligned}
 Y(D(1))&=Y(0)+D(1)(Y(1)-Y(0)) \\
-Y(D(0))&=Y(0)+D(0)(Y(1))-Y(0) \\
+Y(D(0))&=Y(0)+D(0)(Y(1)-Y(0)) \\
 \end{aligned}
 $$
 
@@ -183,13 +185,16 @@ Consideremos ahora $B$ y obtengamos el valor esperado:
 
 $$
 \begin{aligned}
-E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\
-&=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
-&+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
-&+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
+E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\right]\\
+&= (1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
+&+(0)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
+&+(-1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
 \end{aligned}
 $$
-La intuición de este valor esperado es obtener el valor esperado del cambio en la varaible de impacto bajo los distintos posibles efectos de $Z$ sobre $D$. Así, el segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimento, por lo que $E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)=0$. Usando el supueto 5 de monotonicidad, sabemos $D_i(1)-D_i(0)$ es igual a uno o cero, es decir, $P(D_i(1)-D_i(0)=-1)=0$.
+
+Los factores $(1)$, $(0)$ y $(-1)$ son los tres valores que puede tomar $D_i(1)-D_i(0)$. Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza. Cada valor corresponde a un tipo de individuo: $(1)$ a los **cumplidores**, $(0)$ a quienes la asignación no mueve —**nunca cumplidores** y **siempre adoptadores**— y $(-1)$ a los **retadores**.
+
+La intuición de este valor esperado es obtener el valor esperado del cambio en la variable de impacto bajo los distintos posibles efectos de $Z$ sobre $D$. Así, el segundo término de la suma se anula porque su multiplicador es cero: corresponde a aquellos para quienes la asignación no modificó el cumplimiento. Noten que esto **no** dice que el efecto de tratamiento de esos individuos sea nulo, sino que la asignación no los mueve y por eso no contribuyen al efecto de $Z$ sobre $Y$. Usando el supuesto 5 de monotonicidad, sabemos que $D_i(1)-D_i(0)$ es igual a uno o cero, es decir, $P(D_i(1)-D_i(0)=-1)=0$, con lo que el tercer término también desaparece.
 
 Por tanto:
 
@@ -205,7 +210,7 @@ Es decir, el efecto causal promedio de $Z$ sobre $Y$ es igual al producto del ef
 
 Si los supuestos 1 a 5 se cumplen, el estimador de VI es:
 
-$$E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(D_i(1),1))-Y_i(D_i(0),0)}{E(D_i(1)-D_i(0)}=\lambda_{LATE}$$
+$$E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))}{E(D_i(1)-D_i(0))}=\lambda_{LATE}$$
 
 Angrist y coautores llaman a este parámetro el **efecto local promedio del tratamiento** o *LATE*. El LATE es el efecto causal promedio del tratamiento en un conjunto de individuos cuyo estatus de tratamiento puede ser modificado por la asignación aleatoria. A estos individuos se les conoce como **cumplidores** o *compliers*.
 
