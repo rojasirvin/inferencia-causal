@@ -443,9 +443,9 @@
 <ul>
 <li>Por tanto:</li>
 </ul>
-<p><span class="math display">\[\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de las asignación en la adopción}}\]</span></p>
+<p><span class="math display">\[\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de la asignación en la adopción}}\]</span></p>
 <ul>
-<li>Ahora derivaremos formalmente este resultado, pero la intución es importante: el efecto causal de la adopción es el efecto de la asignación, <em>escalado</em> por el efecto de la asignación en la adopción</li>
+<li>Ahora derivaremos formalmente este resultado, pero la intuición es importante: el efecto causal de la adopción es el efecto de la asignación, <em>escalado</em> por el efecto de la asignación en la adopción</li>
 </ul>
 </section></section>
 <section>
@@ -482,7 +482,7 @@
 </ul>
 <p><strong>Supuesto 2</strong>: asignación aleatoria</p>
 <ul>
-<li>La asignación de <span class="math inline">\(Z_i\)</span> es aleatoria, es decir, <span class="math inline">\(P(Z=C)=P(Z=C')\)</span> para todo <span class="math inline">\(C\)</span> y <span class="math inline">\(C'\)</span></li>
+<li>La asignación de <span class="math inline">\(Z_i\)</span> es aleatoria, es decir, <span class="math inline">\(P(Z=C)=P(Z=C')\)</span> para todo par de vectores de asignación <span class="math inline">\(C\)</span> y <span class="math inline">\(C'\)</span> <strong>con el mismo número de tratados</strong></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -513,7 +513,7 @@
 </ul>
 <p><span class="math display">\[Y_i(1,d)=Y_i(0,d) \quad d=\{0,1\}\]</span></p>
 <ul>
-<li>Es decir, resuleve el problema contrafactual</li>
+<li>Es decir, permite escribir <span class="math inline">\(Y\)</span> en función solo de <span class="math inline">\(D\)</span></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -577,7 +577,7 @@ D(Z)&amp;=D(0)+Z(D(1)-D(0))\\
 <li>Sustituyendo <span class="math inline">\(D\)</span> en <span class="math inline">\(Y\)</span>: <span class="math display">\[
 \begin{aligned}
 Y(D(Z))&amp;=Y(0)+(D(0)+Z(D(1)-D(0)))(Y(1)-Y(0)) \\
-&amp;=Y(0)D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
+&amp;=Y(0)+D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
 \end{aligned}
 \]</span></li>
 </ul>
@@ -591,7 +591,7 @@ Y(D(Z))&amp;=Y(0)+(D(0)+Z(D(1)-D(0)))(Y(1)-Y(0)) \\
 <p><span class="math display">\[
 \begin{aligned}
 Y(D(1))&amp;=Y(0)+D(1)(Y(1)-Y(0)) \\
-Y(D(0))&amp;=Y(0)+D(0)(Y(1))-Y(0) \\
+Y(D(0))&amp;=Y(0)+D(0)(Y(1)-Y(0)) \\
 \end{aligned}
 \]</span></p>
 <div class="fragment">
@@ -616,23 +616,19 @@ A&amp;=Y_i(D_i(1))-Y_i(D_i(0)) \\
 <section id="interpretación-causal-del-estimador-de-vi" class="slide level2">
 <h2>Interpretación causal del estimador de VI</h2>
 <ul>
-<li>Consideremos ahora <span class="math inline">\(B\)</span> y obtengamos el valor esperado:</li>
-</ul>
-<p><span class="math display">\[
+<li><p>Consideremos ahora <span class="math inline">\(B\)</span> y obtengamos el valor esperado: <span class="math display">\[
 \begin{aligned}
-E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&amp;=E(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\
-&amp;=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
-&amp;+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
-&amp;+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
+E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&amp;=E\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\right]\\
+&amp;= (1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
+&amp;+(0)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
+&amp;+(-1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
 \end{aligned}
-\]</span></p>
-<div class="fragment">
-<ul>
-<li>La intuición de este valor esperado es obtener el efecto en la variable de interés bajo los distintos posibles efectos de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(D\)</span></li>
-<li>El segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimento, por lo que <span class="math inline">\(E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)=0\)</span></li>
-<li>Usando el supuesto 5 de monotonicidad, sabemos <span class="math inline">\(D_i(1)-D_i(0)\)</span> es igual a uno o cero, es decir, <span class="math inline">\(P(D_i(1)-D_i(0)=-1)=0\)</span></li>
+\]</span></p></li>
+<li><p>Los factores <span class="math inline">\((1)\)</span>, <span class="math inline">\((0)\)</span> y <span class="math inline">\((-1)\)</span> son los tres valores que puede tomar <span class="math inline">\(D_i(1)-D_i(0)\)</span>. Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza</p></li>
+<li><p>Cada valor corresponde a un tipo de individuo: <span class="math inline">\((1)\)</span> a los <strong>cumplidores</strong>, <span class="math inline">\((0)\)</span> a quienes la asignación no mueve —<strong>nunca cumplidores</strong> y <strong>siempre adoptadores</strong>— y <span class="math inline">\((-1)\)</span> a los <strong>retadores</strong></p></li>
+<li><p>El segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimiento</p></li>
+<li><p>Usando el supuesto 5 de monotonicidad, sabemos que <span class="math inline">\(D_i(1)-D_i(0)\)</span> es igual a uno o cero, es decir, <span class="math inline">\(P(D_i(1)-D_i(0)=-1)=0\)</span></p></li>
 </ul>
-</div>
 </section>
 <section id="interpretación-causal-del-estimador-de-vi-1" class="slide level2">
 <h2>Interpretación causal del estimador de VI</h2>
@@ -656,20 +652,19 @@ E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1
 <ul>
 <li>Si los supuestos 1 a 5 se cumplen, el estimador de VI es:</li>
 </ul>
-<p><span class="math display">\[E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(D_i(1),1))-Y_i(D_i(0),0)}{E(D_i(1)-D_i(0)}=\lambda_{LATE}\]</span></p>
+<p><span class="math display">\[E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))}{E(D_i(1)-D_i(0))}=\lambda_{LATE}\]</span></p>
 <ul>
 <li><p>Angrist y coautores llaman a este parámetro el <strong>efecto local promedio del tratamiento</strong> o <em>LATE</em></p></li>
 <li><p>El LATE es el efecto causal promedio del tratamiento en un conjunto de individuos cuyo estatus de tratamiento puede ser modificado por la asignación aleatoria</p></li>
 <li><p>A estos individuos se les conoce como <strong>cumplidores</strong> o <em>compliers</em></p></li>
 </ul>
 </section>
-<section id="tipos-de-individuos" class="slide level2 scroll-diapo">
+<section id="tipos-de-individuos" class="slide level2">
 <h2>Tipos de individuos</h2>
 <ul>
 <li>Hay cuatro tipos de individuos:</li>
 </ul>
 <div class="cell" data-warnings="false">
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:40%; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
 <col style="width: 33%">
@@ -678,14 +673,14 @@ E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1
 </colgroup>
 <thead>
 <tr class="header">
-<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Tipos de individuos
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
 </tr>
 </thead>
 <tbody>
@@ -726,12 +721,7 @@ Tipos de individuos
 </tr>
 </tbody><tfoot>
 <tr class="odd">
-<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota:</span></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; padding: 0;"><sup></sup> Adaptado de la tabla 1 en Angrist, Imbens &amp; Rubin (1996).</td>
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota:</span> <sup></sup> Adaptado de la tabla 1 en Angrist, Imbens &amp; Rubin (1996).</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
@@ -739,19 +729,18 @@ Tipos de individuos
 
 </table>
 </div>
-</div>
 </section>
 <section id="tipos-de-individuos-1" class="slide level2">
 <h2>Tipos de individuos</h2>
 <ul>
 <li><p>Los cumplidores cumplen con el tratamiento si se les asigna y no lo cumplen si no se les asigna</p></li>
-<li><p><span class="math inline">\(Z\)</span> es independiente de <span class="math inline">\(D\)</span> para los nunca cumplidores y los siempre adoptadores y el efecto causal es 0 para ambos</p></li>
+<li><p><span class="math inline">\(Z\)</span> es independiente de <span class="math inline">\(D\)</span> para los nunca cumplidores y los siempre adoptadores y el efecto causal de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(Y\)</span> es 0 para ambos grupos</p></li>
 <li><p>Los retadores hacen lo contrario a lo que les es asignado</p>
 <ul>
 <li>El supuesto de monotonicidad descarta la existencia de retadores para la identificación del LATE</li>
 <li>En la práctica, esperamos que sean pocos tal que podamos ignorarlos</li>
 </ul></li>
-<li><p>A la suma de nunca cumplidores, siempre adoptadores y retadores se le conoce como <strong>no cumplidores</strong></p></li>
+<li><p>Al conjunto de nunca cumplidores, siempre adoptadores y retadores se le conoce como <strong>no cumplidores</strong></p></li>
 </ul>
 </section>
 <section id="late-y-tt" class="slide level2">
@@ -767,7 +756,7 @@ Tipos de individuos
 <h2>Resumiendo</h2>
 <ul>
 <li><p>Hemos mostrado que el efecto promedio de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(Y\)</span> es proporcional al efecto de <span class="math inline">\(D\)</span> sobre <span class="math inline">\(Y\)</span> para los cumplidores</p></li>
-<li><p>Por el supuesto 4, sabemos que la proporción de cumplidores es igual al efecto de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(D\)</span></p></li>
+<li><p>Por el supuesto 5, sabemos que la proporción de cumplidores es igual al efecto de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(D\)</span></p></li>
 <li><p>Dado que <span class="math inline">\(Z\)</span> se asigna aleatoriamente, podemos estimar los dos ITT por separado para obtener <span class="math inline">\(\lambda=\frac{ITT_Y}{ITT_D}\)</span></p></li>
 </ul>
 <div class="fragment">
@@ -784,7 +773,7 @@ Tipos de individuos
 <section id="terminología" class="slide level2">
 <h2>Terminología</h2>
 <ul>
-<li><strong>Primera etapa</strong>: es el efecto causal de la asignación sobre el cumplimento</li>
+<li><strong>Primera etapa</strong>: es el efecto causal de la asignación sobre el cumplimiento</li>
 </ul>
 <p><span class="math display">\[\phi=E(D_i|Z_i=1)-E(D_i|Z_i=0)\]</span></p>
 <ul>
@@ -810,14 +799,13 @@ Tipos de individuos
 </div>
 <div class="fragment">
 <ul>
-<li>Se muestra como el ITT puede no reflejar la efectividad de la intervención debido al efecto de <em>dilusión</em> provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco</li>
+<li>Se muestra como el ITT puede no reflejar la efectividad de la intervención debido al efecto de <em>dilución</em> provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco</li>
 </ul>
 </div>
 </section>
 <section id="diferencias-en-las-respuestas-efectivas" class="slide level2">
 <h2>Diferencias en las respuestas efectivas</h2>
 <div class="cell" data-warnings="false">
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:60%; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
 <col style="width: 25%">
@@ -827,22 +815,22 @@ Tipos de individuos
 </colgroup>
 <thead>
 <tr class="header">
-<th colspan="4" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="4" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Tratamiento asignado y recibido en casos de violencia doméstica
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
-Tramiento recibido:
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
+Tratamiento recibido:
 </div></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; empty-cells: hide;"></th>
 </tr>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
 </tr>
 </thead>
 <tbody>
@@ -887,10 +875,9 @@ Tramiento recibido:
 
 </table>
 </div>
-</div>
 <ul>
 <li><p>En el estudio original, lo que llamamos <em>apercibir</em> tuvo en realidad dos componentes: <em>aconsejar</em> y <em>separar</em>, pero para facilitar el análisis usaremos solo <em>arrestar</em> por un lado y <em>apercibir</em> por el otro</p></li>
-<li><p>¿Qué observamos sobre a las desviaciones con respecto al tratamiento asignado?</p></li>
+<li><p>¿Qué observamos sobre las desviaciones con respecto al tratamiento asignado?</p></li>
 </ul>
 </section>
 <section id="diferencias-en-las-respuestas-efectivas-1" class="slide level2">
@@ -905,7 +892,7 @@ Tramiento recibido:
 <h2>Sesgo de selección</h2>
 <ul>
 <li><p>Algunos individuos se comportaron violentos, por lo que fueron arrestados a pesar de ser asignados a apercibimiento</p></li>
-<li><p>Por tanto, si comparamos <span class="math inline">\(y\)</span> entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, sobrestimando el efecto de la política de apercibimiento</p></li>
+<li><p>Por tanto, si comparamos <span class="math inline">\(y\)</span> entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, subestimando el efecto de la política de apercibimiento</p></li>
 </ul>
 </section>
 <section id="late" class="slide level2">
@@ -918,7 +905,7 @@ Tramiento recibido:
 <ul>
 <li>El ITT ignora el hecho de que algunos asignados a apercibimiento fueron arrestados</li>
 <li>Sabemos que el LATE está dado por <span class="math inline">\(\lambda_{LATE}=\frac{ITT_y}{ITT_D}=\frac{0.114}{0.786}=0.145\)</span></li>
-<li>Los datos de los autores reportan que si nos fijáramos solo en las diferencias por tipo de tratamiento obtendríamos, <span class="math inline">\(E(y_i|D_i=1)-E(y_i|D_i=0)=0.216-0.129=0.087\)</span>, es decir, casi la mitad del LATE</li>
+<li>Los datos de los autores reportan que si nos fijáramos solo en las diferencias por tipo de tratamiento obtendríamos, <span class="math inline">\(E(y_i|D_i=1)-E(y_i|D_i=0)=0.216-0.129=0.087\)</span>, 60% del LATE</li>
 <li>Pero como <span class="math inline">\(D\)</span> no es aleatoria, dicha comparación no es correcta</li>
 </ul>
 </div>
@@ -943,7 +930,7 @@ Tramiento recibido:
 <section id="motivación-con-un-estadístico-de-wald-1" class="slide level2">
 <h2>Motivación con un estadístico de Wald</h2>
 <ul>
-<li>Ahora supongamos que tenemos un <strong>instrumento</strong> <span class="math inline">\(z_i\)</span> tal que <span class="math inline">\(z_i\perp y_i\)</span>, es decir, <span class="math inline">\(E(\varepsilon_i|z_i)=0\)</span></li>
+<li>Ahora supongamos que tenemos un <strong>instrumento</strong> <span class="math inline">\(z_i\)</span> tal que <span class="math inline">\(z_i\perp \varepsilon_i\)</span>, es decir, <span class="math inline">\(E(\varepsilon_i|z_i)=0\)</span></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -958,6 +945,14 @@ E(y_i|z_i=0)&amp;=\alpha+\lambda E(D_i| z_i=0) \\
 </ul>
 </div>
 </section>
+<section id="motivación-con-un-estadístico-de-wald-2" class="slide level2">
+<h2>Motivación con un estadístico de Wald</h2>
+<ul>
+<li><p>Noten que esta derivación supuso efectos <strong>constantes</strong>, <span class="math inline">\(y_{1i}-y_{0i}=\lambda\)</span> para todo <span class="math inline">\(i\)</span> (un supuesto más fuerte del que necesitamos)</p></li>
+<li><p>Si los efectos son heterogéneos, el cociente <strong>sigue siendo válido</strong>, pero ya no estima el efecto promedio de toda la población sino el promedio entre los <strong>cumplidores</strong>, es decir, el LATE que derivamos en la sección anterior</p></li>
+<li><p>La aritmética de Wald no cambia, lo que cambia es <strong>sobre quién habla</strong> el número</p></li>
+</ul>
+</section>
 <section id="mínimos-cuadrados-en-dos-etapas-mc2e" class="slide level2">
 <h2>Mínimos cuadrados en dos etapas (MC2E)</h2>
 <ul>
@@ -969,7 +964,7 @@ E(y_i|z_i=0)&amp;=\alpha+\lambda E(D_i| z_i=0) \\
 <ul>
 <li><strong>Primera etapa</strong></li>
 </ul>
-<p><span class="math display">\[D_i=X_i'\phi_0+\phi_1z_i+\eta_i\]</span> donde <span class="math inline">\(\phi_i\)</span> es el efecto causal de la asignación sobre el cumplimiento - Cuado <span class="math inline">\(D_i\)</span> y <span class="math inline">\(z_i\)</span> son ambas dicotómicas, <span class="math inline">\(\phi_1\)</span> da la proporción de la población que son cumplidores</p>
+<p><span class="math display">\[D_i=X_i'\phi_0+\phi_1z_i+\eta_i\]</span> donde <span class="math inline">\(\phi_1\)</span> es el efecto causal de la asignación sobre el cumplimiento - Cuando <span class="math inline">\(D_i\)</span> y <span class="math inline">\(z_i\)</span> son ambas dicotómicas, <span class="math inline">\(\phi_1\)</span> da la proporción de la población de cumplidores</p>
 </div>
 </section>
 <section id="mínimos-cuadrados-en-dos-etapas-mc2e-1" class="slide level2">
@@ -988,7 +983,7 @@ E(y_i|z_i=0)&amp;=\alpha+\lambda E(D_i| z_i=0) \\
 </div>
 <div class="fragment">
 <ul>
-<li>Nota: el estimador de Wald es igual al estimador de MC2E cuando no hay <span class="math inline">\(X\)</span> y cuando <span class="math inline">\(Z\)</span> y <span class="math inline">\(D\)</span> son binarias</li>
+<li>Nota: el estimador de Wald es igual al estimador de MC2E cuando no hay <span class="math inline">\(X\)</span> y cuando <span class="math inline">\(Z\)</span> es binaria (<span class="math inline">\(D\)</span> no necesita serlo)</li>
 </ul>
 </div>
 </section>
@@ -999,7 +994,7 @@ E(y_i|z_i=0)&amp;=\alpha+\lambda E(D_i| z_i=0) \\
 </ul>
 <p><span class="math display">\[
 \begin{aligned}
-y_i&amp;=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_1+\eta_i)+\varepsilon_i \\
+y_i&amp;=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_i+\eta_i)+\varepsilon_i \\
 &amp;=X_i'\rho_0+\rho_1z_i+\nu_i
 \end{aligned}
 \]</span> donde <span class="math inline">\(\rho_1=\lambda\phi_1\)</span> es el coeficiente de forma reducida sobre la variable de asignación</p>
@@ -1033,7 +1028,6 @@ y_i&amp;=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_1+\eta_i)+\varepsilon_i \\
 <section id="efectos-estimados-1" class="slide level2">
 <h2>Efectos estimados</h2>
 <div class="cell" data-warnings="false">
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:60%; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
 <col style="width: 20%">
@@ -1044,34 +1038,34 @@ y_i&amp;=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_1+\eta_i)+\varepsilon_i \\
 </colgroup>
 <thead>
 <tr class="header">
-<th colspan="5" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="5" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Primera etapa y forma reducida
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Primera etapa
 </div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Forma reducida
 </div></th>
 </tr>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Variable dep.: fue apercibido
 </div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Variable dep.: reincidencia
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(1)</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(2)*</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(3)</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(4)*</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(1)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(2)*</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(3)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(4)*</th>
 </tr>
 </thead>
 <tbody>
@@ -1115,10 +1109,9 @@ Variable dep.: reincidencia
 
 </table>
 </div>
-</div>
 <ul>
 <li><p>Habíamos obtenido antes la columna (1), pero como una diferencia de medias: <span class="math inline">\(E(D_i|Z_i=1)-E(D_i|Z_i=0)=0.797-0.011=0.786\)</span></p></li>
-<li><p>Mientras que también habíamos encontrado (3): <span class="math inline">\(E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.0.114\)</span></p></li>
+<li><p>Mientras que también habíamos encontrado (3): <span class="math inline">\(E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.114\)</span></p></li>
 </ul>
 </section>
 <section id="efectos-estimados-2" class="slide level2">
@@ -1133,7 +1126,6 @@ Variable dep.: reincidencia
 <section id="efectos-estimados-3" class="slide level2">
 <h2>Efectos estimados</h2>
 <div class="cell" data-warnings="false">
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:50%; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
 <col style="width: 20%">
@@ -1144,31 +1136,31 @@ Variable dep.: reincidencia
 </colgroup>
 <thead>
 <tr class="header">
-<th colspan="5" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="5" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Impactos de ser apercibido en la reincidencia (MCO y LATE)
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 MCO
 </div></th>
-<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 VI/MC2E
 </div></th>
 </tr>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th colspan="4" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="4" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Variable dep.: reincidencia
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(1)</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(2)*</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(3)</th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;">(4)*</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(1)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(2)*</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(3)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(4)*</th>
 </tr>
 </thead>
 <tbody>
@@ -1205,20 +1197,18 @@ Variable dep.: reincidencia
 
 </table>
 </div>
-</div>
 <ul>
 <li><p>Usando el estimador de MC2E obtenemos exactamente lo que antes habíamos calculado como <span class="math inline">\(\lambda_{LATE}=\frac{ITT_y}{ITT_D}=\frac{E(y_i|Z_i=1)-E(y_i|Z_i=0)}{E(D_i|Z_i=1)-E(D_i|Z_i=0)}=0.145\)</span></p></li>
 <li><p>Al estimar la ecuación estructural por MCO obtenemos un coeficiente cercano a 0.070</p></li>
 <li><p>Pero sabemos que el coeficiente de MCO es inconsistente</p></li>
 </ul>
 </section>
-<section id="late-es-igual-atet-en-este-caso" class="slide level2">
-<h2>LATE es igual ATET en este caso</h2>
+<section id="late-es-igual-al-atet-en-este-caso" class="slide level2">
+<h2>LATE es igual al ATET en este caso</h2>
 <ul>
 <li>Noten que este estudio tiene lo que se conoce como <em>no cumplidores de un solo lado</em></li>
 </ul>
 <div class="cell" data-warnings="false">
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:50%; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
 <col style="width: 33%">
@@ -1227,14 +1217,14 @@ Variable dep.: reincidencia
 </colgroup>
 <thead>
 <tr class="header">
-<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold; padding-right: 4px; padding-left: 4px; background-color: white !important; position: sticky; top: 0; background-color: #FFFFFF;"><div style="TRUE">
+<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px; font-weight: bold;"><div style="TRUE">
 Tipos de individuos
 </div></th>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: center; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"></th>
 </tr>
 </thead>
 <tbody>
@@ -1275,12 +1265,7 @@ Tipos de individuos
 </tr>
 </tbody><tfoot>
 <tr class="odd">
-<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota:</span></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left; padding: 0;"><sup></sup> Adaptado de la tabla 1 en Angrist, Imbens &amp; Rubin (1996).</td>
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota:</span> <sup></sup> Adaptado de la tabla 1 en Angrist, Imbens &amp; Rubin (1996).</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
 </tr>
@@ -1288,23 +1273,22 @@ Tipos de individuos
 
 </table>
 </div>
-</div>
 <ul>
 <li><p>Cuando la asignación es <strong>apercibir</strong>, en el 20.27% de los casos la acción fue arrestar y en el 79.73% efectivamente fue apercibir</p></li>
-<li><p>En cambio, cuando se indica <strong>no apercibir</strong>, es decir, arrestar, la adopción es casi perfecto (salvo un caso)</p></li>
+<li><p>En cambio, cuando se indica <strong>no apercibir</strong>, es decir, arrestar, la adopción es casi perfecta (salvo un caso)</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>En otras palabras, en este caso no hay <strong>siempre cumplidores</strong></li>
+<li>En otras palabras, en este caso no hay <strong>siempre adoptadores</strong></li>
 <li>No hay individuos que hayan sido <em>apercibidos</em> independientemente de la asignación</li>
 </ul>
 </div>
 </section>
-<section id="late-es-igual-atet-en-este-caso-1" class="slide level2">
-<h2>LATE es igual ATET en este caso</h2>
+<section id="late-es-igual-al-atet-en-este-caso-1" class="slide level2">
+<h2>LATE es igual al ATET en este caso</h2>
 <ul>
 <li>Recordemos que el grupo de quienes reciben el tratamiento está compuesto de los cumplidores y los siempre adoptadores</li>
-<li>En este caso en particular: <span class="math display">\[\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET\]</span></li>
+<li>En este caso en particular: <span class="math display">\[\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET\]</span> donde <span class="math inline">\(C_i=1\)</span> para los cumplidores</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1316,12 +1300,6 @@ Tipos de individuos
 </ul>
 </div>
 </section></section>
-<section id="section" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1></h1>
-<p>Material de clase en versión preliminar.</p>
-<p><strong>No reproducir, no distribuir, no citar.</strong></p>
-</section>
-
 <section id="late-y-variables-instrumentales-1" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
 <h1>LATE y variables instrumentales</h1>
 <div class="f-eyebrow">
