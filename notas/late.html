@@ -461,7 +461,7 @@ window.Quarto = {
 <p>Usaremos un estimador de variables instrumentales (VI) para relacionar los efectos de la <strong>asignación</strong> con los efectos de la <strong>adopción</strong>. El resultado principal al que llegaremos es el siguiente:</p>
 <p><span class="math display">\[\text{Efecto de la asignación en } Y=(\text{Efecto de la asignación en la adopción})\times (\text{Efecto de la adopción en }Y)\]</span></p>
 <p>Por tanto:</p>
-<p><span class="math display">\[\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de las asignación en la adopción}}\]</span></p>
+<p><span class="math display">\[\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de la asignación en la adopción}}\]</span></p>
 <p>Ahora derivaremos formalmente este resultado, pero la intuición es importante: el efecto causal de la adopción es el efecto de la asignación, <em>escalado</em> por el efecto de la asignación en la adopción</p>
 <section id="notación" class="level2">
 <h2 class="anchored" data-anchor-id="notación">Notación</h2>
@@ -470,7 +470,7 @@ window.Quarto = {
 <p>Cumplimiento: <span class="math inline">\(D_i=\begin{cases} 1 \\0 \\ \end{cases}\)</span></p>
 <p>Si <span class="math inline">\(Y_i\)</span> variable de resultados, nos importa el efecto de <span class="math inline">\(D_i\)</span> sobre <span class="math inline">\(Y_i\)</span>.</p>
 <p><span class="math inline">\(D_i(Z)\)</span> es el indicador de cumplir, dada la asignación <span class="math inline">\(Z\)</span>, por lo que con cumplimiento perfecto tendríamos <span class="math inline">\(D_i(Z)=Z_i\)</span>. En general, hay asignados que no cumplen y no asignados que cumplen.</p>
-<p>Con esta notación podemos escribir la variable de pacto de <span class="math inline">\(i\)</span> como <span class="math inline">\(Y_i(Z,D)\)</span>.</p>
+<p>Con esta notación podemos escribir la variable de impacto de <span class="math inline">\(i\)</span> como <span class="math inline">\(Y_i(Z,D)\)</span>.</p>
 <p>Noten que <span class="math inline">\(Y_i(Z,D)\)</span> y <span class="math inline">\(D_i(Z)\)</span> son resultados potenciales.</p>
 </section>
 <section id="supuestos" class="level2">
@@ -481,7 +481,8 @@ window.Quarto = {
 <p><span class="math display">\[D_i(Z)=D_i(Z_i)\]</span></p>
 <p><strong>Supuesto 2</strong>: asignación aleatoria</p>
 <p>La asignación de <span class="math inline">\(Z_i\)</span> es aleatoria, es decir:</p>
-<p><span class="math display">\[P(Z=C)=P(Z=C')\quad \forall\quad C,C'\]</span></p>
+<p><span class="math display">\[P(Z=C)=P(Z=C')\]</span></p>
+<p>para todo par de vectores de asignación <span class="math inline">\(C\)</span> y <span class="math inline">\(C'\)</span> <strong>con el mismo número de tratados</strong>.</p>
 <p>Los supuestos 1 y 2 nos permiten identificar los efectos causales de <span class="math inline">\(Z\)</span> en <span class="math inline">\(Y\)</span> y de <span class="math inline">\(Z\)</span> en <span class="math inline">\(D\)</span> calculando diferencias de medias por grupos de <span class="math inline">\(Z\)</span>:</p>
 <ul>
 <li><p><span class="math inline">\(ITT_Y\)</span> comparar las medias de <span class="math inline">\(y\)</span> entre quienes <span class="math inline">\(Z=1\)</span> y quienes <span class="math inline">\(Z=0\)</span></p></li>
@@ -490,11 +491,11 @@ window.Quarto = {
 <p>Los dos efectos causales antes descritos reciben el nombre de <strong>intención a tratar</strong> o <strong>intention to treat</strong>, o como se encuentra frecuentemente, <span class="math inline">\(ITT\)</span>. Este parámetro nos dice el efecto que resulta de ser asignado, es decir, refleja la intención que se tenía para tratar a un grupo y a otro no.</p>
 <p>Hasta ahora el supuesto crítico es la asignación aleatoria de <span class="math inline">\(Z\)</span>. Sin embargo, <span class="math inline">\(D_i\)</span> puede no serlo y, en general, no lo es. Por tanto, una comparación de <span class="math inline">\(y\)</span> entre grupos de <span class="math inline">\(D\)</span> es inapropiada. Necesitamos algunos supuestos para decir algo del efecto causal de <span class="math inline">\(D\)</span> sobre <span class="math inline">\(Y\)</span></p>
 <p><strong>Supuesto 3</strong>: restricción de exclusión</p>
-<p>Este supuestos indica que la asignación al tratamiento es independiente de los resultados potenciales:</p>
+<p>Este supuesto indica que cualquier efecto de la asignación sobre los resultados debe ocurrir <strong>a través</strong> del cumplimiento, y no por otra vía:</p>
 <p><span class="math display">\[Y(Z,D)=Y(Z',D)\quad \forall \quad Z,Z',D\]</span></p>
 <p>Este supuesto implica que podemos escribir:</p>
 <p><span class="math display">\[Y_i(1,d)=Y_i(0,d) \quad d=\{0,1\}\]</span></p>
-<p>Es decir, la exclusión resuleve el problema contrafactual.</p>
+<p>Es decir, la exclusión permite escribir <span class="math inline">\(Y\)</span> en función solo de <span class="math inline">\(D\)</span>.</p>
 <p>Además, con el supuesto 3 podemos escribir:</p>
 <p><span class="math display">\[Y(D)=Y(Z,D)=Y(Z',D)\quad \forall \quad Z,Z',D\]</span></p>
 <p>por el supuesto 1:</p>
@@ -536,14 +537,14 @@ D(Z)&amp;=D(0)+Z(D(1)-D(0))\\
 <p><span class="math display">\[
 \begin{aligned}
 Y(D(Z))&amp;=Y(0)+(D(0)+Z(D(1)-D(0)))(Y(1)-Y(0)) \\
-&amp;=Y(0)D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
+&amp;=Y(0)+D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
 \end{aligned}
 \]</span></p>
 <p>Podemos evaluar entonces los dos valores de <span class="math inline">\(Z\)</span> y obtener:</p>
 <p><span class="math display">\[
 \begin{aligned}
 Y(D(1))&amp;=Y(0)+D(1)(Y(1)-Y(0)) \\
-Y(D(0))&amp;=Y(0)+D(0)(Y(1))-Y(0) \\
+Y(D(0))&amp;=Y(0)+D(0)(Y(1)-Y(0)) \\
 \end{aligned}
 \]</span></p>
 <p>Y entonces:</p>
@@ -560,12 +561,14 @@ A&amp;=Y_i(D_i(1))-Y_i(D_i(0)) \\
 <p>Consideremos ahora <span class="math inline">\(B\)</span> y obtengamos el valor esperado:</p>
 <p><span class="math display">\[
 \begin{aligned}
-E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&amp;=E(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\
-&amp;=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
-&amp;+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
-&amp;+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
+E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&amp;=E\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\right]\\
+&amp;= (1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
+&amp;+(0)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
+&amp;+(-1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
 \end{aligned}
-\]</span> La intuición de este valor esperado es obtener el valor esperado del cambio en la varaible de impacto bajo los distintos posibles efectos de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(D\)</span>. Así, el segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimento, por lo que <span class="math inline">\(E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)=0\)</span>. Usando el supueto 5 de monotonicidad, sabemos <span class="math inline">\(D_i(1)-D_i(0)\)</span> es igual a uno o cero, es decir, <span class="math inline">\(P(D_i(1)-D_i(0)=-1)=0\)</span>.</p>
+\]</span></p>
+<p>Los factores <span class="math inline">\((1)\)</span>, <span class="math inline">\((0)\)</span> y <span class="math inline">\((-1)\)</span> son los tres valores que puede tomar <span class="math inline">\(D_i(1)-D_i(0)\)</span>. Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza. Cada valor corresponde a un tipo de individuo: <span class="math inline">\((1)\)</span> a los <strong>cumplidores</strong>, <span class="math inline">\((0)\)</span> a quienes la asignación no mueve —<strong>nunca cumplidores</strong> y <strong>siempre adoptadores</strong>— y <span class="math inline">\((-1)\)</span> a los <strong>retadores</strong>.</p>
+<p>La intuición de este valor esperado es obtener el valor esperado del cambio en la variable de impacto bajo los distintos posibles efectos de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(D\)</span>. Así, el segundo término de la suma se anula porque su multiplicador es cero: corresponde a aquellos para quienes la asignación no modificó el cumplimiento. Noten que esto <strong>no</strong> dice que el efecto de tratamiento de esos individuos sea nulo, sino que la asignación no los mueve y por eso no contribuyen al efecto de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(Y\)</span>. Usando el supuesto 5 de monotonicidad, sabemos que <span class="math inline">\(D_i(1)-D_i(0)\)</span> es igual a uno o cero, es decir, <span class="math inline">\(P(D_i(1)-D_i(0)=-1)=0\)</span>, con lo que el tercer término también desaparece.</p>
 <p>Por tanto:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -575,7 +578,7 @@ E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1
 <p>Es decir, el efecto causal promedio de <span class="math inline">\(Z\)</span> sobre <span class="math inline">\(Y\)</span> es igual al producto del efecto causal promedio de <span class="math inline">\(D\)</span> sobre <span class="math inline">\(Y\)</span> en aquellos individuos que cuando se les asigna cumplen y cuando no se les asigna no cumplen, <span class="math inline">\(D_i(0)=0\)</span> y <span class="math inline">\(D_i(1)=1\)</span>, y la proporción de estos individuos en la población</p>
 <p><strong>Proposición 1 en Angrist, Imbens &amp; Rubin (1996)</strong>: interpretación causal del estimador de VI</p>
 <p>Si los supuestos 1 a 5 se cumplen, el estimador de VI es:</p>
-<p><span class="math display">\[E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(D_i(1),1))-Y_i(D_i(0),0)}{E(D_i(1)-D_i(0)}=\lambda_{LATE}\]</span></p>
+<p><span class="math display">\[E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))}{E(D_i(1)-D_i(0))}=\lambda_{LATE}\]</span></p>
 <p>Angrist y coautores llaman a este parámetro el <strong>efecto local promedio del tratamiento</strong> o <em>LATE</em>. El LATE es el efecto causal promedio del tratamiento en un conjunto de individuos cuyo estatus de tratamiento puede ser modificado por la asignación aleatoria. A estos individuos se les conoce como <strong>cumplidores</strong> o <em>compliers</em>.</p>
 
 
