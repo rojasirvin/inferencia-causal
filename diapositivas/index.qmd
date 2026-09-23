@@ -15,7 +15,7 @@ Presentaciones del curso en Quarto reveal.js. Se abren en una nueva pestaña. La
 <a class="card" href="./errores-estandar.html" target="_blank"><div class="num">05</div><h3>Errores Estándar</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <a class="card" href="./bootstrap.html" target="_blank"><div class="num">06</div><h3>Bootstrap</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <a class="card" href="./multiples-hipotesis.html" target="_blank"><div class="num">07</div><h3>Múltiples Hipótesis</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
-<div class="card pend"><div class="num">08</div><h3>Variables Instrumentales y LATE</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
+<a class="card" href="./late.html" target="_blank"><div class="num">08</div><h3>Variables Instrumentales y LATE</h3><div class="meta"><span class="pill">Slides</span> revealjs ↗</div></a>
 <div class="card pend"><div class="num">09</div><h3>Selección por Observables</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
 <div class="card pend"><div class="num">10</div><h3>Diferencia en Diferencias</h3><div class="meta"><span class="pill">Próximamente</span></div></div>
 <div class="card pend"><div class="num">11</div><h3>Diseños con Discontinuidades</h3><div class="meta"><span class="pill">Próximamente</span></div></div>

@@ -18,8 +18,6 @@ format:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 library(tidyverse)
-library(magick)
-library(reticulate)
 library(knitr)
 library(kableExtra)
 
@@ -60,9 +58,9 @@ $$\text{Efecto de la asignación en } Y=(\text{Efecto de la asignación en la ad
 
 - Por tanto:
 
-$$\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de las asignación en la adopción}}$$
+$$\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}{\text{Efecto de la asignación en la adopción}}$$
 
-- Ahora derivaremos formalmente este resultado, pero la intución es importante: el efecto causal de la adopción es el efecto de la asignación, *escalado* por el efecto de la asignación en la adopción
+- Ahora derivaremos formalmente este resultado, pero la intuición es importante: el efecto causal de la adopción es el efecto de la asignación, *escalado* por el efecto de la asignación en la adopción
 
 
 # Efectos causales con cumplimiento imperfecto {.divider background-color="#9B2247" data-state="nochrome"}
@@ -104,7 +102,7 @@ $$\text{Efecto de la adopción en }Y=\frac{\text{Efecto de la asignación en }Y}
 
 **Supuesto 2**: asignación aleatoria
 
-- La asignación de $Z_i$ es aleatoria, es decir, $P(Z=C)=P(Z=C')$ para todo $C$ y $C'$
+- La asignación de $Z_i$ es aleatoria, es decir, $P(Z=C)=P(Z=C')$ para todo par de vectores de asignación $C$ y $C'$ **con el mismo número de tratados**
 
 ::: {.fragment}
 
@@ -138,7 +136,7 @@ $$Y(Z,D)=Y(Z',D)\quad \forall \quad Z,Z',D$$
 
 $$Y_i(1,d)=Y_i(0,d) \quad d=\{0,1\}$$
 
-- Es decir, resuleve el problema contrafactual
+- Es decir, permite escribir $Y$ en función solo de $D$
 
 ::: {.fragment}
 - Con el supuesto 3 podemos escribir:
@@ -204,7 +202,7 @@ $$
 $$
 \begin{aligned}
 Y(D(Z))&=Y(0)+(D(0)+Z(D(1)-D(0)))(Y(1)-Y(0)) \\
-&=Y(0)D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
+&=Y(0)+D(0)(Y(1)-Y(0))+Z(D(1)-D(0))(Y(1)-Y(0))
 \end{aligned}
 $$
 :::
@@ -217,7 +215,7 @@ $$
 $$
 \begin{aligned}
 Y(D(1))&=Y(0)+D(1)(Y(1)-Y(0)) \\
-Y(D(0))&=Y(0)+D(0)(Y(1))-Y(0) \\
+Y(D(0))&=Y(0)+D(0)(Y(1)-Y(0)) \\
 \end{aligned}
 $$
 
@@ -243,23 +241,22 @@ $$
 ## Interpretación causal del estimador de VI
 
 - Consideremos ahora $B$ y obtengamos el valor esperado:
-
 $$
 \begin{aligned}
-E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\
-&=E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
-&+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
-&+E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
+E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\right]\\
+&= (1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\
+&+(0)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\
+&+(-1)\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\
 \end{aligned}
 $$
 
-::: {.fragment}
-- La intuición de este valor esperado es obtener el efecto en la variable de interés bajo los distintos posibles efectos de $Z$ sobre $D$
-- El segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimento, por lo que $E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)=0$
-- Usando el supuesto 5 de monotonicidad, sabemos $D_i(1)-D_i(0)$ es igual a uno o cero, es decir, 
+- Los factores $(1)$, $(0)$ y $(-1)$ son los tres valores que puede tomar $D_i(1)-D_i(0)$. Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza
+
+- Cada valor corresponde a un tipo de individuo: $(1)$ a los **cumplidores**, $(0)$ a quienes la asignación no mueve —**nunca cumplidores** y **siempre adoptadores**— y $(-1)$ a los **retadores**
+- El segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimiento
+- Usando el supuesto 5 de monotonicidad, sabemos que $D_i(1)-D_i(0)$ es igual a uno o cero, es decir, 
 $P(D_i(1)-D_i(0)=-1)=0$
 
-:::
 
 
 ## Interpretación causal del estimador de VI
@@ -284,7 +281,7 @@ $$
 
 - Si los supuestos 1 a 5 se cumplen, el estimador de VI es:
 
-$$E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(D_i(1),1))-Y_i(D_i(0),0)}{E(D_i(1)-D_i(0)}=\lambda_{LATE}$$
+$$E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))}{E(D_i(1)-D_i(0))}=\lambda_{LATE}$$
 
 - Angrist y coautores llaman a este parámetro el **efecto local promedio del tratamiento** o *LATE*
 
@@ -294,7 +291,7 @@ $$E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)=\frac{E(Y_i(D_i(1),1))-Y_i(D_i(0),0)}{E(D_i(1
 
 
 
-## Tipos de individuos {.scroll-diapo}
+## Tipos de individuos
 
 - Hay cuatro tipos de individuos:
 
@@ -316,12 +313,12 @@ t1 <- tipologia %>%
       full_width = FALSE) %>%
   kable_paper(c("hover", "condensed", "responsive")) %>%
       add_header_above(c("Tipos de individuos" = 3 ),
-                   bold = TRUE,
-                   background = "white") %>% 
+                   bold = TRUE) %>% 
   footnote(general = "Adaptado de la tabla 1 en Angrist, Imbens & Rubin (1996).",
-           general_title = "Nota:")
+           general_title = "Nota:",
+           footnote_as_chunk = T)
 
-scroll_box(t1, height="40%")
+t1
 
 ```
 
@@ -332,7 +329,7 @@ scroll_box(t1, height="40%")
 
 - Los cumplidores cumplen con el tratamiento si se les asigna y no lo cumplen si no se les asigna
 
-- $Z$ es independiente de $D$ para los nunca cumplidores y los siempre adoptadores y el efecto causal es 0 para ambos
+- $Z$ es independiente de $D$ para los nunca cumplidores y los siempre adoptadores y el efecto causal de $Z$ sobre $Y$ es 0 para ambos grupos
 
 - Los retadores hacen lo contrario a lo que les es asignado
 
@@ -340,7 +337,7 @@ scroll_box(t1, height="40%")
   - En la práctica, esperamos que sean pocos tal que podamos ignorarlos
   
 
-- A la suma de nunca cumplidores, siempre adoptadores y retadores se le conoce como **no cumplidores**
+- Al conjunto de nunca cumplidores, siempre adoptadores y retadores se le conoce como **no cumplidores**
 
 
 
@@ -360,7 +357,7 @@ scroll_box(t1, height="40%")
 
 - Hemos mostrado que el efecto promedio de $Z$ sobre $Y$ es proporcional al efecto de $D$ sobre $Y$ para los cumplidores
 
-- Por el supuesto 4, sabemos que la proporción de cumplidores es igual al efecto de $Z$ sobre $D$
+- Por el supuesto 5, sabemos que la proporción de cumplidores es igual al efecto de $Z$ sobre $D$
 
 - Dado que $Z$ se asigna aleatoriamente, podemos estimar los dos ITT por separado para obtener $\lambda=\frac{ITT_Y}{ITT_D}$
 
@@ -375,7 +372,7 @@ scroll_box(t1, height="40%")
 
 ## Terminología
 
-- **Primera etapa**: es el efecto causal de la asignación sobre el cumplimento
+- **Primera etapa**: es el efecto causal de la asignación sobre el cumplimiento
 
 $$\phi=E(D_i|Z_i=1)-E(D_i|Z_i=0)$$
 
@@ -400,7 +397,7 @@ $$\lambda_{LATE}=\frac{\rho}{\phi}$$
 :::
 
 ::: {.fragment}
-- Se muestra como el ITT puede no reflejar la efectividad de la intervención debido al efecto de *dilusión* provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco
+- Se muestra como el ITT puede no reflejar la efectividad de la intervención debido al efecto de *dilución* provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco
 
 :::
 
@@ -426,24 +423,22 @@ t <- asignacion %>%
       escape = FALSE,
       full_width = FALSE) %>%
   kable_paper(c("hover", "condensed", "responsive")) %>%
-        add_header_above(c(" ", "Tramiento recibido:"=2, " "),
-                   bold = TRUE,
-                   background = "white") %>% 
+        add_header_above(c(" ", "Tratamiento recibido:"=2, " "),
+                   bold = TRUE) %>% 
       add_header_above(c("Tratamiento asignado y recibido en casos de violencia doméstica" = 4 ),
-                   bold = TRUE,
-                   background = "white") %>%
+                   bold = TRUE) %>%
   footnote(general = "Adaptado de la tabla 1 en Angrist (2006).",
            general_title = "Nota:",
            footnote_as_chunk = T)
 
-scroll_box(t, height="60%")
+t
 
 ```
 
 
 - En el estudio original, lo que llamamos *apercibir* tuvo en realidad dos componentes: *aconsejar* y *separar*, pero para facilitar el análisis usaremos solo *arrestar* por un lado y *apercibir* por el otro
 
-- ¿Qué observamos sobre a las desviaciones con respecto al tratamiento asignado?
+- ¿Qué observamos sobre las desviaciones con respecto al tratamiento asignado?
 
 
 
@@ -460,7 +455,7 @@ scroll_box(t, height="60%")
 
 - Algunos individuos se comportaron violentos, por lo que fueron arrestados a pesar de ser asignados a apercibimiento
 
-- Por tanto, si comparamos $y$ entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, sobrestimando el efecto de la política de apercibimiento
+- Por tanto, si comparamos $y$ entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, subestimando el efecto de la política de apercibimiento
 
 
 ## LATE
@@ -472,7 +467,7 @@ scroll_box(t, height="60%")
 ::: {.fragment}
 - El ITT ignora el hecho de que algunos asignados a apercibimiento fueron arrestados
 - Sabemos que el LATE está dado por $\lambda_{LATE}=\frac{ITT_y}{ITT_D}=\frac{0.114}{0.786}=0.145$
-- Los datos de los autores reportan que si nos fijáramos solo en las diferencias por tipo de tratamiento obtendríamos, $E(y_i|D_i=1)-E(y_i|D_i=0)=0.216-0.129=0.087$, es decir, casi la mitad del LATE
+- Los datos de los autores reportan que si nos fijáramos solo en las diferencias por tipo de tratamiento obtendríamos, $E(y_i|D_i=1)-E(y_i|D_i=0)=0.216-0.129=0.087$, 60% del LATE
 - Pero como $D$ no es aleatoria, dicha comparación no es correcta
 
 :::
@@ -495,7 +490,7 @@ $$y_i=\alpha+\lambda D_i+\varepsilon_i$$
 
 ## Motivación con un estadístico de Wald
 
-- Ahora supongamos que tenemos un **instrumento** $z_i$ tal que $z_i\perp y_i$, es decir, $E(\varepsilon_i|z_i)=0$
+- Ahora supongamos que tenemos un **instrumento** $z_i$ tal que $z_i\perp \varepsilon_i$, es decir, $E(\varepsilon_i|z_i)=0$
 
 ::: {.fragment}
 - Evaluemos la esperanza de $y_i$ cuando $z_i=1$ y cuando $z_i=0$:
@@ -513,6 +508,15 @@ que es conocido como un *estadístico de Wald*
 :::
 
 
+## Motivación con un estadístico de Wald
+
+- Noten que esta derivación supuso efectos **constantes**, $y_{1i}-y_{0i}=\lambda$ para todo $i$ (un supuesto más fuerte del que necesitamos)
+
+- Si los efectos son heterogéneos, el cociente **sigue siendo válido**, pero ya no estima el efecto promedio de toda la población sino el promedio entre los **cumplidores**, es decir, el LATE que derivamos en la sección anterior
+
+- La aritmética de Wald no cambia, lo que cambia es **sobre quién habla** el número
+
+
 ## Mínimos cuadrados en dos etapas (MC2E)
 
 - En la práctica, podemos plantear un modelo econométrico en dos etapas:
@@ -525,8 +529,8 @@ $$y_i=X_i'\beta+\lambda D_i+\varepsilon_i$$
 - **Primera etapa**
 
 $$D_i=X_i'\phi_0+\phi_1z_i+\eta_i$$
-donde $\phi_i$ es el efecto causal de la asignación sobre el cumplimiento
-- Cuado $D_i$ y $z_i$ son ambas dicotómicas, $\phi_1$ da la proporción de la población que son cumplidores
+donde $\phi_1$ es el efecto causal de la asignación sobre el cumplimiento
+- Cuando $D_i$ y $z_i$ son ambas dicotómicas, $\phi_1$ da la proporción de la población de cumplidores
 
 :::
 
@@ -546,7 +550,7 @@ $$y_i=X_i'\beta+\lambda \hat{D}_i+\varepsilon_i$$
 
 ::: {.fragment}
 
-- Nota: el estimador de Wald es igual al estimador de MC2E cuando no hay $X$ y cuando $Z$ y $D$ son binarias
+- Nota: el estimador de Wald es igual al estimador de MC2E cuando no hay $X$ y cuando $Z$ es binaria ($D$ no necesita serlo)
 
 :::
 
@@ -558,7 +562,7 @@ $$y_i=X_i'\beta+\lambda \hat{D}_i+\varepsilon_i$$
 
 $$
 \begin{aligned}
-y_i&=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_1+\eta_i)+\varepsilon_i \\
+y_i&=X_i'\beta+\lambda(X_i'\phi_0+\phi_1z_i+\eta_i)+\varepsilon_i \\
 &=X_i'\rho_0+\rho_1z_i+\nu_i
 \end{aligned}
 $$
@@ -613,25 +617,22 @@ t <- primera.etapa %>%
       full_width = FALSE) %>%
   kable_paper(c("hover", "condensed", "responsive")) %>%
         add_header_above(c(" "=1, "Variable dep.: fue apercibido"=2,"Variable dep.: reincidencia"=2),
-                   bold = TRUE,
-                   background = "white") %>%
+                   bold = TRUE) %>%
       add_header_above(c(" "=1, "Primera etapa"=2,"Forma reducida"=2),
-                   bold = TRUE,
-                   background = "white") %>% 
+                   bold = TRUE) %>% 
       add_header_above(c("Primera etapa y forma reducida" = 5 ),
-                   bold = TRUE,
-                   background = "white") %>% 
+                   bold = TRUE) %>% 
   footnote(general = "Tabla 2 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.",
            general_title = "Nota:",
            footnote_as_chunk = T)
 
-scroll_box(t, height="60%")
+t
 
 ```
 
 - Habíamos obtenido antes la columna (1), pero como una diferencia de medias: $E(D_i|Z_i=1)-E(D_i|Z_i=0)=0.797-0.011=0.786$
 
-- Mientras que también habíamos encontrado (3): $E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.0.114$
+- Mientras que también habíamos encontrado (3): $E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.114$
 
 
 
@@ -670,19 +671,16 @@ t <- estructural %>%
       full_width = FALSE) %>%
   kable_paper(c("hover", "condensed", "responsive")) %>%
         add_header_above(c(" "=1, "Variable dep.: reincidencia"=4),
-                   bold = TRUE,
-                   background = "white") %>%
+                   bold = TRUE) %>%
       add_header_above(c(" "=1, "MCO"=2,"VI/MC2E"=2),
-                   bold = TRUE,
-                   background = "white") %>% 
+                   bold = TRUE) %>% 
       add_header_above(c("Impactos de ser apercibido en la reincidencia (MCO y LATE)" = 5 ),
-                   bold = TRUE,
-                   background = "white") %>% 
+                   bold = TRUE) %>% 
   footnote(general = "Tabla 3 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.",
            general_title = "Nota:",
            footnote_as_chunk = T)
 
-scroll_box(t, height="50%")
+t
 
 ```
 
@@ -694,32 +692,33 @@ scroll_box(t, height="50%")
 
 
 
-## LATE es igual ATET en este caso
+## LATE es igual al ATET en este caso
 
 - Noten que este estudio tiene lo que se conoce como *no cumplidores de un solo lado*
 
 
 ```{r tipologia1, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 
-scroll_box(t1, height="50%")
+t1
 
 ```
 
 - Cuando la asignación es **apercibir**, en el 20.27% de los casos la acción fue arrestar y en el 79.73% efectivamente fue apercibir
 
-- En cambio, cuando se indica **no apercibir**, es decir, arrestar, la adopción es casi perfecto (salvo un caso)
+- En cambio, cuando se indica **no apercibir**, es decir, arrestar, la adopción es casi perfecta (salvo un caso)
 
 ::: {.fragment}
-- En otras palabras, en este caso no hay **siempre cumplidores**
+- En otras palabras, en este caso no hay **siempre adoptadores**
 - No hay individuos que hayan sido *apercibidos* independientemente de la asignación
 :::
 
 
-## LATE es igual ATET en este caso
+## LATE es igual al ATET en este caso
 
 - Recordemos que el grupo de quienes reciben el tratamiento está compuesto de los cumplidores y los siempre adoptadores
 - En este caso en particular:
 $$\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET$$
+donde $C_i=1$ para los cumplidores
 
 ::: {.fragment}
 - Esto ocurre en los casos en que:
@@ -728,11 +727,6 @@ $$\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET$$
 
 :::
 
-# {.divider background-color="#9B2247" data-state="nochrome"}
-
-Material de clase en versión preliminar.
-
-**No reproducir, no distribuir, no citar.**
 
 
 
