@@ -529,9 +529,8 @@ window.Quarto = {
 <section id="pregunta-2" class="level2">
 <h2 class="anchored" data-anchor-id="pregunta-2">Pregunta 2</h2>
 <p>Sea una variable de resultados <span class="math inline">\(y_i\)</span>, una variable de asignación aleatoria <span class="math inline">\(Z_i\)</span> y una variable de adopción <span class="math inline">\(D_i\)</span>. El estimador de Wald se define como:</p>
-<pre><code>$$\hat{\beta}_{Wald}=\frac{\bar{Y}_{Z_i=1}-\bar{Y}_{Z_i=0}}{\bar{D}_{Z_i=1}-\bar{D}_{Z_i=0}}$$
-
-En esta pregunta mostraremos cómo el estimador de Wald es equivalente al estimador de VI cuando no hay controles. Use nuevamente los datos en *crepon_morocco_analysis.csv*.</code></pre>
+<p><span class="math display">\[\hat{\beta}_{Wald}=\frac{\bar{Y}_{Z_i=1}-\bar{Y}_{Z_i=0}}{\bar{D}_{Z_i=1}-\bar{D}_{Z_i=0}}\]</span></p>
+<p>En esta pregunta mostraremos cómo el estimador de Wald es equivalente al estimador de VI cuando no hay controles. Use nuevamente los datos en <em>crepon_morocco_analysis.csv</em>.</p>
 <ol type="a">
 <li><p>[10 puntos] Obtenga el estimador de Wald como el cociente de la diferencia en el valor de los activos entre los hogares asignados a tratamiento y control dividido por la diferencia en la probabilidad de adopción entre los hogares asignados a tratamiento y control. Recuerde que el valor de los activos es <strong>assets_total</strong>.</p></li>
 <li><p>[5 puntos] Ahora estime por MC2E el efecto de la adopción sobre el valor de los activos, usando la variable de asignación como instrumento para la adopción. Use <em>ivreg</em> para estimar el efecto directamente. ¿Qué ventaja observa con respecto al estimador de Wald?</p></li>
