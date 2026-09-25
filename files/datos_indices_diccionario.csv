@@ -1,0 +1,57 @@
+familia,variable,tipo,orientacion,pct_faltante
+identificacion/covariables,id,id,NA,0
+identificacion/covariables,tratamiento,binaria,NA,0
+identificacion/covariables,edad,cuenta,NA,0
+identificacion/covariables,escolaridad,cuenta,NA,0
+identificacion/covariables,tamano_hogar,cuenta,NA,0
+identificacion/covariables,zona_rural,binaria,NA,0
+identificacion/covariables,linea_base_consumo,cont,NA,0
+seguridad_alimentaria,comidas_dia,cont,mayor es mejor,16
+seguridad_alimentaria,dias_sin_comida,cuenta,mayor es PEOR,5.4
+seguridad_alimentaria,variedad_dieta,cont,mayor es mejor,6.5
+seguridad_alimentaria,gasto_alimentos,cont,mayor es mejor,2.3
+seguridad_alimentaria,come_proteina,binaria,mayor es mejor,7.7
+seguridad_alimentaria,reservas_grano,cont,mayor es mejor,8.4
+consumo,consumo_total,cont,mayor es mejor,11
+consumo,consumo_no_alimentario,cont,mayor es mejor,5.5
+consumo,gasto_salud,cont,mayor es mejor,6.1
+consumo,gasto_educacion,cont,mayor es mejor,4.6
+consumo,gasto_vestido,cont,mayor es mejor,8.5
+activos,valor_activos,cont,mayor es mejor,16.8
+activos,tiene_refrigerador,binaria,mayor es mejor,11.6
+activos,tiene_bicicleta,binaria,mayor es mejor,12.1
+activos,num_animales,cuenta,mayor es mejor,10.9
+activos,valor_herramientas,cont,mayor es mejor,18
+activos,tiene_celular,binaria,mayor es mejor,6.3
+activos,calidad_vivienda,cont,mayor es mejor,7.2
+activos,tiene_tierra,binaria,mayor es mejor,15
+activos,valor_ahorro,cont,mayor es mejor,15.6
+salud_mental,indice_estres,cont,mayor es PEOR,9.3
+salud_mental,dias_ansiedad,cuenta,mayor es PEOR,3.5
+salud_mental,satisfaccion_vida,cont,mayor es mejor,12.7
+salud_mental,calidad_sueno,cont,mayor es mejor,4.3
+salud_mental,apoyo_social,cont,mayor es mejor,14.3
+salud_mental,autoeficacia,cont,mayor es mejor,11.9
+salud_mental,optimismo_futuro,cont,mayor es mejor,15
+salud_mental,dias_animo_bajo,cuenta,mayor es PEOR,7
+salud_mental,concentracion,cont,mayor es mejor,9.6
+salud_mental,energia_diaria,cont,mayor es mejor,9.7
+salud_mental,relaciones_familiares,cont,mayor es mejor,9.4
+salud_mental,sentido_control,cont,mayor es mejor,13.3
+ingresos_trabajo,ingreso_mensual,cont,mayor es mejor,13
+ingresos_trabajo,ingreso_laboral,cont,mayor es mejor,5.6
+ingresos_trabajo,ingreso_negocio,cont,mayor es mejor,14.4
+ingresos_trabajo,ventas_mes,cont,mayor es mejor,5.8
+ingresos_trabajo,horas_trabajadas,cont,mayor es mejor,7.4
+ingresos_trabajo,num_empleos,cuenta,mayor es mejor,8.9
+ingresos_trabajo,estabilidad_empleo,cont,mayor es mejor,5.6
+educacion_hijos,anios_escolaridad_hijos,cont,mayor es mejor,13.2
+educacion_hijos,asistencia_escolar,binaria,mayor es mejor,5.1
+educacion_hijos,gasto_utiles,cont,mayor es mejor,5.3
+educacion_hijos,tareas_supervisadas,cont,mayor es mejor,2.7
+educacion_hijos,dias_falta_escuela,cuenta,mayor es PEOR,12.3
+educacion_hijos,repitio_anio,binaria,mayor es PEOR,14.8
+educacion_hijos,calificacion_promedio,cont,mayor es mejor,6.2
+educacion_hijos,libros_hogar,cuenta,mayor es mejor,2.7
+educacion_hijos,horas_estudio,cont,mayor es mejor,9.6
+educacion_hijos,inscrito_secundaria,binaria,mayor es mejor,15
