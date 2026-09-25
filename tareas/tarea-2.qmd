@@ -122,9 +122,6 @@ a. [5 puntos] Para cada variable, estime el impacto del tratamiento con una regr
 
 a. [5 puntos] Realice la corrección propuesta por Bonferroni. De nuevo, genere un cuadro de resumen donde indique qué hipótesis nulas se rechazan en este estudio si se realiza este procedimiento.
 
-    - *Consumo no pierde nada: las cinco variables sobreviven, porque sus valores $p$ son del orden de $10^{-7}$ o menores y resisten cualquier umbral razonable.*
-    - *Activos pasa de seis a dos, e ingresos y trabajo de seis a cinco.*
-    - *Salud mental pasa de seis a **cero**. Con 12 variables el umbral es $\alpha/n = 0.05/12 = 0.0042$, y ninguno de los valores $p$ de esa familia baja de ahí.*
 
 a. [5 puntos] Realice la corrección propuesta por Benjamini y Hochberg. De nuevo, genere un cuadro de resumen donde indique qué hipótesis nulas se rechazan en este estudio si se realiza este procedimiento.
 
@@ -133,39 +130,12 @@ a. [5 puntos] Considere la variable *variedad_dieta*. Estandarice dicha variable
     $$z_{ij}^k=\beta_{j}'^k+\beta_{1j}'^k T_i + B_{k}'X_i + \varepsilon_{ij}'^k$$
     ¿Cómo se interpreta $\hat{\beta}_{1j}'^k$? ¿Cómo se compara su conclusión con la que se obtiene en la parte a.?
 
-    $$\hat{\beta}'_{1j}=\frac{\hat{\beta}_{1j}}{sd(y_j)^C}=\frac{0.8789}{10.8819}=0.0808$$
 
 a. [5 puntos] Construya ahora el índice de Kling, Liebman y Katz, $z_i$, para cada una de las seis familias. Luego estime el efecto causal para cada una de ellas:
 
     $$z_{i}^k=\tau_0^k+\tau_1^k T_i + \Omega^k X_i + \nu_i^k$$
     Genere un cuadro de resumen donde muestre el efecto causal para cada uno de los índices de las seis familias. ¿Qué se concluye para cada una?
 
-    - ***Seguridad alimentaria:** $\hat{\tau}_1 = 0.025$ ($p = 0.538$). No se rechaza la nula. Es consistente con el inciso a., donde ninguna variable de esta familia resultó significativa: el programa no tuvo efecto sobre esta dimensión.*
-    - ***Consumo:** $\hat{\tau}_1 = 0.437$ ($p < 10^{-18}$). El efecto más grande del estudio y el más robusto; ya era evidente variable por variable.*
-    - ***Ingresos y trabajo:** $\hat{\tau}_1 = 0.277$ ($p = 3.3\times10^{-11}$). Efecto claro.*
-    - ***Activos:** $\hat{\tau}_1 = 0.198$ ($p = 5.2\times10^{-6}$). Efecto moderado y bien identificado.*
-    - ***Salud mental:** $\hat{\tau}_1 = 0.169$ ($p = 6.4\times10^{-5}$). **Éste es el resultado más interesante del ejercicio.** En los incisos b. y c. *ninguna* de las 12 variables de esta familia sobrevivió Bonferroni ni BH. Sin embargo, el índice detecta un efecto con un valor $p$ del orden de $10^{-5}$. La razón es que el promedio de 12 variables poco correlacionadas tiene una desviación estándar mucho menor que cada variable por separado, así que la misma señal se vuelve detectable. El índice recupera información que la corrección por múltiples hipótesis había destruido, y además lo hace probando **una sola** hipótesis por familia en lugar de 12.*
-    - ***Educación de los hijos:** $\hat{\tau}_1 = 0.059$ ($p = 0.137$). No se rechaza la nula. **Y aquí hay que tener cuidado con la conclusión**, porque en el inciso a. la variable `anios_escolaridad_hijos` de esta misma familia sí resultó significativa, y con un valor $p$ que sobrevive incluso Bonferroni.*
-
-**Bonus: el índice de Anderson**
-
-*El índice de Kling pesa todas las variables igual. El de Anderson (2008) las pondera con las sumas de renglón de $\Sigma^{-1}$, la inversa de la matriz de covarianzas de los $z$-scores, de modo que las variables muy correlacionadas entre sí —que aportan información redundante— reciben menos peso.*
-
-*Para los valores faltantes usamos la matriz de selección $M_i$: las entradas faltantes entran como cero en el numerador y sus pesos se excluyen del normalizador. Esto importa mucho aquí, porque sólo 19 de los 2,457 individuos tienen las 49 variables completas: descartar casos incompletos dejaría el estudio sin datos.*
-
-*Comparemos los dos índices lado a lado:*
-
-***¿Qué se obtiene con Anderson?** La respuesta interesante es que **no siempre gana**, y las dos excepciones son instructivas.*
-
-*En cuatro familias los dos índices dan prácticamente lo mismo. En seguridad alimentaria, consumo y salud mental los coeficientes coinciden hasta el tercer decimal. Esto ocurre cuando las variables de la familia están correlacionadas de manera pareja: si todas las correlaciones fueran iguales, las sumas de renglón de $\Sigma^{-1}$ serían idénticas y Anderson coincidiría exactamente con Kling.*
-
-***Donde Anderson gana: ingresos y trabajo.** El coeficiente pasa de $0.277$ a $0.369$ y el valor $p$ de $3.3\times10^{-11}$ a $5.1\times10^{-19}$. Si inspeccionamos los pesos normalizados vemos por qué:*
-
-*Las cuatro variables de ingreso están muy correlacionadas entre sí y juntas reciben apenas un tercio del peso; las tres restantes, que miden cosas distintas, se llevan los dos tercios. Anderson concentra el peso donde hay información nueva, y por eso gana potencia.*
-
-***Donde Anderson pierde: educación de los hijos.** El coeficiente cae de $0.059$ a $0.012$ y el valor $p$ sube de $0.137$ a $0.777$. La explicación está en que la única variable de esa familia con un efecto real, `anios_escolaridad_hijos`, recibe un peso de apenas $0.020$, el más bajo de las 10. Anderson la considera redundante y prácticamente la descarta, de modo que diluye todavía más que Kling.*
-
-*La lección es que la ponderación de Anderson es **ciega a dónde están los efectos**: se construye sólo con la matriz de covarianzas, que es información de la estructura de las variables, no de su relación con el tratamiento. Cuando el efecto está en las variables menos redundantes, Anderson gana; cuando está en una que el criterio de covarianzas castiga, pierde. No hay garantía de que domine a Kling, y conviene reportar ambos.*
 
 [^1]: Crépon, B., Devoto, F., Duflo, E., & Parienté, W. (2015). Estimating the impact of microcredit on those who take it up: Evidence from a randomized experiment in Morocco. *American Economic Journal: Applied Economics*, 7(1), 123-50.
 
