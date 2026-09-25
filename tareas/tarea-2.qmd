@@ -89,9 +89,9 @@ a. [5 puntos] Estime el efecto del cumplimiento sobre el valor de los activos, u
 
 Sea una variable de resultados $y_i$, una variable de asignación aleatoria $Z_i$ y una variable de adopción $D_i$. El estimador de Wald se define como:
 
-    $$\hat{\beta}_{Wald}=\frac{\bar{Y}_{Z_i=1}-\bar{Y}_{Z_i=0}}{\bar{D}_{Z_i=1}-\bar{D}_{Z_i=0}}$$
+$$\hat{\beta}_{Wald}=\frac{\bar{Y}_{Z_i=1}-\bar{Y}_{Z_i=0}}{\bar{D}_{Z_i=1}-\bar{D}_{Z_i=0}}$$
 
-    En esta pregunta mostraremos cómo el estimador de Wald es equivalente al estimador de VI cuando no hay controles. Use nuevamente los datos en *crepon_morocco_analysis.csv*.
+En esta pregunta mostraremos cómo el estimador de Wald es equivalente al estimador de VI cuando no hay controles. Use nuevamente los datos en *crepon_morocco_analysis.csv*.
    
 a. [10 puntos] Obtenga el estimador de Wald como el cociente de la diferencia en el valor de los activos entre los hogares asignados a tratamiento y control dividido por la diferencia en la probabilidad de adopción entre los hogares asignados a tratamiento y control. Recuerde que el valor de los activos es **assets_total**.
 
