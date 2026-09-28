@@ -1,0 +1,184 @@
+---
+title: "Variables instrumentales"
+lang: es
+---
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+library(tidyverse)
+library(AER)
+library(modelsummary)
+```
+
+# El problema de endogeneidad
+
+La teoría asintótica para MCO considera como uno de sus supuestos fundamentales la exogeneidad de los errores, es decir, que los errores no estén correlacionados con los regresores. ¿Qué sucede si se viola este supuesto?
+
+Supongamos que un proceso de salarios **verdadero** está dado por:
+
+$$\ln(w_i)=\beta_0+\beta_1 educ_i+\beta_2 habilidad_i+e_i$$
+
+Asumamos que la habilidad es no observada, pero que decidimos ignorar este hecho y estimar la siguiente ecuación:
+
+$$\ln(w_i)=\beta_0+\beta_1 educ_i+u_i$$
+
+El $\hat{\beta}_1$ estimado con esta regresión corta es inconsistente porque $u_i$ incluye la habilidad, que afecta tanto el desempeño en el mercado laboral como el desempeño de formación de capital humano en la escuela. En otras palabras, con los datos a la mano, estimar $\hat{\beta}_1$ no nos deja conocer nada sobre $\beta_1$, que nos dice cómo cambia el ingreso con un año adicional de educación.
+
+Es aquí donde encontramos la utilidad de las variables instrumentales.
+
+# Variables instrumentales
+
+Consideremos el siguiente modelo univariado:
+
+$$y=\beta_0+\beta_1 x+u$$
+
+donde asumimos que $cov(x,u)\neq 0$. Supongamos ahora que existe una variable $z$ que cumple con:
+
+1. **Exogeneidad**: $z$ no está correlacionada con $u$
+
+   $$cov(z,u)=0$$
+
+2. **Relevancia**: $z$ está correlacionada con $x$
+
+   $$cov(z,x)\neq 0$$
+
+Entonces $z$ es un **instrumento** de $x$.
+
+La exogeneidad implica que $z$ no debe estar correlacionada con factores omitidos (por ejemplo, la habilidad).
+
+# Estimador de VI
+
+Calculando la covarianza con $z$ de $y=\beta_0+\beta_1 x+u$ obtenemos:
+
+$$cov(y,z)=\beta_1 cov(x,z)+cov(u,z)$$
+
+Y, si $cov(u,z)=0$, resolviendo para $\beta_1$:
+
+$$\beta_1=\frac{cov(y,z)}{cov(x,z)}$$
+
+siempre y cuando $cov(x,z)\neq 0$. El estimador de VI sustituye las covarianzas poblacionales por sus análogos muestrales:
+
+$$\hat{\beta}_1=\frac{\widehat{cov}(y,z)}{\widehat{cov}(x,z)}$$
+
+Por una LGN se puede mostrar que $\hat{\beta}_1$ es consistente. Sin embargo, $\hat{\beta}_1$ es sesgado en muestras finitas. El sesgo puede ser sustancial en muestras pequeñas, por lo que se recomienda tener precaución con el tamaño de la muestra.
+
+# Ejemplo: rendimientos a la educación
+
+Card (1995) estudia el problema de rendimientos a la educación en el contexto de los Estados Unidos. Para ello, trabaja con una muestra de 3,010 hombres de entre 24 y 34 años en 1976, provenientes de la cohorte de 5,525 hombres de entre 14 y 24 años que la National Longitudinal Survey of Young Men comenzó a seguir en 1966. Nos interesa la relación entre educación e ingreso, pero no observamos la habilidad.
+
+Por lo tanto, sabemos que si estimamos $\ln(w_i)=\beta_0+\beta_1 educ_i+u_i$, el coeficiente $\hat{\beta}_1$ será inconsistente.
+
+Card propone como instrumento una variable $z_i$ que indica si en el municipio de la persona $i$ hay una universidad. La intuición es que la presencia de la universidad baja el costo de ir a la universidad, pero esto no afecta directamente el ingreso. Encontrar un instrumento casi nunca es tarea sencilla: se trata de entender los mecanismos, las instituciones y los contextos. No hay bases de datos por ahí que digan *mira qué gran cantidad de instrumentos para tu problema*.
+
+# Lenguaje de VI
+
+De forma más general, partimos de la siguiente **ecuación estructural** para $y_i$:
+
+$$y_i=\beta_0+\beta_1 x_{1i}+\beta_2 x_{2i}+u_i$$
+
+donde $cov(x_{1i},u_i)\neq 0$.
+
+A $x_{1i}$ comúnmente se le conoce como la variable **endógena**. Noten que en esta ecuación se incluyen también una o más variables **exógenas** como $x_{2i}$, que no están correlacionadas con $u_i$.
+
+A una regresión de la variable de interés en función del instrumento y las variables exógenas se le conoce como **forma reducida** (o como ITT en el contexto de inferencia causal y evaluación de impacto):
+
+$$y_i=\gamma_0+\gamma_1 z_i+\gamma_2 x_{2i}+\varepsilon_i$$
+
+Por su parte, la **primera etapa** especifica la relación entre la variable endógena y el instrumento:
+
+$$x_{1i}=\pi_0+\pi_1 z_i+\pi_2x_{2i}+\nu_i$$
+
+donde se cumple que $cov(z_i,\nu_i)=0$ y $cov(x_{2i},\nu_i)=0$. Entonces, la condición de relevancia puede escribirse también como $\pi_1\neq 0$. Noten que la primera etapa permite que $x_{1i}$ y $x_{2i}$ estén correlacionadas aun descontando el efecto de $z_i$ (cuando $\pi_2\neq 0$).
+
+En la práctica, la primera etapa puede y **debe** probarse empíricamente. En cambio, no es posible probar el supuesto de exogeneidad del instrumento (también conocido como restricción de exclusión), que debe estar respaldado sobre todo por la teoría económica, el conocimiento de las instituciones, la exogeneidad de experimentos naturales, etc. De cualquier modo, cuando se usan variables instrumentales, siempre habrá alguien en la audiencia que no esté convencido del supuesto de exogeneidad.
+
+<div style="text-align: center;">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8s4pgc3DPN0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+# Más de un instrumento
+
+Es posible que haya $J$ variables $z_{ji}$ que puedan funcionar como instrumento (si encontrar uno es complicado, piensen ahora en $J$). Se debe cumplir que $cov(u_i,z_{ji})=0$ y que al menos una se correlacione con $x_{1i}$. Por ejemplo, con dos instrumentos, podemos escribir la primera etapa como sigue:
+
+$$x_{1i}=\pi_0+\pi_1 z_{1i}+ \pi_2 z_{2i} +\pi_3x_{2i}+\nu_i$$
+
+Ahora, debe cumplirse que $cov(z_{1i},\nu_i)=cov(z_{2i},\nu_i)=cov(x_{2i},\nu_i)=0$. Y para lograr identificación, se requiere que $\pi_1\neq 0$ o $\pi_2\neq 0$. Podemos usar una prueba $F$ para contrastar la hipótesis nula conjunta $\pi_1=\pi_2=0$.
+
+# Estimadores
+
+El modelo presentado anteriormente sugiere que podemos estimar $\beta_1$ con un procedimiento de dos etapas:
+
+1. Regresión de $x_{1i}$ sobre los instrumentos y las variables exógenas para obtener $\hat{x}_{1i}$.
+
+2. Regresión de $y_i$ sobre las variables exógenas y $\hat{x}_{1i}$.
+
+Es como si *purgáramos* a $x_{1i}$ de su correlación con $u_i$, aunque nunca hacemos esto *a mano*. Cuando tenemos tantos instrumentos como endógenas, usamos el **estimador de variables instrumentales**. Para problemas más generales, con múltiples instrumentos y variables endógenas y con posible heterocedasticidad, recurrimos al **método generalizado de momentos**.
+
+# Ejemplo: más sobre rendimientos a la educación
+
+En el problema de Card (1995), la primera etapa es
+
+$$educ_i=\pi_0+\pi_1 X_i+ \phi\, unicerca_i +\nu_i$$
+donde $unicerca_i= \begin{cases} 1 \quad\text{había una universidad en el municipio} \\ 0 \quad\text{otro caso}\\ \end{cases}$
+
+Y la forma reducida es
+
+$$\ln(w_i)=\gamma_0+\gamma_1 X_i+  \delta\, unicerca_i+\varepsilon_i$$
+
+Sabemos que el salario estará correlacionado con la presencia de la universidad, pero estas diferencias ocurren por la vía de la escolaridad.
+
+Usamos los datos en *ingresos_iv.csv*, del estudio de Card que hemos mencionado como ejemplo, y la función *ivreg* del paquete *AER*. Estimemos la relación entre el log del salario y la educación:
+
+```{r}
+data.ingresos <- read_csv("../files/ingresos_iv.csv",
+                          locale = locale(encoding = "latin1"))
+#MCO
+mco <- lm(lwage ~ educ + exper + black + south + married + smsa,
+          data = data.ingresos)
+
+#Variables instrumentales (asume homocedasticidad)
+vi <- ivreg(lwage ~  educ + exper + black + south + married + smsa |
+               . - educ + nearc4, data = data.ingresos)
+```
+
+Sabemos que $\hat{\beta}_1$ estimado por MCO es inconsistente por la omisión de la habilidad. El uso del instrumento nos permite identificar el rendimiento de la educación.
+
+```{r}
+modelsummary(list("MCO"=mco, "VI"=vi),
+             coef_map = c("educ", "exper"),
+             gof_map = c("nobs", "F"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01))
+```
+
+Noten que las regresiones usan 3,003 observaciones y no las 3,010 de la muestra de Card: siete personas no reportan su estado civil (`married`) y R las descarta al estimar.
+
+La primera etapa de este ejercicio nos dice cómo cambia la educación debido a la presencia de una universidad en el municipio. Esto es clave para nuestra estrategia de variables instrumentales pues el supuesto de relevancia exige que la educación se vea afectada por la presencia de una universidad. Estimamos:
+
+```{r}
+# Primera etapa
+pe_vi <- lm(educ ~  nearc4 + exper + black + south + married + smsa,
+            data = data.ingresos)
+```
+
+```{r}
+modelsummary(list("MCO"=mco, "VI"=vi, "Primera etapa"=pe_vi),
+             coef_map = c("educ", "exper", "nearc4"),
+             gof_map = c("nobs", "F"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01))
+```
+
+Finalmente, verificamos el estadístico $F$ de la primera etapa (para el instrumento):
+
+```{r}
+#F del instrumento
+linearHypothesis(pe_vi, c("nearc4=0"))
+```
+
+# Referencias
+
+Card, D. (1995). Using Geographic Variation in College Proximity to Estimate the Return to Schooling. En L. N. Christofides, E. K. Grant y R. Swidinsky (Eds.), *Aspects of Labour Market Behaviour: Essays in Honour of John Vanderkamp* (pp. 201-222). University of Toronto Press. Versión de documento de trabajo: [https://doi.org/10.3386/w4483](https://doi.org/10.3386/w4483)
