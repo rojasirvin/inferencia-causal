@@ -233,14 +233,15 @@ $$
 - Es decir, el efecto causal de $Z$ sobre $Y$ para $i$ es el producto del efecto causal de $D$ sobre $Y$ y del efecto causal de $Z$ sobre $D$:
 
 $$
-\underbrace{Y_i(1,D_i(1))-Y_i(0,D_i(0))}_B=(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))
+Y_i(1,D_i(1))-Y_i(0,D_i(0))=(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))
 $$
 :::
 
 
 ## Interpretación causal del estimador de VI
 
-- Consideremos ahora $B$ y obtengamos el valor esperado:
+- Obtengamos el valor esperado a ambos lados de la expresión que acabamos de derivar:
+i
 $$
 \begin{aligned}
 E(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\right]\\
