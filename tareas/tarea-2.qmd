@@ -57,6 +57,8 @@ En Crépon et al. (2015)[^1] se estudia una intervención en Marruecos en la que
 a. [3 puntos] Primero recordaremos cómo mostrar que el tratamiento efectivamente fue asignado de manera aleatoria. El siguiente código lee los datos que debemos usar y se queda con las observaciones de la línea base. Con estos datos, mostraremos que la variable **nadults_resid_bl**, que indica el número de personas adultas que viven en cada hogar, está balanceado entre los grupos asignados a tratamiento y control. Noten que la media del número de personas adultas que viven en el hogar en el grupo de control es 3.45 (d.e. 1.99) y que hay 2,266 hogares en dicho grupo de control. Esto es exactamente lo que se reporta en la fila correspondiente a *Number members* en la tabla 1 del artículo.
 
 ```{r, indent="   "}
+#| echo: true
+
   data.morocco<-read_csv("../files/crepon_morocco_balance.csv",
                          locale = locale(encoding = "latin1")) |>
     clean_names() |>
