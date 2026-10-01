@@ -13,6 +13,7 @@ format:
     include-in-header:
       - _ic-header.html
       - fontawesome.html
+    chalkboard: true
 ---
 
 ```{r}
