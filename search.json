@@ -478,7 +478,7 @@
     "href": "diapositivas/late.html#interpretación-causal-del-estimador-de-vi",
     "title": "Inferencia Causal 2026",
     "section": "Interpretación causal del estimador de VI",
-    "text": "Interpretación causal del estimador de VI\n\nObtengamos el valor esperado a ambos lados de la expresión que acabamos de derivar: i \\[\n\\begin{aligned}\nE(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E\\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\right]\\\\\n&= (1)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\\\\n&+(0)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\\\\n&+(-1)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\\\\n\\end{aligned}\n\\]\nLos factores \\((1)\\), \\((0)\\) y \\((-1)\\) son los tres valores que puede tomar \\(D_i(1)-D_i(0)\\). Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza\nCada valor corresponde a un tipo de individuo: \\((1)\\) a los cumplidores, \\((0)\\) a quienes la asignación no mueve —nunca cumplidores y siempre adoptadores— y \\((-1)\\) a los retadores\nEl segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimiento\nUsando el supuesto 5 de monotonicidad, sabemos que \\(D_i(1)-D_i(0)\\) es igual a uno o cero, es decir, \\(P(D_i(1)-D_i(0)=-1)=0\\)"
+    "text": "Interpretación causal del estimador de VI\n\nObtengamos el valor esperado a ambos lados de la expresión que acabamos de derivar: \\[\n\\begin{aligned}\nE(Y_i(1,D_i(1))-Y_i(0,D_i(0)))&=E\\left[(Y_i(1)-Y_i(0))(D_i(1)-D_i(0))\\right]\\\\\n&= (1)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=1)P(D_i(1)-D_i(0)=1)\\\\\n&+(0)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=0)P(D_i(1)-D_i(0)=0)\\\\\n&+(-1)\\cdot E(Y_i(1)-Y_i(0)|D_i(1)-D_i(0)=-1)P(D_i(1)-D_i(0)=-1)\\\\\n\\end{aligned}\n\\]\nLos factores \\((1)\\), \\((0)\\) y \\((-1)\\) son los tres valores que puede tomar \\(D_i(1)-D_i(0)\\). Al condicionar en cada uno de ellos, ese segundo factor del producto se vuelve una constante y sale de la esperanza\nCada valor corresponde a un tipo de individuo: \\((1)\\) a los cumplidores, \\((0)\\) a quienes la asignación no mueve —nunca cumplidores y siempre adoptadores— y \\((-1)\\) a los retadores\nEl segundo término de la suma es cero y corresponde a aquellos para quienes la asignación no modificó el cumplimiento\nUsando el supuesto 5 de monotonicidad, sabemos que \\(D_i(1)-D_i(0)\\) es igual a uno o cero, es decir, \\(P(D_i(1)-D_i(0)=-1)=0\\)"
   },
   {
     "objectID": "diapositivas/late.html#interpretación-causal-del-estimador-de-vi-1",
@@ -499,7 +499,7 @@
     "href": "diapositivas/late.html#tipos-de-individuos",
     "title": "Inferencia Causal 2026",
     "section": "Tipos de individuos",
-    "text": "Tipos de individuos\n\nHay cuatro tipos de individuos:\n\n\n\n\n\n\n\n\n\n\n\nTipos de individuos\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(0)=0\\)\n\\(D_i(0)=1\\)\n\n\n\\(D_i(1)=0\\)\n\\(Y_i(1,0)-Y_i(0,0)=0\\)\n\\(Y_i(1,0)-Y_i(0,1)=-(Y_i(1)-Y_i(0))\\)\n\n\n\nNunca cumplidor\nRetador\n\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(1)=1\\)\n\\(Y_i(1,1)-Y_i(0,0)=Y_i(1)-Y_i(0)\\)\n\\(Y_i(1,1)-Y_i(0,1)=0\\)\n\n\n\nCumplidor\nSiempre adoptador\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist, Imbens & Rubin (1996)."
+    "text": "Tipos de individuos\n\nHay cuatro tipos de individuos:\n\n\n\n\n\n\n\n\n\n\n\n\nTipos de individuos\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(0)=0\\)\n\\(D_i(0)=1\\)\n\n\n\\(D_i(1)=0\\)\n\\(Y_i(1,0)-Y_i(0,0)=0\\)\n\\(Y_i(1,0)-Y_i(0,1)=-(Y_i(1)-Y_i(0))\\)\n\n\n\nNunca cumplidor\nRetador\n\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(1)=1\\)\n\\(Y_i(1,1)-Y_i(0,0)=Y_i(1)-Y_i(0)\\)\n\\(Y_i(1,1)-Y_i(0,1)=0\\)\n\n\n\nCumplidor\nSiempre adoptador\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist, Imbens & Rubin (1996)."
   },
   {
     "objectID": "diapositivas/late.html#tipos-de-individuos-1",
@@ -534,14 +534,14 @@
     "href": "diapositivas/late.html#variables-instrumentales-en-investigación-criminológica",
     "title": "Inferencia Causal 2026",
     "section": "Variables instrumentales en investigación criminológica",
-    "text": "Variables instrumentales en investigación criminológica\n\nAngrist (2006) estudia un experimento bastante particular: aleatorizar la respuesta policíaca\n¿En qué consistió la intervención?\n\n\n\n\\(y_i\\): tasa de reincidencia en conductas de violencia doméstica\n\\(Z_i=\\begin{cases} 1\\quad \\text{si apercibido} \\\\ 0\\quad \\text{otro caso}\\ \\end{cases}\\)\n\n\n\n\nSe muestra como el ITT puede no reflejar la efectividad de la intervención debido al efecto de dilución provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco"
+    "text": "Variables instrumentales en investigación criminológica\n\nAngrist (2006) estudia un experimento bastante particular: aleatorizar la respuesta policíaca\n¿En qué consistió la intervención?\n\n\n\n\\(y_i\\): tasa de reincidencia en conductas de violencia doméstica\n\\(Z_i=\\begin{cases} 1\\quad \\text{si apercibido} \\\\ 0\\quad \\text{otro caso}\\ \\end{cases}\\)\n\n\n\n\nSe muestra cómo el ITT puede no reflejar la efectividad de la intervención debido al efecto de dilución provocado, en este caso, por desviaciones con respecto a la forma de enfrentar un episodio policíaco"
   },
   {
     "objectID": "diapositivas/late.html#diferencias-en-las-respuestas-efectivas",
     "href": "diapositivas/late.html#diferencias-en-las-respuestas-efectivas",
     "title": "Inferencia Causal 2026",
     "section": "Diferencias en las respuestas efectivas",
-    "text": "Diferencias en las respuestas efectivas\n\n\n\n\n\n\n\n\n\n\n\nTratamiento asignado y recibido en casos de violencia doméstica\n\n\n\n\n\nTratamiento recibido:\n\n\n\n\n\n\n\n\n\n\n\n\n\nArrestado\nApercibido\n\n\n\nTratamiento asignado:\n\n\nTotal\n\n\nArrestar\n98.91 (91)\n1.09 (1)\n29.3 (92)\n\n\nApercibir\n20.27 (45)\n79.73 (177)\n70.7 (222)\n\n\nTotal\n43.1 (136)\n56.69 (178)\n100 (314)\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist (2006).\n\n\n\n\n\n\n\n\n\nEn el estudio original, lo que llamamos apercibir tuvo en realidad dos componentes: aconsejar y separar, pero para facilitar el análisis usaremos solo arrestar por un lado y apercibir por el otro\n¿Qué observamos sobre las desviaciones con respecto al tratamiento asignado?"
+    "text": "Diferencias en las respuestas efectivas\n\n\n\n\n\n\n\n\n\n\n\n\nTratamiento asignado y recibido en casos de violencia doméstica\n\n\n\n\n\nTratamiento recibido:\n\n\n\n\n\n\n\n\n\n\n\n\n\nArrestado\nApercibido\n\n\n\nTratamiento asignado:\n\n\nTotal\n\n\nArrestar\n98.91 (91)\n1.09 (1)\n29.3 (92)\n\n\nApercibir\n20.27 (45)\n79.73 (177)\n70.7 (222)\n\n\nTotal\n43.31 (136)\n56.69 (178)\n100 (314)\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist (2006).\n\n\n\n\n\n\n\n\n\n\nEn el estudio original, lo que llamamos apercibir tuvo en realidad dos componentes: aconsejar y separar, pero para facilitar el análisis usaremos solo arrestar por un lado y apercibir por el otro\n¿Qué observamos sobre las desviaciones con respecto al tratamiento asignado?"
   },
   {
     "objectID": "diapositivas/late.html#diferencias-en-las-respuestas-efectivas-1",
@@ -555,7 +555,7 @@
     "href": "diapositivas/late.html#sesgo-de-selección",
     "title": "Inferencia Causal 2026",
     "section": "Sesgo de selección",
-    "text": "Sesgo de selección\n\nAlgunos individuos se comportaron violentos, por lo que fueron arrestados a pesar de ser asignados a apercibimiento\nPor tanto, si comparamos \\(y\\) entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, subestimando el efecto de la política de apercibimiento"
+    "text": "Sesgo de selección\n\nAlgunos individuos se comportaron de forma violenta, por lo que fueron arrestados a pesar de ser asignados a apercibimiento\nPor tanto, si comparamos \\(y\\) entre aquellos individuos apercibidos y no apercibidos, no tomamos en cuenta que aquellos no apercibidos (por tanto, arrestados) pudieran ser más violentos, subestimando el efecto de la política de apercibimiento"
   },
   {
     "objectID": "diapositivas/late.html#late",
@@ -569,14 +569,14 @@
     "href": "diapositivas/late.html#motivación-con-un-estadístico-de-wald",
     "title": "Inferencia Causal 2026",
     "section": "Motivación con un estadístico de Wald",
-    "text": "Motivación con un estadístico de Wald\n\nPensemos en un modelo con efectos constantes de tratamiento: \\(y_{1i}-y_{0i}=\\lambda\\)\nLa variable de resultados está determinada por \\(y_{0i}=\\alpha+\\varepsilon_i\\), donde \\(\\alpha=E(y_{0i})\\)\nEntonces, el modelo de resultados potenciales es:\n\n\\[y_i=\\alpha+\\lambda D_i+\\varepsilon_i\\]\n\nSi \\(D_i\\) no es independiente de \\(y_{0i}\\), es decir, \\(y_{0i}\\) no es independiente del error, entonces una diferencia de medias entre grupos de \\(D\\) no produce un estimador consistente de \\(\\lambda\\)"
+    "text": "Motivación con un estadístico de Wald\n\nPensemos en un modelo con efectos constantes de tratamiento: \\(y_{1i}-y_{0i}=\\lambda\\)\nLa variable de resultados está determinada por \\(y_{0i}=\\alpha+\\varepsilon_i\\), donde \\(\\alpha=E(y_{0i})\\)\nEntonces, el modelo de resultados potenciales es:\n\n\\[y_i=\\alpha+\\lambda D_i+\\varepsilon_i\\]\n\nSi \\(D_i\\) está correlacionada con el error \\(\\varepsilon_i\\), entonces una diferencia de medias entre grupos de \\(D\\) no produce un estimador consistente de \\(\\lambda\\)"
   },
   {
     "objectID": "diapositivas/late.html#motivación-con-un-estadístico-de-wald-1",
     "href": "diapositivas/late.html#motivación-con-un-estadístico-de-wald-1",
     "title": "Inferencia Causal 2026",
     "section": "Motivación con un estadístico de Wald",
-    "text": "Motivación con un estadístico de Wald\n\nAhora supongamos que tenemos un instrumento \\(z_i\\) tal que \\(z_i\\perp \\varepsilon_i\\), es decir, \\(E(\\varepsilon_i|z_i)=0\\)\n\n\n\nEvaluemos la esperanza de \\(y_i\\) cuando \\(z_i=1\\) y cuando \\(z_i=0\\): \\[\n\\begin{aligned}\nE(y_i|z_i=1)&=\\alpha+\\lambda E(D_i| z_i=1) \\\\\nE(y_i|z_i=0)&=\\alpha+\\lambda E(D_i| z_i=0) \\\\\n\\end{aligned}\n\\]\nRestando: \\[E(y_i|z_i=1)-E(y_i|z_i=0)=\\lambda(E(D_i| z_i=1)-E(D_i| z_i=0))\\]\nY despejando obtenemos \\[\\lambda=\\frac{E(y_i|z_i=1)-E(y_i|z_i=0)}{E(D_i| z_i=1)-E(D_i| z_i=0)}\\] que es conocido como un estadístico de Wald"
+    "text": "Motivación con un estadístico de Wald\n\nAhora supongamos que tenemos un instrumento \\(z_i\\) tal que \\(z_i\\perp \\varepsilon_i\\), lo que implica que \\(E(\\varepsilon_i|z_i)=0\\)\n\n\n\nEvaluemos la esperanza de \\(y_i\\) cuando \\(z_i=1\\) y cuando \\(z_i=0\\): \\[\n\\begin{aligned}\nE(y_i|z_i=1)&=\\alpha+\\lambda E(D_i| z_i=1) \\\\\nE(y_i|z_i=0)&=\\alpha+\\lambda E(D_i| z_i=0) \\\\\n\\end{aligned}\n\\]\nRestando: \\[E(y_i|z_i=1)-E(y_i|z_i=0)=\\lambda(E(D_i| z_i=1)-E(D_i| z_i=0))\\]\nY despejando obtenemos \\[\\lambda=\\frac{E(y_i|z_i=1)-E(y_i|z_i=0)}{E(D_i| z_i=1)-E(D_i| z_i=0)}\\] que es conocido como un estadístico de Wald"
   },
   {
     "objectID": "diapositivas/late.html#motivación-con-un-estadístico-de-wald-2",
@@ -590,14 +590,14 @@
     "href": "diapositivas/late.html#mínimos-cuadrados-en-dos-etapas-mc2e",
     "title": "Inferencia Causal 2026",
     "section": "Mínimos cuadrados en dos etapas (MC2E)",
-    "text": "Mínimos cuadrados en dos etapas (MC2E)\n\nEn la práctica, podemos plantear un modelo econométrico en dos etapas:\nModelo estructural\n\n\\[y_i=X_i'\\beta+\\lambda D_i+\\varepsilon_i\\]\n\n\nPrimera etapa\n\n\\[D_i=X_i'\\phi_0+\\phi_1z_i+\\eta_i\\] donde \\(\\phi_1\\) es el efecto causal de la asignación sobre el cumplimiento - Cuando \\(D_i\\) y \\(z_i\\) son ambas dicotómicas, \\(\\phi_1\\) da la proporción de la población de cumplidores"
+    "text": "Mínimos cuadrados en dos etapas (MC2E)\n\nEn la práctica, podemos plantear un modelo econométrico en dos etapas:\nModelo estructural\n\n\\[y_i=X_i'\\beta+\\lambda D_i+\\varepsilon_i\\]\n\n\nPrimera etapa\n\n\\[D_i=X_i'\\phi_0+\\phi_1z_i+\\eta_i\\] donde \\(\\phi_1\\) es el efecto causal de la asignación sobre el cumplimiento\n\nCuando \\(D_i\\) y \\(z_i\\) son ambas dicotómicas, \\(\\phi_1\\) da la proporción de la población de cumplidores"
   },
   {
     "objectID": "diapositivas/late.html#mínimos-cuadrados-en-dos-etapas-mc2e-1",
     "href": "diapositivas/late.html#mínimos-cuadrados-en-dos-etapas-mc2e-1",
     "title": "Inferencia Causal 2026",
     "section": "Mínimos cuadrados en dos etapas (MC2E)",
-    "text": "Mínimos cuadrados en dos etapas (MC2E)\n\nPodemos concebir el problema como uno en el que primero se estima la primera etapa y se sustituyen los valores ajustados de \\(D_i\\) en el modelo estructural\nSustituyendo la primera etapa en el modelo estructural \\[y_i=X_i'\\beta+\\lambda \\hat{D}_i+\\varepsilon_i\\]\n\n\n\nEsta es la forma de pensar el procedimiento, pero en la práctica nunca hacemos esto manualmente\n\nNoten que \\(\\hat{D}_i\\) es estimada, por lo cual se ignora la variabilidad muestral de la primera etapa y los errores estándar serían inconsistentes\n\n\n\n\n\nNota: el estimador de Wald es igual al estimador de MC2E cuando no hay \\(X\\) y cuando \\(Z\\) es binaria (\\(D\\) no necesita serlo)"
+    "text": "Mínimos cuadrados en dos etapas (MC2E)\n\nPodemos concebir el problema como uno en el que primero se estima la primera etapa y se sustituyen los valores ajustados de \\(D_i\\) en el modelo estructural\nSustituyendo la primera etapa en el modelo estructural \\[y_i=X_i'\\beta+\\lambda \\hat{D}_i+\\varepsilon_i\\]\n\n\n\nEsta es la forma de pensar el procedimiento, pero en la práctica nunca hacemos esto manualmente\nNoten que \\(\\hat{D}_i\\) es estimada, por lo cual se ignora la variabilidad muestral de la primera etapa y los errores estándar serían inconsistentes\n\n\n\n\nNota: el estimador de Wald es igual al estimador de MC2E cuando no hay \\(X\\) y cuando \\(Z\\) es binaria (\\(D\\) no necesita serlo)"
   },
   {
     "objectID": "diapositivas/late.html#mínimos-cuadrados-en-dos-etapas-mc2e-2",
@@ -611,42 +611,35 @@
     "href": "diapositivas/late.html#efectos-estimados",
     "title": "Inferencia Causal 2026",
     "section": "Efectos estimados",
-    "text": "Efectos estimados\n\nRegresando a los resultados del experimento, ahora con econometría\n\nPrimera etapa\n\nVersión corta:\n\n\\[apercibido_i=\\phi_0+\\phi_1T_i+\\eta_i\\]\n\nCon controles: \\[apercibido_i=\\phi_0+\\phi_1T_i+X_i'\\Phi +\\eta_i\\]\nNoten que el 0.786 es exactamente lo que se encontraba al hacer las diferencias de medias\n\nForma reducida\n\nTambién conocido como ITT\n\n\\[reincidencia_i=\\rho_0+\\rho_1T_i+\\nu_i\\]"
+    "text": "Efectos estimados\n\nRegresando a los resultados del experimento, ahora con econometría\n\nPrimera etapa\n\nVersión corta:\n\n\\[apercibido_i=\\phi_0+\\phi_1T_i+\\eta_i\\]\n\nCon controles:\n\n\\[apercibido_i=\\phi_0+\\phi_1T_i+X_i'\\Phi +\\eta_i\\]\nForma reducida\n\nTambién conocido como ITT\n\n\\[reincidencia_i=\\rho_0+\\rho_1T_i+\\nu_i\\]"
   },
   {
     "objectID": "diapositivas/late.html#efectos-estimados-1",
     "href": "diapositivas/late.html#efectos-estimados-1",
     "title": "Inferencia Causal 2026",
     "section": "Efectos estimados",
-    "text": "Efectos estimados\n\n\n\n\n\n\n\n\n\n\n\n\nPrimera etapa y forma reducida\n\n\n\n\n\nPrimera etapa\n\n\nForma reducida\n\n\n\n\n\nVariable dep.: fue apercibido\n\n\nVariable dep.: reincidencia\n\n\n\n\n(1)\n(2)*\n(3)\n(4)*\n\n\n\n\nAsignado a ser apercibido (\\(T\\))\n0.786 (0.043)\n0.733 (0.043)\n0.114 (0.047)\n0.108 (0.041)\n\n\nArma\n\n-0.064 (0.045)\n\n-0.004 (0.042)\n\n\nInfluencia químicos\n\n-0.088 (0.040)\n\n0.052 (0.038)\n\n\nMedia variable dep.\n0.567\n0.567\n0.178\n0.178\n\n\n\nNota:  Tabla 2 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.\n\n\n\n\n\n\n\n\n\n\nHabíamos obtenido antes la columna (1), pero como una diferencia de medias: \\(E(D_i|Z_i=1)-E(D_i|Z_i=0)=0.797-0.011=0.786\\)\nMientras que también habíamos encontrado (3): \\(E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.114\\)"
+    "text": "Efectos estimados\n\n\n\n\n\n\n\n\n\n\n\n\n\nPrimera etapa y forma reducida\n\n\n\n\n\nPrimera etapa\n\n\nForma reducida\n\n\n\n\n\nVariable dep.: fue apercibido\n\n\nVariable dep.: reincidencia\n\n\n\n\n(1)\n(2)*\n(3)\n(4)*\n\n\n\n\nAsignado a ser apercibido (\\(T\\))\n0.786 (0.043)\n0.733 (0.043)\n0.114 (0.047)\n0.108 (0.041)\n\n\nArma\n\n-0.064 (0.045)\n\n-0.004 (0.042)\n\n\nInfluencia químicos\n\n-0.088 (0.040)\n\n0.052 (0.038)\n\n\nMedia variable dep.\n0.567\n0.567\n0.178\n0.178\n\n\n\nNota:  Tabla 2 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.\n\n\n\n\n\n\n\n\n\n\n\nHabíamos obtenido antes la columna (1), pero como una diferencia de medias: \\(E(D_i|Z_i=1)-E(D_i|Z_i=0)=0.797-0.011=0.786\\)\nMientras que también habíamos encontrado (3): \\(E(y_i|Z_i=1)-E(y_i|Z_i=0)=0.211-0.097=0.114\\)"
   },
   {
     "objectID": "diapositivas/late.html#efectos-estimados-2",
     "href": "diapositivas/late.html#efectos-estimados-2",
     "title": "Inferencia Causal 2026",
     "section": "Efectos estimados",
-    "text": "Efectos estimados\nEfecto del tratamiento\n\nNoten que con nuestro estimador de MC2E obtenemos exactamente lo que antes habíamos calculado como \\(\\lambda_{LATE}=\\frac{ITT_y}{ITT_D}=\\frac{E(y_i|Z_i=1)-E(y_i|Z_i=0)}{E(D_i|Z_i=1)-E(D_i|Z_i=0)}=0.145\\)\nVean que al estimar la ecuación estructural por MCO obtenemos un coeficiente cercano a 0.070\nMás aún, sabemos que el coeficiente de MCO es inconsistente"
-  },
-  {
-    "objectID": "diapositivas/late.html#efectos-estimados-3",
-    "href": "diapositivas/late.html#efectos-estimados-3",
-    "title": "Inferencia Causal 2026",
-    "section": "Efectos estimados",
-    "text": "Efectos estimados\n\n\n\n\n\n\n\n\n\n\n\n\nImpactos de ser apercibido en la reincidencia (MCO y LATE)\n\n\n\n\n\nMCO\n\n\nVI/MC2E\n\n\n\n\n\nVariable dep.: reincidencia\n\n\n\n\n(1)\n(2)*\n(3)\n(4)*\n\n\n\n\nApercibido\n0.087 (0.044)\n0.070 (0.038)\n0.145 (0.060)\n0.140 (0.053)\n\n\nArma\n\n0.010 (0.043)\n\n0.005 (0.043)\n\n\nInfluencia químicos\n\n0.057 (0.039)\n\n0.064 (0.039)\n\n\n\nNota:  Tabla 3 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.\n\n\n\n\n\n\n\n\n\n\nUsando el estimador de MC2E obtenemos exactamente lo que antes habíamos calculado como \\(\\lambda_{LATE}=\\frac{ITT_y}{ITT_D}=\\frac{E(y_i|Z_i=1)-E(y_i|Z_i=0)}{E(D_i|Z_i=1)-E(D_i|Z_i=0)}=0.145\\)\nAl estimar la ecuación estructural por MCO obtenemos un coeficiente cercano a 0.070\nPero sabemos que el coeficiente de MCO es inconsistente"
+    "text": "Efectos estimados\n\n\n\n\n\n\n\n\n\n\n\n\n\nImpactos de ser apercibido en la reincidencia (MCO y LATE)\n\n\n\n\n\nMCO\n\n\nVI/MC2E\n\n\n\n\n\nVariable dep.: reincidencia\n\n\n\n\n(1)\n(2)*\n(3)\n(4)*\n\n\n\n\nApercibido\n0.087 (0.044)\n0.070 (0.038)\n0.145 (0.060)\n0.140 (0.053)\n\n\nArma\n\n0.010 (0.043)\n\n0.005 (0.043)\n\n\nInfluencia químicos\n\n0.057 (0.039)\n\n0.064 (0.039)\n\n\n\nNota:  Tabla 3 en Angrist (2006). * Indica que se incluyen como variables de control indicadoras para año, trimestre, raza no blanca y raza mixta.\n\n\n\n\n\n\n\n\n\n\n\nUsando el estimador de MC2E obtenemos exactamente lo que antes habíamos calculado como \\(\\lambda_{LATE}=\\frac{ITT_y}{ITT_D}=\\frac{E(y_i|Z_i=1)-E(y_i|Z_i=0)}{E(D_i|Z_i=1)-E(D_i|Z_i=0)}=0.145\\)\nAl estimar la ecuación estructural por MCO obtenemos un coeficiente cercano a 0.070\nPero sabemos que el coeficiente de MCO es inconsistente"
   },
   {
     "objectID": "diapositivas/late.html#late-es-igual-al-atet-en-este-caso",
     "href": "diapositivas/late.html#late-es-igual-al-atet-en-este-caso",
     "title": "Inferencia Causal 2026",
     "section": "LATE es igual al ATET en este caso",
-    "text": "LATE es igual al ATET en este caso\n\nNoten que este estudio tiene lo que se conoce como no cumplidores de un solo lado\n\n\n\n\n\n\n\n\n\n\n\nTipos de individuos\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(0)=0\\)\n\\(D_i(0)=1\\)\n\n\n\\(D_i(1)=0\\)\n\\(Y_i(1,0)-Y_i(0,0)=0\\)\n\\(Y_i(1,0)-Y_i(0,1)=-(Y_i(1)-Y_i(0))\\)\n\n\n\nNunca cumplidor\nRetador\n\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(1)=1\\)\n\\(Y_i(1,1)-Y_i(0,0)=Y_i(1)-Y_i(0)\\)\n\\(Y_i(1,1)-Y_i(0,1)=0\\)\n\n\n\nCumplidor\nSiempre adoptador\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist, Imbens & Rubin (1996).\n\n\n\n\n\n\n\n\nCuando la asignación es apercibir, en el 20.27% de los casos la acción fue arrestar y en el 79.73% efectivamente fue apercibir\nEn cambio, cuando se indica no apercibir, es decir, arrestar, la adopción es casi perfecta (salvo un caso)\n\n\n\nEn otras palabras, en este caso no hay siempre adoptadores\nNo hay individuos que hayan sido apercibidos independientemente de la asignación"
+    "text": "LATE es igual al ATET en este caso\n\nEn este estudio existen no cumplidores de un solo lado\n\n\n\n\n\n\n\n\n\n\n\n\nTipos de individuos\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(0)=0\\)\n\\(D_i(0)=1\\)\n\n\n\\(D_i(1)=0\\)\n\\(Y_i(1,0)-Y_i(0,0)=0\\)\n\\(Y_i(1,0)-Y_i(0,1)=-(Y_i(1)-Y_i(0))\\)\n\n\n\nNunca cumplidor\nRetador\n\n\n\n\n\n\n\n\n\n\n\n\n\\(D_i(1)=1\\)\n\\(Y_i(1,1)-Y_i(0,0)=Y_i(1)-Y_i(0)\\)\n\\(Y_i(1,1)-Y_i(0,1)=0\\)\n\n\n\nCumplidor\nSiempre adoptador\n\n\n\nNota:  Adaptado de la tabla 1 en Angrist, Imbens & Rubin (1996).\n\n\n\n\n\n\n\n\n\nCuando la asignación es apercibir, en el 20.27% de los casos la acción fue arrestar y en el 79.73% efectivamente fue apercibir\nEn cambio, cuando se indica no apercibir, es decir, arrestar, la adopción es casi perfecta (salvo un caso)"
   },
   {
     "objectID": "diapositivas/late.html#late-es-igual-al-atet-en-este-caso-1",
     "href": "diapositivas/late.html#late-es-igual-al-atet-en-este-caso-1",
     "title": "Inferencia Causal 2026",
     "section": "LATE es igual al ATET en este caso",
-    "text": "LATE es igual al ATET en este caso\n\nRecordemos que el grupo de quienes reciben el tratamiento está compuesto de los cumplidores y los siempre adoptadores\nEn este caso en particular: \\[\\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET\\] donde \\(C_i=1\\) para los cumplidores\n\n\n\nEsto ocurre en los casos en que:\n\nAlgunos de los asignados al tratamiento, \\(z_i=1\\) lo reciben mientras otros no\nNadie de los asignados al control, \\(z_i=0\\) tiene acceso al tratamiento"
+    "text": "LATE es igual al ATET en este caso\n\nEn otras palabras, en este caso no hay siempre adoptadores\nNo hay individuos que hayan sido apercibidos independientemente de la asignación\nRecordemos que el grupo de quienes reciben el tratamiento está compuesto de los cumplidores y los siempre adoptadores\nEn este caso en particular: \\[\\lambda_{LATE}=E(y_{1i}-y_{0i}|C_i=1)=E(y_{1i}-y_{0i}|D_i=1)=ATET\\] donde \\(C_i=1\\) para los cumplidores\n\n\n\nEsto ocurre en los casos en que:\n\nAlgunos de los asignados al tratamiento, \\(z_i=1\\), lo reciben mientras otros no\nNadie de los asignados al control, \\(z_i=0\\), tiene acceso al tratamiento"
   },
   {
     "objectID": "diapositivas/inferencia-estadistica.html#medidas-de-variabilidad-1",
