@@ -1,0 +1,1060 @@
+---
+format:
+  revealjs:
+    theme: ["./theme-ic.scss"]
+    width: 1600
+    height: 900
+    slide-number: c/t
+    center: false
+    scrollable: false
+    title-slide: false
+    logo: logo-CIDE.jpg
+    footer: "Inferencia Causal · Selección por Observables"
+    include-in-header:
+      - _ic-header.html
+      - fontawesome.html
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
+
+library(tidyverse)
+library(janitor)
+library(sandwich)
+#library(nnet)
+#library(mlogit)
+library(readr)
+library(clubSandwich)
+library(modelsummary)
+library(estimatr)
+library(haven)
+library(MatchIt)
+library(cobalt)
+library(lmtest)
+library(kableExtra)
+
+
+xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
+```
+
+
+# Selección por Observables {.portada background-color="#163D34" data-state="nochrome"}
+
+::: {.pa-eyebrow}
+Inferencia Causal
+:::
+
+[Irvin Rojas]{.pa-name} <span class="pa-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.pa-inst}
+Centro de Investigación y Docencia Económicas<br>Maestría en Economía
+:::
+```{css, echo = FALSE}
+.huge .remark-code { /*Change made here*/
+  font-size: 200% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 60% !important;
+}
+/* Láminas con código y salida de R más grandes que el .7em del tema; mismo
+   tamaño en todas, con interlineado y márgenes más compactos para que quepan */
+.reveal .codigo-grande div.sourceCode pre code.sourceCode { font-size: 1.3em !important; line-height: 1.4; }
+.reveal .codigo-grande .cell-output pre code { font-size: 1.3em; line-height: 1.25; padding: .45em 1.1em; }
+.reveal .codigo-grande pre, .reveal .codigo-grande div.sourceCode { margin: .25em 0 .45em; }
+/* El tema centra verticalmente las columnas; aquí arrancan al mismo nivel */
+.reveal .columnas-arriba .columns { align-items: flex-start; }
+/* El tema limita los scroll_box a 560px; esta lámina solo tiene la tabla */
+.reveal .tabla-alta div[style*="overflow-y"] { max-height: 770px !important; }
+```
+
+# Selección por Observables {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+## Motivación
+
+- Hemos estudiado la conveniencia de los experimentos para revelar relaciones causales
+
+- También hemos destacado las limitaciones de los diseños experimentales
+
+- Algunos métodos nos permiten usar datos observacionales y supuestos estadísticos para estimar relaciones causales en ausencia de variación experimental
+
+- Los métodos basados en selección en observables dieron origen a una literatura extensa en economía en la década de los 2000, sin embargo, su aplicación actual como método de inferencia principal es muy limitada
+
+- En cambio, los fundamentos de los métodos basados en observables son piezas clave en métodos modernos de inferencia causal que usan *machine learning* o los conocidos como *estimadores doblemente robustos*
+
+
+## Organización de lo que cubriremos en el curso
+
+1. Supuesto de independencia condicional
+1. Métodos de *matching*
+   - *Matching* basado en covariables
+   - *Propensity score matching*
+1. Otros métodos basados en el SIC
+   - Regresión
+   - *Inverse probability weighting*
+   - Métodos doblemente robustos
+
+
+
+## Recordatorio del sesgo de selección
+ 
+- Las razones que determinan la asignación del tratamiento determinan también el valor de $Y$
+
+- Una comparación observacional nos da el efecto del tratamiento más el sesgo de selección:
+
+$$
+\begin{aligned}
+E(Y|D=1)-E(Y|D=0)=&\overbrace{ E(Y(1)|D=1)-E(Y(0)|D=1)}^{\Delta_{TOT}\text{: efecto promedio en los tratados}}+\\& \underbrace{E(Y(0)|D=1)-E(Y(0)|D=0)}_{\text{Sesgo de selección}}
+\end{aligned}
+$$
+
+- Una forma de eliminar el sesgo de selección es mediante la asignación aleatoria del tratamiento
+
+- Esto no siempre es posible, por lo que recurrimos a supuestos estadísticos
+ 
+
+
+## Supuesto de independencia condicional
+
+- **Supuesto 1. Independencia condicional (SIC)**: condicional en una serie de características $X$, los resultados potenciales son independientes del tratamiento
+
+$$\{Y(0),Y(1)\}\perp D | X$$
+
+- El SIC también se conoce como inconfundibilidad, ignorabilidad del tratamiento o *unconfoundedness*
+
+
+## Supuesto de independencia condicional
+
+- El SIC dice que al *controlar* por una serie de características $X$, el tratamiento es *como* si fuera aleatorio:
+
+$$
+E(Y(1)|D=1,X)=E(Y(1)|D=0,X)
+$$
+
+$$
+E(Y(0)|D=1,X)=E(Y(0)|D=0,X)
+$$
+
+- Los valores esperados de $Y(1)$ y $Y(0)$ son iguales cuando nos fijamos en cada valor de $X$
+
+
+## Ejemplo: ir a la universidad
+
+- Supongamos que $D$ es ir o no a la universidad y la variable de interés es el ingreso
+
+- Sabemos que la comparación estará contaminada por el sesgo de selección
+
+- Es posible que aquellos que fueron a la universidad de todos modos hubieran tenido un mayor salario, incluso sin haber ido a la universidad, por lo que el sesgo de selección es positivo
+
+- El SIC implica que si hacemos la comparación condicional en $X$, el sesgo de selección desaparece
+
+$$
+E(Y|D=1,X)-E(Y|D=0,X)=E(Y(1)-Y(0)|X)
+$$
+
+- Es decir, que si comparamos a personas con y sin tratamiento, con los $X$ *fijos*, el sesgo de selección desaparece
+
+- *Mantener fijas* las $X$ es el análogo a obtener el promedio del salario en cada nivel de escolaridad en la gráfica de la FEC
+
+
+## Ejemplo: ir a la universidad
+
+- Para generalizar el concepto cuando la variable tiene más de dos valores (como con la educación $S$), escribamos $Y(s)$ para el ingreso potencial con $s$ años de educación
+
+- Esta función nos dice cuál sería el ingreso de un individuo bajo todos los posibles niveles de $s$
+
+- En este caso, asumimos el SIC, que se traduce en: 
+$$Y(s)\perp S | X\quad \forall\quad s$$
+
+- En diseños experimentales, descansamos en el supuesto de independencia de los resultados potenciales con respecto al estatus de tratamiento
+
+- Pero con datos *observacionales*, el SIC significa que $S$ es *casi como si fuera asignado de manera aleatoria* cuando condicionamos en $X$
+
+## Ejemplo: ir a la universidad
+
+- En los datos solo observamos $Y=Y(S)$
+
+- Dado el SIC, podemos hacer comparaciones de ingreso promedio para distintos niveles de educación:
+
+$$E(Y|S=s,X)-E(Y|S=s-1,X)=E(Y(s)-Y(s-1)|X)$$
+
+- Notemos que lo impráctico de esto es que tendríamos que hacer comparaciones en pares y luego tratar de hacer un promedio ponderado por el número de individuos en cada nivel de educación
+
+
+## Regresión para hacer las comparaciones
+
+- Supongamos una función causal para el ingreso
+
+$$Y(s)=\alpha+\rho s+\nu$$
+
+que indica lo que un individuo ganaría para todo valor de $s$ (y no solo el valor realizado $S$)
+
+- La única parte aleatoria es el error con media cero $\nu$, que captura los factores no observados que afectan los ingresos
+
+- Sustituyendo el valor observado:
+
+$$Y=\alpha+\rho S+\nu$$
+
+- $S$ puede estar correlacionado con los resultados potenciales $Y(s)$, es decir, correlacionado con el error $\nu$
+
+
+## Regresión para hacer las comparaciones
+
+- Supongamos que el SIC se cumple dado un vector $X$
+
+- Descompongamos el error en una función lineal de las características $X$ y un error $u$:
+
+$$\nu=X'\gamma+u$$
+
+donde se asume que $E(\nu|X)=X'\gamma$ y donde $u$ y $X$ no están correlacionados
+
+- Si se cumple el SIC, entonces:
+
+$$
+\begin{aligned}
+E(Y(s)|X,S)=E(Y(s)|X)&=\alpha+\rho s+E(\nu|X) \\
+&=\alpha+\rho s + X'\gamma
+\end{aligned}
+$$
+
+- Es decir, en el modelo de regresión causal $Y=\alpha+\rho S+ X'\gamma+u$, $u$ no está correlacionado con los regresores $X$ y $S$
+
+- $\rho$ es el efecto causal de interés
+
+- El supuesto clave es que la única razón por la cual $\nu$ y $S$ están correlacionados es $X$
+
+## Supuesto de soporte común
+
+- **Supuesto 2. Soporte común**: para cualquier combinación de covariables en la población, existen individuos tratados y no tratados
+
+$$0<p(X)<1$$
+
+donde $p(X)=\Pr(D=1|X)$ es la probabilidad condicional de recibir el tratamiento o *propensity score (PS)*
+
+- El soporte común descarta que haya covariables que predigan determinísticamente la asignación de tratamiento
+
+
+## Supuestos de identificación del TOT
+ 
+- Cuando se cumple **Supuesto 1** $+$ **Supuesto 2**  se conoce como **ignorabilidad fuerte**
+  
+- Heckman, Ichimura y Todd (1998) muestran que estas condiciones son demasiado estrictas si nos interesa estimar solo el TOT
+  
+- Para identificar el TOT es suficiente:
+    
+- **Supuesto 1a. Inconfundibilidad en el control**
+
+$$
+Y(0) \perp  D | X
+$$
+
+- **Supuesto 2a. Traslape débil**
+
+$$
+p(X) < 1
+$$
+
+
+
+# Matching exacto {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Matching exacto
+ 
+- Un estimador de matching exacto consiste en *emparejar* individuos tratados y no tratados para cada valor específico de las $X$ y estimar un promedio ponderado de las diferencias
+  
+- Tenemos datos observacionales de individuos que recibieron y no recibieron un tratamiento y tenemos una serie de características $X$
+
+- Bajo el SIC, podemos eliminar el sesgo de selección al estimar las diferencias de $Y$ dentro de grupos con las mismas $X$
+
+- Requerimos que existan observaciones tratadas y no tratadas para todas las características $X$
+
+
+## Ejemplo: programa hipotético de empleo
+
+- Usemos [el ejemplo](https://mixtape.scunning.com/matching-and-subclassification.html?panelset=r-code) en The Mixtape (MT):
+
+```{r}
+
+read_data <- function(df) {
+  full_path <- paste(
+    "https://raw.github.com/scunning1975/mixtape/master/",
+    df,
+    sep = ""
+  )
+  df <- read_dta(full_path)
+  return(df)
+}
+
+training_example <- read_data("training_example.dta") %>%
+  slice(1:20)
+
+data.treat <- training_example %>%
+  select(unit_treat, age_treat, earnings_treat) %>%
+  slice(1:10) %>%
+  mutate(earnings_treat = as.numeric(earnings_treat))
+
+data.control <- training_example %>%
+  select(unit_control, age_control, earnings_control)
+
+data.matched <- training_example %>%
+  select(unit_matched, age_matched, earnings_matched) %>%
+  slice(1:10)
+```
+
+## Ejemplo: programa hipotético de empleo {.codigo-grande .columnas-arriba}
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Los individuos tratados:
+
+```{r}
+data.treat
+```
+:::
+
+::: {.column width="50%"}
+
+- Mientras que los no tratados:
+  
+```{r}
+data.control
+```
+:::
+
+::::
+
+
+
+
+
+
+
+## Comparación observacional {.codigo-grande}
+
+- Si hiciéramos diferencias simples obtendríamos:
+
+```{r echo=T, message=F, warning=F }
+mean(data.treat$earnings_treat)
+mean(data.control$earnings_control)
+
+#Diferencia
+mean(data.treat$earnings_treat) - mean(data.control$earnings_control)
+```
+
+- Parece que en el grupo de control ganan más (efecto de tratamiento negativo)
+
+## Comparación observacional {.codigo-grande}
+
+- El principal problema con esta diferencia es que sabemos que los ingresos crecen con la edad
+
+- La muestra de no tratados tiene mayor edad promedio:
+
+```{r echo=T, message=F, warning=F }
+mean(data.treat$age_treat)
+mean(data.control$age_control)
+
+#Diferencia
+mean(data.treat$age_treat) - mean(data.control$age_control)
+```
+
+- Estamos *confundiendo* el efecto de la edad
+
+
+## Muestra emparejada
+
+- Construyamos la muestra emparejada buscando, para cada individuo en el grupo tratado, uno en el de control que tenga la misma edad. Cuando le encontramos un individuo no tratado al tratado con la misma edad decimos que esa pareja hizo *match*
+
+- Por ejemplo, la primera unidad tratada, con 18 años y un ingreso de 9,500 estaría emparejada con la unidad 14 del grupo de control, que tiene también 18 años y un ingreso de 8,050
+
+- Para dicho individuo de 18 años, su ingreso contrafactual sería 8,050
+
+- Cuando hay varias unidades en el grupo de control que pueden ser empatadas con la de tratamiento, podemos construir el ingreso contrafactual calculando el promedio
+
+- Del grupo de control, los individuos 10 y 18 tienen 30 años, con ingresos 10,750 y 9,000, por lo que usamos el promedio (9,875) para crear el contrafactual del individuo tratado de 30 años de la fila 10
+
+## Muestra emparejada {.codigo-grande}
+
+- La muestra emparejada o contrafactual será:
+
+```{r}
+#| output-location: column
+
+data.matched
+```
+
+## Muestra emparejada {.codigo-grande}
+
+- Noten que la edad es la misma entre los tratados y la muestra emparejada:
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Muestra de tratados:
+
+```{r echo=T}
+mean(data.treat$age_treat)
+```
+
+:::
+
+::: {.column width="50%"}
+
+- Muestra emparejada:
+
+```{r echo=T}
+mean(data.matched$age_matched)
+```
+:::
+
+::::
+
+
+- En este caso, decimos que la edad *está balanceada*
+
+- Y entonces podemos calcular el efecto de tratamiento como la diferencia de ingresos entre los tratados y los no tratados en la muestra emparejada:
+
+```{r}
+#Diferencia
+mean(data.treat$earnings_treat) - mean(data.matched$earnings_matched)
+```
+
+- En este caso, encontramos un efecto positivo del programa de 1,695 unidades monetarias.
+
+## Estimador de matching exacto
+
+- Podemos definir un **estimador de matching exacto** del TOT basado en una sola característica como:
+
+$$\hat{\Delta}_{TOT}=\frac{1}{n_1}\sum_{i:D_i=1}\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)$$
+
+donde $n_1$ es el número de tratados, $M_i$ es el número de no tratados con $X_j=X_i$ y $j_m(i)$ es el $m$-ésimo de ellos
+
+## Importancia del soporte común
+
+- Observemos lo que ocurre con la distribución de edades en ambos grupos:
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Para los tratados:
+
+```{r grafica_tratados}
+#| fig-height: 5
+ggplot(training_example, aes(x = age_treat)) +
+  stat_bin(bins = 10, na.rm = TRUE)
+```
+
+:::
+
+::: {.column width="50%"}
+
+- Mientras que para los no tratados:
+
+```{r grafica_notratados}
+#| fig-height: 5
+ggplot(training_example, aes(x = age_control)) +
+  geom_histogram(bins = 10, na.rm = TRUE)
+```
+:::
+
+::::
+
+- El supuesto de traslape débil para identificar el TOT significa que para cada unidad tratada, hay al menos un no tratado
+
+
+
+## Estimador de matching exacto del ATE
+
+- Hasta aquí, solo hemos imputado el contrafactual para cada unidad en el grupo tratado
+
+- Si podemos imputar también, para cada unidad no tratada, su correspondiente contrafactual tratado, podemos estimar el ATE
+
+- Y un **estimador de matching exacto** del ATE sería:
+
+
+$$\hat{\Delta}=\frac{1}{n}\sum_{i=1}^{n}(2D_i-1)\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)$$
+
+donde ahora $j_m(i)$ recorre las $M_i$ unidades del grupo *opuesto* al de $i$ con $X_j=X_i$
+
+- Casi todas las aplicaciones de *matching* se enfocan en el TOT
+
+## *Matching* con más de una característica
+
+- En general, tenemos varias características en $X$
+
+- Pensamos en $X$ más como una *celda* de individuos que comparten las mismas características
+
+- Tenemos que tener una regla para definir la distancia mínima entre dos vectores de covariables $X_i$ y $X_j$
+
+- Un **estimador de vecino más cercano** es:
+
+$$\hat{\Delta}_{TOT}=\frac{1}{n_1}\sum_{i:D_i=1}\left(Y_i-\sum_{j:D_j=0}\mathbb{I}\left\{||X_j-X_i||=\min_{l:D_l=0}||X_l-X_i||\right\} Y_j\right)$$
+
+## Decisiones en el *matching*
+
+- ¿Realizar el *matching* con o sin reemplazo?[^1]
+
+[^1]: La discusión en *Causal Analysis (CA)* asume *matching con reemplazo*. 
+
+- Sin reemplazo:
+  - Reduce la varianza en la estimación al usar un grupo no tratado más grande en lugar de reusar observaciones
+  - Incrementa el sesgo pues algunos *matches* no podrán hacerse dado que algunas observaciones no tratadas ya han sido descartadas
+
+- ¿Cómo medir la distancia entre las covariables?
+  - Euclidiana: $||X_j-X_i||_{Euclidiana}=\sqrt{\sum_{k=1}^{K}(X_{jk}-X_{ik})^2}$
+  - Varianza: $||X_j-X_i||_{Varianza}=\sqrt{\sum_{k=1}^{K}\frac{(X_{jk}-X_{ik})^2}{\hat{Var}(X_k)}}$
+  - Mahalanobis: $||X_j-X_i||_{Mahalanobis}=\sqrt{(X_j-X_i)'\hat{\Sigma}_X^{-1}(X_j-X_i)}$, con $\hat{\Sigma}_X$ la matriz de varianzas y covarianzas de $X$
+
+## Decisiones en el *matching*
+
+- ¿Cómo estimar la varianza?
+  - Bootstrap no funciona (Abadie & Imbens, 2008)
+  - Usar fórmulas analíticas (ver CA)
+
+
+
+
+
+
+
+
+
+
+
+## Ejemplo: veteranos del ejército de Estados Unidos
+
+- Angrist (1998)[^angrist] estudia el efecto del servicio militar sobre los ingresos (inscribirse en el ejército tiene un claro componente de autoselección)
+
+[^angrist]: [Estimating the Labor Market Impact of Voluntary Military Service Using Social Security Data on Military Applicants](https://www.jstor.org/stable/2998558).
+
+- El autor tiene datos $X$: raza, año de solicitud de ingreso al ejército, escolaridad, calificación en examen de aptitud, año de nacimiento
+  
+- Estas características definen *celdas* y dentro de cada celda tenemos tratados y no tratados
+
+- Se estiman los efectos usando distintas metodologías
+
+- Los impactos estimados usando el matching exacto se encuentran bajo la columna *Contraste controlado*
+
+## Ejemplo: veteranos del ejército de Estados Unidos {.tabla-alta}
+
+```{r table.angrist, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+
+anio <- 74:91
+
+# Blancos: media (1), diferencia de medias (2), contraste controlado (3) y regresión (4)
+media.b <- c("182.7", "237.9", "473.4", "1012.9", "2147.1", "3560.7", "4709.0", "6226.0", "7200.6", "8398.1", "9874.2", "10972.7", "12004.5", "13045.7", "14136.1", "14716.1", "14886.1", "14407.9")
+dif.b <- c("-26.1", "-41.4", "-47.9", "-7.1", "40.3", "188.0", "572.9", "855.5", "1508.5", "1390.5", "652.8", "469.8", "543.7", "663.9", "904.3", "1169.1", "1300.8", "1559.6")
+dif.b.ee <- c("(7.0)", "(6.3)", "(8.1)", "(11.3)", "(16.7)", "(21.0)", "(23.4)", "(27.2)", "(30.3)", "(34.4)", "(39.5)", "(44.6)", "(50.4)", "(54.6)", "(58.3)", "(61.0)", "(63.0)", "(64.6)")
+cc.b <- c("-14.0", "-14.2", "-14.8", "-8.6", "-23.5", "-8.4", "178.0", "249.5", "783.3", "588.8", "-235.7", "-521.3", "-557.3", "-548.0", "-415.5", "-248.6", "-154.5", "29.8")
+cc.b.ee <- c("(9.2)", "(7.6)", "(9.0)", "(12.3)", "(18.1)", "(23.2)", "(27.2)", "(32.4)", "(36.4)", "(41.1)", "(46.9)", "(52.6)", "(59.0)", "(63.9)", "(68.2)", "(71.2)", "(73.6)", "(75.6)")
+reg.b <- c("-13.0", "-12.0", "-12.7", "-9.4", "-22.4", "-11.2", "175.9", "249.9", "782.4", "601.5", "-198.5", "-459.6", "-491.7", "-464.3", "-311.7", "-136.3", "-53.2", "146.2")
+reg.b.ee <- c("(9.4)", "(7.8)", "(9.3)", "(12.2)", "(17.2)", "(21.6)", "(24.6)", "(29.1)", "(32.5)", "(36.6)", "(41.7)", "(46.8)", "(52.5)", "(56.8)", "(60.6)", "(63.2)", "(65.2)", "(66.9)")
+
+# No blancos: media (5), diferencia de medias (6), contraste controlado (7) y regresión (8)
+media.n <- c("157.2", "216.9", "413.6", "820.9", "1677.9", "2797.0", "3932.2", "5218.8", "6150.2", "7221.1", "8377.2", "9306.8", "10106.2", "10833.0", "11480.1", "11751.4", "11904.3", "11518.7")
+dif.n <- c("-4.9", "-0.6", "-14.5", "-13.0", "58.1", "340.3", "1154.3", "1920.0", "2917.1", "2889.9", "2202.9", "1955.5", "1881.3", "2050.1", "2175.0", "2379.1", "2483.6", "2758.8")
+dif.n.ee <- c("(4.4)", "(4.5)", "(6.4)", "(9.1)", "(13.4)", "(16.2)", "(18.0)", "(20.7)", "(23.4)", "(27.0)", "(30.5)", "(34.4)", "(38.7)", "(41.8)", "(44.9)", "(47.6)", "(49.4)", "(50.8)")
+cc.n <- c("-2.0", "-17.1", "-33.3", "-56.0", "-53.6", "119.1", "741.6", "1299.9", "2186.0", "2103.8", "1333.0", "932.3", "720.9", "751.0", "708.2", "799.7", "824.9", "1026.1")
+cc.n.ee <- c("(6.0)", "(6.0)", "(8.0)", "(11.1)", "(16.1)", "(20.1)", "(23.4)", "(28.2)", "(32.0)", "(36.7)", "(41.4)", "(46.2)", "(51.2)", "(55.2)", "(59.5)", "(62.7)", "(65.4)", "(67.2)")
+reg.n <- c("-3.9", "-15.2", "-30.2", "-51.3", "-42.5", "122.3", "738.5", "1318.5", "2210.1", "2142.3", "1428.9", "1059.2", "872.3", "925.0", "923.7", "1031.9", "1064.0", "1277.9")
+reg.n.ee <- c("(5.8)", "(5.5)", "(7.4)", "(10.0)", "(14.1)", "(17.2)", "(19.5)", "(23.1)", "(26.0)", "(29.8)", "(33.4)", "(37.3)", "(41.6)", "(44.8)", "(48.1)", "(50.9)", "(52.7)", "(54.3)")
+
+# Cada año ocupa dos filas: el estimador y, debajo, su error estándar
+vacio <- rep(" ", length(anio))
+
+table.angrist <- data.frame(
+  anio = c(rbind(anio, vacio)),
+  media.b = c(rbind(media.b, vacio)),
+  dif.b = c(rbind(dif.b, dif.b.ee)),
+  cc.b = c(rbind(cc.b, cc.b.ee)),
+  reg.b = c(rbind(reg.b, reg.b.ee)),
+  media.n = c(rbind(media.n, vacio)),
+  dif.n = c(rbind(dif.n, dif.n.ee)),
+  cc.n = c(rbind(cc.n, cc.n.ee)),
+  reg.n = c(rbind(reg.n, reg.n.ee))
+)
+
+colnames(table.angrist) <- c(
+  "Año",
+  "Media<br>(1)", "Diferencia de medias<br>(2)", "Contraste controlado<br>(3)", "Regresión<br>(4)",
+  "Media<br>(5)", "Diferencia de medias<br>(6)", "Contraste controlado<br>(7)", "Regresión<br>(8)"
+)
+
+table.angrist |>
+  kbl(align = "lcccccccc",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive")) |>
+  # scroll_box fija el encabezado y le pone un blanco inline que pisa el guinda
+  # del CSS; lo reponemos aquí, igual que en la tabla de causalidad.qmd.
+  row_spec(0, background = "#9B2247", color = "white") |>
+  add_header_above(c(" " = 1, "Blancos" = 4, "No blancos" = 4),
+                   bold = TRUE,
+                   background = "white") |>
+  add_header_above(c("Estimaciones alternativas del efecto del servicio militar en los ingresos" = 9),
+                   bold = TRUE,
+                   background = "white") |>
+  footnote(general = "Panel A de la Tabla II en Angrist (1998). Errores estándar entre paréntesis.",
+           general_title = "Nota:",
+           footnote_as_chunk = T) |>
+  scroll_box(height = "700px")
+```
+
+
+## Ejemplo: veteranos del ejército de Estados Unidos
+
+- Noten que la columna (2) muestra lo que se hubiera concluido si solo se comparan diferencias de medias
+    
+- Antes de 1980, las diferencias eran muy pequeñas (cero en términos prácticos)
+  
+- En esta aplicación esta comparación llevaría a conclusiones incorrectas
+  
+- Además, las diferencias para no-blancos y blancos son distintas
+  
+- Hay un pico en los efectos alrededor de 1982
+  
+- En esta aplicación, los resultados por *matching* y regresión son muy parecidos hasta 1984
+  
+- La conclusión es que existe evidencia de efectos negativos en los ingresos por haber servido en el ejército en los blancos y efectos positivos para los individuos de otras razas
+
+
+## Ejemplo: veteranos del ejército de Estados Unidos {.columnas-arriba}
+
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Para personas identificadas como blancas:
+
+```{r}
+#| echo: false
+#| out-width: "100%"
+knitr::include_graphics("ExactMatching_effects_graph_a.jpg")
+```
+
+:::
+
+::: {.column width="50%"}
+
+- Para personas identificadas como no blancas:
+
+```{r}
+#| echo: false
+#| out-width: "100%"
+knitr::include_graphics("ExactMatching_effects_graph_b.jpg")
+```
+:::
+
+::::
+
+
+
+
+
+# Propensity Score Matching {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Maldición de la dimensionalidad
+ 
+- En la práctica es difícil manejar problemas en espacios de múltiples dimensiones: **maldición de la dimensionalidad**
+ 
+- El problema de la maldición de la dimensionalidad se exacerba con el tamaño limitado de las bases de datos
+ 
+- Si $X$ tuviera $K$ indicadores binarios, el número de posibles combinaciones sería $2^K$
+   
+- Por ejemplo, si solo tuviéramos $X_1=\{\text{menor de 35 años}, \text{con 35 años o más}\}$, $X_2=\{\text{más que preparatoria}, \text{menos que preparatoria}\}$, $X_3=\{\text{indígena}, \text{no indígena}\}$, tendríamos que hacer ocho comparaciones:
+   
+  - menor de 35 años, más que preparatoria, indígena
+  - menor de 35 años, más que preparatoria, no indígena
+  - ...
+  - con 35 años o más, menos que preparatoria, no indígena
+
+- Pero si $X$ incluye muchas variables, algunas tomando muchos valores, esto se vuelve imposible de realizar
+  
+
+## Maldición de la dimensionalidad
+
+- El requerimiento de soporte común significa que debemos tener tratados y no tratados para cada valor de $X$ para hacer comparaciones
+
+- Cuando $X$ tiene muchas dimensiones, resulta un problema de *escasez* o *sparseness*
+
+- Algunas celdas estarán vacías, o solo tendrán tratados, o solo tendrán no tratados
+
+- Si tenemos unidades no tratadas en cada celda donde hay tratados, **aún podemos estimar el TOT**
+
+  - Noten que cuando completamos la muestra emparejada en el ejemplo hipotético, siempre encontramos a alguien en el grupo de control para asignárselo a un tratado
+  
+  - Pero al revés, no siempre es posible: por ejemplo, no hay ningún tratado de 48 años en nuestro ejemplo hipotético
+
+
+
+## Teorema del *propensity score* (Rosenbaum y Rubin, 1983)
+ 
+- **Teorema 1. Inconfundibilidad dado el propensity score**: el **Supuesto 1** implica
+ 
+$$
+\{Y(0), Y(1)\} \perp  D|p(X)
+$$
+ 
+donde $p(X)=\Pr(D=1|X)$ es la probabilidad de ser tratado dado un conjunto de covariables $X$, el *propensity score* o PS
+ 
+- El efecto del tratamiento, bajo el supuesto de inconfundibilidad dado el propensity score, es:
+   
+$$\Delta_{TOT}=E\left(\mu_1(p(X))-\mu_0(p(X))|D=1\right)$$
+
+donde $\mu_d(p(X))=E(Y|D=d,p(X))$
+
+## Estimación
+ 
+- Debemos primero especificar y estimar el PS (probit o logit son los métodos más comunes)
+ 
+- Se realiza el *match* de unidades tratadas con unidades que no lo fueron usando el PS
+
+- Se comprueba la calidad del *matching*
+
+- Se estima la diferencia en la variable de resultados entre estos grupos, así como su error estándar
+   
+
+## Estimación del modelo del PS
+ 
+- Se usa un modelo *probit* o *logit*
+
+- Se deben seleccionar las características incluidas en el modelo 
+ 
+- **Prueba y error**: maximizar la tasa de clasificación de tratamientos y controles usando $\bar{p}$, la proporción de tratamientos en la muestra
+
+- **Significancia estadística**: usar solo las variables estadísticamente significativas, comenzando con un modelo muy básico
+
+- **Validación cruzada**: comenzar con un modelo simple y agregar grupos de variables comparando las que reduzcan el error cuadrático promedio
+
+## Estimación del modelo del PS
+
+- Las características usadas para calcular el PS no deben haber sido afectadas por el tratamiento
+ 
+- Idealmente usamos variables $X$ pre-intervención
+ 
+- Cuando no hay $X$ pre-intervención, a veces se puede obtener el PS con variables post-intervención siempre y cuando estas no hayan sido afectadas por el tratamiento (pocas veces recomendado)
+
+## Algoritmos de *matching*
+
+- **Vecino más cercano**: a cada individuo del grupo tratado se le asigna el individuo del grupo no tratado con el PS más cercano
+ 
+- **$M$ vecinos más cercanos**: a cada individuo del grupo tratado se le asignan los $M$ individuos del grupo no tratado con el PS más cercano (*ratio* en R define el número de vecinos)
+
+- El método de vecinos más cercanos puede generar malos emparejamientos si los vecinos más cercanos están muy lejos en términos del PS
+  
+- **Vecino más cercano con caliper**: consiste en definir una vecindad aceptable de matching (el *caliper*) y elegir solo el vecino más cercano dentro del caliper
+
+- **$M$ vecinos más cercanos con caliper**: consiste en hacer *match* con $M$ individuos dentro del *caliper*
+
+## Algoritmos de *matching*
+
+- **Radio**: todos los no tratados dentro del caliper son usados para hacer *match*
+
+- **Estratificación**: parte la región de soporte común en bloques de acuerdo al PS, estima el efecto de tratamiento dentro de cada bloque y, posiblemente, agrega los efectos de acuerdo con la distribución del PS
+
+- **Kernel**: todas las unidades no tratadas son usadas para hacer *match*, pesándolas apropiadamente con unos pesos que decaen conforme a la distancia en términos del PS (reduce la varianza, pero incrementa el sesgo)
+
+- Y muchos otros: **genético**, **cardinal**, **óptimo**, **completo**, etc.
+
+- No hay un método claramente superior a todos los demás
+ 
+- Puede hacerse con reemplazo o sin reemplazo
+ 
+- Se recomienda mostrar la robustez respecto a las decisiones tomadas
+
+
+
+
+
+ 
+
+
+
+## Calidad del *matching*
+
+- Para estimar el TOT se requiere que se cumpla el soporte común, por lo que se debe verificar el traslape del PS calculado para los tratados y no tratados
+ 
+- Otro de los teoremas de Rosenbaum y Rubin (1983) implica que
+
+$$
+X \perp  D|p(X)
+$$
+ 
+- Esto es, que al controlar por el PS, las variables $X$ no deben proveer información sobre $D$
+   
+- Se recomienda también hacer una prueba de estratificación
+
+  1. Dividir el rango del soporte común en bloques 
+ 
+  1. Hacer una prueba de medias del PS entre grupos dentro de cada bloque
+ 
+  1. Hacer una prueba de medias de cada variable en $X$ entre grupos dentro de cada bloque
+
+
+## Estimación del TOT e inferencia estadística
+
+- Con la muestra emparejada, procedemos a estimar el efecto del tratamiento y su error estándar
+
+- Existe una gran variedad de formas de proceder, así como de críticas a las formas en que otros lo hacen
+
+- La primera edición de MT usaba métodos de simulación basados en el paquete *Zelig* (ya descontinuado)
+
+- En CA se propone usar bootstrap para tomar en cuenta la etapa de estimación del PS usando el paquete *Matching*
+
+- Para nuestra práctica, usaremos el paquete [*MatchIt*](https://kosukeimai.github.io/MatchIt/index.html), con un enfoque de regresión o *g-computation* para estimar los efectos
+
+
+
+ 
+## Conclusión sobre el PSM
+
+- El uso del PSM requiere de supuestos teóricos fuertes
+
+- La implementación implica que las variables en $X$ son aquellas que permiten asumir la inconfundibilidad dado el PS
+
+- Hay una gran cantidad de decisiones en el proceso de estimación
+
+- La crítica más importante es que la mayoría de las veces nos preocupa más la autoselección basada en no observables que en observables
+
+- Pero muchas veces es todo lo que tenemos a la mano
+
+- Hacer análisis de sensibilidad a las distintas decisiones y presentar resultados transparentes 
+ 
+
+# Regresión {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Regresión
+
+Próximamente
+
+# *Inverse probability weighting* {.divider background-color="#9B2247" data-state="nochrome"}
+
+## *Inverse probability weighting*
+
+Próximamente
+
+# Métodos doblemente robustos {.divider background-color="#9B2247" data-state="nochrome"}
+
+## *Métodos doblemente robustos*
+
+Próximamente
+
+
+
+# Anexo 1: ejemplos de algoritmos de *matching* basados en el PS {.divider background-color="#9B2247" data-state="nochrome"}
+
+```{r}
+# Tabla de dos columnas con el PS estimado de cada unidad de un grupo, para
+# los ejemplos de este anexo
+tabla_ps <- function(grupo, unidad, ps) {
+  tabla <- data.frame(unidad, ps)
+  colnames(tabla) <- c(grupo, "\\(\\hat{p}\\)")
+
+  tabla |>
+    kbl(align = "cc",
+        escape = FALSE) |>
+    kable_paper(c("hover", "condensed", "responsive"),
+                full_width = FALSE)
+}
+```
+
+## Vecino más cercano
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("Tratados",
+         c("a", "b", "c", "\\(\\vdots\\)"),
+         c("0.031", "0.042", "0.07", "\\(\\vdots\\)"))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("No tratados",
+         c("A", "B", "C", "\\(\\vdots\\)"),
+         c("0.034", "0.068", "0.21", "\\(\\vdots\\)"))
+```
+
+:::
+
+::::
+
+- Con vecino más cercano, el individuo $a$ tratado estaría emparejado con el $A$ no tratado
+
+- Si el emparejamiento es con reemplazo, $A$ podría ser usado otra vez y $b$ también sería emparejado con $A$
+
+- Pero si el emparejamiento es sin reemplazo, $A$ ya no puede ser usado y a $b$ se le emparejaría con $B$
+
+- Cuando hacemos el emparejamiento sin reemplazo, debemos tener una muestra lo suficientemente grande
+
+- El emparejamiento sin reemplazo depende del orden en que se realice el procedimiento
+
+
+## Vecino más cercano con caliper
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("Tratados",
+         c("a", "b", "c", "d", "\\(\\vdots\\)"),
+         c("0.031", "0.042", "0.07", "0.11", "\\(\\vdots\\)"))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("No tratados",
+         c("A", "B", "C", "D", "\\(\\vdots\\)"),
+         c("0.034", "0.068", "0.21", "0.40", "\\(\\vdots\\)"))
+```
+
+:::
+
+::::
+
+- El primer paso es fijar el caliper, por ejemplo, de 0.1
+
+- El caliper implica buscar al vecino más cercano dentro de una vecindad de 0.1
+
+- En este ejemplo $d$ se emparejaría con $B$ si $B$ aún está disponible (porque no ha sido emparejado con nadie o porque, aunque haya sido emparejado, el procedimiento se hace con reemplazo)
+
+- $D$ queda fuera del caliper y nunca se usa 
+
+
+## $M$ vecinos más cercanos con caliper
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("Tratados",
+         c("d", "e", "f", "g", "h", "i", "\\(\\vdots\\)"),
+         c("0.31", "0.39", "0.44", "0.52", "0.55", "0.62", "\\(\\vdots\\)"))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("No tratados",
+         c("R", "S", "T", "U", "V", "W", "\\(\\vdots\\)"),
+         c("0.27", "0.29", "0.33", "0.49", "0.57", "0.61", "\\(\\vdots\\)"))
+```
+
+:::
+
+::::
+
+- Si se utiliza un caliper de 0.1 y dos vecinos, a $g$ se le asignarían $U$ y $V$ (si estuvieran disponibles)
+
+- Es decir, dentro del caliper, los dos individuos con el PS más cercano
+
+
+## Radio
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("Tratados",
+         c("d", "e", "f", "g", "h", "i", "\\(\\vdots\\)"),
+         c("0.31", "0.39", "0.44", "0.52", "0.55", "0.62", "\\(\\vdots\\)"))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("No tratados",
+         c("R", "S", "T", "U", "V", "W", "\\(\\vdots\\)"),
+         c("0.27", "0.29", "0.33", "0.49", "0.57", "0.61", "\\(\\vdots\\)"))
+```
+
+:::
+
+::::
+
+- Pero si ahora implementamos radio con un caliper de 0.1, a $g$ se le asignarían $U$, $V$ y $W$ (si estuvieran disponibles)
+
+- Es decir, todos los individuos dentro del caliper
+
+
+## Kernel
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("Tratados",
+         c("d", "e", "f", "g", "h", "i"),
+         c("0.31", "0.39", "0.44", "0.52", "0.55", "0.62"))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r}
+tabla_ps("No tratados",
+         c("R", "S", "T", "U", "V", "W"),
+         c("0.27", "0.29", "0.33", "0.49", "0.57", "0.61"))
+```
+
+:::
+
+::::
+
+- Supongamos que estos son todos nuestros datos
+
+- Con un emparejamiento por kernel, a $d$ lo *emparejamos* con todos los individuos, desde $R$ hasta $W$
+
+- La función kernel le dará más peso a $T$ y $S$, un poco menos a $R$ y así hasta darle muy poco o casi nada de peso a $W$
+
+
+# Selección por Observables {.final background-color="#9B2247" data-state="nochrome"}
+
+::: {.f-eyebrow}
+Inferencia Causal
+:::
+
+::: {.f-inst}
+[Irvin Rojas](https://rojasirvin.github.io/)
+:::
+
+::: {.f-inst}
+CIDE · Maestría en Economía
+:::
+
+<span class="f-icons"><a href="https://github.com/rojasirvin" target="_blank" aria-label="GitHub"><i class="bi bi-github"></i></a> <a href="https://scholar.google.com/citations?hl=es&user=FUwdSTMAAAAJ&view_op=list_works&sortby=pubdate" target="_blank" aria-label="Google Scholar"><i class="bi bi-mortarboard-fill"></i></a> <a href="mailto:irvin.rojas@cide.edu" aria-label="Correo"><i class="bi bi-envelope-fill"></i></a></span>
+
+::: {.f-rule}
+:::
+
+::: {.f-copy}
+© 2026 Irvin Rojas. Distribuido bajo licencia Creative Commons **CC BY-NC-SA 4.0**. Los materiales de terceros citados conservan sus propios derechos.
+:::
