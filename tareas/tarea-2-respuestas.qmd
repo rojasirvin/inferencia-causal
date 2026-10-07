@@ -67,7 +67,7 @@ nobs(dif_adults)
 
 coef_test(dif_adults,
           vcov = "CR1S",
-          cluster = data.morocco$demi_paire)[1:2,]
+          cluster = data.morocco$demi_paire)[2,]
 ```
 
     *Presentamos el mismo resultado en un cuadro usando `modelsummary`. Para ello, pasamos en `vcov` la matriz de varianzas agrupada que calcula `vcovCR`, con el mismo ajuste CR1S:*
@@ -233,7 +233,7 @@ a. [5 puntos] ¿Cuáles son los dos supuestos econométricos que permiten la est
 
 a. [5 puntos] Estime el efecto del cumplimiento sobre el valor de los activos, usando la asignación aleatoria como instrumento del cumplimiento. Es decir, estime el LATE. Use los mismos controles y tipo de errores que en c. Este resultado se reporta en la columna 1 del panel B en la Tabla 9. ¿Cuál es la interpretación del coeficiente de la variable **client**? En R, la función *ivreg* del paquete *AER* le permite hacer la estimación de MC2E.
 
-    *El LATE estimado es de 8,663 unidades monetarias adicionales en el valor de los activos debido a ser cliente. Esta cifra es considerablemente mayor que las 1,448 unidades monetarias estimada en la forma reducida. Este es un efecto local pues solo considera el cambio en el valor de los activos debido a ser cliente de la microfinanciera, en aquellos individuos que cambiaron su comportamiento debido a la asignación aleatoria del tratamiento. Noten también que en todas las regresiones se incluye errores agrupados a nivel __demi_paire__.*
+    *El LATE estimado es de 8,663 unidades monetarias adicionales en el valor de los activos debido a ser cliente. Esta cifra es considerablemente mayor que las 1,448 unidades monetarias estimadas en la forma reducida. Este es un efecto local pues solo considera el cambio en el valor de los activos debido a ser cliente de la microfinanciera, en aquellos individuos que cambiaron su comportamiento debido a la asignación aleatoria del tratamiento. Noten también que en todas las regresiones se incluye errores agrupados a nivel __demi_paire__.*
     
 ```{r, indent="   "}
 res_iv <- ivreg(assets_total ~ client + members_resid_bl + nadults_resid_bl
@@ -632,7 +632,7 @@ modelsummary(list("En niveles" = r_nivel, "En z-score" = r_z),
 
     *El coeficiente $\hat{\beta}_{1j}'^k=0.081$ implica que el tratamiento aumenta la variedad de la dieta en $0.081$ desviaciones estándar del grupo de control. La ventaja de esta transformación es que la magnitud ya no depende de las unidades originales de la variable y por eso se vuelve comparable con los coeficientes de otras variables de la familia, medidas en escalas distintas.*
 
-    *Cuando estimamos la regresión en niveles, el coeficiente estimado es de 0.879 unidades. En ambas regresiones, el estadístico $t$ es $1.8356$ y el valor $p$ es $0.0667$ en ambas. En el cuadro esto se ve en que las dos columnas tienen exactamente los mismos asteriscos y la misma $R^2$. Estandarizar es una transformación afín de la variable dependiente y los estadísticos de prueba son invariantes a ese tipo de transformación.*
+    *Cuando estimamos la regresión en niveles, el coeficiente estimado es de 0.879 unidades. En ambas regresiones, el estadístico $t$ es $1.8356$ y el valor $p$ es $0.0667$. En el cuadro esto se ve en que las dos columnas tienen exactamente los mismos asteriscos y la misma $R^2$. Estandarizar es una transformación afín de la variable dependiente y los estadísticos de prueba son invariantes a ese tipo de transformación.*
 
     *La lección es que pasar a $z$-scores no modifica ninguna conclusión de inferencia, sólo las unidades en las que se expresa la magnitud. No se gana ni se pierde potencia. Lo que sí puede cambiar las conclusiones es agregar varias variables en un índice, porque ahí se combina información de variables distintas, y eso es lo que hace el inciso e.*
 
@@ -643,7 +643,7 @@ a. [5 puntos] Construya ahora el índice de Kling, Liebman y Katz, $z_i$, para c
     $$z_{i}^k=\tau_0^k+\tau_1^k T_i + \Omega^k X_i + \nu_i^k$$
     Genere un cuadro de resumen donde muestre el efecto causal para cada uno de los índices de las seis familias. ¿Qué se concluye para cada una?
 
-    *Seguimos los cuatro pasos del procedimiento descrito en clase. El segundo es fácil de olvidar y es que tenemos que reconocer hay variables donde **mayor es peor** (por ejemplo `dias_sin_comida` o `indice_estres`). Como vimos en clase, antes de estandarizar debemos invertirles el signo. Si no se hace, esas variables entran al promedio restando y el índice queda mal construido. La columna `orientacion` del diccionario indica cuáles son dichas variables:*
+    *Seguimos los cuatro pasos del procedimiento descrito en clase. El segundo es fácil de olvidar y es que tenemos que reconocer que hay variables donde **mayor es peor** (por ejemplo `dias_sin_comida` o `indice_estres`). Como vimos en clase, antes de estandarizar debemos invertirles el signo. Si no se hace, esas variables entran al promedio restando y el índice queda mal construido. La columna `orientacion` del diccionario indica cuáles son dichas variables:*
 
 ```{r, indent="   "}
 familias <- unique(dicc$familia)
@@ -703,7 +703,7 @@ modelsummary(modelos_kling,
     - *__Consumo__: $\hat{\tau}_1 = 0.437$ ($p < .01$). El efecto más grande del estudio y el más robusto. Esto ya era evidente variable por variable.*
     - *__Ingresos y trabajo__: $\hat{\tau}_1 = 0.277$ ($p < .01$). Efecto grande en magnitud y estadísticamente significativo.*
     - *__Activos__: $\hat{\tau}_1 = 0.198$ ($p < .01$). Efecto moderado y bien identificado.*
-    - *__Salud mental__: $\hat{\tau}_1 = 0.169$ ($p < .01$). **Éste es el resultado más interesante del ejercicio.** En los incisos b. y c. ninguna de las 12 variables de esta familia sobrevivió a la correción de Bonferroni ni de BH. Sin embargo, el índice detecta un efecto con un valor $p < .01$. La razón es que el promedio de 12 variables poco correlacionadas tiene una desviación estándar mucho menor que cada variable por separado, así que la misma señal se vuelve detectable. El índice recupera información que la corrección por múltiples hipótesis habría descartado.*
+    - *__Salud mental__: $\hat{\tau}_1 = 0.169$ ($p < .01$). **Éste es el resultado más interesante del ejercicio.** En los incisos b. y c. ninguna de las 12 variables de esta familia sobrevivió a la corrección de Bonferroni ni de BH. Sin embargo, el índice detecta un efecto con un valor $p < .01$. La razón es que el promedio de 12 variables poco correlacionadas tiene una desviación estándar mucho menor que cada variable por separado, así que la misma señal se vuelve detectable. El índice recupera información que la corrección por múltiples hipótesis habría descartado.*
     - *__Educación de los hijos__: $\hat{\tau}_1 = 0.059$ ($p = 0.137$). No se rechaza la hipótesis nula. Sin embargo, en el inciso a., la variable `anios_escolaridad_hijos` de esta misma familia sí resultó significativa y con un valor $p$ que sobrevive incluso Bonferroni.*
 
     *El caso de la educación ilustra la limitación central de los índices: un índice promedia, y por lo tanto diluye. Si el programa afectó fuertemente una sola de las 10 variables de la familia y no tocó las otras nueve, ese efecto se reparte entre las 10 al construir el promedio y puede desaparecer. Conviene por eso reportar el índice junto con los resultados variable por variable, no sólo el índice.*
