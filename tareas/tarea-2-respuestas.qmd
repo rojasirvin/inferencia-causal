@@ -1,7 +1,725 @@
 ---
-title: "Tarea 2 — Respuestas"
+title: "Tarea 2"
 lang: es
 format: html
 ---
 
-**Aún no disponible.** Las respuestas de esta tarea se publicarán *después de la fecha de entrega*, conforme avance el semestre.
+```{r setup}
+#| echo: false
+#| warning: false 
+#| message: false
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+library(tidyverse)
+library(knitr)
+library(janitor)
+library(readr)
+library(kableExtra)
+library(sandwich)
+library(lmtest)
+library(modelsummary)
+library(haven)
+library(fixest)
+library(hdm)
+library(estimatr)
+library(gt)
+library(clubSandwich)
+library(AER)
+```
+
+
+## Respuestas
+
+
+## Pregunta 1
+
+En Crépon et al. (2015)[^1] se estudia una intervención en Marruecos en la que se analiza el efecto de la *adopción* de microfinanzas, a través de un experimento de campo. En 81 de 162 localidades estudiadas se introdujo aleatoriamente una empresa de microfinanzas. Para seleccionar las localidades de tratamiento, primero se *emparejaron* localidades de acuerdo a características observables y, para cada pareja se asignó una a tratamiento y otra a control. La variable que identifica a las parejas es **paire**. La base de datos *crepon_morocco_balance.csv* contiene los datos de este estudio usados para mostrar la integridad del diseño. La variable **treatment** es la variable de asignación aleatoria, mientras que la variable **client** es la variable de adopción.
+
+a. [3 puntos] Primero recordaremos cómo mostrar que el tratamiento efectivamente fue asignado de manera aleatoria. El siguiente código lee los datos que debemos usar y se queda con las observaciones de la línea base. Con estos datos, mostraremos que la variable **nadults_resid_bl**, que indica el número de personas adultas que viven en cada hogar, está balanceado entre los grupos asignados a tratamiento y control. Noten que la media del número de personas adultas que viven en el hogar en el grupo de control es 3.45 (d.e. 1.99) y que hay 2,266 hogares en dicho grupo de control. Esto es exactamente lo que se reporta en la fila correspondiente a *Number adults* en la tabla 1 del artículo.
+
+
+```{r, indent="   "}
+#| echo: true
+
+  data.morocco<-read_csv("../files/crepon_morocco_balance.csv",
+                         locale = locale(encoding = "latin1")) |>
+    clean_names() |>
+    filter(merge_indicator!=1)
+      
+  data.morocco |>
+    summarize(mean=mean(nadults_resid_bl, na.rm=T),
+              std=sd(nadults_resid_bl, na.rm=T),
+              n=n(),
+              .by = treatment)
+```
+
+    Obtenga ahora el valor de la diferencia entre el grupo de tratamiento y el de control, así como su valor $p$ (últimas dos columnas). Para ello, estime una regresión en la que la variable dependiente sea número de personas adultas que vive en el hogar **nadults_resid_bl**, en función de la variable de asignación **treatment** y variables dummy de pareja de localidad (la variable **paire** indica cuáles son las parejas). La regresión permite recuperar la diferencia de 0.03 personas adultas que se reporta en la fila correspondiente en la tabla 1. Para recuperar el valor $p$, estime errores agrupados usando la variable **demi_paire**, que es la clave de las distintas localidades, como variable de agrupación. Una forma de realizar esto es con la función *coef_test* del paquete *clubSandwich*.[^2]
+   
+    *Estimamos la regresión con el número de personas adultas como variable dependiente en función de la asignación al tratamiento y de las parejas:*
+   
+```{r, indent="   "}
+dif_adults <- lm(nadults_resid_bl ~ treatment + factor(paire),
+    data=data.morocco)
+
+summary(dif_adults)$coef[1:7,]
+nobs(dif_adults)
+
+coef_test(dif_adults,
+          vcov = "CR1S",
+          cluster = data.morocco$demi_paire)[1:2,]
+```
+
+    *Presentamos el mismo resultado en un cuadro usando `modelsummary`. Para ello, pasamos en `vcov` la matriz de varianzas agrupada que calcula `vcovCR`, con el mismo ajuste CR1S:*
+
+```{r, indent="   "}
+#Los valores p menores a 0.01 se reportan como <.01
+formato_p <- function(p) ifelse(p < 0.01, "<.01", sprintf("%.3f", p))
+
+modelsummary(list("Personas adultas" = dif_adults),
+             vcov = vcovCR(dif_adults, cluster = data.morocco$demi_paire,
+                           type = "CR1S"),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 3, std.error = 3,
+                                 p.value = formato_p),
+             coef_map = c("treatment"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+```
+
+    *El coeficiente y el error estándar son idénticos a los de `coef_test`. El valor $p$ del cuadro (0.563) difiere en el tercer decimal del de `coef_test` (0.5646) porque `coef_test` usa además la corrección para los grados de libertad.*
+
+    *Obtenemos un coeficiente de 0.0314, que se redondea a 0.03 en la tabla. El valor $p$ de 0.5646 es exactamente el reportado en la última columna. Aquí lo clave es estimar los errores agrupados.*
+
+a. [2 puntos] Ahora mostremos que efectivamente este es un ejemplo de una intervención con cumplimiento imperfecto. Genere un cuadro que indique: 1) cuántas personas que fueron asignadas a recibir el tratamiento efectivamente fueron clientes; 2) cuántas personas que fueron asignadas a recibir el tratamiento no se convirtieron en clientes; 3) cuántas personas que no fueron asignadas a recibir el tratamiento sí se convirtieron en clientes; y 4) cuántas personas que no fueron asignadas a recibir el tratamiento tampoco se convirtieron en clientes.
+
+```{r, indent="   "}
+data.morocco |>
+  mutate(treatment=factor(treatment, levels=c(0,1),labels=c("Control", "Tratamiento"))) |>
+      mutate(client=factor(client, levels=c(0,1),labels=c("No cliente", "Cliente"))) |>
+  tabyl(treatment, client,
+        show_na = F)
+```
+
+    *Este es un ejemplo de una intervención con incumplimiento de un solo lado. De aquellos asignados al tratamiento, 251 se convirtieron en clientes y 1,753 no. De aquellos asignados al control, ninguno tuvo acceso a microfinanzas. En otras palabras, podemos descartar la presencia de siempre adoptadores (always-takers). Por tanto, en este tipo de aplicaciones, el efecto del tratamiento en los tratados (también llamado TOT, ATET o TT) es igual al LATE.*
+
+a. [5 puntos] Ahora mostraremos que la adopción, es decir, convertirse en cliente, no es independiente de las características de los hogares. Considere las variables **act_business_bl** (indicadora de si el hogar tiene un negocio activo) y **consumption_bl** (consumo del hogar). Para cada una de estas dos variables, utilice la misma especificación que en la parte a., pero ahora usando la variable **client** como regresor. ¿Qué concluye?
+
+    *Para la indicadora de si el hogar tiene un negocio activo:*
+
+```{r, indent="   "}
+r1 <- lm(act_business_bl ~ client + factor(paire),
+                         data=data.morocco)
+```
+
+
+    *Para el consumo del hogar:*
+
+```{r, indent="   "}
+r2 <- lm(consumption_bl ~ client + factor(paire),
+                            data=data.morocco)
+
+modelsummary(list("Negocio activo" = r1, "Consumo" = r2),
+             vcov = list(vcovCR(r1, cluster = data.morocco$demi_paire,
+                                type = "CR1S"),
+                         vcovCR(r2, cluster = data.morocco$demi_paire,
+                                type = "CR1S")),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 3, std.error = 3,
+                                 p.value = formato_p),
+             coef_map = c("client"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+```
+    
+    *La adopción no es independiente de las características de los hogares. Parece ser que los hogares que se convierten en clientes tienen una mayor probabilidad de tener un negocio activo y tienen mayor consumo. Por tanto, comparar las variables de impacto entre quienes adoptaron y no adoptaron implicaría una comparación contaminada por el sesgo de selección.*
+    
+
+a. [5 puntos] Con estos elementos estamos convencidos de que es necesario emplear lo que sabemos sobre cumplimiento imperfecto. Usaremos ahora los datos en *crepon_morocco_analysis.csv*, que contiene los datos empleados para evaluar el impacto de la adopción. Estos datos están listos para analizarse. Estime la forma reducida del efecto de ser asignado al tratamiento sobre el valor total de los activos del hogar, **assets_total**. Comente los resultados, en particular, comente sobre la magnitud y la significancia estadística de la variable **treatment**. Aquí y en adelante, incluya los siguientes controles en la regresión: **members_resid_bl**, **nadults_resid_bl**, **head_age_bl**, **act_livestock_bl**, **act_business_bl**, **borrowed_total_bl**, **members_resid_d_bl**, **nadults_resid_d_bl**, **head_age_d_bl**, **act_livestock_d_bl**, **act_business_d_bl**, **borrowed_total_d_bl**, **ccm_resp_activ**, **other_resp_activ**, **ccm_resp_activ_d** y **other_resp_activ_d**. Además, incluya efectos fijos por pareja introduciendo la variable **paire** como factor. Use los mismos errores estándar que en la parte a. Con esto deberá poder recuperar el coeficiente y el error estándar de la columna (3) de la tabla 3.
+
+    *La forma reducida estima la relación causal entre la variable de activos y la asignación aleatoria. Se estima un efecto de 1,448 unidades monetarias en los activos, estadísticamente significativo al 5%. Este es el efecto de ser asignado al tratamiento o ITT.*
+
+```{r, indent="   "}
+data.morocco<-read_csv("../files/crepon_morocco_analysis.csv")   |>
+  clean_names() 
+
+res_fr<- lm(assets_total ~ treatment +
+              members_resid_bl + nadults_resid_bl +
+              head_age_bl + act_livestock_bl + act_business_bl +
+              borrowed_total_bl + members_resid_d_bl +
+              nadults_resid_d_bl + head_age_d_bl + act_livestock_d_bl +
+              act_business_d_bl + borrowed_total_d_bl +
+              ccm_resp_activ + other_resp_activ + ccm_resp_activ_d + 
+              other_resp_activ_d + factor(paire),
+            data=data.morocco)
+
+modelsummary(list("Activos (forma reducida)" = res_fr),
+             vcov = vcovCR(res_fr, cluster = data.morocco$demi_paire,
+                           type = "CR1S"),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 0, std.error = 0,
+                                 p.value = formato_p),
+             coef_map = c("treatment"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+```    
+
+    *Este efecto estimado tiene una interpretación causal. Sin embargo, lo que nos está diciendo es la diferencia en los activos en hogares donde el programa fue ofrecido y donde no. Pero no la diferencia en el efectivamente usar microfinanzas, que puede ser el parámetro de mayor interés. En otras palabras, el ITT es como un efecto del tratamiento, diluido por el no cumplimiento.*
+
+a. [5 puntos] Estime ahora la **primera etapa**, es decir, estime por MCO el efecto causal de la asignación sobre la adopción. Comente sobre la magnitud, la significancia estadística y la interpretación de la variable **treatment** en términos del comportamiento de los **cumplidores**. Debería poder replicar el coeficiente y el error estándar de la columna 1 en la tabla 2 del artículo.
+
+    *La primera etapa muestra un aumento de 16.7 puntos en la probabilidad de ser cliente debido al tratamiento. Este efecto es estadísticamente significativo al 1%. En otras palabras, 16.7% de los individuos en la muestra son cumplidores, es decir, se vuelven clientes solo porque se les ofreció el tratamiento.*
+
+```{r, indent="   "}
+res_fs<- lm(client ~ treatment +
+              members_resid_bl + nadults_resid_bl +
+                head_age_bl + act_livestock_bl + act_business_bl +
+                borrowed_total_bl + members_resid_d_bl +
+                nadults_resid_d_bl + head_age_d_bl + act_livestock_d_bl +
+                act_business_d_bl + borrowed_total_d_bl +
+                ccm_resp_activ + other_resp_activ + ccm_resp_activ_d + 
+                other_resp_activ_d + factor(paire),
+            data=data.morocco)
+
+modelsummary(list("Cliente (primera etapa)" = res_fs),
+             vcov = vcovCR(res_fs, cluster = data.morocco$demi_paire,
+                           type = "CR1S"),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 3, std.error = 3,
+                                 p.value = formato_p),
+             coef_map = c("treatment"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+```   
+
+a. [5 puntos] Considere la columna 1 del panel A en la Tabla 9 del artículo. Aquí se reporta la estimación por MCO de la relación entre **client** y el valor de los activos, con los mismos controles y tipo de errores que antes. Replique este resultado. ¿Se puede interpretar de forma causal el coeficiente sobre **client**?
+
+    *Noten que para replicar la entrada la clave está en condicionar a aquellos asignados al tratamiento (como se indica en la tabla del artículo). No se puede interpretar de manera causal la relación de 4,682 unidades monetarias más en el valor de los activos en los clientes con respecto a los no clientes pues es muy posible que haya sesgo de selección. Por ejemplo, si los hogares más educados deciden adoptar en mayor medida los productos de microfinanzas, es posible pensar que esos mismos hogares hubieran tenido más activos en sus negocios incluso sin microfinanzas. Estaríamos entonces sobreestimando el efecto del tratamiento.*
+
+```{r, indent="   "}
+res_mco <- lm(assets_total ~ client +
+                members_resid_bl + nadults_resid_bl +
+                head_age_bl + act_livestock_bl + act_business_bl +
+                borrowed_total_bl + members_resid_d_bl +
+                nadults_resid_d_bl + head_age_d_bl + act_livestock_d_bl +
+                act_business_d_bl + borrowed_total_d_bl +
+                ccm_resp_activ + other_resp_activ + ccm_resp_activ_d + 
+                other_resp_activ_d + factor(paire),
+              data=filter(data.morocco,treatment==1))
+
+modelsummary(list("Activos (MCO)" = res_mco),
+             vcov = vcovCR(res_mco, cluster = filter(data.morocco,treatment==1)$demi_paire,
+                           type = "CR1S"),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 0, std.error = 0,
+                                 p.value = formato_p),
+             coef_map = c("client"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+``` 
+
+a. [5 puntos] ¿Cuáles son los dos supuestos econométricos que permiten la estimación del Local Average Treatment Effect (LATE) en el contexto de este problema? Comente sobre la evidencia que respalda el supuesto de que los instrumentos no son débiles en este problema.
+
+    *Los supuestos necesarios son:*
+    
+    *Relevancia del instrumento. Se requiere que la asignación aleatoria del tratamiento efectivamente afecte la probabilidad de ser cliente. La evidencia que respalda este requerimiento es el resultado de la primera etapa. El estadístico $F$ de la primera etapa es de 201, lo cual apunta a que no tenemos un problema de instrumentos débiles.*
+    
+    *Exclusión. Se requiere que el instrumento no pertenezca a la ecuación estructural. Esto se garantiza por la asignación aleatoria del tratamiento.*
+
+a. [5 puntos] Estime el efecto del cumplimiento sobre el valor de los activos, usando la asignación aleatoria como instrumento del cumplimiento. Es decir, estime el LATE. Use los mismos controles y tipo de errores que en c. Este resultado se reporta en la columna 1 del panel B en la Tabla 9. ¿Cuál es la interpretación del coeficiente de la variable **client**? En R, la función *ivreg* del paquete *AER* le permite hacer la estimación de MC2E.
+
+    *El LATE estimado es de 8,663 unidades monetarias adicionales en el valor de los activos debido a ser cliente. Esta cifra es considerablemente mayor que las 1,448 unidades monetarias estimada en la forma reducida. Este es un efecto local pues solo considera el cambio en el valor de los activos debido a ser cliente de la microfinanciera, en aquellos individuos que cambiaron su comportamiento debido a la asignación aleatoria del tratamiento. Noten también que en todas las regresiones se incluye errores agrupados a nivel __demi_paire__.*
+    
+```{r, indent="   "}
+res_iv <- ivreg(assets_total ~ client + members_resid_bl + nadults_resid_bl
+     + head_age_bl + act_livestock_bl + act_business_bl 
+     + borrowed_total_bl + members_resid_d_bl + nadults_resid_d_bl
+     + head_age_d_bl + act_livestock_d_bl + act_business_d_bl 
+     + borrowed_total_d_bl + ccm_resp_activ + other_resp_activ 
+     + ccm_resp_activ_d  + other_resp_activ_d + factor(paire) |
+       treatment +  members_resid_bl + nadults_resid_bl
+     + head_age_bl + act_livestock_bl + act_business_bl 
+     + borrowed_total_bl + members_resid_d_bl + nadults_resid_d_bl
+     + head_age_d_bl + act_livestock_d_bl + act_business_d_bl 
+     + borrowed_total_d_bl + ccm_resp_activ + other_resp_activ 
+     + ccm_resp_activ_d  + other_resp_activ_d + factor(paire),
+     data=data.morocco)
+
+summary(res_iv)$coefficients[1:2,]
+
+modelsummary(list("Activos (MC2E)" = res_iv),
+             vcov = vcovCR(res_iv, cluster = data.morocco$demi_paire,
+                           type = "CR1S"),
+             statistic = c("({std.error})", "[{p.value}]"),
+             fmt = fmt_statistic(estimate = 0, std.error = 0,
+                                 p.value = formato_p),
+             coef_map = c("client"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             notes = "Errores estándar agrupados por localidad entre paréntesis y valores p entre corchetes.")
+```
+
+## Pregunta 2
+
+Sea una variable de resultados $y_i$, una variable de asignación aleatoria $Z_i$ y una variable de adopción $D_i$. El estimador de Wald se define como:
+
+$$\hat{\beta}_{Wald}=\frac{\bar{Y}_{Z_i=1}-\bar{Y}_{Z_i=0}}{\bar{D}_{Z_i=1}-\bar{D}_{Z_i=0}}$$
+
+En esta pregunta mostraremos cómo el estimador de Wald es equivalente al estimador de VI cuando no hay controles. Use nuevamente los datos en *crepon_morocco_analysis.csv*.
+   
+a. [10 puntos] Obtenga el estimador de Wald como el cociente de la diferencia en el valor de los activos entre los hogares asignados a tratamiento y control dividido por la diferencia en la probabilidad de adopción entre los hogares asignados a tratamiento y control. Recuerde que el valor de los activos es **assets_total**.
+
+    *Obtenemos el estadístico de Wald, usando la definición:*
+    
+```{r, indent="   "}
+data.morocco<-read_csv("../files/crepon_morocco_analysis.csv")   |>
+  clean_names() 
+
+mean_cliente <- data.morocco |>
+  summarize(p_cliente=mean(client, na.rm=F),
+            .by = treatment) |>
+  arrange(treatment)
+
+mean_activos <- data.morocco |>
+  summarize(m_activos=mean(assets_total, na.rm=F),
+            .by = treatment) |>
+  arrange(treatment)
+
+#Necesitamos la diferencia de activos y de probabilidad de ser cliente
+dif_activos <- mean_activos[2,2]-mean_activos[1,2]
+dif_cliente <- mean_cliente[2,2]-mean_cliente[1,2]
+
+Wald <- as.numeric(dif_activos / dif_cliente)
+Wald
+```
+
+a. [5 puntos] Ahora estime por MC2E el efecto de la adopción sobre el valor de los activos, usando la variable de asignación como instrumento para la adopción. Use *ivreg* para estimar el efecto directamente. ¿Qué ventaja observa con respecto al estimador de Wald?
+
+    *Notemos que obtenemos lo mismo al hacer una estimación de variables instrumentales. El coeficiente sobre la variable client es igual al estadístico de Wald. El estadístico de Wald es idéntico al estimador de variables instrumentales cuando el instrumento es binario. La mayor ventaja de realizar la estimación de esta manera es que podemos obtener errores estándar, lo cual nos permite hacer inferencia estadística sobre el tamaño del efecto de ser cliente en los activos.*
+    
+```{r, indent="   "}
+Wald_vi <- ivreg(assets_total ~ client  | treatment,
+                data=data.morocco)
+
+#Notemos que obtenemos directamente el error estándar
+summary(Wald_vi)
+```
+
+a. [10 puntos] Ahora estime por MC2E el efecto de la adopción sobre el valor de los activos, usando la variable de asignación como instrumento para la adopción. A diferencia del punto previo, realice la estimación *a mano*, es decir, primero estime los valores ajustados de la variable endógena en una primera etapa y luego use estos valores ajustados en la estimación estructural. ¿Qué desventaja observa con respecto a la estimación del punto previo?
+
+    *Podemos obtener el mismo coeficiente haciendo MC2E a mano, lo cual nunca es recomendable debido a que la inferencia sobre el coeficiente de la segunda etapa es incorrecta. Sin embargo, nos deja ver cómo podemos entender el proceso de estimación conceptualmente.*
+   
+    *Estimamos la primera etapa y obtenemos los valores ajustados:*
+   
+```{r, indent="   "}
+p.e <- lm(client ~ treatment,
+                data=data.morocco)
+
+data.morocco <- data.morocco |>
+  mutate(client_hat = predict(p.e))
+```
+
+    *Ahora usamos los valores ajustados en la regresión de la segunda etapa:*
+   
+```{r, indent="   "}
+s.e <- lm(assets_total ~ client_hat,
+                data=data.morocco)
+
+summary(s.e)
+```
+
+    *Y obtenemos de nuevo 11,517 unidades monetarias como impacto estimado.*
+   
+    *La desventaja de este procedimiento es que los errores estándar son incorrectos pues la estimación de la ecuación estructural no considera el error muestral de la primera etapa y, por tanto, considera a los valores de client_hat como si fueran directamente observados.*
+   
+
+## Pregunta 3
+
+En la Pregunta 2, parte a, obtuvo el estimador de Wald para aproximar el efecto de la adopción en el valor de los activos como un cociente de dos diferencias de medias.
+
+a. [5 puntos] Utilice un procedimiento bootstrap *a mano* para estimar el error estándar del estimador de Wald usando 50 repeticiones. Es decir, debe realizar un remuestreo de los datos originales y para cada muestra obtener el estimador de Wald. Luego, obtenga la desviación estándar de los 50 estadísticos calculados. Utilice una semilla para poder replicar sus resultados.
+
+    *Ya sabemos calcular un estadístico de Wald, como en la Pregunta 2, parte a. La idea ahora es repetir dicho proceso B veces, pero en cada repetición con una muestra bootstrap a la mano:*
+    
+```{r, indent="   "}
+
+data.morocco <- read.csv("../files/crepon_morocco_analysis.csv") |>
+  select(treatment,client,assets_total)
+
+obs <- nrow(data.morocco)
+
+#Solo para ejemplificar, la siguiente línea pide el remuestreo, es decir, obtener una muestra de tamaño N de la muestra original, con reemplazo
+data.b <-data.morocco[sample(nrow(data.morocco),obs, replace = TRUE),]
+
+#Simplemente repetimos el proceso anterior B veces
+set.seed(821)
+B=50
+#Inicializamos el vector donde guardaremos los W estimados
+Wrep50_1 <- data.frame(W=matrix(ncol = 1, nrow = B))
+
+for (i in 1:B)
+{
+  data.b <-data.morocco[sample(nrow(data.morocco),obs, replace = TRUE),]
+  
+  #Literalmente pegamos el cálculo de un W, hecho en la Pregunta 2a
+  
+  mean_cliente <- data.b |>
+    summarize(p_cliente=mean(client, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  mean_activos <- data.b |>
+    summarize(m_activos=mean(assets_total, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  dif_activos <- mean_activos[2,2]-mean_activos[1,2]
+  dif_cliente <- mean_cliente[2,2]-mean_cliente[1,2]
+  
+  #Y lo guardamos en la posición adecuada
+  
+  Wrep50_1[i,1] <- as.numeric(dif_activos / dif_cliente)
+}
+
+#El error estimado es simplemente la desviación estándar de los B estadísticos estimados
+sd(Wrep50_1$W)
+```
+
+a. [5 puntos] Reemplace la semilla de la parte a. por una nueva semilla y estime nuevamente el error estándar del estimador de Wald con 50 repeticiones. Comente sobre la diferencia entre este error estándar y el de la parte a.
+
+    *El cambio que observamos en el error estándar estimado por bootstrap entre esta parte y la parte a. es que al cambiar la semilla, los números aleatorios generados son distintos y, por tanto, cada muestra bootstrap tiene distintos individuos.*
+    
+    *Ambas son estimaciones del mismo parámetro, pero difieren por el ruido de la simulación, el cual es grande porque $B$ es pequeña.*
+
+```{r, indent="   "}
+#Simplemente cambiamos la semilla
+set.seed(8212)
+B=50
+#Inicializamos el vector donde guardaremos los W estimados
+Wrep50_2 <- data.frame(W=matrix(ncol = 1, nrow = B))
+
+for (i in 1:B)
+{
+  data.b <-data.morocco[sample(nrow(data.morocco),obs, replace = TRUE),]
+  
+  mean_cliente <- data.b |>
+    summarize(p_cliente=mean(client, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  mean_activos <- data.b |>
+    summarize(m_activos=mean(assets_total, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  dif_activos <- mean_activos[2,2]-mean_activos[1,2]
+  dif_cliente <- mean_cliente[2,2]-mean_cliente[1,2]
+  
+  Wrep50_2[i,1] <- as.numeric(dif_activos / dif_cliente)
+}
+
+sd(Wrep50_2$W)
+```
+
+
+a. [5 puntos] Regrese el valor de la semilla al usado en a. y estime nuevamente el error estándar del estimador de Wald, esta vez usando 1,000 repeticiones. Comente sobre la diferencia entre este error estándar y el de la parte a.
+
+
+    *Ahora las diferencias en el error estimado surgen porque tenemos muchas más repeticiones bootstrap. Lo más importante de estos procedimientos es que pueda implementarlos en otros contextos. Por ejemplo, podemos obtener errores bootstrap para el vector de coeficientes de una estimación de MC2E, para el producto de dos coeficientes, etc.*
+
+```{r, indent="   "}
+#Regresamos a la primera semilla pero ahora B=1000
+set.seed(821)
+B=1000
+
+Wrep1000 <- data.frame(W=matrix(ncol = 1, nrow = B))
+
+for (i in 1:B)
+{
+  data.b <-data.morocco[sample(nrow(data.morocco),obs, replace = TRUE),]
+  
+  mean_cliente <- data.b |>
+    summarize(p_cliente=mean(client, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  mean_activos <- data.b |>
+    summarize(m_activos=mean(assets_total, na.rm=F),
+              .by = treatment) |>
+    arrange(treatment)
+  
+  dif_activos <- mean_activos[2,2]-mean_activos[1,2]
+  dif_cliente <- mean_cliente[2,2]-mean_cliente[1,2]
+  
+  Wrep1000[i,1] <- as.numeric(dif_activos / dif_cliente)
+}
+
+#El error estimado es simplemente la desviación estándar de los B estadísticos estimados
+sd(Wrep1000$W)
+```
+
+
+## Pregunta 4
+
+En esta pregunta pondremos en práctica lo aprendido sobre múltiples hipótesis. En el archivo **datos_indices.csv** se presentan los datos de una intervención a 2,457 individuos. La intervención asignó a un tercio de los individuos a ser tratados y se busca estimar el efecto causal sobre 49 variables que miden distintas dimensiones de bienestar. Estas variables pueden agruparse en seis familias. Se recolectaron además cinco características de línea base que funcionan como controles para la estimación de los efectos causales. En el estudio se trabaja con $\alpha=0.05$.
+
+a. [5 puntos] Para cada variable, estime el impacto del tratamiento con una regresión del tipo:
+
+    $$y_{ij}^k=\beta_{j}^k+\beta_{1j}^k T_i + B_{k}X_i + \varepsilon_{ij}^k$$
+    donde $j$ indexa a las $1,...,J$ variables de la familia $k$.
+
+    Genere un cuadro de resumen donde indique qué hipótesis nulas se rechazan en este estudio si se ignora el problema de las hipótesis múltiples.
+
+    *El diccionario que acompaña a los datos indica a qué familia pertenece cada variable y cuál es su orientación, así que lo usamos para no escribir las 49 fórmulas a mano:*
+
+```{r, indent="   "}
+datos <- read_csv("../files/datos_indices.csv")
+
+dicc <- read_csv("../files/datos_indices_diccionario.csv") |>
+  dplyr::filter(familia != "identificacion/covariables")
+
+controles <- c("edad", "escolaridad", "tamano_hogar", "zona_rural",
+               "linea_base_consumo")
+```
+
+    *Como en el laboratorio, inicializamos el data frame donde guardaremos los resultados y luego llenamos una fila por variable:*
+
+```{r, indent="   "}
+J <- nrow(dicc)
+
+resultados <- data.frame(familia  = dicc$familia,
+                         variable = dicc$variable,
+                         beta = NA,
+                         ee   = NA,
+                         p    = NA)
+
+for (j in 1:J)
+{
+  #y_j = beta_0 + beta_1 T + B X + e, con errores robustos
+  f <- as.formula(paste(dicc$variable[j], "~ tratamiento +",
+                        paste(controles, collapse = " + ")))
+
+  r <- lm_robust(f, data = datos, se_type = "HC1")
+
+  resultados[j, "beta"] <- coef(r)[["tratamiento"]]
+  resultados[j, "ee"]   <- r$std.error[["tratamiento"]]
+  resultados[j, "p"]    <- r$p.value[["tratamiento"]]
+}
+
+resultados <- resultados |>
+  mutate(rechaza_sin_corregir = ifelse(p <= 0.05, 1, 0))
+```
+
+    *El cuadro de resumen por familia:*
+
+```{r, indent="   "}
+resultados |>
+  summarize(variables  = n(),
+            rechazadas = sum(rechaza_sin_corregir),
+            .by = familia) |>
+  gt() |>
+  tab_header(title = "Hipótesis rechazadas al 5%",
+             subtitle = "Ignorando el problema de las múltiples hipótesis") |>
+  cols_label(familia = "Familia",
+             variables = "Variables",
+             rechazadas = "Rechazadas")
+```
+
+    *Ignorando el problema de las múltiples hipótesis rechazamos **24 de las 49** hipótesis nulas: ninguna de seguridad alimentaria, las cinco de consumo, seis de nueve de activos, seis de 12 de salud mental, seis de siete de ingresos y trabajo, y una de 10 de educación de los hijos.*
+
+    *Con 49 pruebas al 5%, si todas las nulas fueran verdaderas esperaríamos rechazar 2.5 por puro azar. El problema es que, viendo sólo este cuadro, no podemos saber cuáles de los 24 rechazos son reales y cuáles son suerte. Eso es lo que motiva las correcciones de los incisos siguientes.*
+
+a. [5 puntos] Realice la corrección propuesta por Bonferroni. De nuevo, genere un cuadro de resumen donde indique qué hipótesis nulas se rechazan en este estudio si se realiza este procedimiento.
+
+    *Una decisión previa importante: el ajuste se hace **hacia adentro de cada familia**, no sobre las 49 hipótesis juntas. Ésa es la práctica estándar y es la razón por la que el estudio agrupa las variables en familias. El número de hipótesis $n$ es, entonces, el número de variables de cada familia, y por eso usamos `.by = familia`:*
+
+```{r, indent="   "}
+resultados <- resultados |>
+  mutate(p_bonferroni = p.adjust(p, method = "bonferroni"),
+         .by = familia) |>
+  mutate(rechaza_bonferroni = ifelse(p_bonferroni <= 0.05, 1, 0))
+
+resultados |>
+  summarize(variables    = n(),
+            sin_corregir = sum(rechaza_sin_corregir),
+            bonferroni   = sum(rechaza_bonferroni),
+            .by = familia) |>
+  gt() |>
+  tab_header(title = "Hipótesis rechazadas al 5%",
+             subtitle = "Sin corregir y con la corrección de Bonferroni") |>
+  cols_label(familia = "Familia",
+             variables = "Variables",
+             sin_corregir = "Sin corregir",
+             bonferroni = "Bonferroni")
+```
+
+    *Con Bonferroni pasamos de 24 rechazos a 13. La corrección es muy conservadora y su efecto no es uniforme entre familias:*
+
+    - *__Consumo__: las cinco variables sobreviven, porque sus valores $p$ son muy pequeños y resisten cualquier umbral razonable.*
+    - *__Activos__: pasa de seis a dos hipótesis rechazadas.*
+    - *__Ingresos y trabajo__: pasa de seis a cinco.*
+    - *__Salud mental__: pasa de seis a ninguna. Con 12 variables el umbral es $\alpha/n = 0.05/12 = 0.0042$, y ninguno de los valores $p$ de esa familia es menor.*
+
+    *Este último caso ilustra el costo de controlar la FWER: si el programa tuvo efectos pequeños pero reales sobre muchas variables de una familia, Bonferroni los descarta todos.*
+
+a. [5 puntos] Realice la corrección propuesta por Benjamini y Hochberg. De nuevo, genere un cuadro de resumen donde indique qué hipótesis nulas se rechazan en este estudio si se realiza este procedimiento.
+
+    *Repetimos el procedimiento, ahora con el método de Benjamini y Hochberg y de nuevo dentro de cada familia:*
+
+```{r, indent="   "}
+resultados <- resultados |>
+  mutate(p_bh = p.adjust(p, method = "BH"),
+         .by = familia) |>
+  mutate(rechaza_bh = ifelse(p_bh <= 0.05, 1, 0))
+
+resultados |>
+  summarize(variables    = n(),
+            sin_corregir = sum(rechaza_sin_corregir),
+            bonferroni   = sum(rechaza_bonferroni),
+            bh           = sum(rechaza_bh),
+            .by = familia) |>
+  gt() |>
+  tab_header(title = "Hipótesis rechazadas al 5%",
+             subtitle = "Comparación de los tres criterios") |>
+  cols_label(familia = "Familia",
+             variables = "Variables",
+             sin_corregir = "Sin corregir",
+             bonferroni = "Bonferroni",
+             bh = "Benjamini-Hochberg")
+```
+
+    *Benjamini y Hochberg rechaza 18 hipótesis, un número intermedio entre las 24 sin corregir y las 13 de Bonferroni. BH controla la tasa de falso descubrimiento, que es una exigencia más débil que la tasa de error por familia y por eso es menos conservador.*
+
+    *El contraste más claro está en activos, familia en la que Bonferroni rechaza dos hipótesis y BH rechaza seis. La razón es que BH no compara cada valor $p$ contra un umbral fijo, sino que busca el $k$ más grande tal que $p_{(i)} \leq \frac{i}{n}\alpha$ y rechaza todas las hipótesis hasta $k$. Cuando hay varios efectos moderados, como ocurre en esta familia, el umbral efectivo se relaja.*
+
+    *Nótese que en salud mental BH tampoco rechaza ninguna hipótesis. BH le gana a Bonferroni cuando hay un grupo de señales moderadas, pero si todas las señales son débiles, los dos métodos coinciden. De hecho, para el valor $p$ más pequeño de una familia el umbral de BH es $\frac{1}{n}\alpha$, idéntico al de Bonferroni.*
+
+    *__Advertencia sobre la implementación: si en vez de corregir por familia se corrigiera sobre las 49 hipótesis juntas, obtendríamos 12 rechazos con Bonferroni y 19 con BH. Las conclusiones cualitativas no cambian, pero los números sí, y conviene reportar explícitamente qué agrupación se usó.__*
+
+a. [5 puntos] Considere la variable *variedad_dieta*. Estandarice dicha variable para obtener su versión $z$-score. Luego, estime:
+
+    $$z_{ij}^k=\beta_{j}'^k+\beta_{1j}'^k T_i + B_{k}'X_i + \varepsilon_{ij}'^k$$
+    ¿Cómo se interpreta $\hat{\beta}_{1j}'^k$? ¿Cómo se compara su conclusión con la que se obtiene en la parte a.?
+
+    *Estandarizamos usando la media y la desviación estándar del **grupo de control**, como indica el procedimiento de Kling, Liebman y Katz y estimamos las regresiones en niveles y con la variable normalizada:*
+
+```{r, indent="   "}
+control <- datos$tratamiento == 0
+
+datos <- datos |>
+  mutate(z_variedad_dieta =
+           (variedad_dieta - mean(variedad_dieta[control], na.rm = TRUE)) /
+             sd(variedad_dieta[control], na.rm = TRUE))
+
+r_nivel <- lm_robust(as.formula(paste("variedad_dieta ~ tratamiento +",
+                                      paste(controles, collapse = " + "))),
+                     data = datos, se_type = "HC1")
+
+r_z <- lm_robust(as.formula(paste("z_variedad_dieta ~ tratamiento +",
+                                  paste(controles, collapse = " + "))),
+                 data = datos, se_type = "HC1")
+
+modelsummary(list("En niveles" = r_nivel, "En z-score" = r_z),
+             coef_map = c("tratamiento"),
+             gof_map = c("nobs", "r.squared"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01))
+```
+
+    *El coeficiente $\hat{\beta}_{1j}'^k=0.081$ implica que el tratamiento aumenta la variedad de la dieta en $0.081$ desviaciones estándar del grupo de control. La ventaja de esta transformación es que la magnitud ya no depende de las unidades originales de la variable y por eso se vuelve comparable con los coeficientes de otras variables de la familia, medidas en escalas distintas.*
+
+    *Cuando estimamos la regresión en niveles, el coeficiente estimado es de 0.879 unidades. En ambas regresiones, el estadístico $t$ es $1.8356$ y el valor $p$ es $0.0667$ en ambas. En el cuadro esto se ve en que las dos columnas tienen exactamente los mismos asteriscos y la misma $R^2$. Estandarizar es una transformación afín de la variable dependiente y los estadísticos de prueba son invariantes a ese tipo de transformación.*
+
+    *La lección es que pasar a $z$-scores no modifica ninguna conclusión de inferencia, sólo las unidades en las que se expresa la magnitud. No se gana ni se pierde potencia. Lo que sí puede cambiar las conclusiones es agregar varias variables en un índice, porque ahí se combina información de variables distintas, y eso es lo que hace el inciso e.*
+
+    *En este caso concreto, $p=0.0667 > 0.05$, por lo que no rechazamos la hipótesis nula ni en niveles ni en $z$-score, consistente con lo que ya habíamos encontrado en la parte a.*
+
+a. [5 puntos] Construya ahora el índice de Kling, Liebman y Katz, $z_i$, para cada una de las seis familias. Luego estime el efecto causal para cada una de ellas:
+
+    $$z_{i}^k=\tau_0^k+\tau_1^k T_i + \Omega^k X_i + \nu_i^k$$
+    Genere un cuadro de resumen donde muestre el efecto causal para cada uno de los índices de las seis familias. ¿Qué se concluye para cada una?
+
+    *Seguimos los cuatro pasos del procedimiento descrito en clase. El segundo es fácil de olvidar y es que tenemos que reconocer hay variables donde **mayor es peor** (por ejemplo `dias_sin_comida` o `indice_estres`). Como vimos en clase, antes de estandarizar debemos invertirles el signo. Si no se hace, esas variables entran al promedio restando y el índice queda mal construido. La columna `orientacion` del diccionario indica cuáles son dichas variables:*
+
+```{r, indent="   "}
+familias <- unique(dicc$familia)
+
+for (f in familias)
+{
+  vars <- dicc |> dplyr::filter(familia == f)
+
+  Z <- matrix(NA, nrow(datos), nrow(vars))
+
+  for (j in 1:nrow(vars))
+  {
+    #Paso 2: orientar de modo que mayor siempre sea mejor
+    x <- datos[[vars$variable[j]]] *
+      ifelse(grepl("PEOR", vars$orientacion[j]), -1, 1)
+
+    #Paso 3: estandarizar con la media y la de del grupo de control
+    Z[, j] <- (x - mean(x[control], na.rm = TRUE)) / sd(x[control], na.rm = TRUE)
+  }
+
+  #Paso 4: promediar los z-scores disponibles de cada individuo
+  z_barra <- rowMeans(Z, na.rm = TRUE)
+  z_barra[rowSums(!is.na(Z)) == 0] <- NA
+
+  #Reestandarizar el promedio contra el grupo de control
+  datos[[paste0("z_", f)]] <-
+    (z_barra - mean(z_barra[control], na.rm = TRUE)) /
+      sd(z_barra[control], na.rm = TRUE)
+}
+```
+
+    *Y estimamos el efecto del tratamiento sobre cada índice, con los mismos controles:*
+
+```{r, indent="   "}
+modelos_kling <- list()
+
+for (f in familias)
+{
+  modelos_kling[[f]] <- lm_robust(as.formula(paste0("z_", f, " ~ tratamiento + ",
+                                       paste(controles, collapse = " + "))),
+                                  data = datos, se_type = "HC1")
+}
+
+#Debajo de cada coeficiente van el error estándar y el valor p
+modelsummary(modelos_kling,
+             fmt = fmt_statistic(p.value = formato_p),
+             statistic = c("({std.error})", "[{p.value}]"),
+             notes = "Errores estándar entre paréntesis y valores p entre corchetes.",
+             coef_map = c("tratamiento"),
+             gof_map = c("nobs", "r.squared"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01))
+```
+
+    *Cada $\hat{\tau}_1^k$ se interpreta en desviaciones estándar del índice en el grupo de control.*
+
+    - *__Seguridad alimentaria__: $\hat{\tau}_1 = 0.025$ ($p = 0.538$). No se rechaza la hipótesis nula, lo cual es consistente con el inciso a., donde ninguna variable de esta familia resultó significativa. Se concluye que el programa no tuvo efecto sobre esta dimensión.*
+    - *__Consumo__: $\hat{\tau}_1 = 0.437$ ($p < .01$). El efecto más grande del estudio y el más robusto. Esto ya era evidente variable por variable.*
+    - *__Ingresos y trabajo__: $\hat{\tau}_1 = 0.277$ ($p < .01$). Efecto grande en magnitud y estadísticamente significativo.*
+    - *__Activos__: $\hat{\tau}_1 = 0.198$ ($p < .01$). Efecto moderado y bien identificado.*
+    - *__Salud mental__: $\hat{\tau}_1 = 0.169$ ($p < .01$). **Éste es el resultado más interesante del ejercicio.** En los incisos b. y c. ninguna de las 12 variables de esta familia sobrevivió a la correción de Bonferroni ni de BH. Sin embargo, el índice detecta un efecto con un valor $p < .01$. La razón es que el promedio de 12 variables poco correlacionadas tiene una desviación estándar mucho menor que cada variable por separado, así que la misma señal se vuelve detectable. El índice recupera información que la corrección por múltiples hipótesis habría descartado.*
+    - *__Educación de los hijos__: $\hat{\tau}_1 = 0.059$ ($p = 0.137$). No se rechaza la hipótesis nula. Sin embargo, en el inciso a., la variable `anios_escolaridad_hijos` de esta misma familia sí resultó significativa y con un valor $p$ que sobrevive incluso Bonferroni.*
+
+    *El caso de la educación ilustra la limitación central de los índices: un índice promedia, y por lo tanto diluye. Si el programa afectó fuertemente una sola de las 10 variables de la familia y no tocó las otras nueve, ese efecto se reparte entre las 10 al construir el promedio y puede desaparecer. Conviene por eso reportar el índice junto con los resultados variable por variable, no sólo el índice.*
+
+    *__Conclusión general__. Los índices no son un sustituto de las correcciones por múltiples hipótesis, sino una estrategia complementaria con un balance distinto. Reducen el número de hipótesis de 49 a seis, lo que hace la corrección mucho menos costosa, y ganan potencia al agregar señales débiles y dispersas (como en el caso de la salud mental). El precio es que pierden resolución, es decir, no dicen qué variable se movió y pueden ocultar un efecto concentrado en una sola (como pasó con educación).*
+
+
+[^1]: Crépon, B., Devoto, F., Duflo, E., & Parienté, W. (2015). Estimating the impact of microcredit on those who take it up: Evidence from a randomized experiment in Morocco. *American Economic Journal: Applied Economics*, 7(1), 123-50.
+
+
+[^2]: Por ejemplo, suponga que estima un modelo al que llame *modelo1*. Entonces, si ejecuta
+    ```{r}
+    #| eval: false
+    #| echo: true
+    coef_test(modelo1,
+              vcov="CR1S",
+              cluster=mis_datos$demi_paire)[1:2,]
+    ```
+    obtendrá los coeficientes con los errores agrupados requeridos. La opción *CR1S* toma en cuenta el número de grupos o *clusters* para realizar inferencia. Puede leer más al respecto en la ayuda al ejecutar *?vcovCR*. Este es el tipo de ajuste de muestras finitas que usan los autores. Esta corrección consiste en multiplicar la matriz de sándwich agrupada CR0 por $\frac{G(N-1)}{(G-1)(N-p)}$, donde $G$ es el número de grupos, $N$ es el número total de observaciones y $p$ es el número de regresores.
