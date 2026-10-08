@@ -2814,7 +2814,7 @@ Comparison: 1 - 0</code></pre>
 <li><p>Veremos cuatro estimadores:</p>
 <ul>
 <li>Regresión paramétrica, con <em>lm</em> y <em>avg_comparisons</em> del paquete <em>marginaleffects</em></li>
-<li>Regresión kernel, con <em>npreg</em> del paquete <em>np</em> y solo tres de las covariables</li>
+<li>Regresión kernel, con <em>npreg</em> del paquete <em>np</em></li>
 <li>IPW, con <em>PSweight</em> del paquete <em>PSweight</em></li>
 <li>DR, también con <em>PSweight</em></li>
 </ul></li>
@@ -2848,7 +2848,7 @@ Comparison: 1 - 0</code></pre>
 <section id="regresión-kernel" class="slide level2 codigo-grande">
 <h2>Regresión kernel</h2>
 <ul>
-<li>Con siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: <strong>married</strong>, <strong>fage</strong> y <strong>nprenatal</strong></li>
+<li>Usamos las siete covariables; <em>nmulti = 1</em> pide un solo punto de arranque en la optimización de los anchos de banda, que aun así tarda unos minutos</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a><span class="fu">library</span>(np)</span>
@@ -2857,37 +2857,78 @@ Comparison: 1 - 0</code></pre>
 <span id="cb40-4"><a aria-label="4"></a>notratados <span class="ot">&lt;-</span> <span class="fu">filter</span>(data.smoking, smoke <span class="sc">==</span> <span class="dv">0</span>)</span>
 <span id="cb40-5"><a aria-label="5"></a></span>
 <span id="cb40-6"><a aria-label="6"></a><span class="co"># h óptimo de cada covariable por validación cruzada, solo con los no tratados</span></span>
-<span id="cb40-7"><a aria-label="7"></a>bw <span class="ot">&lt;-</span> <span class="fu">npregbw</span>(bweight <span class="sc">~</span> married <span class="sc">+</span> fage <span class="sc">+</span> nprenatal, <span class="at">data =</span> notratados,</span>
-<span id="cb40-8"><a aria-label="8"></a>              <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">bwmethod =</span> <span class="st">"cv.ls"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)</span>
-<span id="cb40-9"><a aria-label="9"></a></span>
-<span id="cb40-10"><a aria-label="10"></a><span class="co"># Media local de los no tratados, evaluada en las X de cada tratado</span></span>
-<span id="cb40-11"><a aria-label="11"></a>mu0 <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">npreg</span>(bw), <span class="at">newdata =</span> tratados)</span>
-<span id="cb40-12"><a aria-label="12"></a><span class="fu">mean</span>(tratados<span class="sc">$</span>bweight <span class="sc">-</span> mu0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb40-7"><a aria-label="7"></a>bw <span class="ot">&lt;-</span> <span class="fu">npregbw</span>(bweight <span class="sc">~</span> married <span class="sc">+</span> firstbaby <span class="sc">+</span> medu <span class="sc">+</span> nprenatal <span class="sc">+</span> foreign <span class="sc">+</span></span>
+<span id="cb40-8"><a aria-label="8"></a>                mhisp <span class="sc">+</span> fage, <span class="at">data =</span> notratados, <span class="at">nmulti =</span> <span class="dv">1</span>,</span>
+<span id="cb40-9"><a aria-label="9"></a>              <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">bwmethod =</span> <span class="st">"cv.ls"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)</span>
+<span id="cb40-10"><a aria-label="10"></a></span>
+<span id="cb40-11"><a aria-label="11"></a><span class="co"># Media local de los no tratados, evaluada en las X de cada tratado</span></span>
+<span id="cb40-12"><a aria-label="12"></a>mu0 <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">npreg</span>(bw), <span class="at">newdata =</span> tratados)</span>
+<span id="cb40-13"><a aria-label="13"></a><span class="fu">mean</span>(tratados<span class="sc">$</span>bweight <span class="sc">-</span> mu0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -207.2631</code></pre>
+<pre><code>[1] -227.7907</code></pre>
 </div>
 </div>
 </section>
 <section id="regresión-kernel-1" class="slide level2 columnas-arriba">
 <h2>Regresión kernel</h2>
 <div class="columns">
-<div class="column" style="width:45%;">
+<div class="column" style="width:48%;">
 <ul>
 <li><p><em>regtype = “lc”</em>: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una</p></li>
 <li><p><em>bwmethod = “cv.ls”</em>: es la validación cruzada que deja fuera a cada observación</p></li>
-<li><p>Hay un <span class="math inline">\(h_{opt}\)</span> por covariable: 0.47 para <strong>married</strong>, 27.3 para <strong>fage</strong> y 1.46 para <strong>nprenatal</strong></p></li>
+<li><p>La validación cruzada elige un <span class="math inline">\(h_{opt}\)</span> por covariable; con uno muy grande descarta las que no ayudan a predecir <span class="math inline">\(Y\)</span></p></li>
 <li><p><span class="math inline">\(\hat{\mu}_0\)</span> se estima solo con los no tratados y da el contrafactual de cada tratado</p></li>
-<li><p>El TOT estimado es de -207.3 gramos</p></li>
-<li><p>Obtenemos el error estándar usando bootstrap</p></li>
+<li><p>El TOT estimado es de -227.8 gramos; el error estándar lo obtenemos con bootstrap</p></li>
 </ul>
-</div><div class="column" style="width:55%;">
+</div><div class="column" style="width:52%;">
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="figures/kernel_mu0-1.png" style="width:100.0%"></p>
-</figure>
-</div>
+<table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Covariable</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">\(h_{opt}\)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Lectura</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">married</td>
+<td style="text-align: center;">0.49</td>
+<td style="text-align: left;">Solo compara valores iguales</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">firstbaby</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: left;">Solo compara valores iguales</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">medu</td>
+<td style="text-align: center;">5.05</td>
+<td style="text-align: left;">Suaviza entre valores cercanos</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nprenatal</td>
+<td style="text-align: center;">2.24</td>
+<td style="text-align: left;">Suaviza entre valores cercanos</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">foreign</td>
+<td style="text-align: center;">Mayor que 1,000</td>
+<td style="text-align: left;">Descartada</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mhisp</td>
+<td style="text-align: center;">0.48</td>
+<td style="text-align: left;">Solo compara valores iguales</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fage</td>
+<td style="text-align: center;">Mayor que 1,000</td>
+<td style="text-align: left;">Descartada</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div></div>
@@ -2900,23 +2941,22 @@ Comparison: 1 - 0</code></pre>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="fu">library</span>(boot)</span>
 <span id="cb42-2"><a aria-label="2"></a></span>
-<span id="cb42-3"><a aria-label="3"></a>covs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"married"</span>, <span class="st">"fage"</span>, <span class="st">"nprenatal"</span>)</span>
-<span id="cb42-4"><a aria-label="4"></a></span>
-<span id="cb42-5"><a aria-label="5"></a>bs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, indices) {</span>
-<span id="cb42-6"><a aria-label="6"></a>  dat <span class="ot">&lt;-</span> data[indices, ]                 <span class="co"># muestra bootstrap</span></span>
-<span id="cb42-7"><a aria-label="7"></a>  tr <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb42-8"><a aria-label="8"></a>  nt <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb42-9"><a aria-label="9"></a>  mu0 <span class="ot">&lt;-</span> <span class="fu">npreg</span>(<span class="at">bws =</span> bw<span class="sc">$</span>bw, <span class="at">txdat =</span> nt[, covs], <span class="at">tydat =</span> nt<span class="sc">$</span>bweight,</span>
-<span id="cb42-10"><a aria-label="10"></a>               <span class="at">exdat =</span> tr[, covs], <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)<span class="sc">$</span>mean</span>
-<span id="cb42-11"><a aria-label="11"></a>  <span class="fu">mean</span>(tr<span class="sc">$</span>bweight <span class="sc">-</span> mu0)                 <span class="co"># TOT en la muestra bootstrap</span></span>
-<span id="cb42-12"><a aria-label="12"></a>}</span>
-<span id="cb42-13"><a aria-label="13"></a></span>
-<span id="cb42-14"><a aria-label="14"></a><span class="fu">set.seed</span>(<span class="dv">1021</span>)</span>
-<span id="cb42-15"><a aria-label="15"></a>boot.kernel <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> data.smoking, <span class="at">statistic =</span> bs, <span class="at">R =</span> <span class="dv">499</span>)</span>
-<span id="cb42-16"><a aria-label="16"></a><span class="fu">c</span>(<span class="at">efecto =</span> boot.kernel<span class="sc">$</span>t0, <span class="at">ee =</span> <span class="fu">sd</span>(boot.kernel<span class="sc">$</span>t))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb42-3"><a aria-label="3"></a>bs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, indices) {</span>
+<span id="cb42-4"><a aria-label="4"></a>  dat <span class="ot">&lt;-</span> data[indices, ]                 <span class="co"># muestra bootstrap</span></span>
+<span id="cb42-5"><a aria-label="5"></a>  tr <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb42-6"><a aria-label="6"></a>  nt <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb42-7"><a aria-label="7"></a>  mu0 <span class="ot">&lt;-</span> <span class="fu">npreg</span>(<span class="at">bws =</span> bw<span class="sc">$</span>bw, <span class="at">txdat =</span> nt[, variables], <span class="at">tydat =</span> nt<span class="sc">$</span>bweight,</span>
+<span id="cb42-8"><a aria-label="8"></a>               <span class="at">exdat =</span> tr[, variables],</span>
+<span id="cb42-9"><a aria-label="9"></a>               <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)<span class="sc">$</span>mean</span>
+<span id="cb42-10"><a aria-label="10"></a>  <span class="fu">mean</span>(tr<span class="sc">$</span>bweight <span class="sc">-</span> mu0)                 <span class="co"># TOT en la muestra bootstrap</span></span>
+<span id="cb42-11"><a aria-label="11"></a>}</span>
+<span id="cb42-12"><a aria-label="12"></a></span>
+<span id="cb42-13"><a aria-label="13"></a><span class="fu">set.seed</span>(<span class="dv">1021</span>)</span>
+<span id="cb42-14"><a aria-label="14"></a>boot.kernel <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> data.smoking, <span class="at">statistic =</span> bs, <span class="at">R =</span> <span class="dv">499</span>)</span>
+<span id="cb42-15"><a aria-label="15"></a><span class="fu">c</span>(<span class="at">efecto =</span> boot.kernel<span class="sc">$</span>t0, <span class="at">ee =</span> <span class="fu">sd</span>(boot.kernel<span class="sc">$</span>t))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    efecto         ee 
--207.26309   21.38315 </code></pre>
+<pre><code>   efecto        ee 
+-227.7907   21.0322 </code></pre>
 </div>
 </div>
 </section>
@@ -2993,9 +3033,9 @@ Contrast 1 -218.2062  23.19071 -9.409207 -263.6592 -172.7532        0</code></pr
 <td style="text-align: center;">22.6</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Regresión kernel (tres covariables)</td>
-<td style="text-align: center;">-207.3</td>
-<td style="text-align: center;">21.4</td>
+<td style="text-align: left;">Regresión kernel</td>
+<td style="text-align: center;">-227.8</td>
+<td style="text-align: center;">21.0</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">IPW</td>
@@ -3012,7 +3052,7 @@ Contrast 1 -218.2062  23.19071 -9.409207 -263.6592 -172.7532        0</code></pr
 </div>
 </div>
 <ul>
-<li><p>Todos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos</p></li>
+<li><p>Todos los métodos usan las mismas covariables y estiman el TOT: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos</p></li>
 <li><p>La diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer</p></li>
 <li><p>Todos descansan en el SIC: si hay selección en no observables, ninguno la corrige</p></li>
 </ul>

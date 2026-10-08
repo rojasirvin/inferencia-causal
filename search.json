@@ -3155,7 +3155,7 @@
     "href": "diapositivas/seleccion-observables.html#regresión-ipw-y-dr-fumar-durante-el-embarazo",
     "title": "Inferencia Causal 2026",
     "section": "Regresión, IPW y DR: fumar durante el embarazo",
-    "text": "Regresión, IPW y DR: fumar durante el embarazo\n\nComparamos los distintos métodos para estimar el TOT con los datos de Cattaneo (2010)\n\\(D\\) es smoke, \\(Y\\) es bweight y \\(X\\) son las mismas siete covariables que usamos para estimar el PS\nVeremos cuatro estimadores:\n\nRegresión paramétrica, con lm y avg_comparisons del paquete marginaleffects\nRegresión kernel, con npreg del paquete np y solo tres de las covariables\nIPW, con PSweight del paquete PSweight\nDR, también con PSweight\n\nEn IPW y DR el PS se estima con el mismo logit que en el PSM, guardado en la fórmula ps"
+    "text": "Regresión, IPW y DR: fumar durante el embarazo\n\nComparamos los distintos métodos para estimar el TOT con los datos de Cattaneo (2010)\n\\(D\\) es smoke, \\(Y\\) es bweight y \\(X\\) son las mismas siete covariables que usamos para estimar el PS\nVeremos cuatro estimadores:\n\nRegresión paramétrica, con lm y avg_comparisons del paquete marginaleffects\nRegresión kernel, con npreg del paquete np\nIPW, con PSweight del paquete PSweight\nDR, también con PSweight\n\nEn IPW y DR el PS se estima con el mismo logit que en el PSM, guardado en la fórmula ps"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#regresión-paramétrica",
@@ -3169,21 +3169,21 @@
     "href": "diapositivas/seleccion-observables.html#regresión-kernel",
     "title": "Inferencia Causal 2026",
     "section": "Regresión kernel",
-    "text": "Regresión kernel\n\nCon siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: married, fage y nprenatal\n\n\nlibrary(np)\n\ntratados &lt;- filter(data.smoking, smoke == 1)\nnotratados &lt;- filter(data.smoking, smoke == 0)\n\n# h óptimo de cada covariable por validación cruzada, solo con los no tratados\nbw &lt;- npregbw(bweight ~ married + fage + nprenatal, data = notratados,\n              regtype = \"lc\", bwmethod = \"cv.ls\", ckertype = \"epanechnikov\")\n\n# Media local de los no tratados, evaluada en las X de cada tratado\nmu0 &lt;- predict(npreg(bw), newdata = tratados)\nmean(tratados$bweight - mu0)\n\n[1] -207.2631"
+    "text": "Regresión kernel\n\nUsamos las siete covariables; nmulti = 1 pide un solo punto de arranque en la optimización de los anchos de banda, que aun así tarda unos minutos\n\n\nlibrary(np)\n\ntratados &lt;- filter(data.smoking, smoke == 1)\nnotratados &lt;- filter(data.smoking, smoke == 0)\n\n# h óptimo de cada covariable por validación cruzada, solo con los no tratados\nbw &lt;- npregbw(bweight ~ married + firstbaby + medu + nprenatal + foreign +\n                mhisp + fage, data = notratados, nmulti = 1,\n              regtype = \"lc\", bwmethod = \"cv.ls\", ckertype = \"epanechnikov\")\n\n# Media local de los no tratados, evaluada en las X de cada tratado\nmu0 &lt;- predict(npreg(bw), newdata = tratados)\nmean(tratados$bweight - mu0)\n\n[1] -227.7907"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#regresión-kernel-1",
     "href": "diapositivas/seleccion-observables.html#regresión-kernel-1",
     "title": "Inferencia Causal 2026",
     "section": "Regresión kernel",
-    "text": "Regresión kernel\n\n\n\nregtype = “lc”: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una\nbwmethod = “cv.ls”: es la validación cruzada que deja fuera a cada observación\nHay un \\(h_{opt}\\) por covariable: 0.47 para married, 27.3 para fage y 1.46 para nprenatal\n\\(\\hat{\\mu}_0\\) se estima solo con los no tratados y da el contrafactual de cada tratado\nEl TOT estimado es de -207.3 gramos\nObtenemos el error estándar usando bootstrap"
+    "text": "Regresión kernel\n\n\n\nregtype = “lc”: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una\nbwmethod = “cv.ls”: es la validación cruzada que deja fuera a cada observación\nLa validación cruzada elige un \\(h_{opt}\\) por covariable; con uno muy grande descarta las que no ayudan a predecir \\(Y\\)\n\\(\\hat{\\mu}_0\\) se estima solo con los no tratados y da el contrafactual de cada tratado\nEl TOT estimado es de -227.8 gramos; el error estándar lo obtenemos con bootstrap\n\n\n\n\n\n\n\nCovariable\n\\(h_{opt}\\)\nLectura\n\n\n\n\nmarried\n0.49\nSolo compara valores iguales\n\n\nfirstbaby\n0.30\nSolo compara valores iguales\n\n\nmedu\n5.05\nSuaviza entre valores cercanos\n\n\nnprenatal\n2.24\nSuaviza entre valores cercanos\n\n\nforeign\nMayor que 1,000\nDescartada\n\n\nmhisp\n0.48\nSolo compara valores iguales\n\n\nfage\nMayor que 1,000\nDescartada"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#regresión-kernel-inferencia",
     "href": "diapositivas/seleccion-observables.html#regresión-kernel-inferencia",
     "title": "Inferencia Causal 2026",
     "section": "Regresión kernel: inferencia",
-    "text": "Regresión kernel: inferencia\n\nboot, del paquete boot, repite el estimador en cada muestra bootstrap, manteniendo fijos los \\(h_{opt}\\)\n\n\nlibrary(boot)\n\ncovs &lt;- c(\"married\", \"fage\", \"nprenatal\")\n\nbs &lt;- function(data, indices) {\n  dat &lt;- data[indices, ]                 # muestra bootstrap\n  tr &lt;- filter(dat, smoke == 1)\n  nt &lt;- filter(dat, smoke == 0)\n  mu0 &lt;- npreg(bws = bw$bw, txdat = nt[, covs], tydat = nt$bweight,\n               exdat = tr[, covs], regtype = \"lc\", ckertype = \"epanechnikov\")$mean\n  mean(tr$bweight - mu0)                 # TOT en la muestra bootstrap\n}\n\nset.seed(1021)\nboot.kernel &lt;- boot(data = data.smoking, statistic = bs, R = 499)\nc(efecto = boot.kernel$t0, ee = sd(boot.kernel$t))\n\n    efecto         ee \n-207.26309   21.38315"
+    "text": "Regresión kernel: inferencia\n\nboot, del paquete boot, repite el estimador en cada muestra bootstrap, manteniendo fijos los \\(h_{opt}\\)\n\n\nlibrary(boot)\n\nbs &lt;- function(data, indices) {\n  dat &lt;- data[indices, ]                 # muestra bootstrap\n  tr &lt;- filter(dat, smoke == 1)\n  nt &lt;- filter(dat, smoke == 0)\n  mu0 &lt;- npreg(bws = bw$bw, txdat = nt[, variables], tydat = nt$bweight,\n               exdat = tr[, variables],\n               regtype = \"lc\", ckertype = \"epanechnikov\")$mean\n  mean(tr$bweight - mu0)                 # TOT en la muestra bootstrap\n}\n\nset.seed(1021)\nboot.kernel &lt;- boot(data = data.smoking, statistic = bs, R = 499)\nc(efecto = boot.kernel$t0, ee = sd(boot.kernel$t))\n\n   efecto        ee \n-227.7907   21.0322"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#ipw",
@@ -3204,7 +3204,7 @@
     "href": "diapositivas/seleccion-observables.html#comparación-entre-métodos",
     "title": "Inferencia Causal 2026",
     "section": "Comparación entre métodos",
-    "text": "Comparación entre métodos\n\n\n\n\n\nMétodo\nEfecto en el peso al nacer (gramos)\nError estándar\n\n\n\n\nDiferencia simple de medias\n-275.3\n21.2\n\n\nPSM (vecino más cercano, sin reemplazo)\n-194.3\n28.1\n\n\nRegresión paramétrica\n-212.4\n22.6\n\n\nRegresión kernel (tres covariables)\n-207.3\n21.4\n\n\nIPW\n-212.8\n23.3\n\n\nDR\n-218.2\n23.2\n\n\n\n\n\n\nTodos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos\nLa diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer\nTodos descansan en el SIC: si hay selección en no observables, ninguno la corrige"
+    "text": "Comparación entre métodos\n\n\n\n\n\nMétodo\nEfecto en el peso al nacer (gramos)\nError estándar\n\n\n\n\nDiferencia simple de medias\n-275.3\n21.2\n\n\nPSM (vecino más cercano, sin reemplazo)\n-194.3\n28.1\n\n\nRegresión paramétrica\n-212.4\n22.6\n\n\nRegresión kernel\n-227.8\n21.0\n\n\nIPW\n-212.8\n23.3\n\n\nDR\n-218.2\n23.2\n\n\n\n\n\n\nTodos los métodos usan las mismas covariables y estiman el TOT: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos\nLa diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer\nTodos descansan en el SIC: si hay selección en no observables, ninguno la corrige"
   },
   {
     "objectID": "index.html",
