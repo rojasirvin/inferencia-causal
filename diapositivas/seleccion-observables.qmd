@@ -17,7 +17,9 @@ format:
 
 
 
-```{r setup, include=FALSE}
+```{r}
+#| label: setup
+#| include: false
 knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 
 library(tidyverse)
@@ -51,7 +53,7 @@ Inferencia Causal
 ::: {.pa-inst}
 Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 :::
-```{css, echo = FALSE}
+```{css}
 .huge .remark-code { /*Change made here*/
   font-size: 200% !important;
 }
@@ -63,6 +65,15 @@ Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 .reveal .codigo-grande div.sourceCode pre code.sourceCode { font-size: 1.3em !important; line-height: 1.4; }
 .reveal .codigo-grande .cell-output pre code { font-size: 1.3em; line-height: 1.25; padding: .45em 1.1em; }
 .reveal .codigo-grande pre, .reveal .codigo-grande div.sourceCode { margin: .25em 0 .45em; }
+/* Salida larga de R (22 coeficientes): más grande que el .7em del tema, pero
+   sin llegar al tamaño de .codigo-grande para que quepa en una lámina */
+.reveal .salida-mediana .cell-output pre code { font-size: .95em; line-height: 1.2; }
+/* Salida muy larga (summary de matchit): letra más grande dentro de un recuadro
+   con scroll vertical, en lugar de encogerla para que quepa */
+.reveal .salida-scroll .cell-output pre { max-height: 560px; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; }
+.reveal .salida-scroll .cell-output pre code { font-size: 1.3em; line-height: 1.3; max-height: none !important; overflow: visible !important; border: 0; }
+/* Tabla de balance junto a su código: más chica para que quepa en media lámina */
+.reveal .tabla-compacta table { font-size: .62em; }
 /* El tema centra verticalmente las columnas; aquí arrancan al mismo nivel */
 .reveal .columnas-arriba .columns { align-items: flex-start; }
 /* El tema limita los scroll_box a 560px; esta lámina solo tiene la tabla */
@@ -93,6 +104,7 @@ Centro de Investigación y Docencia Económicas<br>Maestría en Economía
    - *Propensity score matching*
 1. Otros métodos basados en el SIC
    - Regresión
+   - Métodos locales
    - *Inverse probability weighting*
    - Métodos doblemente robustos
 
@@ -287,19 +299,19 @@ read_data <- function(df) {
   return(df)
 }
 
-training_example <- read_data("training_example.dta") %>%
+training_example <- read_data("training_example.dta") |>
   slice(1:20)
 
-data.treat <- training_example %>%
-  select(unit_treat, age_treat, earnings_treat) %>%
-  slice(1:10) %>%
+data.treat <- training_example |>
+  select(unit_treat, age_treat, earnings_treat) |>
+  slice(1:10) |>
   mutate(earnings_treat = as.numeric(earnings_treat))
 
-data.control <- training_example %>%
+data.control <- training_example |>
   select(unit_control, age_control, earnings_control)
 
-data.matched <- training_example %>%
-  select(unit_matched, age_matched, earnings_matched) %>%
+data.matched <- training_example |>
+  select(unit_matched, age_matched, earnings_matched) |>
   slice(1:10)
 ```
 
@@ -339,7 +351,10 @@ data.control
 
 - Si hiciéramos diferencias simples obtendríamos:
 
-```{r echo=T, message=F, warning=F }
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
 mean(data.treat$earnings_treat)
 mean(data.control$earnings_control)
 
@@ -355,7 +370,10 @@ mean(data.treat$earnings_treat) - mean(data.control$earnings_control)
 
 - La muestra de no tratados tiene mayor edad promedio:
 
-```{r echo=T, message=F, warning=F }
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
 mean(data.treat$age_treat)
 mean(data.control$age_control)
 
@@ -399,7 +417,8 @@ data.matched
 
 - Muestra de tratados:
 
-```{r echo=T}
+```{r}
+#| echo: true
 mean(data.treat$age_treat)
 ```
 
@@ -409,7 +428,8 @@ mean(data.treat$age_treat)
 
 - Muestra emparejada:
 
-```{r echo=T}
+```{r}
+#| echo: true
 mean(data.matched$age_matched)
 ```
 :::
@@ -448,7 +468,8 @@ donde $n_1$ es el número de tratados, $M_i$ es el número de no tratados con $X
 
 Para los tratados:
 
-```{r grafica_tratados}
+```{r}
+#| label: grafica_tratados
 #| fig-height: 5
 ggplot(training_example, aes(x = age_treat)) +
   stat_bin(bins = 10, na.rm = TRUE)
@@ -460,7 +481,8 @@ ggplot(training_example, aes(x = age_treat)) +
 
 - Mientras que para los no tratados:
 
-```{r grafica_notratados}
+```{r}
+#| label: grafica_notratados
 #| fig-height: 5
 ggplot(training_example, aes(x = age_control)) +
   geom_histogram(bins = 10, na.rm = TRUE)
@@ -482,7 +504,7 @@ ggplot(training_example, aes(x = age_control)) +
 - Y un **estimador de matching exacto** del ATE sería:
 
 
-$$\hat{\Delta}=\frac{1}{n}\sum_{i=1}^{n}(2D_i-1)\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)$$
+$$\hat{\Delta}_{ATE}=\frac{1}{n}\sum_{i=1}^{n}(2D_i-1)\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)$$
 
 donde ahora $j_m(i)$ recorre las $M_i$ unidades del grupo *opuesto* al de $i$ con $X_j=X_i$
 
@@ -518,8 +540,9 @@ $$\hat{\Delta}_{TOT}=\frac{1}{n_1}\sum_{i:D_i=1}\left(Y_i-\sum_{j:D_j=0}\mathbb{
 ## Decisiones en el *matching*
 
 - ¿Cómo estimar la varianza?
-  - Bootstrap no funciona (Abadie & Imbens, 2008)
-  - Usar fórmulas analíticas (ver CA)
+  - Abadie e Imbens (2008) mostraron analíticamente que el bootstrap no es apropiado en el contexto de *matching*
+  - Sin embargo, otros estudios de simulación han mostrado que funciona en muchas aplicaciones de *matching* y se llega a usar en casos particulares (por ejemplo, cuando el *matching* se realiza con reemplazo)
+  - El consejo práctico es usar resultados analíticos cuando estos estén disponibles
 
 
 
@@ -547,7 +570,12 @@ $$\hat{\Delta}_{TOT}=\frac{1}{n_1}\sum_{i:D_i=1}\left(Y_i-\sum_{j:D_j=0}\mathbb{
 
 ## Ejemplo: veteranos del ejército de Estados Unidos {.tabla-alta}
 
-```{r table.angrist, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
+```{r}
+#| label: table.angrist
+#| echo: false
+#| message: false
+#| warning: false
+#| results: asis
 
 anio <- 74:91
 
@@ -814,8 +842,6 @@ $$
 
 - Para nuestra práctica, usaremos el paquete [*MatchIt*](https://kosukeimai.github.io/MatchIt/index.html), con un enfoque de regresión o *g-computation* para estimar los efectos
 
-
-
  
 ## Conclusión sobre el PSM
 
@@ -836,21 +862,290 @@ $$
 
 ## Regresión
 
-Próximamente
+- Dados unos datos observacionales y asumiendo SIC, ¿por qué no usar directamente las herramientas de regresión que ya conocemos para estimar efectos causales?
+
+**Definiciones**
+
+- **Efecto Promedio Condicional del Tratamiento (CATE)**: es el efecto promedio de tratamiento bajo la condición de que los individuos tienen el mismo valor $X=x$
+
+$$
+\begin{align*}
+\Delta_x&=E(Y(1)|X=x)-E(Y(0)|X=x) \\
+&=\mu_1(x)-\mu_0(x)
+\end{align*}
+$$
+
+- Si *promediamos* el CATE sobre todos los valores de $X=x$, obtenemos el ATE:
+
+$$\Delta_{ATE} = E(\mu_1(X)-\mu_0(X))$$
+
+- Y si nos fijamos solo en el subconjunto de la población que fue tratado, obtenemos el TOT:
+
+$$\Delta_{TOT} = E(\mu_1(X)|D=1)-E(\mu_0(X)|D=1)$$
+
+## Regresión lineal
+
+- Bajo el SIC, podríamos pensar que podemos estimar $\mu_D(X)$ usando una regresión de la forma:
+$$\mu_D(X)=\alpha+\beta_DD+\beta_{X_1}X_1+\ldots+\beta_{X_K}X_K$$
+
+**Problemas**
+
+- $D$ y $X$ están correlacionados, lo cual afecta la varianza de $\hat{\beta}_D$ (tenemos menos información nueva que si $D$ y $X$ fueran independientes)
+
+- El modelo puede estar mal especificado
+  - Omitimos términos de grado mayor que uno
+  - Omitimos posibles interacciones entre covariables ($X_1 X_2$)
+  - Omitimos posibles interacciones entre el tratamiento, las covariables y sus posibles términos de orden mayor que uno
+
+## Regresión con interacciones y términos de orden alto
+
+- Pensaríamos que podemos arreglar el segundo problema con
+$$
+\begin{align*}
+\mu_D(X) &= \alpha + \beta_D D + \beta_{X_1}X_1 + \ldots + \beta_{X_K}X_K + \beta_{D,X_1}DX_1 + \ldots + \beta_{D,X_K}DX_K \\
+&\quad + \beta_{X_1^2}X_1^2+\ldots+\beta_{X_1,X_2}X_1X_2+\ldots
+\end{align*}
+$$
+
+- Y con los coeficientes estimados podríamos obtener $\hat{\mu}_D(X)$ y calcular
+
+$$\hat{\Delta}_{ATE}^R=\frac{1}{n}\sum_{i=1}^{n}(\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i))$$
+$$\hat{\Delta}_{TOT}^R=\frac{1}{n_1}\sum_{i:D_i=1}(\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i))$$
+
+**Problemas**
+
+- ¿Cómo determinar óptimamente el orden de los polinomios y el número de interacciones?
+
+- *Trade-off* sesgo vs varianza
+
+## *Trade-off* sesgo vs varianza {.columnas-arriba}
+
+- El error cuadrático medio de $\hat{\mu}_d(x)$ como estimador de $\mu_d(x)$ se descompone en dos partes:
+
+$$
+E\left((\hat{\mu}_d(x)-\mu_d(x))^2\right)=\underbrace{\left(E(\hat{\mu}_d(x))-\mu_d(x)\right)^2}_{\text{Sesgo}^2}+\underbrace{Var(\hat{\mu}_d(x))}_{\text{Varianza}}
+$$
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+- Un modelo **rígido** (pocos términos) no sigue la forma de $\mu_d(x)$: sesgo alto y varianza baja
+
+- Un modelo **flexible** (muchos términos) sigue de cerca los datos: sesgo bajo y varianza alta
+
+- Reducir un componente suele aumentar el otro
+
+:::
+
+::: {.column width="55%"}
+
+```{r}
+#| label: sesgo_varianza
+#| fig-width: 8
+#| fig-height: 4.6
+#| out-width: "100%"
+
+# Datos simulados con media condicional no lineal y tres polinomios de
+# distinto grado: uno rígido, uno intermedio y uno demasiado flexible
+set.seed(820)
+
+datos.sv <- data.frame(x = runif(40, 0, 1)) |>
+  mutate(y = sin(2 * pi * x) + rnorm(40, sd = 0.4))
+
+malla.sv <- data.frame(x = seq(0.02, 0.98, length.out = 200))
+
+grados <- c(1, 4, 15)
+etiquetas <- c("Grado 1: sesgo alto", "Grado 4", "Grado 15: varianza alta")
+ajustes.sv <- list()
+
+for (g in seq_along(grados)) {
+  modelo <- lm(y ~ poly(x, grados[g]), data = datos.sv)
+  ajustes.sv[[g]] <- malla.sv |>
+    mutate(ajuste = predict(modelo, newdata = malla.sv),
+           modelo = etiquetas[g])
+}
+
+ajustes.sv <- bind_rows(ajustes.sv) |>
+  mutate(modelo = factor(modelo, levels = etiquetas))
+
+ggplot(datos.sv, aes(x = x, y = y)) +
+  geom_point(color = "grey50") +
+  stat_function(fun = function(x) sin(2 * pi * x), linetype = "dashed") +
+  geom_line(data = ajustes.sv, aes(y = ajuste), color = "#9B2247", linewidth = 1) +
+  facet_wrap(~modelo) +
+  scale_x_continuous(breaks = c(0, 0.5, 1), labels = c("0", "0.5", "1")) +
+  coord_cartesian(ylim = c(-2, 2)) +
+  labs(x = "X", y = "Y",
+       caption = "Línea punteada: media condicional verdadera") +
+  theme_minimal(base_size = 16)
+```
+
+:::
+
+::::
+
+
+## Métodos locales 
+
+- Estimamos la media condicional para cada valor de $X=x$ como la media local de observaciones con $X$ cercanos a $x$
+
+$$\hat{\mu}_{d,h}(x)=\frac{\sum_{i:D_i=d}\mathcal{K}\left(\frac{X_i-x}{h}\right) Y_i}{\sum_{i:D_i=d}\mathcal{K}\left(\frac{X_i-x}{h}\right)}$$
+
+  donde $\mathcal{K}(\cdot)$ es la función *kernel* que otorga pesos más grandes a las observaciones con $\frac{X_i-x}{h}$ cercano a cero y pesos más pequeños (incluso cero) para valores más lejanos de cero, y $h$ es el *ancho de banda*
+
+## Pesos kernel
+
+- Algunos ejemplos de pesos kernel son los siguientes, con $u=\frac{X_i-x}{h}$:
+
+```{r}
+data.frame(
+  kernel = c("Uniforme",
+             "Triangular",
+             "Epanechnikov",
+             "Cuártico (<em>biweight</em>)",
+             "Gaussiano"),
+  peso = c("\\(\\frac{1}{2}\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)",
+           "\\((1-\\lvert u\\rvert)\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)",
+           "\\(\\frac{3}{4}(1-u^2)\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)",
+           "\\(\\frac{15}{16}(1-u^2)^2\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)",
+           "\\(\\frac{1}{\\sqrt{2\\pi}}\\exp\\left(-\\frac{u^2}{2}\\right)\\)")
+) |>
+  kbl(col.names = c("Kernel", "\\(\\mathcal{K}(u)\\)"),
+      align = "cc",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
+```
+
+
+## Elección de $h$
+
+- La elección de $h$ es clave en la estimación
+  - Un $h$ grande conlleva más sesgo pues se otorga un peso más grande a observaciones con $X_i$ lejano de $x$
+  - Un $h$ pequeño conlleva una mayor varianza pues solo otorga pesos a unas cuantas observaciones[^overfitting]
+
+[^overfitting]: A este problema se le conoce como *sobreajuste* u *overfitting*. La idea es que, con un $h$ muy pequeño, cada media local se calcula con muy pocas observaciones, por lo que $\hat{\mu}$ reproduce el ruido de la muestra con la que se estimó y no la media condicional. En otras palabras, la media condicional ajusta muy bien dentro de la muestra, pero predice mal observaciones nuevas. Por eso la validación cruzada evalúa el error en la observación $i$ que se dejó fuera.
+
+- Se suele escoger un $h_{opt}$ usando un procedimiento de *validación cruzada* o  *cross-validation*
+
+$$h_{opt}=\text{arg} \min_{h \in \mathcal{H}} \sum_{i:D_i=d}(Y_i-\hat{\mu}_{d,-i,h}(X_i))^2$$
+
+donde $\hat{\mu}_{d,-i,h}(X_i)$ es la media condicional estimada para la observación $i$, dejando fuera a $i$ y usando el resto de la muestra para la estimación
+
+## Elección de $h$
+
+- El proceso de validación cruzada consiste en variar $h$ hasta encontrar el valor que minimice la suma de los errores de predicción
+
+- Una vez obtenido $h_{opt}$ calculamos $\hat{\mu}_{d,h_{opt}}(X_i)$
+
+- Esta es una forma comúnmente usada en el trabajo aplicado para estimar medias condicionales
+
 
 # *Inverse probability weighting* {.divider background-color="#9B2247" data-state="nochrome"}
 
-## *Inverse probability weighting*
+## *Inverse probability weighting (IPW)*
 
-Próximamente
+- Es otra manera de explotar el PS para estimar el efecto causal, dado que se cumpla el SIC
+
+- La idea es usar el inverso del PS como pesos
+  - Las observaciones subrepresentadas en su grupo (tratados con PS bajo, no tratados con PS alto) reciben más peso
+  - Las observaciones sobrerrepresentadas en su grupo (tratados con PS alto, no tratados con PS bajo) reciben menos peso
+
+- La intuición es que al repesar las observaciones, los grupos tratado y no tratado son comparables en términos de la distribución de sus $X$
+
+## Motivación del IPW con un experimento[^santanna]
+
+- Pensemos en un experimento simple, donde $\{Y(0),Y(1)\} \perp D$ y solo decidimos la proporción de unidades que serán tratadas
+
+- Estimamos el ATE con la diferencia de medias entre tratados y no tratados, que podemos reescribir como:
+
+$$
+\begin{align*}
+\hat{\Delta}_{ATE}^{E}&=\frac{1}{n_1}\sum_{i:D_i=1}Y_i-\frac{1}{n_0}\sum_{i:D_i=0}Y_i \\
+&=\frac{\sum_{i=1}^n D_iY_i}{\sum_{j=1}^n D_j}-\frac{\sum_{i=1}^n (1-D_i)Y_i}{\sum_{j=1}^n (1-D_j)} \\
+&=\frac{1}{n}\sum_{i=1}^n \frac{D_i}{\hat{p}}Y_i-\frac{1}{n}\sum_{i=1}^n \frac{1-D_i}{1-\hat{p}}Y_i
+\end{align*}
+$$
+
+donde $\hat{p}=\frac{1}{n}\sum_{i=1}^n D_i=\frac{n_1}{n}$ es la proporción de unidades tratadas
+
+[^santanna]: Adaptado de [Sant'Anna, Econ 520](https://psantanna.com/Econ520/Slides/15-ipw/15slides.html#12)
+
+## Motivación del IPW con un experimento
+
+- Es decir, en un experimento simple, el estimador de diferencia de medias del ATE es un promedio ponderado de los resultados:
+
+$$
+\hat{\Delta}_{ATE}^{E}=\frac{1}{n}\sum_{i=1}^n \left(\frac{D_i}{\hat{p}}-\frac{1-D_i}{1-\hat{p}}\right)Y_i
+$$
+
+- Los pesos son el inverso del PS, que en este diseño es una constante
+
+- Cada grupo es pesado por el inverso de la probabilidad de pertenecer a ese grupo
+
+- Podemos seguir usando la misma lógica reemplazando $\hat{p}$ por $\hat{p}(X_i)$, siempre que haya soporte común, $0<p(X)<1$
+
+## Estimadores de IPW
+
+- Bajo esta lógica, dos estimadores de IPW son:
+
+$$\hat{\Delta}_{ATE}^{IPW}=\left(\sum_{i=1}^n \frac{Y_i D_i}{\hat{p}(X_i)} / \sum_{i=1}^n \frac{D_i}{\hat{p}(X_i)}\right) - \left(\sum_{i=1}^n \frac{Y_i (1-D_i)}{1-\hat{p}(X_i)} / \sum_{i=1}^n \frac{1-D_i}{1-\hat{p}(X_i)}\right)$$ 
+
+$$\hat{\Delta}_{TOT}^{IPW}=\left(\sum_{i=1}^n Y_i D_i / \sum_{i=1}^n D_i\right) - \left(\sum_{i=1}^n \frac{Y_i (1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)} / \sum_{i=1}^n \frac{(1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)}\right)$$
+
+- En el TOT, los tratados reciben un peso de uno y los no tratados se pesan por $\frac{\hat{p}(X_i)}{1-\hat{p}(X_i)}$, de forma que la distribución de sus $X$ se parezca a la de los tratados
+
 
 # Métodos doblemente robustos {.divider background-color="#9B2247" data-state="nochrome"}
 
-## *Métodos doblemente robustos*
+## *Métodos doblemente robustos (DR)*
 
-Próximamente
+- Estos métodos consisten en usar lo mejor de los dos mundos vistos anteriormente: estimación de medias condicionales y pesos basados en el PS
+
+- Los parámetros de interés son:
+
+$$\Delta_{ATE}=E\left(\mu_1(X)-\mu_0(X)+ \frac{(Y-\mu_1(X))D}{p(X)}-\frac{(Y-\mu_0(X))(1-D)}{1-p(X)}\right)$$
+$$\Delta_{TOT}=E\left(\frac{(Y-\mu_0(X))D}{\Pr(D=1)}-\frac{(Y-\mu_0(X))(1-D)p(X)}{(1-p(X))\Pr(D=1)}\right)$$
+
+- Puede verificarse que, bajo el SIC y el soporte común, estas expresiones son equivalentes a las que definen $\Delta_{ATE}$ y $\Delta_{TOT}$ con medias condicionales (regresión) y con pesos basados en el PS (IPW)
+
+- La ventaja es que basta con que especifiquemos bien el modelo para la media condicional o el modelo del PS para estimar de forma consistente los efectos de tratamiento
+  - Regresión requiere que el modelo de la media condicional sea correcto
+  - IPW requiere que el modelo del PS sea correcto
+
+## Estimadores DR
+
+- Usamos estimadores *plug-in*, es decir, calculamos cada parte por separado y los *conectamos*[^facure]
+
+- Estimamos $\hat{\mu}_1(X)$ y $\hat{\mu}_0(X)$ con una regresión y $\hat{p}(X)$ con un modelo para el PS
+
+- El estimador DR del ATE es:
+
+$$
+\begin{align*}
+\hat{\Delta}_{ATE}^{DR}&=\frac{1}{n}\sum_{i=1}^n\left(\hat{\mu}_1(X_i)+\frac{D_i(Y_i-\hat{\mu}_1(X_i))}{\hat{p}(X_i)}\right) -\frac{1}{n}\sum_{i=1}^n\left(\hat{\mu}_0(X_i)+\frac{(1-D_i)(Y_i-\hat{\mu}_0(X_i))}{1-\hat{p}(X_i)}\right)
+\end{align*}
+$$
+
+- Y el estimador DR del TOT, usando $\widehat{\Pr}(D=1)=\frac{n_1}{n}$, es:
+
+$$
+\hat{\Delta}_{TOT}^{DR}=\frac{1}{n_1}\sum_{i=1}^n\left(D_i-\frac{(1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)}\right)(Y_i-\hat{\mu}_0(X_i))
+$$
+
+- En el TOT solo necesitamos $\hat{\mu}_0(X)$, pues el contrafactual que falta es el de los tratados sin tratamiento
+
+[^facure]: Adaptado de [Facure, *Causal Inference for the Brave and True*, capítulo 12](https://matheusfacure.github.io/python-causality-handbook/12-Doubly-Robust-Estimation.html)
 
 
+## Inferencia para regresión, IPW y DR
+
+- Usamos errores robustos en el caso de la estimación paramétrica
+
+- Usamos bootstrap para la estimación local con kernel
+
+- Usamos errores estándar analíticos que toman en cuenta la estimación del PS en el caso de IPW y DR
 
 # Anexo 1: ejemplos de algoritmos de *matching* basados en el PS {.divider background-color="#9B2247" data-state="nochrome"}
 
@@ -1034,6 +1329,466 @@ tabla_ps("No tratados",
 - Con un emparejamiento por kernel, a $d$ lo *emparejamos* con todos los individuos, desde $R$ hasta $W$
 
 - La función kernel le dará más peso a $T$ y $S$, un poco menos a $R$ y así hasta darle muy poco o casi nada de peso a $W$
+
+
+
+
+
+
+
+
+# Anexo 2: PSM en R {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Efecto de fumar en el embarazo
+
+- Datos en [cattaneo_smoking.csv](cattaneo_smoking.csv) (Cattaneo, 2010) de una muestra de mujeres que incluye un indicador de si la madre fumó durante el embarazo
+
+- Buscamos estimar el efecto de fumar sobre el peso de los bebés al nacer
+
+- Se incluyen una serie de covariables que usaremos para modelar el PS
+
+- Usaremos los paquetes *MatchIt* y *cobalt*
+
+## *matchit* para realizar los emparejamientos {.codigo-grande}
+
+- Usaremos *matchit* de la librería *MatchIt* para hacer el emparejamiento
+
+- Construimos la dummy de tratamiento (**smoke**), una dummy para mujeres casadas (**married**) y una dummy para si el caso en cuestión es el primer bebé (**firstbaby**)
+
+```{r}
+#| echo: true
+
+data.smoking<-read_csv(
+  "./cattaneo_smoking.csv",
+  locale = locale(encoding = "latin1")) |>
+  clean_names() |>
+  mutate(smoke=ifelse(mbsmoke=="smoker",1,0)) |>
+  mutate(married=ifelse(mmarried=="married",1,0)) |>
+  mutate(firstbaby=ifelse(fbaby=="Yes",1,0))
+
+#Asegurarse que no hay NA, matchit no acepta NA
+data.smoking <- data.smoking[complete.cases(data.smoking), ]
+
+#Una semilla para todo el trabajo
+set.seed(1021)
+```
+
+
+## Comparación observacional {.codigo-grande .tabla-compacta}
+
+- Si solo comparamos a las mujeres que fuman con las que no fuman, estamos comparando personas muy diferentes
+
+
+```{r}
+#| echo: true
+#| output-location: column
+
+datasummary_balance(~smoke,
+                    fmt = "%.2f",
+                    data = select(data.smoking, smoke, 
+                                  married, firstbaby, 
+                                  medu, nprenatal, 
+                                  foreign, mhisp, fage),
+                    dinm_statistic = "p.value",
+                    title = "Pruebas de balance",
+                    notes = "Fuente: Cattaneo (2010)")
+```
+
+
+
+## Estimación del PS {.codigo-grande}
+
+- Una manera de hacer más eficiente el uso de las *fórmulas* es usando *as.formula*
+
+```{r}
+#| echo: true
+
+binaria <- "smoke"
+variables <- c("married", "firstbaby", "medu", "nprenatal", "foreign", "mhisp", "fage")
+
+ps <- as.formula(paste(binaria, paste(variables, collapse = "+"), sep = " ~ "))
+print(ps)
+```
+
+- Usamos *matchit* para estimar el PS y realizar los emparejamientos con el algoritmo que indiquemos:
+
+```{r}
+#| echo: true
+
+m.out <- matchit(formula=ps,
+                 method = "nearest",
+                 ratio = 1,
+                 distance= "glm",
+                 link = "logit",
+                 replace = FALSE,
+                 estimand = "ATT",
+                 data = data.smoking)
+ 
+```
+
+## Estimación del PS {.codigo-grande .salida-scroll}
+
+- El resumen del procedimiento da bastante información sobre el *matching*
+
+```{r}
+#| echo: true
+
+summary(m.out)
+```
+
+
+## Verificación del balance {.codigo-grande .columnas-arriba}
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Gráfico de nube:
+
+```{r}
+#| echo: true
+
+plot(m.out, type = "jitter", interactive = FALSE)
+```
+
+
+:::
+
+::: {.column width="50%"}
+
+Histograma:
+
+```{r}
+#| echo: true
+
+plot(m.out, type = "hist")
+```
+
+
+:::
+
+::::
+
+
+
+
+## Muestra emparejada {.codigo-grande}
+
+- Podemos guardar un objeto con la muestra emparejada usando *match.data* y observar quién hace match con quién
+
+```{r}
+#| echo: true
+#| output-location: column
+
+m.data <- match.data(m.out)
+
+head(m.out$match.matrix)
+```
+
+
+## Calidad del *matching*
+
+- Se sugiere evaluar las diferencias promedio estandarizadas (SMD) entre los grupos tratados y no tratados, antes y después del emparejamiento
+
+- Para el TOT, *matchit* divide entre la desviación estándar del grupo tratado, $S_T$
+
+$$SMD_X=\frac{\bar{X}_T-\bar{X}_{NT}}{S_T}$$
+    
+- También se sugiere calcular la razón de varianzas (VR). Se espera que este ratio no sea muy distinto de 1 después de hacer el emparejamiento
+    
+$$VR=\frac{S^2_T}{S^2_{NT}}$$
+
+- **Regla de dedo**: una diferencia de 0.1 o menos en el SMD se considera un buen balance. Por ejemplo, la escolaridad de la madre tenía un SMD de -0.5955 en la muestra en bruto, pero con el emparejamiento el SMD se vuelve de solo 0.0171
+
+## *Loveplot* {.codigo-grande}
+
+- Usando la librería *cobalt* podemos construir un *love plot* que representa gráficamente las diferencias antes y después del emparejamiento
+
+```{r}
+#| echo: true
+#| output-location: column
+love.plot(bal.tab(m.out),
+          threshold = .1)
+```
+
+
+## Efecto de tratamiento {.codigo-grande}
+
+- Han existido muchas maneras de explotar la muestra emparejada. Aquí usamos *g-computation*
+
+- Una buena guía sobre la estimación de los efectos está en la documentación de [MatchIt](https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html)
+
+- Estimamos un modelo para la variable dependiente dado el tratamiento y, opcionalmente, las covariables, usando la muestra emparejada
+
+```{r}
+#| echo: true
+tt1 <- lm(bweight ~ smoke,
+          data = m.data,
+          weights = weights)
+
+```
+
+## Efecto de tratamiento {.codigo-grande}
+
+- Usamos `marginaleffects::avg_comparisons()` para estimar el TOT
+
+- *vcov* indica que se estimen errores agrupados a nivel pareja, que es lo apropiado cuando el emparejamiento es sin reemplazo ([Abadie & Spiess, 2022](https://doi.org/10.1080/01621459.2020.1840383))
+
+- *newdata* indica que se genere un nuevo objeto de datos con solo las unidades tratadas para estimar el TOT
+
+```{r}
+#| echo: true
+
+tot.psm <- marginaleffects::avg_comparisons(tt1,
+                variables = "smoke",
+                vcov = ~subclass,
+                newdata = subset(smoke == 1))
+tot.psm
+```
+
+## Efecto de tratamiento {.codigo-grande}
+
+Algunos autores incluyen las covariables en su estimación:
+
+```{r}
+#| echo: true
+
+tt2 <- lm(bweight ~ smoke*(married + firstbaby + medu + nprenatal + foreign + mhisp + fage),
+          data = m.data,
+          weights = weights)
+
+#Errores agrupados a nivel subclass
+marginaleffects::avg_comparisons(tt2,
+                variables = "smoke",
+                vcov = ~subclass,
+                newdata = subset(smoke == 1))
+```
+
+
+# Anexo 3: regresión, IPW y DR en R {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+## Regresión, IPW y DR: fumar durante el embarazo
+
+- Comparamos los distintos métodos para estimar el TOT con los datos de Cattaneo (2010)
+
+- $D$ es **smoke**, $Y$ es **bweight** y $X$ son las mismas siete covariables que usamos para estimar el PS
+
+- Veremos cuatro estimadores:
+  - Regresión paramétrica, con *lm* y *avg_comparisons* del paquete *marginaleffects*
+  - Regresión kernel, con *npreg* del paquete *np* y solo tres de las covariables
+  - IPW, con *PSweight* del paquete *PSweight*
+  - DR, también con *PSweight*
+
+- En IPW y DR el PS se estima con el mismo logit que en el PSM, guardado en la fórmula **ps**
+
+## Regresión paramétrica {.codigo-grande}
+
+- Estimamos una regresión con interacciones entre $D$ y todas las covariables
+
+- *avg_comparisons*, del paquete *marginaleffects*, promedia $\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i)$ sobre los tratados, que es $\hat{\Delta}_{TOT}^R$:
+
+```{r}
+#| label: ejemplo_regresion
+#| echo: true
+#| message: false
+library(marginaleffects)
+
+# Regresión con interacciones entre D y X
+ols <- lm(bweight ~ smoke * (married + firstbaby + medu + nprenatal +
+                               foreign + mhisp + fage),
+                               data = data.smoking)
+
+# Promedio de las diferencias predichas en la muestra de tratados
+tot.reg <- avg_comparisons(ols, variables = "smoke", vcov = "HC1",
+                           newdata = filter(data.smoking, smoke == 1))
+c(efecto = tot.reg$estimate, ee = tot.reg$std.error)
+```
+
+## Regresión kernel {.codigo-grande}
+
+- Con siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: **married**, **fage** y **nprenatal**
+
+```{r}
+#| include: false
+options(np.messages = FALSE)
+```
+
+```{r}
+#| label: ejemplo_kernel
+#| echo: true
+#| message: false
+#| results: hold
+library(np)
+
+tratados <- filter(data.smoking, smoke == 1)
+notratados <- filter(data.smoking, smoke == 0)
+
+# h óptimo de cada covariable por validación cruzada, solo con los no tratados
+bw <- npregbw(bweight ~ married + fage + nprenatal, data = notratados,
+              regtype = "lc", bwmethod = "cv.ls", ckertype = "epanechnikov")
+
+# Media local de los no tratados, evaluada en las X de cada tratado
+mu0 <- predict(npreg(bw), newdata = tratados)
+mean(tratados$bweight - mu0)
+```
+
+## Regresión kernel {.columnas-arriba}
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+- *regtype = "lc"*: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una
+
+- *bwmethod = "cv.ls"*: es la validación cruzada que deja fuera a cada observación
+
+- Hay un $h_{opt}$ por covariable: `r round(bw$bw[1], 2)` para **married**, `r round(bw$bw[2], 1)` para **fage** y `r round(bw$bw[3], 2)` para **nprenatal**
+
+- $\hat{\mu}_0$ se estima solo con los no tratados y da el contrafactual de cada tratado
+
+- El TOT estimado es de `r round(mean(tratados$bweight - mu0), 1)` gramos
+
+- Obtenemos el error estándar usando bootstrap
+
+:::
+
+::: {.column width="55%"}
+
+```{r}
+#| label: kernel_mu0
+#| fig-width: 8
+#| fig-height: 5.5
+#| out-width: "100%"
+#| warning: false
+
+# Media local estimada de los no tratados según las visitas prenatales y el
+# estado civil, con la edad del padre en su mediana
+malla.x <- expand.grid(married = c(0, 1),
+                       fage = median(notratados$fage),
+                       nprenatal = 0:20)
+malla.x$mu0 <- predict(npreg(bw), newdata = malla.x)
+malla.x$estado <- ifelse(malla.x$married == 1, "Casada", "No casada")
+
+ggplot(malla.x, aes(x = nprenatal, y = mu0, color = estado)) +
+  geom_line(linewidth = 1.2) +
+  scale_color_manual(values = c("Casada" = "#163D34", "No casada" = "#9B2247"),
+                     name = NULL) +
+  labs(x = "Visitas prenatales", y = "Peso al nacer (gramos)",
+       caption = "Media local estimada con los no tratados") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "top")
+```
+
+:::
+
+::::
+
+## Regresión kernel: inferencia {.codigo-grande}
+
+- *boot*, del paquete *boot*, repite el estimador en cada muestra bootstrap, manteniendo fijos los $h_{opt}$
+
+```{r}
+#| label: kernel_bootstrap
+#| echo: true
+#| message: false
+library(boot)
+
+covs <- c("married", "fage", "nprenatal")
+
+bs <- function(data, indices) {
+  dat <- data[indices, ]                 # muestra bootstrap
+  tr <- filter(dat, smoke == 1)
+  nt <- filter(dat, smoke == 0)
+  mu0 <- npreg(bws = bw$bw, txdat = nt[, covs], tydat = nt$bweight,
+               exdat = tr[, covs], regtype = "lc", ckertype = "epanechnikov")$mean
+  mean(tr$bweight - mu0)                 # TOT en la muestra bootstrap
+}
+
+set.seed(1021)
+boot.kernel <- boot(data = data.smoking, statistic = bs, R = 499)
+c(efecto = boot.kernel$t0, ee = sd(boot.kernel$t))
+```
+
+## IPW {.codigo-grande}
+
+- *weight = "treated"* pide los pesos del TOT (1 para los tratados y $\frac{\hat{p}(X_i)}{1-\hat{p}(X_i)}$ para los no tratados)
+
+```{r}
+#| label: ejemplo_ipw
+#| echo: true
+#| message: false
+library(PSweight)
+
+ipw <- PSweight(ps.formula = ps,
+                yname = "bweight",
+                data = as.data.frame(data.smoking),
+                weight = "treated")
+
+summary(ipw)$estimates
+```
+
+## DR {.codigo-grande}
+
+- Agregamos un modelo para $Y$ (*out.formula*) y pedimos el estimador aumentado (*augmentation = TRUE*)
+
+```{r}
+#| label: ejemplo_dr
+#| echo: true
+resultado <- as.formula(paste("bweight",
+                              paste(variables, collapse = "+"),
+                              sep = " ~ "))
+
+dr <- PSweight(ps.formula = ps,
+               yname = "bweight",
+               data = as.data.frame(data.smoking),
+               weight = "treated",
+               augmentation = TRUE,
+               out.formula = resultado)
+
+summary(dr)$estimates
+```
+
+## Comparación entre métodos
+
+```{r}
+dif.simple <- lm(bweight ~ smoke, data = data.smoking)
+
+data.frame(
+  metodo = c("Diferencia simple de medias",
+             "PSM (vecino más cercano, sin reemplazo)",
+             "Regresión paramétrica",
+             "Regresión kernel (tres covariables)",
+             "IPW",
+             "DR"),
+  efecto = c(coef(dif.simple)["smoke"],
+             tot.psm$estimate,
+             tot.reg$estimate,
+             mean(tratados$bweight - mu0),
+             summary(ipw)$estimates[1, "Estimate"],
+             summary(dr)$estimates[1, "Estimate"]),
+  ee = c(coeftest(dif.simple, vcov. = vcovHC, type = "HC1")["smoke", 2],
+         tot.psm$std.error,
+         tot.reg$std.error,
+         sd(boot.kernel$t),
+         summary(ipw)$estimates[1, "Std.Error"],
+         summary(dr)$estimates[1, "Std.Error"])
+) |>
+  mutate(efecto = sprintf("%.1f", efecto),
+         ee = ifelse(is.na(ee), "—", sprintf("%.1f", ee))) |>
+  kbl(col.names = c("Método", "Efecto en el peso al nacer (gramos)", "Error estándar"),
+      align = "lcc") |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
+```
+
+- Todos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos
+
+- La diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer
+
+- Todos descansan en el SIC: si hay selección en no observables, ninguno la corrige
+
 
 
 # Selección por Observables {.final background-color="#9B2247" data-state="nochrome"}
