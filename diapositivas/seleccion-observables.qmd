@@ -1577,7 +1577,7 @@ marginaleffects::avg_comparisons(tt2,
 
 - Veremos cuatro estimadores:
   - Regresión paramétrica, con *lm* y *avg_comparisons* del paquete *marginaleffects*
-  - Regresión kernel, con *npreg* del paquete *np* y solo tres de las covariables
+  - Regresión kernel, con *npreg* del paquete *np*
   - IPW, con *PSweight* del paquete *PSweight*
   - DR, también con *PSweight*
 
@@ -1608,7 +1608,7 @@ c(efecto = tot.reg$estimate, ee = tot.reg$std.error)
 
 ## Regresión kernel {.codigo-grande}
 
-- Con siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: **married**, **fage** y **nprenatal**
+- Usamos las siete covariables; *nmulti = 1* pide un solo punto de arranque en la optimización de los anchos de banda, que aun así tarda unos minutos
 
 ```{r}
 #| include: false
@@ -1626,7 +1626,8 @@ tratados <- filter(data.smoking, smoke == 1)
 notratados <- filter(data.smoking, smoke == 0)
 
 # h óptimo de cada covariable por validación cruzada, solo con los no tratados
-bw <- npregbw(bweight ~ married + fage + nprenatal, data = notratados,
+bw <- npregbw(bweight ~ married + firstbaby + medu + nprenatal + foreign +
+                mhisp + fage, data = notratados, nmulti = 1,
               regtype = "lc", bwmethod = "cv.ls", ckertype = "epanechnikov")
 
 # Media local de los no tratados, evaluada en las X de cada tratado
@@ -1638,47 +1639,36 @@ mean(tratados$bweight - mu0)
 
 :::: {.columns}
 
-::: {.column width="45%"}
+::: {.column width="48%"}
 
 - *regtype = "lc"*: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una
 
 - *bwmethod = "cv.ls"*: es la validación cruzada que deja fuera a cada observación
 
-- Hay un $h_{opt}$ por covariable: `r round(bw$bw[1], 2)` para **married**, `r round(bw$bw[2], 1)` para **fage** y `r round(bw$bw[3], 2)` para **nprenatal**
+- La validación cruzada elige un $h_{opt}$ por covariable; con uno muy grande descarta las que no ayudan a predecir $Y$
 
 - $\hat{\mu}_0$ se estima solo con los no tratados y da el contrafactual de cada tratado
 
-- El TOT estimado es de `r round(mean(tratados$bweight - mu0), 1)` gramos
-
-- Obtenemos el error estándar usando bootstrap
+- El TOT estimado es de `r round(mean(tratados$bweight - mu0), 1)` gramos; el error estándar lo obtenemos con bootstrap
 
 :::
 
-::: {.column width="55%"}
+::: {.column width="52%"}
 
 ```{r}
-#| label: kernel_mu0
-#| fig-width: 8
-#| fig-height: 5.5
-#| out-width: "100%"
-#| warning: false
+#| label: kernel_bw
 
-# Media local estimada de los no tratados según las visitas prenatales y el
-# estado civil, con la edad del padre en su mediana
-malla.x <- expand.grid(married = c(0, 1),
-                       fage = median(notratados$fage),
-                       nprenatal = 0:20)
-malla.x$mu0 <- predict(npreg(bw), newdata = malla.x)
-malla.x$estado <- ifelse(malla.x$married == 1, "Casada", "No casada")
-
-ggplot(malla.x, aes(x = nprenatal, y = mu0, color = estado)) +
-  geom_line(linewidth = 1.2) +
-  scale_color_manual(values = c("Casada" = "#163D34", "No casada" = "#9B2247"),
-                     name = NULL) +
-  labs(x = "Visitas prenatales", y = "Peso al nacer (gramos)",
-       caption = "Media local estimada con los no tratados") +
-  theme_minimal(base_size = 16) +
-  theme(legend.position = "top")
+# Ancho de banda óptimo de cada covariable y cómo se lee
+data.frame(covariable = bw$xnames, h = bw$bw) |>
+  mutate(lectura = ifelse(h > 1000, "Descartada",
+                          ifelse(h < 1, "Solo compara valores iguales",
+                                 "Suaviza entre valores cercanos")),
+         h = ifelse(h > 1000, "Mayor que 1,000", sprintf("%.2f", h))) |>
+  kbl(col.names = c("Covariable", "\\(h_{opt}\\)", "Lectura"),
+      align = "lcl",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
 ```
 
 :::
@@ -1695,14 +1685,13 @@ ggplot(malla.x, aes(x = nprenatal, y = mu0, color = estado)) +
 #| message: false
 library(boot)
 
-covs <- c("married", "fage", "nprenatal")
-
 bs <- function(data, indices) {
   dat <- data[indices, ]                 # muestra bootstrap
   tr <- filter(dat, smoke == 1)
   nt <- filter(dat, smoke == 0)
-  mu0 <- npreg(bws = bw$bw, txdat = nt[, covs], tydat = nt$bweight,
-               exdat = tr[, covs], regtype = "lc", ckertype = "epanechnikov")$mean
+  mu0 <- npreg(bws = bw$bw, txdat = nt[, variables], tydat = nt$bweight,
+               exdat = tr[, variables],
+               regtype = "lc", ckertype = "epanechnikov")$mean
   mean(tr$bweight - mu0)                 # TOT en la muestra bootstrap
 }
 
@@ -1759,7 +1748,7 @@ data.frame(
   metodo = c("Diferencia simple de medias",
              "PSM (vecino más cercano, sin reemplazo)",
              "Regresión paramétrica",
-             "Regresión kernel (tres covariables)",
+             "Regresión kernel",
              "IPW",
              "DR"),
   efecto = c(coef(dif.simple)["smoke"],
@@ -1783,7 +1772,7 @@ data.frame(
               full_width = FALSE)
 ```
 
-- Todos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos
+- Todos los métodos usan las mismas covariables y estiman el TOT: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos
 
 - La diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer
 
