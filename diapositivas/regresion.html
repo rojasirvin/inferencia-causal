@@ -210,6 +210,23 @@
       }
     });
   });
+  /* Notas al pie: Quarto las pasa al pie de cada lámina y reinicia la numeración en 1, aunque
+     conserva el consecutivo en el id (fn1, fn2, ...). Reponemos ese consecutivo en la lista y en
+     las llamadas de la lámina; solo si coinciden en número, para no tocar superíndices que no
+     son notas (p. ej. un exponente escrito con ^2^) */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('ol.aside-footnotes').forEach(function (ol) {
+      var notas = ol.querySelectorAll(':scope > li[id^="fn"]');
+      var lamina = ol.closest('section');
+      if (!notas.length || !lamina) return;
+      var llamadas = Array.prototype.filter.call(lamina.querySelectorAll('sup'), function (sup) {
+        return /^\d+$/.test(sup.textContent) && !sup.closest('table') && !sup.closest('aside');
+      });
+      if (llamadas.length !== notas.length) return;
+      ol.setAttribute('start', notas[0].id.replace('fn', ''));
+      llamadas.forEach(function (sup, i) { sup.textContent = notas[i].id.replace('fn', ''); });
+    });
+  });
   </script>
   <style>
   /* Reglas del tema Inferencia Causal, movidas aquí desde la sección scss:rules de
@@ -295,6 +312,10 @@
   .reveal div.sourceCode pre code.sourceCode{ background:transparent !important; color:var(--code-ink); }
   .reveal div.sourceCode pre code > span,
   .reveal div.sourceCode pre code.sourceCode > span{ color:var(--code-ink); }
+  /* Con output-location: column el bloque de código vive dentro de .column-output-location y
+     quarto le repone el fondo blanco; lo regresamos al verde del resto de los bloques */
+  .reveal .column-output-location div.sourceCode,
+  .reveal .column-output-location div.sourceCode.cell-code{ background:var(--deep) !important; }
   /* resaltado de sintaxis legible sobre el verde profundo (paleta de la marca) */
   .reveal .sourceCode span.co, .reveal .sourceCode span.do,
   .reveal .sourceCode span.cv, .reveal .sourceCode span.an,

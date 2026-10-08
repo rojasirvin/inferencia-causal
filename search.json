@@ -2651,7 +2651,7 @@
     "href": "diapositivas/seleccion-observables.html#organización-de-lo-que-cubriremos-en-el-curso",
     "title": "Inferencia Causal 2026",
     "section": "Organización de lo que cubriremos en el curso",
-    "text": "Organización de lo que cubriremos en el curso\n\nSupuesto de independencia condicional\nMétodos de matching\n\nMatching basado en covariables\nPropensity score matching\n\nOtros métodos basados en el SIC\n\nRegresión\nInverse probability weighting\nMétodos doblemente robustos"
+    "text": "Organización de lo que cubriremos en el curso\n\nSupuesto de independencia condicional\nMétodos de matching\n\nMatching basado en covariables\nPropensity score matching\n\nOtros métodos basados en el SIC\n\nRegresión\nMétodos locales\nInverse probability weighting\nMétodos doblemente robustos"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#recordatorio-del-sesgo-de-selección",
@@ -2798,7 +2798,7 @@
     "href": "diapositivas/seleccion-observables.html#estimador-de-matching-exacto-del-ate",
     "title": "Inferencia Causal 2026",
     "section": "Estimador de matching exacto del ATE",
-    "text": "Estimador de matching exacto del ATE\n\nHasta aquí, solo hemos imputado el contrafactual para cada unidad en el grupo tratado\nSi podemos imputar también, para cada unidad no tratada, su correspondiente contrafactual tratado, podemos estimar el ATE\nY un estimador de matching exacto del ATE sería:\n\n\\[\\hat{\\Delta}=\\frac{1}{n}\\sum_{i=1}^{n}(2D_i-1)\\left(Y_i-\\frac{1}{M_i}\\sum_{m=1}^{M_i}Y_{j_m(i)}\\right)\\]\ndonde ahora \\(j_m(i)\\) recorre las \\(M_i\\) unidades del grupo opuesto al de \\(i\\) con \\(X_j=X_i\\)\n\nCasi todas las aplicaciones de matching se enfocan en el TOT"
+    "text": "Estimador de matching exacto del ATE\n\nHasta aquí, solo hemos imputado el contrafactual para cada unidad en el grupo tratado\nSi podemos imputar también, para cada unidad no tratada, su correspondiente contrafactual tratado, podemos estimar el ATE\nY un estimador de matching exacto del ATE sería:\n\n\\[\\hat{\\Delta}_{ATE}=\\frac{1}{n}\\sum_{i=1}^{n}(2D_i-1)\\left(Y_i-\\frac{1}{M_i}\\sum_{m=1}^{M_i}Y_{j_m(i)}\\right)\\]\ndonde ahora \\(j_m(i)\\) recorre las \\(M_i\\) unidades del grupo opuesto al de \\(i\\) con \\(X_j=X_i\\)\n\nCasi todas las aplicaciones de matching se enfocan en el TOT"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#matching-con-más-de-una-característica",
@@ -2819,7 +2819,7 @@
     "href": "diapositivas/seleccion-observables.html#decisiones-en-el-matching-1",
     "title": "Inferencia Causal 2026",
     "section": "Decisiones en el matching",
-    "text": "Decisiones en el matching\n\n¿Cómo estimar la varianza?\n\nBootstrap no funciona (Abadie & Imbens, 2008)\nUsar fórmulas analíticas (ver CA)"
+    "text": "Decisiones en el matching\n\n¿Cómo estimar la varianza?\n\nAbadie e Imbens (2008) mostraron analíticamente que el bootstrap no es apropiado en el contexto de matching\nSin embargo, otros estudios de simulación han mostrado que funciona en muchas aplicaciones de matching y se llega a usar en casos particulares (por ejemplo, cuando el matching se realiza con reemplazo)\nEl consejo práctico es usar resultados analíticos cuando estos estén disponibles"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#ejemplo-veteranos-del-ejército-de-estados-unidos",
@@ -2833,7 +2833,7 @@
     "href": "diapositivas/seleccion-observables.html#ejemplo-veteranos-del-ejército-de-estados-unidos-1",
     "title": "Inferencia Causal 2026",
     "section": "Ejemplo: veteranos del ejército de Estados Unidos",
-    "text": "Ejemplo: veteranos del ejército de Estados Unidos\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEstimaciones alternativas del efecto del servicio militar en los ingresos\n\n\n\n\n\nBlancos\n\n\nNo blancos\n\n\n\nAño\nMedia\n(1)\nDiferencia de medias\n(2)\nContraste controlado\n(3)\nRegresión\n(4)\nMedia\n(5)\nDiferencia de medias\n(6)\nContraste controlado\n(7)\nRegresión\n(8)\n\n\n\n\n74\n182.7\n-26.1\n-14.0\n-13.0\n157.2\n-4.9\n-2.0\n-3.9\n\n\n\n\n(7.0)\n(9.2)\n(9.4)\n\n(4.4)\n(6.0)\n(5.8)\n\n\n75\n237.9\n-41.4\n-14.2\n-12.0\n216.9\n-0.6\n-17.1\n-15.2\n\n\n\n\n(6.3)\n(7.6)\n(7.8)\n\n(4.5)\n(6.0)\n(5.5)\n\n\n76\n473.4\n-47.9\n-14.8\n-12.7\n413.6\n-14.5\n-33.3\n-30.2\n\n\n\n\n(8.1)\n(9.0)\n(9.3)\n\n(6.4)\n(8.0)\n(7.4)\n\n\n77\n1012.9\n-7.1\n-8.6\n-9.4\n820.9\n-13.0\n-56.0\n-51.3\n\n\n\n\n(11.3)\n(12.3)\n(12.2)\n\n(9.1)\n(11.1)\n(10.0)\n\n\n78\n2147.1\n40.3\n-23.5\n-22.4\n1677.9\n58.1\n-53.6\n-42.5\n\n\n\n\n(16.7)\n(18.1)\n(17.2)\n\n(13.4)\n(16.1)\n(14.1)\n\n\n79\n3560.7\n188.0\n-8.4\n-11.2\n2797.0\n340.3\n119.1\n122.3\n\n\n\n\n(21.0)\n(23.2)\n(21.6)\n\n(16.2)\n(20.1)\n(17.2)\n\n\n80\n4709.0\n572.9\n178.0\n175.9\n3932.2\n1154.3\n741.6\n738.5\n\n\n\n\n(23.4)\n(27.2)\n(24.6)\n\n(18.0)\n(23.4)\n(19.5)\n\n\n81\n6226.0\n855.5\n249.5\n249.9\n5218.8\n1920.0\n1299.9\n1318.5\n\n\n\n\n(27.2)\n(32.4)\n(29.1)\n\n(20.7)\n(28.2)\n(23.1)\n\n\n82\n7200.6\n1508.5\n783.3\n782.4\n6150.2\n2917.1\n2186.0\n2210.1\n\n\n\n\n(30.3)\n(36.4)\n(32.5)\n\n(23.4)\n(32.0)\n(26.0)\n\n\n83\n8398.1\n1390.5\n588.8\n601.5\n7221.1\n2889.9\n2103.8\n2142.3\n\n\n\n\n(34.4)\n(41.1)\n(36.6)\n\n(27.0)\n(36.7)\n(29.8)\n\n\n84\n9874.2\n652.8\n-235.7\n-198.5\n8377.2\n2202.9\n1333.0\n1428.9\n\n\n\n\n(39.5)\n(46.9)\n(41.7)\n\n(30.5)\n(41.4)\n(33.4)\n\n\n85\n10972.7\n469.8\n-521.3\n-459.6\n9306.8\n1955.5\n932.3\n1059.2\n\n\n\n\n(44.6)\n(52.6)\n(46.8)\n\n(34.4)\n(46.2)\n(37.3)\n\n\n86\n12004.5\n543.7\n-557.3\n-491.7\n10106.2\n1881.3\n720.9\n872.3\n\n\n\n\n(50.4)\n(59.0)\n(52.5)\n\n(38.7)\n(51.2)\n(41.6)\n\n\n87\n13045.7\n663.9\n-548.0\n-464.3\n10833.0\n2050.1\n751.0\n925.0\n\n\n\n\n(54.6)\n(63.9)\n(56.8)\n\n(41.8)\n(55.2)\n(44.8)\n\n\n88\n14136.1\n904.3\n-415.5\n-311.7\n11480.1\n2175.0\n708.2\n923.7\n\n\n\n\n(58.3)\n(68.2)\n(60.6)\n\n(44.9)\n(59.5)\n(48.1)\n\n\n89\n14716.1\n1169.1\n-248.6\n-136.3\n11751.4\n2379.1\n799.7\n1031.9\n\n\n\n\n(61.0)\n(71.2)\n(63.2)\n\n(47.6)\n(62.7)\n(50.9)\n\n\n90\n14886.1\n1300.8\n-154.5\n-53.2\n11904.3\n2483.6\n824.9\n1064.0\n\n\n\n\n(63.0)\n(73.6)\n(65.2)\n\n(49.4)\n(65.4)\n(52.7)\n\n\n91\n14407.9\n1559.6\n29.8\n146.2\n11518.7\n2758.8\n1026.1\n1277.9\n\n\n\n\n(64.6)\n(75.6)\n(66.9)\n\n(50.8)\n(67.2)\n(54.3)\n\n\n\nNota:  Panel A de la Tabla II en Angrist (1998). Errores estándar entre paréntesis."
+    "text": "Ejemplo: veteranos del ejército de Estados Unidos\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEstimaciones alternativas del efecto del servicio militar en los ingresos\n\n\n\n\n\nBlancos\n\n\nNo blancos\n\n\n\nAño\nMedia\n(1)\nDiferencia de medias\n(2)\nContraste controlado\n(3)\nRegresión\n(4)\nMedia\n(5)\nDiferencia de medias\n(6)\nContraste controlado\n(7)\nRegresión\n(8)\n\n\n\n\n74\n182.7\n-26.1\n-14.0\n-13.0\n157.2\n-4.9\n-2.0\n-3.9\n\n\n\n\n(7.0)\n(9.2)\n(9.4)\n\n(4.4)\n(6.0)\n(5.8)\n\n\n75\n237.9\n-41.4\n-14.2\n-12.0\n216.9\n-0.6\n-17.1\n-15.2\n\n\n\n\n(6.3)\n(7.6)\n(7.8)\n\n(4.5)\n(6.0)\n(5.5)\n\n\n76\n473.4\n-47.9\n-14.8\n-12.7\n413.6\n-14.5\n-33.3\n-30.2\n\n\n\n\n(8.1)\n(9.0)\n(9.3)\n\n(6.4)\n(8.0)\n(7.4)\n\n\n77\n1012.9\n-7.1\n-8.6\n-9.4\n820.9\n-13.0\n-56.0\n-51.3\n\n\n\n\n(11.3)\n(12.3)\n(12.2)\n\n(9.1)\n(11.1)\n(10.0)\n\n\n78\n2147.1\n40.3\n-23.5\n-22.4\n1677.9\n58.1\n-53.6\n-42.5\n\n\n\n\n(16.7)\n(18.1)\n(17.2)\n\n(13.4)\n(16.1)\n(14.1)\n\n\n79\n3560.7\n188.0\n-8.4\n-11.2\n2797.0\n340.3\n119.1\n122.3\n\n\n\n\n(21.0)\n(23.2)\n(21.6)\n\n(16.2)\n(20.1)\n(17.2)\n\n\n80\n4709.0\n572.9\n178.0\n175.9\n3932.2\n1154.3\n741.6\n738.5\n\n\n\n\n(23.4)\n(27.2)\n(24.6)\n\n(18.0)\n(23.4)\n(19.5)\n\n\n81\n6226.0\n855.5\n249.5\n249.9\n5218.8\n1920.0\n1299.9\n1318.5\n\n\n\n\n(27.2)\n(32.4)\n(29.1)\n\n(20.7)\n(28.2)\n(23.1)\n\n\n82\n7200.6\n1508.5\n783.3\n782.4\n6150.2\n2917.1\n2186.0\n2210.1\n\n\n\n\n(30.3)\n(36.4)\n(32.5)\n\n(23.4)\n(32.0)\n(26.0)\n\n\n83\n8398.1\n1390.5\n588.8\n601.5\n7221.1\n2889.9\n2103.8\n2142.3\n\n\n\n\n(34.4)\n(41.1)\n(36.6)\n\n(27.0)\n(36.7)\n(29.8)\n\n\n84\n9874.2\n652.8\n-235.7\n-198.5\n8377.2\n2202.9\n1333.0\n1428.9\n\n\n\n\n(39.5)\n(46.9)\n(41.7)\n\n(30.5)\n(41.4)\n(33.4)\n\n\n85\n10972.7\n469.8\n-521.3\n-459.6\n9306.8\n1955.5\n932.3\n1059.2\n\n\n\n\n(44.6)\n(52.6)\n(46.8)\n\n(34.4)\n(46.2)\n(37.3)\n\n\n86\n12004.5\n543.7\n-557.3\n-491.7\n10106.2\n1881.3\n720.9\n872.3\n\n\n\n\n(50.4)\n(59.0)\n(52.5)\n\n(38.7)\n(51.2)\n(41.6)\n\n\n87\n13045.7\n663.9\n-548.0\n-464.3\n10833.0\n2050.1\n751.0\n925.0\n\n\n\n\n(54.6)\n(63.9)\n(56.8)\n\n(41.8)\n(55.2)\n(44.8)\n\n\n88\n14136.1\n904.3\n-415.5\n-311.7\n11480.1\n2175.0\n708.2\n923.7\n\n\n\n\n(58.3)\n(68.2)\n(60.6)\n\n(44.9)\n(59.5)\n(48.1)\n\n\n89\n14716.1\n1169.1\n-248.6\n-136.3\n11751.4\n2379.1\n799.7\n1031.9\n\n\n\n\n(61.0)\n(71.2)\n(63.2)\n\n(47.6)\n(62.7)\n(50.9)\n\n\n90\n14886.1\n1300.8\n-154.5\n-53.2\n11904.3\n2483.6\n824.9\n1064.0\n\n\n\n\n(63.0)\n(73.6)\n(65.2)\n\n(49.4)\n(65.4)\n(52.7)\n\n\n91\n14407.9\n1559.6\n29.8\n146.2\n11518.7\n2758.8\n1026.1\n1277.9\n\n\n\n\n(64.6)\n(75.6)\n(66.9)\n\n(50.8)\n(67.2)\n(54.3)\n\n\n\nNota:  Panel A de la Tabla II en Angrist (1998). Errores estándar entre paréntesis."
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#ejemplo-veteranos-del-ejército-de-estados-unidos-2",
@@ -2931,21 +2931,105 @@
     "href": "diapositivas/seleccion-observables.html#regresión-1",
     "title": "Inferencia Causal 2026",
     "section": "Regresión",
-    "text": "Regresión\nPróximamente"
+    "text": "Regresión\n\nDados unos datos observacionales y asumiendo SIC, ¿por qué no usar directamente las herramientas de regresión que ya conocemos para estimar efectos causales?\n\nDefiniciones\n\nEfecto Promedio Condicional del Tratamiento (CATE): es el efecto promedio de tratamiento bajo la condición de que los individuos tienen el mismo valor \\(X=x\\)\n\n\\[\n\\begin{align*}\n\\Delta_x&=E(Y(1)|X=x)-E(Y(0)|X=x) \\\\\n&=\\mu_1(x)-\\mu_0(x)\n\\end{align*}\n\\]\n\nSi promediamos el CATE sobre todos los valores de \\(X=x\\), obtenemos el ATE:\n\n\\[\\Delta_{ATE} = E(\\mu_1(X)-\\mu_0(X))\\]\n\nY si nos fijamos solo en el subconjunto de la población que fue tratado, obtenemos el TOT:\n\n\\[\\Delta_{TOT} = E(\\mu_1(X)|D=1)-E(\\mu_0(X)|D=1)\\]"
   },
   {
-    "objectID": "diapositivas/seleccion-observables.html#inverse-probability-weighting-1",
-    "href": "diapositivas/seleccion-observables.html#inverse-probability-weighting-1",
+    "objectID": "diapositivas/seleccion-observables.html#regresión-lineal",
+    "href": "diapositivas/seleccion-observables.html#regresión-lineal",
     "title": "Inferencia Causal 2026",
-    "section": "Inverse probability weighting",
-    "text": "Inverse probability weighting\nPróximamente"
+    "section": "Regresión lineal",
+    "text": "Regresión lineal\n\nBajo el SIC, podríamos pensar que podemos estimar \\(\\mu_D(X)\\) usando una regresión de la forma: \\[\\mu_D(X)=\\alpha+\\beta_DD+\\beta_{X_1}X_1+\\ldots+\\beta_{X_K}X_K\\]\n\nProblemas\n\n\\(D\\) y \\(X\\) están correlacionados, lo cual afecta la varianza de \\(\\hat{\\beta}_D\\) (tenemos menos información nueva que si \\(D\\) y \\(X\\) fueran independientes)\nEl modelo puede estar mal especificado\n\nOmitimos términos de grado mayor que uno\nOmitimos posibles interacciones entre covariables (\\(X_1 X_2\\))\nOmitimos posibles interacciones entre el tratamiento, las covariables y sus posibles términos de orden mayor que uno"
   },
   {
-    "objectID": "diapositivas/seleccion-observables.html#métodos-doblemente-robustos-1",
-    "href": "diapositivas/seleccion-observables.html#métodos-doblemente-robustos-1",
+    "objectID": "diapositivas/seleccion-observables.html#regresión-con-interacciones-y-términos-de-orden-alto",
+    "href": "diapositivas/seleccion-observables.html#regresión-con-interacciones-y-términos-de-orden-alto",
     "title": "Inferencia Causal 2026",
-    "section": "Métodos doblemente robustos",
-    "text": "Métodos doblemente robustos\nPróximamente"
+    "section": "Regresión con interacciones y términos de orden alto",
+    "text": "Regresión con interacciones y términos de orden alto\n\nPensaríamos que podemos arreglar el segundo problema con \\[\n\\begin{align*}\n\\mu_D(X) &= \\alpha + \\beta_D D + \\beta_{X_1}X_1 + \\ldots + \\beta_{X_K}X_K + \\beta_{D,X_1}DX_1 + \\ldots + \\beta_{D,X_K}DX_K \\\\\n&\\quad + \\beta_{X_1^2}X_1^2+\\ldots+\\beta_{X_1,X_2}X_1X_2+\\ldots\n\\end{align*}\n\\]\nY con los coeficientes estimados podríamos obtener \\(\\hat{\\mu}_D(X)\\) y calcular\n\n\\[\\hat{\\Delta}_{ATE}^R=\\frac{1}{n}\\sum_{i=1}^{n}(\\hat{\\mu}_1(X_i)-\\hat{\\mu}_0(X_i))\\] \\[\\hat{\\Delta}_{TOT}^R=\\frac{1}{n_1}\\sum_{i:D_i=1}(\\hat{\\mu}_1(X_i)-\\hat{\\mu}_0(X_i))\\]\nProblemas\n\n¿Cómo determinar óptimamente el orden de los polinomios y el número de interacciones?\nTrade-off sesgo vs varianza"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#trade-off-sesgo-vs-varianza",
+    "href": "diapositivas/seleccion-observables.html#trade-off-sesgo-vs-varianza",
+    "title": "Inferencia Causal 2026",
+    "section": "Trade-off sesgo vs varianza",
+    "text": "Trade-off sesgo vs varianza\n\nEl error cuadrático medio de \\(\\hat{\\mu}_d(x)\\) como estimador de \\(\\mu_d(x)\\) se descompone en dos partes:\n\n\\[\nE\\left((\\hat{\\mu}_d(x)-\\mu_d(x))^2\\right)=\\underbrace{\\left(E(\\hat{\\mu}_d(x))-\\mu_d(x)\\right)^2}_{\\text{Sesgo}^2}+\\underbrace{Var(\\hat{\\mu}_d(x))}_{\\text{Varianza}}\n\\]\n\n\n\nUn modelo rígido (pocos términos) no sigue la forma de \\(\\mu_d(x)\\): sesgo alto y varianza baja\nUn modelo flexible (muchos términos) sigue de cerca los datos: sesgo bajo y varianza alta\nReducir un componente suele aumentar el otro"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#métodos-locales",
+    "href": "diapositivas/seleccion-observables.html#métodos-locales",
+    "title": "Inferencia Causal 2026",
+    "section": "Métodos locales",
+    "text": "Métodos locales\n\nEstimamos la media condicional para cada valor de \\(X=x\\) como la media local de observaciones con \\(X\\) cercanos a \\(x\\)\n\n\\[\\hat{\\mu}_{d,h}(x)=\\frac{\\sum_{i:D_i=d}\\mathcal{K}\\left(\\frac{X_i-x}{h}\\right) Y_i}{\\sum_{i:D_i=d}\\mathcal{K}\\left(\\frac{X_i-x}{h}\\right)}\\]\ndonde \\(\\mathcal{K}(\\cdot)\\) es la función kernel que otorga pesos más grandes a las observaciones con \\(\\frac{X_i-x}{h}\\) cercano a cero y pesos más pequeños (incluso cero) para valores más lejanos de cero, y \\(h\\) es el ancho de banda"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#pesos-kernel",
+    "href": "diapositivas/seleccion-observables.html#pesos-kernel",
+    "title": "Inferencia Causal 2026",
+    "section": "Pesos kernel",
+    "text": "Pesos kernel\n\nAlgunos ejemplos de pesos kernel son los siguientes, con \\(u=\\frac{X_i-x}{h}\\):\n\n\n\n\n\n\nKernel\n\\(\\mathcal{K}(u)\\)\n\n\n\n\nUniforme\n\\(\\frac{1}{2}\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)\n\n\nTriangular\n\\((1-\\lvert u\\rvert)\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)\n\n\nEpanechnikov\n\\(\\frac{3}{4}(1-u^2)\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)\n\n\nCuártico (biweight)\n\\(\\frac{15}{16}(1-u^2)^2\\,\\mathbb{I}\\{\\lvert u\\rvert\\leq 1\\}\\)\n\n\nGaussiano\n\\(\\frac{1}{\\sqrt{2\\pi}}\\exp\\left(-\\frac{u^2}{2}\\right)\\)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#elección-de-h",
+    "href": "diapositivas/seleccion-observables.html#elección-de-h",
+    "title": "Inferencia Causal 2026",
+    "section": "Elección de \\(h\\)",
+    "text": "Elección de \\(h\\)\n\nLa elección de \\(h\\) es clave en la estimación\n\nUn \\(h\\) grande conlleva más sesgo pues se otorga un peso más grande a observaciones con \\(X_i\\) lejano de \\(x\\)\nUn \\(h\\) pequeño conlleva una mayor varianza pues solo otorga pesos a unas cuantas observaciones1\n\n\n\nSe suele escoger un \\(h_{opt}\\) usando un procedimiento de validación cruzada o cross-validation\n\n\\[h_{opt}=\\text{arg} \\min_{h \\in \\mathcal{H}} \\sum_{i:D_i=d}(Y_i-\\hat{\\mu}_{d,-i,h}(X_i))^2\\]\ndonde \\(\\hat{\\mu}_{d,-i,h}(X_i)\\) es la media condicional estimada para la observación \\(i\\), dejando fuera a \\(i\\) y usando el resto de la muestra para la estimación\nA este problema se le conoce como sobreajuste u overfitting. La idea es que, con un \\(h\\) muy pequeño, cada media local se calcula con muy pocas observaciones, por lo que \\(\\hat{\\mu}\\) reproduce el ruido de la muestra con la que se estimó y no la media condicional. En otras palabras, la media condicional ajusta muy bien dentro de la muestra, pero predice mal observaciones nuevas. Por eso la validación cruzada evalúa el error en la observación \\(i\\) que se dejó fuera."
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#elección-de-h-1",
+    "href": "diapositivas/seleccion-observables.html#elección-de-h-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Elección de \\(h\\)",
+    "text": "Elección de \\(h\\)\n\nEl proceso de validación cruzada consiste en variar \\(h\\) hasta encontrar el valor que minimice la suma de los errores de predicción\nUna vez obtenido \\(h_{opt}\\) calculamos \\(\\hat{\\mu}_{d,h_{opt}}(X_i)\\)\nEsta es una forma comúnmente usada en el trabajo aplicado para estimar medias condicionales"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#inverse-probability-weighting-ipw",
+    "href": "diapositivas/seleccion-observables.html#inverse-probability-weighting-ipw",
+    "title": "Inferencia Causal 2026",
+    "section": "Inverse probability weighting (IPW)",
+    "text": "Inverse probability weighting (IPW)\n\nEs otra manera de explotar el PS para estimar el efecto causal, dado que se cumpla el SIC\nLa idea es usar el inverso del PS como pesos\n\nLas observaciones subrepresentadas en su grupo (tratados con PS bajo, no tratados con PS alto) reciben más peso\nLas observaciones sobrerrepresentadas en su grupo (tratados con PS alto, no tratados con PS bajo) reciben menos peso\n\nLa intuición es que al repesar las observaciones, los grupos tratado y no tratado son comparables en términos de la distribución de sus \\(X\\)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#motivación-del-ipw-con-un-experimentosantanna",
+    "href": "diapositivas/seleccion-observables.html#motivación-del-ipw-con-un-experimentosantanna",
+    "title": "Inferencia Causal 2026",
+    "section": "Motivación del IPW con un experimento1",
+    "text": "Motivación del IPW con un experimento1\n\nPensemos en un experimento simple, donde \\(\\{Y(0),Y(1)\\} \\perp D\\) y solo decidimos la proporción de unidades que serán tratadas\nEstimamos el ATE con la diferencia de medias entre tratados y no tratados, que podemos reescribir como:\n\n\\[\n\\begin{align*}\n\\hat{\\Delta}_{ATE}^{E}&=\\frac{1}{n_1}\\sum_{i:D_i=1}Y_i-\\frac{1}{n_0}\\sum_{i:D_i=0}Y_i \\\\\n&=\\frac{\\sum_{i=1}^n D_iY_i}{\\sum_{j=1}^n D_j}-\\frac{\\sum_{i=1}^n (1-D_i)Y_i}{\\sum_{j=1}^n (1-D_j)} \\\\\n&=\\frac{1}{n}\\sum_{i=1}^n \\frac{D_i}{\\hat{p}}Y_i-\\frac{1}{n}\\sum_{i=1}^n \\frac{1-D_i}{1-\\hat{p}}Y_i\n\\end{align*}\n\\]\ndonde \\(\\hat{p}=\\frac{1}{n}\\sum_{i=1}^n D_i=\\frac{n_1}{n}\\) es la proporción de unidades tratadas\nAdaptado de Sant’Anna, Econ 520"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#motivación-del-ipw-con-un-experimento",
+    "href": "diapositivas/seleccion-observables.html#motivación-del-ipw-con-un-experimento",
+    "title": "Inferencia Causal 2026",
+    "section": "Motivación del IPW con un experimento",
+    "text": "Motivación del IPW con un experimento\n\nEs decir, en un experimento simple, el estimador de diferencia de medias del ATE es un promedio ponderado de los resultados:\n\n\\[\n\\hat{\\Delta}_{ATE}^{E}=\\frac{1}{n}\\sum_{i=1}^n \\left(\\frac{D_i}{\\hat{p}}-\\frac{1-D_i}{1-\\hat{p}}\\right)Y_i\n\\]\n\nLos pesos son el inverso del PS, que en este diseño es una constante\nCada grupo es pesado por el inverso de la probabilidad de pertenecer a ese grupo\nPodemos seguir usando la misma lógica reemplazando \\(\\hat{p}\\) por \\(\\hat{p}(X_i)\\), siempre que haya soporte común, \\(0&lt;p(X)&lt;1\\)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#estimadores-de-ipw",
+    "href": "diapositivas/seleccion-observables.html#estimadores-de-ipw",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimadores de IPW",
+    "text": "Estimadores de IPW\n\nBajo esta lógica, dos estimadores de IPW son:\n\n\\[\\hat{\\Delta}_{ATE}^{IPW}=\\left(\\sum_{i=1}^n \\frac{Y_i D_i}{\\hat{p}(X_i)} / \\sum_{i=1}^n \\frac{D_i}{\\hat{p}(X_i)}\\right) - \\left(\\sum_{i=1}^n \\frac{Y_i (1-D_i)}{1-\\hat{p}(X_i)} / \\sum_{i=1}^n \\frac{1-D_i}{1-\\hat{p}(X_i)}\\right)\\]\n\\[\\hat{\\Delta}_{TOT}^{IPW}=\\left(\\sum_{i=1}^n Y_i D_i / \\sum_{i=1}^n D_i\\right) - \\left(\\sum_{i=1}^n \\frac{Y_i (1-D_i)\\hat{p}(X_i)}{1-\\hat{p}(X_i)} / \\sum_{i=1}^n \\frac{(1-D_i)\\hat{p}(X_i)}{1-\\hat{p}(X_i)}\\right)\\]\n\nEn el TOT, los tratados reciben un peso de uno y los no tratados se pesan por \\(\\frac{\\hat{p}(X_i)}{1-\\hat{p}(X_i)}\\), de forma que la distribución de sus \\(X\\) se parezca a la de los tratados"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#métodos-doblemente-robustos-dr",
+    "href": "diapositivas/seleccion-observables.html#métodos-doblemente-robustos-dr",
+    "title": "Inferencia Causal 2026",
+    "section": "Métodos doblemente robustos (DR)",
+    "text": "Métodos doblemente robustos (DR)\n\nEstos métodos consisten en usar lo mejor de los dos mundos vistos anteriormente: estimación de medias condicionales y pesos basados en el PS\nLos parámetros de interés son:\n\n\\[\\Delta_{ATE}=E\\left(\\mu_1(X)-\\mu_0(X)+ \\frac{(Y-\\mu_1(X))D}{p(X)}-\\frac{(Y-\\mu_0(X))(1-D)}{1-p(X)}\\right)\\] \\[\\Delta_{TOT}=E\\left(\\frac{(Y-\\mu_0(X))D}{\\Pr(D=1)}-\\frac{(Y-\\mu_0(X))(1-D)p(X)}{(1-p(X))\\Pr(D=1)}\\right)\\]\n\nPuede verificarse que, bajo el SIC y el soporte común, estas expresiones son equivalentes a las que definen \\(\\Delta_{ATE}\\) y \\(\\Delta_{TOT}\\) con medias condicionales (regresión) y con pesos basados en el PS (IPW)\nLa ventaja es que basta con que especifiquemos bien el modelo para la media condicional o el modelo del PS para estimar de forma consistente los efectos de tratamiento\n\nRegresión requiere que el modelo de la media condicional sea correcto\nIPW requiere que el modelo del PS sea correcto"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#estimadores-dr",
+    "href": "diapositivas/seleccion-observables.html#estimadores-dr",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimadores DR",
+    "text": "Estimadores DR\n\nUsamos estimadores plug-in, es decir, calculamos cada parte por separado y los conectamos1\nEstimamos \\(\\hat{\\mu}_1(X)\\) y \\(\\hat{\\mu}_0(X)\\) con una regresión y \\(\\hat{p}(X)\\) con un modelo para el PS\nEl estimador DR del ATE es:\n\n\\[\n\\begin{align*}\n\\hat{\\Delta}_{ATE}^{DR}&=\\frac{1}{n}\\sum_{i=1}^n\\left(\\hat{\\mu}_1(X_i)+\\frac{D_i(Y_i-\\hat{\\mu}_1(X_i))}{\\hat{p}(X_i)}\\right) -\\frac{1}{n}\\sum_{i=1}^n\\left(\\hat{\\mu}_0(X_i)+\\frac{(1-D_i)(Y_i-\\hat{\\mu}_0(X_i))}{1-\\hat{p}(X_i)}\\right)\n\\end{align*}\n\\]\n\nY el estimador DR del TOT, usando \\(\\widehat{\\Pr}(D=1)=\\frac{n_1}{n}\\), es:\n\n\\[\n\\hat{\\Delta}_{TOT}^{DR}=\\frac{1}{n_1}\\sum_{i=1}^n\\left(D_i-\\frac{(1-D_i)\\hat{p}(X_i)}{1-\\hat{p}(X_i)}\\right)(Y_i-\\hat{\\mu}_0(X_i))\n\\]\n\nEn el TOT solo necesitamos \\(\\hat{\\mu}_0(X)\\), pues el contrafactual que falta es el de los tratados sin tratamiento\n\nAdaptado de Facure, Causal Inference for the Brave and True, capítulo 12"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#inferencia-para-regresión-ipw-y-dr",
+    "href": "diapositivas/seleccion-observables.html#inferencia-para-regresión-ipw-y-dr",
+    "title": "Inferencia Causal 2026",
+    "section": "Inferencia para regresión, IPW y DR",
+    "text": "Inferencia para regresión, IPW y DR\n\nUsamos errores robustos en el caso de la estimación paramétrica\nUsamos bootstrap para la estimación local con kernel\nUsamos errores estándar analíticos que toman en cuenta la estimación del PS en el caso de IPW y DR"
   },
   {
     "objectID": "diapositivas/seleccion-observables.html#vecino-más-cercano",
@@ -2981,6 +3065,146 @@
     "title": "Inferencia Causal 2026",
     "section": "Kernel",
     "text": "Kernel\n\n\n\n\n\n\n\nTratados\n\\(\\hat{p}\\)\n\n\n\n\nd\n0.31\n\n\ne\n0.39\n\n\nf\n0.44\n\n\ng\n0.52\n\n\nh\n0.55\n\n\ni\n0.62\n\n\n\n\n\n\n\n\n\n\n\nNo tratados\n\\(\\hat{p}\\)\n\n\n\n\nR\n0.27\n\n\nS\n0.29\n\n\nT\n0.33\n\n\nU\n0.49\n\n\nV\n0.57\n\n\nW\n0.61\n\n\n\n\n\n\n\nSupongamos que estos son todos nuestros datos\nCon un emparejamiento por kernel, a \\(d\\) lo emparejamos con todos los individuos, desde \\(R\\) hasta \\(W\\)\nLa función kernel le dará más peso a \\(T\\) y \\(S\\), un poco menos a \\(R\\) y así hasta darle muy poco o casi nada de peso a \\(W\\)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#efecto-de-fumar-en-el-embarazo",
+    "href": "diapositivas/seleccion-observables.html#efecto-de-fumar-en-el-embarazo",
+    "title": "Inferencia Causal 2026",
+    "section": "Efecto de fumar en el embarazo",
+    "text": "Efecto de fumar en el embarazo\n\nDatos en cattaneo_smoking.csv (Cattaneo, 2010) de una muestra de mujeres que incluye un indicador de si la madre fumó durante el embarazo\nBuscamos estimar el efecto de fumar sobre el peso de los bebés al nacer\nSe incluyen una serie de covariables que usaremos para modelar el PS\nUsaremos los paquetes MatchIt y cobalt"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#matchit-para-realizar-los-emparejamientos",
+    "href": "diapositivas/seleccion-observables.html#matchit-para-realizar-los-emparejamientos",
+    "title": "Inferencia Causal 2026",
+    "section": "matchit para realizar los emparejamientos",
+    "text": "matchit para realizar los emparejamientos\n\nUsaremos matchit de la librería MatchIt para hacer el emparejamiento\nConstruimos la dummy de tratamiento (smoke), una dummy para mujeres casadas (married) y una dummy para si el caso en cuestión es el primer bebé (firstbaby)\n\n\ndata.smoking&lt;-read_csv(\n  \"./cattaneo_smoking.csv\",\n  locale = locale(encoding = \"latin1\")) |&gt;\n  clean_names() |&gt;\n  mutate(smoke=ifelse(mbsmoke==\"smoker\",1,0)) |&gt;\n  mutate(married=ifelse(mmarried==\"married\",1,0)) |&gt;\n  mutate(firstbaby=ifelse(fbaby==\"Yes\",1,0))\n\n#Asegurarse que no hay NA, matchit no acepta NA\ndata.smoking &lt;- data.smoking[complete.cases(data.smoking), ]\n\n#Una semilla para todo el trabajo\nset.seed(1021)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#comparación-observacional-2",
+    "href": "diapositivas/seleccion-observables.html#comparación-observacional-2",
+    "title": "Inferencia Causal 2026",
+    "section": "Comparación observacional",
+    "text": "Comparación observacional\n\nSi solo comparamos a las mujeres que fuman con las que no fuman, estamos comparando personas muy diferentes\n\n\n\ndatasummary_balance(~smoke,\n                    fmt = \"%.2f\",\n                    data = select(data.smoking, smoke, \n                                  married, firstbaby, \n                                  medu, nprenatal, \n                                  foreign, mhisp, fage),\n                    dinm_statistic = \"p.value\",\n                    title = \"Pruebas de balance\",\n                    notes = \"Fuente: Cattaneo (2010)\")\n\n\n\n\n    \n\n    \n\n    \n    \n    \n      \n        Pruebas de balance\n        \n\n \n0\n1\n \n \n\n              \n                 \n                Mean\n                Std. Dev.\n                Mean\n                Std. Dev.\n                Diff. in Means\n                p\n              \n        \n        Fuente: Cattaneo (2010)\n        \n                \n                  married\n                  0.75\n                  0.43\n                  0.47\n                  0.50\n                  -0.28\n                  0.00\n                \n                \n                  firstbaby\n                  0.45\n                  0.50\n                  0.37\n                  0.48\n                  -0.08\n                  0.00\n                \n                \n                  medu\n                  12.93\n                  2.53\n                  11.64\n                  2.17\n                  -1.29\n                  0.00\n                \n                \n                  nprenatal\n                  10.96\n                  3.52\n                  9.86\n                  4.21\n                  -1.10\n                  0.00\n                \n                \n                  foreign\n                  0.06\n                  0.24\n                  0.03\n                  0.16\n                  -0.03\n                  0.00\n                \n                \n                  mhisp\n                  0.04\n                  0.19\n                  0.02\n                  0.15\n                  -0.01\n                  0.05\n                \n                \n                  fage\n                  27.84\n                  8.79\n                  24.74\n                  11.15\n                  -3.10\n                  0.00"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#estimación-del-ps",
+    "href": "diapositivas/seleccion-observables.html#estimación-del-ps",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación del PS",
+    "text": "Estimación del PS\n\nUna manera de hacer más eficiente el uso de las fórmulas es usando as.formula\n\n\nbinaria &lt;- \"smoke\"\nvariables &lt;- c(\"married\", \"firstbaby\", \"medu\", \"nprenatal\", \"foreign\", \"mhisp\", \"fage\")\n\nps &lt;- as.formula(paste(binaria, paste(variables, collapse = \"+\"), sep = \" ~ \"))\nprint(ps)\n\nsmoke ~ married + firstbaby + medu + nprenatal + foreign + mhisp + \n    fage\n\n\n\nUsamos matchit para estimar el PS y realizar los emparejamientos con el algoritmo que indiquemos:\n\n\nm.out &lt;- matchit(formula=ps,\n                 method = \"nearest\",\n                 ratio = 1,\n                 distance= \"glm\",\n                 link = \"logit\",\n                 replace = FALSE,\n                 estimand = \"ATT\",\n                 data = data.smoking)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#estimación-del-ps-1",
+    "href": "diapositivas/seleccion-observables.html#estimación-del-ps-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación del PS",
+    "text": "Estimación del PS\n\nEl resumen del procedimiento da bastante información sobre el matching\n\n\nsummary(m.out)\n\n\nCall:\nmatchit(formula = ps, data = data.smoking, method = \"nearest\", \n    distance = \"glm\", link = \"logit\", estimand = \"ATT\", replace = FALSE, \n    ratio = 1)\n\nSummary of Balance for All Data:\n          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean\ndistance         0.2568        0.1700          0.6673     1.4475    0.2002\nmarried          0.4734        0.7515         -0.5569          .    0.2781\nfirstbaby        0.3715        0.4531         -0.1689          .    0.0816\nmedu            11.6389       12.9299         -0.5955     0.7316    0.0717\nnprenatal        9.8623       10.9629         -0.2616     1.4301    0.0376\nforeign          0.0255        0.0598         -0.2181          .    0.0344\nmhisp            0.0243        0.0363         -0.0776          .    0.0120\nfage            24.7431       27.8444         -0.2782     1.6070    0.0468\n          eCDF Max\ndistance    0.3329\nmarried     0.2781\nfirstbaby   0.0816\nmedu        0.2549\nnprenatal   0.1259\nforeign     0.0344\nmhisp       0.0120\nfage        0.1377\n\nSummary of Balance for Matched Data:\n          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean\ndistance         0.2568        0.2564          0.0033     1.0110    0.0005\nmarried          0.4734        0.4769         -0.0070          .    0.0035\nfirstbaby        0.3715        0.3981         -0.0551          .    0.0266\nmedu            11.6389       11.6019          0.0171     0.7064    0.0161\nnprenatal        9.8623        9.8588          0.0008     1.1543    0.0059\nforeign          0.0255        0.0174          0.0514          .    0.0081\nmhisp            0.0243        0.0231          0.0075          .    0.0012\nfage            24.7431       24.5799          0.0146     1.0787    0.0124\n          eCDF Max Std. Pair Dist.\ndistance    0.0093          0.0046\nmarried     0.0035          0.2202\nfirstbaby   0.0266          0.4575\nmedu        0.0417          0.5168\nnprenatal   0.0185          0.7039\nforeign     0.0081          0.2425\nmhisp       0.0012          0.2781\nfage        0.0556          0.6457\n\nSample Sizes:\n          Control Treated\nAll          3778     864\nMatched       864     864\nUnmatched    2914       0\nDiscarded       0       0"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#verificación-del-balance",
+    "href": "diapositivas/seleccion-observables.html#verificación-del-balance",
+    "title": "Inferencia Causal 2026",
+    "section": "Verificación del balance",
+    "text": "Verificación del balance\n\n\nGráfico de nube:\n\nplot(m.out, type = \"jitter\", interactive = FALSE)\n\n\n\n\n\n\n\n\n\nHistograma:\n\nplot(m.out, type = \"hist\")"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#muestra-emparejada-3",
+    "href": "diapositivas/seleccion-observables.html#muestra-emparejada-3",
+    "title": "Inferencia Causal 2026",
+    "section": "Muestra emparejada",
+    "text": "Muestra emparejada\n\nPodemos guardar un objeto con la muestra emparejada usando match.data y observar quién hace match con quién\n\n\n\nm.data &lt;- match.data(m.out)\n\nhead(m.out$match.matrix)\n\n\n   [,1]  \n11 \"4130\"\n20 \"2234\"\n25 \"1740\"\n43 \"2857\"\n47 \"305\" \n49 \"1442\""
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#calidad-del-matching-1",
+    "href": "diapositivas/seleccion-observables.html#calidad-del-matching-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Calidad del matching",
+    "text": "Calidad del matching\n\nSe sugiere evaluar las diferencias promedio estandarizadas (SMD) entre los grupos tratados y no tratados, antes y después del emparejamiento\nPara el TOT, matchit divide entre la desviación estándar del grupo tratado, \\(S_T\\)\n\n\\[SMD_X=\\frac{\\bar{X}_T-\\bar{X}_{NT}}{S_T}\\]\n\nTambién se sugiere calcular la razón de varianzas (VR). Se espera que este ratio no sea muy distinto de 1 después de hacer el emparejamiento\n\n\\[VR=\\frac{S^2_T}{S^2_{NT}}\\]\n\nRegla de dedo: una diferencia de 0.1 o menos en el SMD se considera un buen balance. Por ejemplo, la escolaridad de la madre tenía un SMD de -0.5955 en la muestra en bruto, pero con el emparejamiento el SMD se vuelve de solo 0.0171"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#loveplot",
+    "href": "diapositivas/seleccion-observables.html#loveplot",
+    "title": "Inferencia Causal 2026",
+    "section": "Loveplot",
+    "text": "Loveplot\n\nUsando la librería cobalt podemos construir un love plot que representa gráficamente las diferencias antes y después del emparejamiento\n\n\n\nlove.plot(bal.tab(m.out),\n          threshold = .1)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#efecto-de-tratamiento",
+    "href": "diapositivas/seleccion-observables.html#efecto-de-tratamiento",
+    "title": "Inferencia Causal 2026",
+    "section": "Efecto de tratamiento",
+    "text": "Efecto de tratamiento\n\nHan existido muchas maneras de explotar la muestra emparejada. Aquí usamos g-computation\nUna buena guía sobre la estimación de los efectos está en la documentación de MatchIt\nEstimamos un modelo para la variable dependiente dado el tratamiento y, opcionalmente, las covariables, usando la muestra emparejada\n\n\ntt1 &lt;- lm(bweight ~ smoke,\n          data = m.data,\n          weights = weights)"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#efecto-de-tratamiento-1",
+    "href": "diapositivas/seleccion-observables.html#efecto-de-tratamiento-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Efecto de tratamiento",
+    "text": "Efecto de tratamiento\n\nUsamos marginaleffects::avg_comparisons() para estimar el TOT\nvcov indica que se estimen errores agrupados a nivel pareja, que es lo apropiado cuando el emparejamiento es sin reemplazo (Abadie & Spiess, 2022)\nnewdata indica que se genere un nuevo objeto de datos con solo las unidades tratadas para estimar el TOT\n\n\ntot.psm &lt;- marginaleffects::avg_comparisons(tt1,\n                variables = \"smoke\",\n                vcov = ~subclass,\n                newdata = subset(smoke == 1))\ntot.psm\n\n\n Estimate Std. Error     z Pr(&gt;|z|)    S 2.5 % 97.5 %\n     -194       28.1 -6.91   &lt;0.001 37.6  -249   -139\n\nTerm: smoke\nType: response\nComparison: 1 - 0"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#efecto-de-tratamiento-2",
+    "href": "diapositivas/seleccion-observables.html#efecto-de-tratamiento-2",
+    "title": "Inferencia Causal 2026",
+    "section": "Efecto de tratamiento",
+    "text": "Efecto de tratamiento\nAlgunos autores incluyen las covariables en su estimación:\n\ntt2 &lt;- lm(bweight ~ smoke*(married + firstbaby + medu + nprenatal + foreign + mhisp + fage),\n          data = m.data,\n          weights = weights)\n\n#Errores agrupados a nivel subclass\nmarginaleffects::avg_comparisons(tt2,\n                variables = \"smoke\",\n                vcov = ~subclass,\n                newdata = subset(smoke == 1))\n\n\n Estimate Std. Error    z Pr(&gt;|z|)    S 2.5 % 97.5 %\n     -197       27.7 -7.1   &lt;0.001 39.5  -251   -143\n\nTerm: smoke\nType: response\nComparison: 1 - 0"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#regresión-ipw-y-dr-fumar-durante-el-embarazo",
+    "href": "diapositivas/seleccion-observables.html#regresión-ipw-y-dr-fumar-durante-el-embarazo",
+    "title": "Inferencia Causal 2026",
+    "section": "Regresión, IPW y DR: fumar durante el embarazo",
+    "text": "Regresión, IPW y DR: fumar durante el embarazo\n\nComparamos los distintos métodos para estimar el TOT con los datos de Cattaneo (2010)\n\\(D\\) es smoke, \\(Y\\) es bweight y \\(X\\) son las mismas siete covariables que usamos para estimar el PS\nVeremos cuatro estimadores:\n\nRegresión paramétrica, con lm y avg_comparisons del paquete marginaleffects\nRegresión kernel, con npreg del paquete np y solo tres de las covariables\nIPW, con PSweight del paquete PSweight\nDR, también con PSweight\n\nEn IPW y DR el PS se estima con el mismo logit que en el PSM, guardado en la fórmula ps"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#regresión-paramétrica",
+    "href": "diapositivas/seleccion-observables.html#regresión-paramétrica",
+    "title": "Inferencia Causal 2026",
+    "section": "Regresión paramétrica",
+    "text": "Regresión paramétrica\n\nEstimamos una regresión con interacciones entre \\(D\\) y todas las covariables\navg_comparisons, del paquete marginaleffects, promedia \\(\\hat{\\mu}_1(X_i)-\\hat{\\mu}_0(X_i)\\) sobre los tratados, que es \\(\\hat{\\Delta}_{TOT}^R\\):\n\n\nlibrary(marginaleffects)\n\n# Regresión con interacciones entre D y X\nols &lt;- lm(bweight ~ smoke * (married + firstbaby + medu + nprenatal +\n                               foreign + mhisp + fage),\n                               data = data.smoking)\n\n# Promedio de las diferencias predichas en la muestra de tratados\ntot.reg &lt;- avg_comparisons(ols, variables = \"smoke\", vcov = \"HC1\",\n                           newdata = filter(data.smoking, smoke == 1))\nc(efecto = tot.reg$estimate, ee = tot.reg$std.error)\n\n    efecto         ee \n-212.35668   22.56909"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#regresión-kernel",
+    "href": "diapositivas/seleccion-observables.html#regresión-kernel",
+    "title": "Inferencia Causal 2026",
+    "section": "Regresión kernel",
+    "text": "Regresión kernel\n\nCon siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: married, fage y nprenatal\n\n\nlibrary(np)\n\ntratados &lt;- filter(data.smoking, smoke == 1)\nnotratados &lt;- filter(data.smoking, smoke == 0)\n\n# h óptimo de cada covariable por validación cruzada, solo con los no tratados\nbw &lt;- npregbw(bweight ~ married + fage + nprenatal, data = notratados,\n              regtype = \"lc\", bwmethod = \"cv.ls\", ckertype = \"epanechnikov\")\n\n# Media local de los no tratados, evaluada en las X de cada tratado\nmu0 &lt;- predict(npreg(bw), newdata = tratados)\nmean(tratados$bweight - mu0)\n\n[1] -207.2631"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#regresión-kernel-1",
+    "href": "diapositivas/seleccion-observables.html#regresión-kernel-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Regresión kernel",
+    "text": "Regresión kernel\n\n\n\nregtype = “lc”: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una\nbwmethod = “cv.ls”: es la validación cruzada que deja fuera a cada observación\nHay un \\(h_{opt}\\) por covariable: 0.47 para married, 27.3 para fage y 1.46 para nprenatal\n\\(\\hat{\\mu}_0\\) se estima solo con los no tratados y da el contrafactual de cada tratado\nEl TOT estimado es de -207.3 gramos\nObtenemos el error estándar usando bootstrap"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#regresión-kernel-inferencia",
+    "href": "diapositivas/seleccion-observables.html#regresión-kernel-inferencia",
+    "title": "Inferencia Causal 2026",
+    "section": "Regresión kernel: inferencia",
+    "text": "Regresión kernel: inferencia\n\nboot, del paquete boot, repite el estimador en cada muestra bootstrap, manteniendo fijos los \\(h_{opt}\\)\n\n\nlibrary(boot)\n\ncovs &lt;- c(\"married\", \"fage\", \"nprenatal\")\n\nbs &lt;- function(data, indices) {\n  dat &lt;- data[indices, ]                 # muestra bootstrap\n  tr &lt;- filter(dat, smoke == 1)\n  nt &lt;- filter(dat, smoke == 0)\n  mu0 &lt;- npreg(bws = bw$bw, txdat = nt[, covs], tydat = nt$bweight,\n               exdat = tr[, covs], regtype = \"lc\", ckertype = \"epanechnikov\")$mean\n  mean(tr$bweight - mu0)                 # TOT en la muestra bootstrap\n}\n\nset.seed(1021)\nboot.kernel &lt;- boot(data = data.smoking, statistic = bs, R = 499)\nc(efecto = boot.kernel$t0, ee = sd(boot.kernel$t))\n\n    efecto         ee \n-207.26309   21.38315"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#ipw",
+    "href": "diapositivas/seleccion-observables.html#ipw",
+    "title": "Inferencia Causal 2026",
+    "section": "IPW",
+    "text": "IPW\n\nweight = “treated” pide los pesos del TOT (1 para los tratados y \\(\\frac{\\hat{p}(X_i)}{1-\\hat{p}(X_i)}\\) para los no tratados)\n\n\nlibrary(PSweight)\n\nipw &lt;- PSweight(ps.formula = ps,\n                yname = \"bweight\",\n                data = as.data.frame(data.smoking),\n                weight = \"treated\")\n\nsummary(ipw)$estimates\n\n            Estimate Std.Error   z value       lwr       upr Pr(&gt;|z|)\nContrast 1 -212.8243  23.34637 -9.115947 -258.5824 -167.0663        0"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#dr",
+    "href": "diapositivas/seleccion-observables.html#dr",
+    "title": "Inferencia Causal 2026",
+    "section": "DR",
+    "text": "DR\n\nAgregamos un modelo para \\(Y\\) (out.formula) y pedimos el estimador aumentado (augmentation = TRUE)\n\n\nresultado &lt;- as.formula(paste(\"bweight\",\n                              paste(variables, collapse = \"+\"),\n                              sep = \" ~ \"))\n\ndr &lt;- PSweight(ps.formula = ps,\n               yname = \"bweight\",\n               data = as.data.frame(data.smoking),\n               weight = \"treated\",\n               augmentation = TRUE,\n               out.formula = resultado)\n\nsummary(dr)$estimates\n\n            Estimate Std.Error   z value       lwr       upr Pr(&gt;|z|)\nContrast 1 -218.2062  23.19071 -9.409207 -263.6592 -172.7532        0"
+  },
+  {
+    "objectID": "diapositivas/seleccion-observables.html#comparación-entre-métodos",
+    "href": "diapositivas/seleccion-observables.html#comparación-entre-métodos",
+    "title": "Inferencia Causal 2026",
+    "section": "Comparación entre métodos",
+    "text": "Comparación entre métodos\n\n\n\n\n\nMétodo\nEfecto en el peso al nacer (gramos)\nError estándar\n\n\n\n\nDiferencia simple de medias\n-275.3\n21.2\n\n\nPSM (vecino más cercano, sin reemplazo)\n-194.3\n28.1\n\n\nRegresión paramétrica\n-212.4\n22.6\n\n\nRegresión kernel (tres covariables)\n-207.3\n21.4\n\n\nIPW\n-212.8\n23.3\n\n\nDR\n-218.2\n23.2\n\n\n\n\n\n\nTodos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos\nLa diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer\nTodos descansan en el SIC: si hay selección en no observables, ninguno la corrige"
   },
   {
     "objectID": "index.html",

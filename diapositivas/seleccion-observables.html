@@ -210,6 +210,23 @@
       }
     });
   });
+  /* Notas al pie: Quarto las pasa al pie de cada lámina y reinicia la numeración en 1, aunque
+     conserva el consecutivo en el id (fn1, fn2, ...). Reponemos ese consecutivo en la lista y en
+     las llamadas de la lámina; solo si coinciden en número, para no tocar superíndices que no
+     son notas (p. ej. un exponente escrito con ^2^) */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('ol.aside-footnotes').forEach(function (ol) {
+      var notas = ol.querySelectorAll(':scope > li[id^="fn"]');
+      var lamina = ol.closest('section');
+      if (!notas.length || !lamina) return;
+      var llamadas = Array.prototype.filter.call(lamina.querySelectorAll('sup'), function (sup) {
+        return /^\d+$/.test(sup.textContent) && !sup.closest('table') && !sup.closest('aside');
+      });
+      if (llamadas.length !== notas.length) return;
+      ol.setAttribute('start', notas[0].id.replace('fn', ''));
+      llamadas.forEach(function (sup, i) { sup.textContent = notas[i].id.replace('fn', ''); });
+    });
+  });
   </script>
   <style>
   /* Reglas del tema Inferencia Causal, movidas aquí desde la sección scss:rules de
@@ -295,6 +312,10 @@
   .reveal div.sourceCode pre code.sourceCode{ background:transparent !important; color:var(--code-ink); }
   .reveal div.sourceCode pre code > span,
   .reveal div.sourceCode pre code.sourceCode > span{ color:var(--code-ink); }
+  /* Con output-location: column el bloque de código vive dentro de .column-output-location y
+     quarto le repone el fondo blanco; lo regresamos al verde del resto de los bloques */
+  .reveal .column-output-location div.sourceCode,
+  .reveal .column-output-location div.sourceCode.cell-code{ background:var(--deep) !important; }
   /* resaltado de sintaxis legible sobre el verde profundo (paleta de la marca) */
   .reveal .sourceCode span.co, .reveal .sourceCode span.do,
   .reveal .sourceCode span.cv, .reveal .sourceCode span.an,
@@ -495,6 +516,15 @@
 .reveal .codigo-grande div.sourceCode pre code.sourceCode { font-size: 1.3em !important; line-height: 1.4; }
 .reveal .codigo-grande .cell-output pre code { font-size: 1.3em; line-height: 1.25; padding: .45em 1.1em; }
 .reveal .codigo-grande pre, .reveal .codigo-grande div.sourceCode { margin: .25em 0 .45em; }
+/* Salida larga de R (22 coeficientes): más grande que el .7em del tema, pero
+   sin llegar al tamaño de .codigo-grande para que quepa en una lámina */
+.reveal .salida-mediana .cell-output pre code { font-size: .95em; line-height: 1.2; }
+/* Salida muy larga (summary de matchit): letra más grande dentro de un recuadro
+   con scroll vertical, en lugar de encogerla para que quepa */
+.reveal .salida-scroll .cell-output pre { max-height: 560px; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; }
+.reveal .salida-scroll .cell-output pre code { font-size: 1.3em; line-height: 1.3; max-height: none !important; overflow: visible !important; border: 0; }
+/* Tabla de balance junto a su código: más chica para que quepa en media lámina */
+.reveal .tabla-compacta table { font-size: .62em; }
 /* El tema centra verticalmente las columnas; aquí arrancan al mismo nivel */
 .reveal .columnas-arriba .columns { align-items: flex-start; }
 /* El tema limita los scroll_box a 560px; esta lámina solo tiene la tabla */
@@ -530,6 +560,7 @@
 <li>Otros métodos basados en el SIC
 <ul>
 <li>Regresión</li>
+<li>Métodos locales</li>
 <li><em>Inverse probability weighting</em></li>
 <li>Métodos doblemente robustos</li>
 </ul></li>
@@ -930,7 +961,7 @@ p(X) &lt; 1
 <li><p>Si podemos imputar también, para cada unidad no tratada, su correspondiente contrafactual tratado, podemos estimar el ATE</p></li>
 <li><p>Y un <strong>estimador de matching exacto</strong> del ATE sería:</p></li>
 </ul>
-<p><span class="math display">\[\hat{\Delta}=\frac{1}{n}\sum_{i=1}^{n}(2D_i-1)\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)\]</span></p>
+<p><span class="math display">\[\hat{\Delta}_{ATE}=\frac{1}{n}\sum_{i=1}^{n}(2D_i-1)\left(Y_i-\frac{1}{M_i}\sum_{m=1}^{M_i}Y_{j_m(i)}\right)\]</span></p>
 <p>donde ahora <span class="math inline">\(j_m(i)\)</span> recorre las <span class="math inline">\(M_i\)</span> unidades del grupo <em>opuesto</em> al de <span class="math inline">\(i\)</span> con <span class="math inline">\(X_j=X_i\)</span></p>
 <ul>
 <li>Casi todas las aplicaciones de <em>matching</em> se enfocan en el TOT</li>
@@ -970,8 +1001,9 @@ p(X) &lt; 1
 <ul>
 <li>¿Cómo estimar la varianza?
 <ul>
-<li>Bootstrap no funciona (Abadie &amp; Imbens, 2008)</li>
-<li>Usar fórmulas analíticas (ver CA)</li>
+<li>Abadie e Imbens (2008) mostraron analíticamente que el bootstrap no es apropiado en el contexto de <em>matching</em></li>
+<li>Sin embargo, otros estudios de simulación han mostrado que funciona en muchas aplicaciones de <em>matching</em> y se llega a usar en casos particulares (por ejemplo, cuando el <em>matching</em> se realiza con reemplazo)</li>
+<li>El consejo práctico es usar resultados analíticos cuando estos estén disponibles</li>
 </ul></li>
 </ul>
 </section>
@@ -989,7 +1021,6 @@ p(X) &lt; 1
 <aside><ol class="aside-footnotes"><li id="fn2"><p><a href="https://www.jstor.org/stable/2998558">Estimating the Labor Market Impact of Voluntary Military Service Using Social Security Data on Military Applicants</a>.</p></li></ol></aside></section>
 <section id="ejemplo-veteranos-del-ejército-de-estados-unidos-1" class="slide level2 tabla-alta">
 <h2>Ejemplo: veteranos del ejército de Estados Unidos</h2>
-<div class="cell" data-warnings="false">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:700px; ">
 <table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
 <colgroup>
@@ -1451,7 +1482,6 @@ No blancos
 
 </table>
 </div>
-</div>
 </section>
 <section id="ejemplo-veteranos-del-ejército-de-estados-unidos-2" class="slide level2">
 <h2>Ejemplo: veteranos del ejército de Estados Unidos</h2>
@@ -1641,25 +1671,267 @@ X \perp  D|p(X)
 </section>
 <section id="regresión-1" class="slide level2">
 <h2>Regresión</h2>
-<p>Próximamente</p>
+<ul>
+<li>Dados unos datos observacionales y asumiendo SIC, ¿por qué no usar directamente las herramientas de regresión que ya conocemos para estimar efectos causales?</li>
+</ul>
+<p><strong>Definiciones</strong></p>
+<ul>
+<li><strong>Efecto Promedio Condicional del Tratamiento (CATE)</strong>: es el efecto promedio de tratamiento bajo la condición de que los individuos tienen el mismo valor <span class="math inline">\(X=x\)</span></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Delta_x&amp;=E(Y(1)|X=x)-E(Y(0)|X=x) \\
+&amp;=\mu_1(x)-\mu_0(x)
+\end{align*}
+\]</span></p>
+<ul>
+<li>Si <em>promediamos</em> el CATE sobre todos los valores de <span class="math inline">\(X=x\)</span>, obtenemos el ATE:</li>
+</ul>
+<p><span class="math display">\[\Delta_{ATE} = E(\mu_1(X)-\mu_0(X))\]</span></p>
+<ul>
+<li>Y si nos fijamos solo en el subconjunto de la población que fue tratado, obtenemos el TOT:</li>
+</ul>
+<p><span class="math display">\[\Delta_{TOT} = E(\mu_1(X)|D=1)-E(\mu_0(X)|D=1)\]</span></p>
+</section>
+<section id="regresión-lineal" class="slide level2">
+<h2>Regresión lineal</h2>
+<ul>
+<li>Bajo el SIC, podríamos pensar que podemos estimar <span class="math inline">\(\mu_D(X)\)</span> usando una regresión de la forma: <span class="math display">\[\mu_D(X)=\alpha+\beta_DD+\beta_{X_1}X_1+\ldots+\beta_{X_K}X_K\]</span></li>
+</ul>
+<p><strong>Problemas</strong></p>
+<ul>
+<li><p><span class="math inline">\(D\)</span> y <span class="math inline">\(X\)</span> están correlacionados, lo cual afecta la varianza de <span class="math inline">\(\hat{\beta}_D\)</span> (tenemos menos información nueva que si <span class="math inline">\(D\)</span> y <span class="math inline">\(X\)</span> fueran independientes)</p></li>
+<li><p>El modelo puede estar mal especificado</p>
+<ul>
+<li>Omitimos términos de grado mayor que uno</li>
+<li>Omitimos posibles interacciones entre covariables (<span class="math inline">\(X_1 X_2\)</span>)</li>
+<li>Omitimos posibles interacciones entre el tratamiento, las covariables y sus posibles términos de orden mayor que uno</li>
+</ul></li>
+</ul>
+</section>
+<section id="regresión-con-interacciones-y-términos-de-orden-alto" class="slide level2">
+<h2>Regresión con interacciones y términos de orden alto</h2>
+<ul>
+<li><p>Pensaríamos que podemos arreglar el segundo problema con <span class="math display">\[
+\begin{align*}
+\mu_D(X) &amp;= \alpha + \beta_D D + \beta_{X_1}X_1 + \ldots + \beta_{X_K}X_K + \beta_{D,X_1}DX_1 + \ldots + \beta_{D,X_K}DX_K \\
+&amp;\quad + \beta_{X_1^2}X_1^2+\ldots+\beta_{X_1,X_2}X_1X_2+\ldots
+\end{align*}
+\]</span></p></li>
+<li><p>Y con los coeficientes estimados podríamos obtener <span class="math inline">\(\hat{\mu}_D(X)\)</span> y calcular</p></li>
+</ul>
+<p><span class="math display">\[\hat{\Delta}_{ATE}^R=\frac{1}{n}\sum_{i=1}^{n}(\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i))\]</span> <span class="math display">\[\hat{\Delta}_{TOT}^R=\frac{1}{n_1}\sum_{i:D_i=1}(\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i))\]</span></p>
+<p><strong>Problemas</strong></p>
+<ul>
+<li><p>¿Cómo determinar óptimamente el orden de los polinomios y el número de interacciones?</p></li>
+<li><p><em>Trade-off</em> sesgo vs varianza</p></li>
+</ul>
+</section>
+<section id="trade-off-sesgo-vs-varianza" class="slide level2 columnas-arriba">
+<h2><em>Trade-off</em> sesgo vs varianza</h2>
+<ul>
+<li>El error cuadrático medio de <span class="math inline">\(\hat{\mu}_d(x)\)</span> como estimador de <span class="math inline">\(\mu_d(x)\)</span> se descompone en dos partes:</li>
+</ul>
+<p><span class="math display">\[
+E\left((\hat{\mu}_d(x)-\mu_d(x))^2\right)=\underbrace{\left(E(\hat{\mu}_d(x))-\mu_d(x)\right)^2}_{\text{Sesgo}^2}+\underbrace{Var(\hat{\mu}_d(x))}_{\text{Varianza}}
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><p>Un modelo <strong>rígido</strong> (pocos términos) no sigue la forma de <span class="math inline">\(\mu_d(x)\)</span>: sesgo alto y varianza baja</p></li>
+<li><p>Un modelo <strong>flexible</strong> (muchos términos) sigue de cerca los datos: sesgo bajo y varianza alta</p></li>
+<li><p>Reducir un componente suele aumentar el otro</p></li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/sesgo_varianza-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="métodos-locales" class="slide level2">
+<h2>Métodos locales</h2>
+<ul>
+<li>Estimamos la media condicional para cada valor de <span class="math inline">\(X=x\)</span> como la media local de observaciones con <span class="math inline">\(X\)</span> cercanos a <span class="math inline">\(x\)</span></li>
+</ul>
+<p><span class="math display">\[\hat{\mu}_{d,h}(x)=\frac{\sum_{i:D_i=d}\mathcal{K}\left(\frac{X_i-x}{h}\right) Y_i}{\sum_{i:D_i=d}\mathcal{K}\left(\frac{X_i-x}{h}\right)}\]</span></p>
+<p>donde <span class="math inline">\(\mathcal{K}(\cdot)\)</span> es la función <em>kernel</em> que otorga pesos más grandes a las observaciones con <span class="math inline">\(\frac{X_i-x}{h}\)</span> cercano a cero y pesos más pequeños (incluso cero) para valores más lejanos de cero, y <span class="math inline">\(h\)</span> es el <em>ancho de banda</em></p>
+</section>
+<section id="pesos-kernel" class="slide level2">
+<h2>Pesos kernel</h2>
+<ul>
+<li>Algunos ejemplos de pesos kernel son los siguientes, con <span class="math inline">\(u=\frac{X_i-x}{h}\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: center;" data-quarto-table-cell-role="th">Kernel</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">\(\mathcal{K}(u)\)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Uniforme</td>
+<td style="text-align: center;">\(\frac{1}{2}\,\mathbb{I}\{\lvert u\rvert\leq 1\}\)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Triangular</td>
+<td style="text-align: center;">\((1-\lvert u\rvert)\,\mathbb{I}\{\lvert u\rvert\leq 1\}\)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Epanechnikov</td>
+<td style="text-align: center;">\(\frac{3}{4}(1-u^2)\,\mathbb{I}\{\lvert u\rvert\leq 1\}\)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Cuártico (<em>biweight</em>)</td>
+<td style="text-align: center;">\(\frac{15}{16}(1-u^2)^2\,\mathbb{I}\{\lvert u\rvert\leq 1\}\)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Gaussiano</td>
+<td style="text-align: center;">\(\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{u^2}{2}\right)\)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="elección-de-h" class="slide level2">
+<h2>Elección de <span class="math inline">\(h\)</span></h2>
+<ul>
+<li>La elección de <span class="math inline">\(h\)</span> es clave en la estimación
+<ul>
+<li>Un <span class="math inline">\(h\)</span> grande conlleva más sesgo pues se otorga un peso más grande a observaciones con <span class="math inline">\(X_i\)</span> lejano de <span class="math inline">\(x\)</span></li>
+<li>Un <span class="math inline">\(h\)</span> pequeño conlleva una mayor varianza pues solo otorga pesos a unas cuantas observaciones<sup>1</sup></li>
+</ul></li>
+</ul>
+<ul>
+<li>Se suele escoger un <span class="math inline">\(h_{opt}\)</span> usando un procedimiento de <em>validación cruzada</em> o <em>cross-validation</em></li>
+</ul>
+<p><span class="math display">\[h_{opt}=\text{arg} \min_{h \in \mathcal{H}} \sum_{i:D_i=d}(Y_i-\hat{\mu}_{d,-i,h}(X_i))^2\]</span></p>
+<p>donde <span class="math inline">\(\hat{\mu}_{d,-i,h}(X_i)\)</span> es la media condicional estimada para la observación <span class="math inline">\(i\)</span>, dejando fuera a <span class="math inline">\(i\)</span> y usando el resto de la muestra para la estimación</p>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>A este problema se le conoce como <em>sobreajuste</em> u <em>overfitting</em>. La idea es que, con un <span class="math inline">\(h\)</span> muy pequeño, cada media local se calcula con muy pocas observaciones, por lo que <span class="math inline">\(\hat{\mu}\)</span> reproduce el ruido de la muestra con la que se estimó y no la media condicional. En otras palabras, la media condicional ajusta muy bien dentro de la muestra, pero predice mal observaciones nuevas. Por eso la validación cruzada evalúa el error en la observación <span class="math inline">\(i\)</span> que se dejó fuera.</p></li></ol></aside></section>
+<section id="elección-de-h-1" class="slide level2">
+<h2>Elección de <span class="math inline">\(h\)</span></h2>
+<ul>
+<li><p>El proceso de validación cruzada consiste en variar <span class="math inline">\(h\)</span> hasta encontrar el valor que minimice la suma de los errores de predicción</p></li>
+<li><p>Una vez obtenido <span class="math inline">\(h_{opt}\)</span> calculamos <span class="math inline">\(\hat{\mu}_{d,h_{opt}}(X_i)\)</span></p></li>
+<li><p>Esta es una forma comúnmente usada en el trabajo aplicado para estimar medias condicionales</p></li>
+</ul>
 </section></section>
 <section>
 <section id="inverse-probability-weighting" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
 <h1><em>Inverse probability weighting</em></h1>
 
 </section>
-<section id="inverse-probability-weighting-1" class="slide level2">
-<h2><em>Inverse probability weighting</em></h2>
-<p>Próximamente</p>
+<section id="inverse-probability-weighting-ipw" class="slide level2">
+<h2><em>Inverse probability weighting (IPW)</em></h2>
+<ul>
+<li><p>Es otra manera de explotar el PS para estimar el efecto causal, dado que se cumpla el SIC</p></li>
+<li><p>La idea es usar el inverso del PS como pesos</p>
+<ul>
+<li>Las observaciones subrepresentadas en su grupo (tratados con PS bajo, no tratados con PS alto) reciben más peso</li>
+<li>Las observaciones sobrerrepresentadas en su grupo (tratados con PS alto, no tratados con PS bajo) reciben menos peso</li>
+</ul></li>
+<li><p>La intuición es que al repesar las observaciones, los grupos tratado y no tratado son comparables en términos de la distribución de sus <span class="math inline">\(X\)</span></p></li>
+</ul>
+</section>
+<section id="motivación-del-ipw-con-un-experimentosantanna" class="slide level2">
+<h2>Motivación del IPW con un experimento<sup>1</sup></h2>
+<ul>
+<li><p>Pensemos en un experimento simple, donde <span class="math inline">\(\{Y(0),Y(1)\} \perp D\)</span> y solo decidimos la proporción de unidades que serán tratadas</p></li>
+<li><p>Estimamos el ATE con la diferencia de medias entre tratados y no tratados, que podemos reescribir como:</p></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\hat{\Delta}_{ATE}^{E}&amp;=\frac{1}{n_1}\sum_{i:D_i=1}Y_i-\frac{1}{n_0}\sum_{i:D_i=0}Y_i \\
+&amp;=\frac{\sum_{i=1}^n D_iY_i}{\sum_{j=1}^n D_j}-\frac{\sum_{i=1}^n (1-D_i)Y_i}{\sum_{j=1}^n (1-D_j)} \\
+&amp;=\frac{1}{n}\sum_{i=1}^n \frac{D_i}{\hat{p}}Y_i-\frac{1}{n}\sum_{i=1}^n \frac{1-D_i}{1-\hat{p}}Y_i
+\end{align*}
+\]</span></p>
+<p>donde <span class="math inline">\(\hat{p}=\frac{1}{n}\sum_{i=1}^n D_i=\frac{n_1}{n}\)</span> es la proporción de unidades tratadas</p>
+<aside><ol class="aside-footnotes"><li id="fn4"><p>Adaptado de <a href="https://psantanna.com/Econ520/Slides/15-ipw/15slides.html#12">Sant’Anna, Econ 520</a></p></li></ol></aside></section>
+<section id="motivación-del-ipw-con-un-experimento" class="slide level2">
+<h2>Motivación del IPW con un experimento</h2>
+<ul>
+<li>Es decir, en un experimento simple, el estimador de diferencia de medias del ATE es un promedio ponderado de los resultados:</li>
+</ul>
+<p><span class="math display">\[
+\hat{\Delta}_{ATE}^{E}=\frac{1}{n}\sum_{i=1}^n \left(\frac{D_i}{\hat{p}}-\frac{1-D_i}{1-\hat{p}}\right)Y_i
+\]</span></p>
+<ul>
+<li><p>Los pesos son el inverso del PS, que en este diseño es una constante</p></li>
+<li><p>Cada grupo es pesado por el inverso de la probabilidad de pertenecer a ese grupo</p></li>
+<li><p>Podemos seguir usando la misma lógica reemplazando <span class="math inline">\(\hat{p}\)</span> por <span class="math inline">\(\hat{p}(X_i)\)</span>, siempre que haya soporte común, <span class="math inline">\(0&lt;p(X)&lt;1\)</span></p></li>
+</ul>
+</section>
+<section id="estimadores-de-ipw" class="slide level2">
+<h2>Estimadores de IPW</h2>
+<ul>
+<li>Bajo esta lógica, dos estimadores de IPW son:</li>
+</ul>
+<p><span class="math display">\[\hat{\Delta}_{ATE}^{IPW}=\left(\sum_{i=1}^n \frac{Y_i D_i}{\hat{p}(X_i)} / \sum_{i=1}^n \frac{D_i}{\hat{p}(X_i)}\right) - \left(\sum_{i=1}^n \frac{Y_i (1-D_i)}{1-\hat{p}(X_i)} / \sum_{i=1}^n \frac{1-D_i}{1-\hat{p}(X_i)}\right)\]</span></p>
+<p><span class="math display">\[\hat{\Delta}_{TOT}^{IPW}=\left(\sum_{i=1}^n Y_i D_i / \sum_{i=1}^n D_i\right) - \left(\sum_{i=1}^n \frac{Y_i (1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)} / \sum_{i=1}^n \frac{(1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)}\right)\]</span></p>
+<ul>
+<li>En el TOT, los tratados reciben un peso de uno y los no tratados se pesan por <span class="math inline">\(\frac{\hat{p}(X_i)}{1-\hat{p}(X_i)}\)</span>, de forma que la distribución de sus <span class="math inline">\(X\)</span> se parezca a la de los tratados</li>
+</ul>
 </section></section>
 <section>
 <section id="métodos-doblemente-robustos" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Métodos doblemente robustos</h1>
 
 </section>
-<section id="métodos-doblemente-robustos-1" class="slide level2">
-<h2><em>Métodos doblemente robustos</em></h2>
-<p>Próximamente</p>
+<section id="métodos-doblemente-robustos-dr" class="slide level2">
+<h2><em>Métodos doblemente robustos (DR)</em></h2>
+<ul>
+<li><p>Estos métodos consisten en usar lo mejor de los dos mundos vistos anteriormente: estimación de medias condicionales y pesos basados en el PS</p></li>
+<li><p>Los parámetros de interés son:</p></li>
+</ul>
+<p><span class="math display">\[\Delta_{ATE}=E\left(\mu_1(X)-\mu_0(X)+ \frac{(Y-\mu_1(X))D}{p(X)}-\frac{(Y-\mu_0(X))(1-D)}{1-p(X)}\right)\]</span> <span class="math display">\[\Delta_{TOT}=E\left(\frac{(Y-\mu_0(X))D}{\Pr(D=1)}-\frac{(Y-\mu_0(X))(1-D)p(X)}{(1-p(X))\Pr(D=1)}\right)\]</span></p>
+<ul>
+<li><p>Puede verificarse que, bajo el SIC y el soporte común, estas expresiones son equivalentes a las que definen <span class="math inline">\(\Delta_{ATE}\)</span> y <span class="math inline">\(\Delta_{TOT}\)</span> con medias condicionales (regresión) y con pesos basados en el PS (IPW)</p></li>
+<li><p>La ventaja es que basta con que especifiquemos bien el modelo para la media condicional o el modelo del PS para estimar de forma consistente los efectos de tratamiento</p>
+<ul>
+<li>Regresión requiere que el modelo de la media condicional sea correcto</li>
+<li>IPW requiere que el modelo del PS sea correcto</li>
+</ul></li>
+</ul>
+</section>
+<section id="estimadores-dr" class="slide level2">
+<h2>Estimadores DR</h2>
+<ul>
+<li><p>Usamos estimadores <em>plug-in</em>, es decir, calculamos cada parte por separado y los <em>conectamos</em><sup>1</sup></p></li>
+<li><p>Estimamos <span class="math inline">\(\hat{\mu}_1(X)\)</span> y <span class="math inline">\(\hat{\mu}_0(X)\)</span> con una regresión y <span class="math inline">\(\hat{p}(X)\)</span> con un modelo para el PS</p></li>
+<li><p>El estimador DR del ATE es:</p></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\hat{\Delta}_{ATE}^{DR}&amp;=\frac{1}{n}\sum_{i=1}^n\left(\hat{\mu}_1(X_i)+\frac{D_i(Y_i-\hat{\mu}_1(X_i))}{\hat{p}(X_i)}\right) -\frac{1}{n}\sum_{i=1}^n\left(\hat{\mu}_0(X_i)+\frac{(1-D_i)(Y_i-\hat{\mu}_0(X_i))}{1-\hat{p}(X_i)}\right)
+\end{align*}
+\]</span></p>
+<ul>
+<li>Y el estimador DR del TOT, usando <span class="math inline">\(\widehat{\Pr}(D=1)=\frac{n_1}{n}\)</span>, es:</li>
+</ul>
+<p><span class="math display">\[
+\hat{\Delta}_{TOT}^{DR}=\frac{1}{n_1}\sum_{i=1}^n\left(D_i-\frac{(1-D_i)\hat{p}(X_i)}{1-\hat{p}(X_i)}\right)(Y_i-\hat{\mu}_0(X_i))
+\]</span></p>
+<ul>
+<li>En el TOT solo necesitamos <span class="math inline">\(\hat{\mu}_0(X)\)</span>, pues el contrafactual que falta es el de los tratados sin tratamiento</li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn5"><p>Adaptado de <a href="https://matheusfacure.github.io/python-causality-handbook/12-Doubly-Robust-Estimation.html">Facure, <em>Causal Inference for the Brave and True</em>, capítulo 12</a></p></li></ol></aside></section>
+<section id="inferencia-para-regresión-ipw-y-dr" class="slide level2">
+<h2>Inferencia para regresión, IPW y DR</h2>
+<ul>
+<li><p>Usamos errores robustos en el caso de la estimación paramétrica</p></li>
+<li><p>Usamos bootstrap para la estimación local con kernel</p></li>
+<li><p>Usamos errores estándar analíticos que toman en cuenta la estimación del PS en el caso de IPW y DR</p></li>
+</ul>
 </section></section>
 <section>
 <section id="anexo-1-ejemplos-de-algoritmos-de-matching-basados-en-el-ps" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
@@ -2097,6 +2369,652 @@ X \perp  D|p(X)
 <li><p>Supongamos que estos son todos nuestros datos</p></li>
 <li><p>Con un emparejamiento por kernel, a <span class="math inline">\(d\)</span> lo <em>emparejamos</em> con todos los individuos, desde <span class="math inline">\(R\)</span> hasta <span class="math inline">\(W\)</span></p></li>
 <li><p>La función kernel le dará más peso a <span class="math inline">\(T\)</span> y <span class="math inline">\(S\)</span>, un poco menos a <span class="math inline">\(R\)</span> y así hasta darle muy poco o casi nada de peso a <span class="math inline">\(W\)</span></p></li>
+</ul>
+</section></section>
+<section>
+<section id="anexo-2-psm-en-r" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Anexo 2: PSM en R</h1>
+
+</section>
+<section id="efecto-de-fumar-en-el-embarazo" class="slide level2">
+<h2>Efecto de fumar en el embarazo</h2>
+<ul>
+<li><p>Datos en <a href="cattaneo_smoking.csv">cattaneo_smoking.csv</a> (Cattaneo, 2010) de una muestra de mujeres que incluye un indicador de si la madre fumó durante el embarazo</p></li>
+<li><p>Buscamos estimar el efecto de fumar sobre el peso de los bebés al nacer</p></li>
+<li><p>Se incluyen una serie de covariables que usaremos para modelar el PS</p></li>
+<li><p>Usaremos los paquetes <em>MatchIt</em> y <em>cobalt</em></p></li>
+</ul>
+</section>
+<section id="matchit-para-realizar-los-emparejamientos" class="slide level2 codigo-grande">
+<h2><em>matchit</em> para realizar los emparejamientos</h2>
+<ul>
+<li><p>Usaremos <em>matchit</em> de la librería <em>MatchIt</em> para hacer el emparejamiento</p></li>
+<li><p>Construimos la dummy de tratamiento (<strong>smoke</strong>), una dummy para mujeres casadas (<strong>married</strong>) y una dummy para si el caso en cuestión es el primer bebé (<strong>firstbaby</strong>)</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-label="1"></a>data.smoking<span class="ot">&lt;-</span><span class="fu">read_csv</span>(</span>
+<span id="cb21-2"><a aria-label="2"></a>  <span class="st">"./cattaneo_smoking.csv"</span>,</span>
+<span id="cb21-3"><a aria-label="3"></a>  <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">"latin1"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a aria-label="4"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb21-5"><a aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">smoke=</span><span class="fu">ifelse</span>(mbsmoke<span class="sc">==</span><span class="st">"smoker"</span>,<span class="dv">1</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-6"><a aria-label="6"></a>  <span class="fu">mutate</span>(<span class="at">married=</span><span class="fu">ifelse</span>(mmarried<span class="sc">==</span><span class="st">"married"</span>,<span class="dv">1</span>,<span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a aria-label="7"></a>  <span class="fu">mutate</span>(<span class="at">firstbaby=</span><span class="fu">ifelse</span>(fbaby<span class="sc">==</span><span class="st">"Yes"</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb21-8"><a aria-label="8"></a></span>
+<span id="cb21-9"><a aria-label="9"></a><span class="co">#Asegurarse que no hay NA, matchit no acepta NA</span></span>
+<span id="cb21-10"><a aria-label="10"></a>data.smoking <span class="ot">&lt;-</span> data.smoking[<span class="fu">complete.cases</span>(data.smoking), ]</span>
+<span id="cb21-11"><a aria-label="11"></a></span>
+<span id="cb21-12"><a aria-label="12"></a><span class="co">#Una semilla para todo el trabajo</span></span>
+<span id="cb21-13"><a aria-label="13"></a><span class="fu">set.seed</span>(<span class="dv">1021</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="comparación-observacional-2" class="slide level2 codigo-grande tabla-compacta">
+<h2>Comparación observacional</h2>
+<ul>
+<li>Si solo comparamos a las mujeres que fuman con las que no fuman, estamos comparando personas muy diferentes</li>
+</ul>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-label="1"></a><span class="fu">datasummary_balance</span>(<span class="sc">~</span>smoke,</span>
+<span id="cb22-2"><a aria-label="2"></a>                    <span class="at">fmt =</span> <span class="st">"%.2f"</span>,</span>
+<span id="cb22-3"><a aria-label="3"></a>                    <span class="at">data =</span> <span class="fu">select</span>(data.smoking, smoke, </span>
+<span id="cb22-4"><a aria-label="4"></a>                                  married, firstbaby, </span>
+<span id="cb22-5"><a aria-label="5"></a>                                  medu, nprenatal, </span>
+<span id="cb22-6"><a aria-label="6"></a>                                  foreign, mhisp, fage),</span>
+<span id="cb22-7"><a aria-label="7"></a>                    <span class="at">dinm_statistic =</span> <span class="st">"p.value"</span>,</span>
+<span id="cb22-8"><a aria-label="8"></a>                    <span class="at">title =</span> <span class="st">"Pruebas de balance"</span>,</span>
+<span id="cb22-9"><a aria-label="9"></a>                    <span class="at">notes =</span> <span class="st">"Fuente: Cattaneo (2010)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_k4cvfx0wguld8hfb9y23 = TinyTable.createTableFunctions("tinytable_k4cvfx0wguld8hfb9y23");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '-1', j: 3 }, { i: '-1', j: 5 } ], css_id: 'tinytable_css_4tbnwr5y4kyrk2iwttum',}, 
+          { positions: [ { i: '7', j: 2 }, { i: '7', j: 3 }, { i: '7', j: 4 }, { i: '7', j: 5 }, { i: '7', j: 6 }, { i: '7', j: 7 } ], css_id: 'tinytable_css_2m3zho09ey6pv57wfapv',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '1', j: 4 }, { i: '2', j: 4 }, { i: '3', j: 4 }, { i: '4', j: 4 }, { i: '5', j: 4 }, { i: '6', j: 4 }, { i: '1', j: 5 }, { i: '2', j: 5 }, { i: '3', j: 5 }, { i: '4', j: 5 }, { i: '5', j: 5 }, { i: '6', j: 5 }, { i: '1', j: 6 }, { i: '2', j: 6 }, { i: '3', j: 6 }, { i: '4', j: 6 }, { i: '5', j: 6 }, { i: '6', j: 6 }, { i: '1', j: 7 }, { i: '2', j: 7 }, { i: '3', j: 7 }, { i: '4', j: 7 }, { i: '5', j: 7 }, { i: '6', j: 7 } ], css_id: 'tinytable_css_emlwgm1hdw0vjmuei6po',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 }, { i: '0', j: 4 }, { i: '0', j: 5 }, { i: '0', j: 6 }, { i: '0', j: 7 } ], css_id: 'tinytable_css_i112rfu89fnf0bktih9h',}, 
+          { positions: [ { i: '-1', j: 2 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_9u9ryo3s78a83dxqz378',}, 
+          { positions: [ { i: '7', j: 1 } ], css_id: 'tinytable_css_fpzy64i0uix32lp7bnfu',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 } ], css_id: 'tinytable_css_n9ovfft0tpbdiwmj7yyz',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_3n1b0zyrf8t0z0rcdgya',}, 
+          { positions: [ { i: '-1', j: 1 }, { i: '-1', j: 6 }, { i: '-1', j: 7 } ], css_id: 'tinytable_css_i11sk95z4prjh1d3o3fi',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_k4cvfx0wguld8hfb9y23.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_4tbnwr5y4kyrk2iwttum, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_4tbnwr5y4kyrk2iwttum {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_2m3zho09ey6pv57wfapv, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_2m3zho09ey6pv57wfapv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_emlwgm1hdw0vjmuei6po, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_emlwgm1hdw0vjmuei6po { text-align: right }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_i112rfu89fnf0bktih9h, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_i112rfu89fnf0bktih9h {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: right }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_9u9ryo3s78a83dxqz378, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_9u9ryo3s78a83dxqz378 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_fpzy64i0uix32lp7bnfu, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_fpzy64i0uix32lp7bnfu {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_n9ovfft0tpbdiwmj7yyz, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_n9ovfft0tpbdiwmj7yyz { text-align: left }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_3n1b0zyrf8t0z0rcdgya, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_3n1b0zyrf8t0z0rcdgya {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_k4cvfx0wguld8hfb9y23 td.tinytable_css_i11sk95z4prjh1d3o3fi, #tinytable_k4cvfx0wguld8hfb9y23 th.tinytable_css_i11sk95z4prjh1d3o3fi {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_k4cvfx0wguld8hfb9y23" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <caption>Pruebas de balance</caption>
+        <thead>
+<tr>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="1"> </th>
+<th scope="col" align="center" colspan="2" data-row="-1" data-col="2">0</th>
+<th scope="col" align="center" colspan="2" data-row="-1" data-col="4">1</th>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="6"> </th>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="7"> </th>
+</tr>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Mean</th>
+                <th scope="col" data-row="0" data-col="3">Std. Dev.</th>
+                <th scope="col" data-row="0" data-col="4">Mean</th>
+                <th scope="col" data-row="0" data-col="5">Std. Dev.</th>
+                <th scope="col" data-row="0" data-col="6">Diff. in Means</th>
+                <th scope="col" data-row="0" data-col="7">p</th>
+              </tr>
+        </thead>
+        <tfoot><tr><td colspan="7">Fuente: Cattaneo (2010)</td></tr></tfoot>
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">married</td>
+                  <td data-row="1" data-col="2">0.75</td>
+                  <td data-row="1" data-col="3">0.43</td>
+                  <td data-row="1" data-col="4">0.47</td>
+                  <td data-row="1" data-col="5">0.50</td>
+                  <td data-row="1" data-col="6">-0.28</td>
+                  <td data-row="1" data-col="7">0.00</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">firstbaby</td>
+                  <td data-row="2" data-col="2">0.45</td>
+                  <td data-row="2" data-col="3">0.50</td>
+                  <td data-row="2" data-col="4">0.37</td>
+                  <td data-row="2" data-col="5">0.48</td>
+                  <td data-row="2" data-col="6">-0.08</td>
+                  <td data-row="2" data-col="7">0.00</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">medu</td>
+                  <td data-row="3" data-col="2">12.93</td>
+                  <td data-row="3" data-col="3">2.53</td>
+                  <td data-row="3" data-col="4">11.64</td>
+                  <td data-row="3" data-col="5">2.17</td>
+                  <td data-row="3" data-col="6">-1.29</td>
+                  <td data-row="3" data-col="7">0.00</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">nprenatal</td>
+                  <td data-row="4" data-col="2">10.96</td>
+                  <td data-row="4" data-col="3">3.52</td>
+                  <td data-row="4" data-col="4">9.86</td>
+                  <td data-row="4" data-col="5">4.21</td>
+                  <td data-row="4" data-col="6">-1.10</td>
+                  <td data-row="4" data-col="7">0.00</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">foreign</td>
+                  <td data-row="5" data-col="2">0.06</td>
+                  <td data-row="5" data-col="3">0.24</td>
+                  <td data-row="5" data-col="4">0.03</td>
+                  <td data-row="5" data-col="5">0.16</td>
+                  <td data-row="5" data-col="6">-0.03</td>
+                  <td data-row="5" data-col="7">0.00</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">mhisp</td>
+                  <td data-row="6" data-col="2">0.04</td>
+                  <td data-row="6" data-col="3">0.19</td>
+                  <td data-row="6" data-col="4">0.02</td>
+                  <td data-row="6" data-col="5">0.15</td>
+                  <td data-row="6" data-col="6">-0.01</td>
+                  <td data-row="6" data-col="7">0.05</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">fage</td>
+                  <td data-row="7" data-col="2">27.84</td>
+                  <td data-row="7" data-col="3">8.79</td>
+                  <td data-row="7" data-col="4">24.74</td>
+                  <td data-row="7" data-col="5">11.15</td>
+                  <td data-row="7" data-col="6">-3.10</td>
+                  <td data-row="7" data-col="7">0.00</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div></div>
+</section>
+<section id="estimación-del-ps" class="slide level2 codigo-grande">
+<h2>Estimación del PS</h2>
+<ul>
+<li>Una manera de hacer más eficiente el uso de las <em>fórmulas</em> es usando <em>as.formula</em></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-label="1"></a>binaria <span class="ot">&lt;-</span> <span class="st">"smoke"</span></span>
+<span id="cb23-2"><a aria-label="2"></a>variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"married"</span>, <span class="st">"firstbaby"</span>, <span class="st">"medu"</span>, <span class="st">"nprenatal"</span>, <span class="st">"foreign"</span>, <span class="st">"mhisp"</span>, <span class="st">"fage"</span>)</span>
+<span id="cb23-3"><a aria-label="3"></a></span>
+<span id="cb23-4"><a aria-label="4"></a>ps <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(binaria, <span class="fu">paste</span>(variables, <span class="at">collapse =</span> <span class="st">"+"</span>), <span class="at">sep =</span> <span class="st">" ~ "</span>))</span>
+<span id="cb23-5"><a aria-label="5"></a><span class="fu">print</span>(ps)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>smoke ~ married + firstbaby + medu + nprenatal + foreign + mhisp + 
+    fage</code></pre>
+</div>
+</div>
+<ul>
+<li>Usamos <em>matchit</em> para estimar el PS y realizar los emparejamientos con el algoritmo que indiquemos:</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-label="1"></a>m.out <span class="ot">&lt;-</span> <span class="fu">matchit</span>(<span class="at">formula=</span>ps,</span>
+<span id="cb25-2"><a aria-label="2"></a>                 <span class="at">method =</span> <span class="st">"nearest"</span>,</span>
+<span id="cb25-3"><a aria-label="3"></a>                 <span class="at">ratio =</span> <span class="dv">1</span>,</span>
+<span id="cb25-4"><a aria-label="4"></a>                 <span class="at">distance=</span> <span class="st">"glm"</span>,</span>
+<span id="cb25-5"><a aria-label="5"></a>                 <span class="at">link =</span> <span class="st">"logit"</span>,</span>
+<span id="cb25-6"><a aria-label="6"></a>                 <span class="at">replace =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb25-7"><a aria-label="7"></a>                 <span class="at">estimand =</span> <span class="st">"ATT"</span>,</span>
+<span id="cb25-8"><a aria-label="8"></a>                 <span class="at">data =</span> data.smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="estimación-del-ps-1" class="slide level2 codigo-grande salida-scroll">
+<h2>Estimación del PS</h2>
+<ul>
+<li>El resumen del procedimiento da bastante información sobre el <em>matching</em></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-label="1"></a><span class="fu">summary</span>(m.out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+matchit(formula = ps, data = data.smoking, method = "nearest", 
+    distance = "glm", link = "logit", estimand = "ATT", replace = FALSE, 
+    ratio = 1)
+
+Summary of Balance for All Data:
+          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+distance         0.2568        0.1700          0.6673     1.4475    0.2002
+married          0.4734        0.7515         -0.5569          .    0.2781
+firstbaby        0.3715        0.4531         -0.1689          .    0.0816
+medu            11.6389       12.9299         -0.5955     0.7316    0.0717
+nprenatal        9.8623       10.9629         -0.2616     1.4301    0.0376
+foreign          0.0255        0.0598         -0.2181          .    0.0344
+mhisp            0.0243        0.0363         -0.0776          .    0.0120
+fage            24.7431       27.8444         -0.2782     1.6070    0.0468
+          eCDF Max
+distance    0.3329
+married     0.2781
+firstbaby   0.0816
+medu        0.2549
+nprenatal   0.1259
+foreign     0.0344
+mhisp       0.0120
+fage        0.1377
+
+Summary of Balance for Matched Data:
+          Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+distance         0.2568        0.2564          0.0033     1.0110    0.0005
+married          0.4734        0.4769         -0.0070          .    0.0035
+firstbaby        0.3715        0.3981         -0.0551          .    0.0266
+medu            11.6389       11.6019          0.0171     0.7064    0.0161
+nprenatal        9.8623        9.8588          0.0008     1.1543    0.0059
+foreign          0.0255        0.0174          0.0514          .    0.0081
+mhisp            0.0243        0.0231          0.0075          .    0.0012
+fage            24.7431       24.5799          0.0146     1.0787    0.0124
+          eCDF Max Std. Pair Dist.
+distance    0.0093          0.0046
+married     0.0035          0.2202
+firstbaby   0.0266          0.4575
+medu        0.0417          0.5168
+nprenatal   0.0185          0.7039
+foreign     0.0081          0.2425
+mhisp       0.0012          0.2781
+fage        0.0556          0.6457
+
+Sample Sizes:
+          Control Treated
+All          3778     864
+Matched       864     864
+Unmatched    2914       0
+Discarded       0       0</code></pre>
+</div>
+</div>
+</section>
+<section id="verificación-del-balance" class="slide level2 codigo-grande columnas-arriba">
+<h2>Verificación del balance</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Gráfico de nube:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-label="1"></a><span class="fu">plot</span>(m.out, <span class="at">type =</span> <span class="st">"jitter"</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-30-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Histograma:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-label="1"></a><span class="fu">plot</span>(m.out, <span class="at">type =</span> <span class="st">"hist"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-31-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="muestra-emparejada-3" class="slide level2 codigo-grande">
+<h2>Muestra emparejada</h2>
+<ul>
+<li>Podemos guardar un objeto con la muestra emparejada usando <em>match.data</em> y observar quién hace match con quién</li>
+</ul>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-label="1"></a>m.data <span class="ot">&lt;-</span> <span class="fu">match.data</span>(m.out)</span>
+<span id="cb30-2"><a aria-label="2"></a></span>
+<span id="cb30-3"><a aria-label="3"></a><span class="fu">head</span>(m.out<span class="sc">$</span>match.matrix)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>   [,1]  
+11 "4130"
+20 "2234"
+25 "1740"
+43 "2857"
+47 "305" 
+49 "1442"</code></pre>
+</div>
+</div></div>
+</section>
+<section id="calidad-del-matching-1" class="slide level2">
+<h2>Calidad del <em>matching</em></h2>
+<ul>
+<li><p>Se sugiere evaluar las diferencias promedio estandarizadas (SMD) entre los grupos tratados y no tratados, antes y después del emparejamiento</p></li>
+<li><p>Para el TOT, <em>matchit</em> divide entre la desviación estándar del grupo tratado, <span class="math inline">\(S_T\)</span></p></li>
+</ul>
+<p><span class="math display">\[SMD_X=\frac{\bar{X}_T-\bar{X}_{NT}}{S_T}\]</span></p>
+<ul>
+<li>También se sugiere calcular la razón de varianzas (VR). Se espera que este ratio no sea muy distinto de 1 después de hacer el emparejamiento</li>
+</ul>
+<p><span class="math display">\[VR=\frac{S^2_T}{S^2_{NT}}\]</span></p>
+<ul>
+<li><strong>Regla de dedo</strong>: una diferencia de 0.1 o menos en el SMD se considera un buen balance. Por ejemplo, la escolaridad de la madre tenía un SMD de -0.5955 en la muestra en bruto, pero con el emparejamiento el SMD se vuelve de solo 0.0171</li>
+</ul>
+</section>
+<section id="loveplot" class="slide level2 codigo-grande">
+<h2><em>Loveplot</em></h2>
+<ul>
+<li>Usando la librería <em>cobalt</em> podemos construir un <em>love plot</em> que representa gráficamente las diferencias antes y después del emparejamiento</li>
+</ul>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-label="1"></a><span class="fu">love.plot</span>(<span class="fu">bal.tab</span>(m.out),</span>
+<span id="cb32-2"><a aria-label="2"></a>          <span class="at">threshold =</span> .<span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-33-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div></div>
+</section>
+<section id="efecto-de-tratamiento" class="slide level2 codigo-grande">
+<h2>Efecto de tratamiento</h2>
+<ul>
+<li><p>Han existido muchas maneras de explotar la muestra emparejada. Aquí usamos <em>g-computation</em></p></li>
+<li><p>Una buena guía sobre la estimación de los efectos está en la documentación de <a href="https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html">MatchIt</a></p></li>
+<li><p>Estimamos un modelo para la variable dependiente dado el tratamiento y, opcionalmente, las covariables, usando la muestra emparejada</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-label="1"></a>tt1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(bweight <span class="sc">~</span> smoke,</span>
+<span id="cb33-2"><a aria-label="2"></a>          <span class="at">data =</span> m.data,</span>
+<span id="cb33-3"><a aria-label="3"></a>          <span class="at">weights =</span> weights)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="efecto-de-tratamiento-1" class="slide level2 codigo-grande">
+<h2>Efecto de tratamiento</h2>
+<ul>
+<li><p>Usamos <code>marginaleffects::avg_comparisons()</code> para estimar el TOT</p></li>
+<li><p><em>vcov</em> indica que se estimen errores agrupados a nivel pareja, que es lo apropiado cuando el emparejamiento es sin reemplazo (<a href="https://doi.org/10.1080/01621459.2020.1840383">Abadie &amp; Spiess, 2022</a>)</p></li>
+<li><p><em>newdata</em> indica que se genere un nuevo objeto de datos con solo las unidades tratadas para estimar el TOT</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-label="1"></a>tot.psm <span class="ot">&lt;-</span> marginaleffects<span class="sc">::</span><span class="fu">avg_comparisons</span>(tt1,</span>
+<span id="cb34-2"><a aria-label="2"></a>                <span class="at">variables =</span> <span class="st">"smoke"</span>,</span>
+<span id="cb34-3"><a aria-label="3"></a>                <span class="at">vcov =</span> <span class="sc">~</span>subclass,</span>
+<span id="cb34-4"><a aria-label="4"></a>                <span class="at">newdata =</span> <span class="fu">subset</span>(smoke <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb34-5"><a aria-label="5"></a>tot.psm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Estimate Std. Error     z Pr(&gt;|z|)    S 2.5 % 97.5 %
+     -194       28.1 -6.91   &lt;0.001 37.6  -249   -139
+
+Term: smoke
+Type: response
+Comparison: 1 - 0</code></pre>
+</div>
+</div>
+</section>
+<section id="efecto-de-tratamiento-2" class="slide level2 codigo-grande">
+<h2>Efecto de tratamiento</h2>
+<p>Algunos autores incluyen las covariables en su estimación:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-label="1"></a>tt2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(bweight <span class="sc">~</span> smoke<span class="sc">*</span>(married <span class="sc">+</span> firstbaby <span class="sc">+</span> medu <span class="sc">+</span> nprenatal <span class="sc">+</span> foreign <span class="sc">+</span> mhisp <span class="sc">+</span> fage),</span>
+<span id="cb36-2"><a aria-label="2"></a>          <span class="at">data =</span> m.data,</span>
+<span id="cb36-3"><a aria-label="3"></a>          <span class="at">weights =</span> weights)</span>
+<span id="cb36-4"><a aria-label="4"></a></span>
+<span id="cb36-5"><a aria-label="5"></a><span class="co">#Errores agrupados a nivel subclass</span></span>
+<span id="cb36-6"><a aria-label="6"></a>marginaleffects<span class="sc">::</span><span class="fu">avg_comparisons</span>(tt2,</span>
+<span id="cb36-7"><a aria-label="7"></a>                <span class="at">variables =</span> <span class="st">"smoke"</span>,</span>
+<span id="cb36-8"><a aria-label="8"></a>                <span class="at">vcov =</span> <span class="sc">~</span>subclass,</span>
+<span id="cb36-9"><a aria-label="9"></a>                <span class="at">newdata =</span> <span class="fu">subset</span>(smoke <span class="sc">==</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Estimate Std. Error    z Pr(&gt;|z|)    S 2.5 % 97.5 %
+     -197       27.7 -7.1   &lt;0.001 39.5  -251   -143
+
+Term: smoke
+Type: response
+Comparison: 1 - 0</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="anexo-3-regresión-ipw-y-dr-en-r" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Anexo 3: regresión, IPW y DR en R</h1>
+
+</section>
+<section id="regresión-ipw-y-dr-fumar-durante-el-embarazo" class="slide level2">
+<h2>Regresión, IPW y DR: fumar durante el embarazo</h2>
+<ul>
+<li><p>Comparamos los distintos métodos para estimar el TOT con los datos de Cattaneo (2010)</p></li>
+<li><p><span class="math inline">\(D\)</span> es <strong>smoke</strong>, <span class="math inline">\(Y\)</span> es <strong>bweight</strong> y <span class="math inline">\(X\)</span> son las mismas siete covariables que usamos para estimar el PS</p></li>
+<li><p>Veremos cuatro estimadores:</p>
+<ul>
+<li>Regresión paramétrica, con <em>lm</em> y <em>avg_comparisons</em> del paquete <em>marginaleffects</em></li>
+<li>Regresión kernel, con <em>npreg</em> del paquete <em>np</em> y solo tres de las covariables</li>
+<li>IPW, con <em>PSweight</em> del paquete <em>PSweight</em></li>
+<li>DR, también con <em>PSweight</em></li>
+</ul></li>
+<li><p>En IPW y DR el PS se estima con el mismo logit que en el PSM, guardado en la fórmula <strong>ps</strong></p></li>
+</ul>
+</section>
+<section id="regresión-paramétrica" class="slide level2 codigo-grande">
+<h2>Regresión paramétrica</h2>
+<ul>
+<li><p>Estimamos una regresión con interacciones entre <span class="math inline">\(D\)</span> y todas las covariables</p></li>
+<li><p><em>avg_comparisons</em>, del paquete <em>marginaleffects</em>, promedia <span class="math inline">\(\hat{\mu}_1(X_i)-\hat{\mu}_0(X_i)\)</span> sobre los tratados, que es <span class="math inline">\(\hat{\Delta}_{TOT}^R\)</span>:</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-label="1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb38-2"><a aria-label="2"></a></span>
+<span id="cb38-3"><a aria-label="3"></a><span class="co"># Regresión con interacciones entre D y X</span></span>
+<span id="cb38-4"><a aria-label="4"></a>ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(bweight <span class="sc">~</span> smoke <span class="sc">*</span> (married <span class="sc">+</span> firstbaby <span class="sc">+</span> medu <span class="sc">+</span> nprenatal <span class="sc">+</span></span>
+<span id="cb38-5"><a aria-label="5"></a>                               foreign <span class="sc">+</span> mhisp <span class="sc">+</span> fage),</span>
+<span id="cb38-6"><a aria-label="6"></a>                               <span class="at">data =</span> data.smoking)</span>
+<span id="cb38-7"><a aria-label="7"></a></span>
+<span id="cb38-8"><a aria-label="8"></a><span class="co"># Promedio de las diferencias predichas en la muestra de tratados</span></span>
+<span id="cb38-9"><a aria-label="9"></a>tot.reg <span class="ot">&lt;-</span> <span class="fu">avg_comparisons</span>(ols, <span class="at">variables =</span> <span class="st">"smoke"</span>, <span class="at">vcov =</span> <span class="st">"HC1"</span>,</span>
+<span id="cb38-10"><a aria-label="10"></a>                           <span class="at">newdata =</span> <span class="fu">filter</span>(data.smoking, smoke <span class="sc">==</span> <span class="dv">1</span>))</span>
+<span id="cb38-11"><a aria-label="11"></a><span class="fu">c</span>(<span class="at">efecto =</span> tot.reg<span class="sc">$</span>estimate, <span class="at">ee =</span> tot.reg<span class="sc">$</span>std.error)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    efecto         ee 
+-212.35668   22.56909 </code></pre>
+</div>
+</div>
+</section>
+<section id="regresión-kernel" class="slide level2 codigo-grande">
+<h2>Regresión kernel</h2>
+<ul>
+<li>Con siete covariables, la media local sufre de la maldición de la dimensionalidad, por lo que usamos solo tres: <strong>married</strong>, <strong>fage</strong> y <strong>nprenatal</strong></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-label="1"></a><span class="fu">library</span>(np)</span>
+<span id="cb40-2"><a aria-label="2"></a></span>
+<span id="cb40-3"><a aria-label="3"></a>tratados <span class="ot">&lt;-</span> <span class="fu">filter</span>(data.smoking, smoke <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb40-4"><a aria-label="4"></a>notratados <span class="ot">&lt;-</span> <span class="fu">filter</span>(data.smoking, smoke <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb40-5"><a aria-label="5"></a></span>
+<span id="cb40-6"><a aria-label="6"></a><span class="co"># h óptimo de cada covariable por validación cruzada, solo con los no tratados</span></span>
+<span id="cb40-7"><a aria-label="7"></a>bw <span class="ot">&lt;-</span> <span class="fu">npregbw</span>(bweight <span class="sc">~</span> married <span class="sc">+</span> fage <span class="sc">+</span> nprenatal, <span class="at">data =</span> notratados,</span>
+<span id="cb40-8"><a aria-label="8"></a>              <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">bwmethod =</span> <span class="st">"cv.ls"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)</span>
+<span id="cb40-9"><a aria-label="9"></a></span>
+<span id="cb40-10"><a aria-label="10"></a><span class="co"># Media local de los no tratados, evaluada en las X de cada tratado</span></span>
+<span id="cb40-11"><a aria-label="11"></a>mu0 <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">npreg</span>(bw), <span class="at">newdata =</span> tratados)</span>
+<span id="cb40-12"><a aria-label="12"></a><span class="fu">mean</span>(tratados<span class="sc">$</span>bweight <span class="sc">-</span> mu0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -207.2631</code></pre>
+</div>
+</div>
+</section>
+<section id="regresión-kernel-1" class="slide level2 columnas-arriba">
+<h2>Regresión kernel</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><p><em>regtype = “lc”</em>: es la media local constante; con varias covariables, el peso es el producto de los kernels de cada una</p></li>
+<li><p><em>bwmethod = “cv.ls”</em>: es la validación cruzada que deja fuera a cada observación</p></li>
+<li><p>Hay un <span class="math inline">\(h_{opt}\)</span> por covariable: 0.47 para <strong>married</strong>, 27.3 para <strong>fage</strong> y 1.46 para <strong>nprenatal</strong></p></li>
+<li><p><span class="math inline">\(\hat{\mu}_0\)</span> se estima solo con los no tratados y da el contrafactual de cada tratado</p></li>
+<li><p>El TOT estimado es de -207.3 gramos</p></li>
+<li><p>Obtenemos el error estándar usando bootstrap</p></li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/kernel_mu0-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="regresión-kernel-inferencia" class="slide level2 codigo-grande">
+<h2>Regresión kernel: inferencia</h2>
+<ul>
+<li><em>boot</em>, del paquete <em>boot</em>, repite el estimador en cada muestra bootstrap, manteniendo fijos los <span class="math inline">\(h_{opt}\)</span></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-label="1"></a><span class="fu">library</span>(boot)</span>
+<span id="cb42-2"><a aria-label="2"></a></span>
+<span id="cb42-3"><a aria-label="3"></a>covs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"married"</span>, <span class="st">"fage"</span>, <span class="st">"nprenatal"</span>)</span>
+<span id="cb42-4"><a aria-label="4"></a></span>
+<span id="cb42-5"><a aria-label="5"></a>bs <span class="ot">&lt;-</span> <span class="cf">function</span>(data, indices) {</span>
+<span id="cb42-6"><a aria-label="6"></a>  dat <span class="ot">&lt;-</span> data[indices, ]                 <span class="co"># muestra bootstrap</span></span>
+<span id="cb42-7"><a aria-label="7"></a>  tr <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb42-8"><a aria-label="8"></a>  nt <span class="ot">&lt;-</span> <span class="fu">filter</span>(dat, smoke <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb42-9"><a aria-label="9"></a>  mu0 <span class="ot">&lt;-</span> <span class="fu">npreg</span>(<span class="at">bws =</span> bw<span class="sc">$</span>bw, <span class="at">txdat =</span> nt[, covs], <span class="at">tydat =</span> nt<span class="sc">$</span>bweight,</span>
+<span id="cb42-10"><a aria-label="10"></a>               <span class="at">exdat =</span> tr[, covs], <span class="at">regtype =</span> <span class="st">"lc"</span>, <span class="at">ckertype =</span> <span class="st">"epanechnikov"</span>)<span class="sc">$</span>mean</span>
+<span id="cb42-11"><a aria-label="11"></a>  <span class="fu">mean</span>(tr<span class="sc">$</span>bweight <span class="sc">-</span> mu0)                 <span class="co"># TOT en la muestra bootstrap</span></span>
+<span id="cb42-12"><a aria-label="12"></a>}</span>
+<span id="cb42-13"><a aria-label="13"></a></span>
+<span id="cb42-14"><a aria-label="14"></a><span class="fu">set.seed</span>(<span class="dv">1021</span>)</span>
+<span id="cb42-15"><a aria-label="15"></a>boot.kernel <span class="ot">&lt;-</span> <span class="fu">boot</span>(<span class="at">data =</span> data.smoking, <span class="at">statistic =</span> bs, <span class="at">R =</span> <span class="dv">499</span>)</span>
+<span id="cb42-16"><a aria-label="16"></a><span class="fu">c</span>(<span class="at">efecto =</span> boot.kernel<span class="sc">$</span>t0, <span class="at">ee =</span> <span class="fu">sd</span>(boot.kernel<span class="sc">$</span>t))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    efecto         ee 
+-207.26309   21.38315 </code></pre>
+</div>
+</div>
+</section>
+<section id="ipw" class="slide level2 codigo-grande">
+<h2>IPW</h2>
+<ul>
+<li><em>weight = “treated”</em> pide los pesos del TOT (1 para los tratados y <span class="math inline">\(\frac{\hat{p}(X_i)}{1-\hat{p}(X_i)}\)</span> para los no tratados)</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-label="1"></a><span class="fu">library</span>(PSweight)</span>
+<span id="cb44-2"><a aria-label="2"></a></span>
+<span id="cb44-3"><a aria-label="3"></a>ipw <span class="ot">&lt;-</span> <span class="fu">PSweight</span>(<span class="at">ps.formula =</span> ps,</span>
+<span id="cb44-4"><a aria-label="4"></a>                <span class="at">yname =</span> <span class="st">"bweight"</span>,</span>
+<span id="cb44-5"><a aria-label="5"></a>                <span class="at">data =</span> <span class="fu">as.data.frame</span>(data.smoking),</span>
+<span id="cb44-6"><a aria-label="6"></a>                <span class="at">weight =</span> <span class="st">"treated"</span>)</span>
+<span id="cb44-7"><a aria-label="7"></a></span>
+<span id="cb44-8"><a aria-label="8"></a><span class="fu">summary</span>(ipw)<span class="sc">$</span>estimates</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std.Error   z value       lwr       upr Pr(&gt;|z|)
+Contrast 1 -212.8243  23.34637 -9.115947 -258.5824 -167.0663        0</code></pre>
+</div>
+</div>
+</section>
+<section id="dr" class="slide level2 codigo-grande">
+<h2>DR</h2>
+<ul>
+<li>Agregamos un modelo para <span class="math inline">\(Y\)</span> (<em>out.formula</em>) y pedimos el estimador aumentado (<em>augmentation = TRUE</em>)</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-label="1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">as.formula</span>(<span class="fu">paste</span>(<span class="st">"bweight"</span>,</span>
+<span id="cb46-2"><a aria-label="2"></a>                              <span class="fu">paste</span>(variables, <span class="at">collapse =</span> <span class="st">"+"</span>),</span>
+<span id="cb46-3"><a aria-label="3"></a>                              <span class="at">sep =</span> <span class="st">" ~ "</span>))</span>
+<span id="cb46-4"><a aria-label="4"></a></span>
+<span id="cb46-5"><a aria-label="5"></a>dr <span class="ot">&lt;-</span> <span class="fu">PSweight</span>(<span class="at">ps.formula =</span> ps,</span>
+<span id="cb46-6"><a aria-label="6"></a>               <span class="at">yname =</span> <span class="st">"bweight"</span>,</span>
+<span id="cb46-7"><a aria-label="7"></a>               <span class="at">data =</span> <span class="fu">as.data.frame</span>(data.smoking),</span>
+<span id="cb46-8"><a aria-label="8"></a>               <span class="at">weight =</span> <span class="st">"treated"</span>,</span>
+<span id="cb46-9"><a aria-label="9"></a>               <span class="at">augmentation =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb46-10"><a aria-label="10"></a>               <span class="at">out.formula =</span> resultado)</span>
+<span id="cb46-11"><a aria-label="11"></a></span>
+<span id="cb46-12"><a aria-label="12"></a><span class="fu">summary</span>(dr)<span class="sc">$</span>estimates</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std.Error   z value       lwr       upr Pr(&gt;|z|)
+Contrast 1 -218.2062  23.19071 -9.409207 -263.6592 -172.7532        0</code></pre>
+</div>
+</div>
+</section>
+<section id="comparación-entre-métodos" class="slide level2">
+<h2>Comparación entre métodos</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Método</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Efecto en el peso al nacer (gramos)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Error estándar</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Diferencia simple de medias</td>
+<td style="text-align: center;">-275.3</td>
+<td style="text-align: center;">21.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PSM (vecino más cercano, sin reemplazo)</td>
+<td style="text-align: center;">-194.3</td>
+<td style="text-align: center;">28.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Regresión paramétrica</td>
+<td style="text-align: center;">-212.4</td>
+<td style="text-align: center;">22.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Regresión kernel (tres covariables)</td>
+<td style="text-align: center;">-207.3</td>
+<td style="text-align: center;">21.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IPW</td>
+<td style="text-align: center;">-212.8</td>
+<td style="text-align: center;">23.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DR</td>
+<td style="text-align: center;">-218.2</td>
+<td style="text-align: center;">23.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><p>Todos los métodos estiman el TOT con las mismas covariables, salvo la regresión kernel, que usa tres: fumar durante el embarazo reduce el peso al nacer en alrededor de 200 gramos</p></li>
+<li><p>La diferencia simple de medias exagera el efecto, pues las madres que fuman difieren de las que no fuman en características que también afectan el peso al nacer</p></li>
+<li><p>Todos descansan en el SIC: si hay selección en no observables, ninguno la corrige</p></li>
 </ul>
 </section></section>
 <section id="selección-por-observables-2" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
