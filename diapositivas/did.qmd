@@ -20,21 +20,16 @@ format:
 knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 
 library(tidyverse)
-library(janitor)
-library(sandwich)
-#library(nnet)
-#library(mlogit)
-library(readr)
-library(clubSandwich)
 library(modelsummary)
-library(estimatr)
-library(lubridate)
-library(ExPanDaR) #for describing panel data
-library(lfe)
-library(ggbrace)
+library(kableExtra)
 
 
 xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
+
+# Leyenda dentro del panel para que el gráfico use todo el ancho de la columna
+theme_update(legend.position = "inside",
+             legend.position.inside = c(0.98, 0.98),
+             legend.justification = c(1, 1))
 ```
 
 
@@ -51,19 +46,37 @@ Inferencia Causal
 Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 :::
 
+```{css}
+/* Láminas con código a la izquierda y gráfico a la derecha: código más grande
+   que el del tema, con interlineado más compacto para que quepa */
+.reveal .codigo-figura div.sourceCode pre code.sourceCode { font-size: 1.2em !important; line-height: 1.35; max-height: none !important; }
+.reveal .codigo-figura div.sourceCode pre { max-height: none !important; }
+```
+
 
 # Diferencia en diferencias {.divider background-color="#9B2247" data-state="nochrome"}
 
-## Diferencia en diferencias
+## Motivación
 
-- La estrategia de diferencia en diferencias especifica las condiciones bajo las cuales es posible identificar el efecto del tratamiento al comparar unidades tratadas y no tratadas, cuando se dispone de información antes y después de la intervención
+- Diferencia en diferencias especifica las condiciones bajo las cuales es posible identificar el efecto del tratamiento al comparar unidades tratadas y no tratadas, cuando se dispone de información antes y después de la intervención
 
 - Esta estrategia es ampliamente utilizada para analizar el efecto de leyes y políticas que afectan a un grupo de individuos al mismo tiempo
 
 - Además, constituye el fundamento para otro de los métodos en donde la investigación actual es muy activa, el control sintético
 
+- El supuesto fundamental es el de **tendencias paralelas**, que significa que podemos aprender sobre la trayectoria que hubieran seguido las unidades tratadas a partir de la trayectoria que siguieron las unidades no tratadas
 
-## Diferencia en diferencias
+- DID se popularizó en la década de los 2000 y ha tenido un fuerte *segundo aire* en los 2020 para el análisis de tratamientos con adopción escalonada
+
+## Métodos cuasiexperimentales en economía
+
+![](quasiexp-trends.png){fig-align="center" width="62%"}
+
+::: {.aside}
+Fuente: Currie, Kleven & Zwiers (2020).
+:::
+
+## Ejemplo: corridas bancarias
 
 
 :::: {.columns}
@@ -73,13 +86,13 @@ Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 
 - En EUA, la FED tiene 12 bancos regionales y cada uno tiene autonomía para tomar ciertas decisiones de política monetaria
 
-- En particular, Mississippi tiene una parte del estado bajo el mando del distrito 6 (Atlanta) y la otra mitad en el distrito 8 (San Luis)
+- En particular, Mississippi tiene una parte del estado bajo el mando del distrito 6 (Atlanta) y la otra parte en el distrito 8 (San Luis)
 :::
 
 ::: {.column width="50%"}
 ```{r}
 #| echo: false
-#| out.width: "100%"
+#| out.width: "80%"
 #| fig-align: center
 knitr::include_graphics("banks_map.png")
 ```
@@ -87,15 +100,18 @@ knitr::include_graphics("banks_map.png")
 
 ::::
 
+::: {.aside}
+Fuente: Richardson & Troost (2009).
+:::
 
 
-## Diferencia en diferencias
 
+## Ejemplo: corridas bancarias
 
 - Como respuesta a las corridas bancarias que caracterizaron la crisis de 1929, los bancos comerciales en Mississippi se vieron expuestos a dos políticas distintas
 
 $$
-T=
+D=
 \begin{cases}
 1\quad\quad \text{proveer liquidez adicional (distrito 6)} \\
 0\quad\quad \text{dar igual o menos liquidez (distrito 8)} \\
@@ -107,10 +123,22 @@ $$
 
 - Una primera respuesta sería contar la diferencia después de la crisis:
 
-| Distrito 8 | Distrito 6 | Diferencia |
-|:---:|:---:|:---:|
-| $T=0$ | $T=1$ | |
-| 132 bancos | 121 bancos | 11 bancos
+```{r}
+#| label: tabla-bancos-1931
+
+d8 <- c("\\(D=0\\)", "132 bancos")
+d6 <- c("\\(D=1\\)", "121 bancos")
+dif <- c("", "-11 bancos")
+
+tabla_bancos <- data.frame(cbind(d8, d6, dif))
+
+tabla_bancos |>
+  kbl(col.names = c("Distrito 8", "Distrito 6", "Diferencia"),
+      align = "ccc",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
+```
 
 
 - Pareciera que la política de proveer liquidez, *easy money*, **causó** que quebraran más bancos
@@ -119,200 +147,412 @@ $$
 
 
 
-## Representación gráfica
+## Representación gráfica {.codigo-figura}
 
 - Gráficamente observamos
 
 ```{r}
+#| echo: true
 #| output-location: column
-#| code-line-numbers: "40"
+#| fig-width: 5
+#| fig-height: 4.6
+#| out-width: "100%"
 
-banks<-read_csv("banks_mm.csv",
-                       locale = locale(encoding = "latin1"))
-banks <- banks %>%
-  filter(month(date) == 7L,
-         mday(date) == 1L) %>%
-  mutate(year = year(date)) %>%
-  select(year,
-         matches("bi[ob][68]")) %>% 
-  select(year,bib6,bib8) %>% 
-  gather(distrito,banks,bib6:bib8) %>% 
-  mutate(treatment=ifelse(distrito=="bib6",1,0)) %>% 
-  mutate(post=ifelse(year>=1931,1,0))
+banks <- read_csv("banks_mm.csv",
+                  locale = locale(encoding = "latin1"))
 
-banks %>% 
-  mutate(banks=ifelse(year==1930 | year==1931,banks,NA)) %>% 
-  filter(year <= 1932) %>% 
-  ggplot(aes(x=year, y=banks, color=distrito)) +
-  geom_line(size=2) +
-  scale_y_continuous(limits=c(100,180))
+banks <- banks |>
+  filter(month(date) == 7L, mday(date) == 1L) |>
+  mutate(year = year(date)) |>
+  select(year, bib6, bib8) |>
+  pivot_longer(c(bib6, bib8), names_to = "distrito",
+               values_to = "banks") |>
+  arrange(distrito, year) |>
+  mutate(treatment = ifelse(distrito == "bib6", 1, 0),
+         post = ifelse(year >= 1931, 1, 0))
+
+banks |>
+  mutate(banks = ifelse(year == 1930 | year == 1931,
+                        banks, NA)) |>
+  filter(year <= 1932) |>
+  ggplot(aes(year, banks, color = distrito)) +
+  geom_line(linewidth = 2) +
+  scale_y_continuous(limits = c(100, 180)) +
+  labs(x = "Año", y = "Bancos abiertos",
+       color = "Distrito")
 ```
+
 ## Representación gráfica
 
 - Del distrito 8 (no tratado) podemos obtener la pendiente:
 
-$$m_{NT}=\frac{Y_{8,post}-Y_{8,pre}}{X_{8,post}-X_{8,pre}}=\frac{132-165}{1931-1930}=-33$$
+$$m_{8}=\frac{Y_{8,post}-Y_{8,pre}}{X_{8,post}-X_{8,pre}}=\frac{132-165}{1931-1930}=-33$$
 
-- Y entonces, podemos encontrar cuál hubiera sido el número de bancos en el distrio 6 (tratado) si hubiera seguido la pendiente del distrito 8:
+donde $X_{d,pre}$ y $X_{d,post}$ son los años
 
-$$m_T=\frac{\tilde{Y}_{6,post}-Y_{6,pre}}{X_{6,post}-X_{6,pre}}=\frac{\tilde{Y}_{6,post}-135}{1931-1930}=-33$$
+- Y entonces, podemos encontrar cuál hubiera sido el número de bancos en el distrito 6 (tratado) si hubiera seguido la pendiente del distrito 8:
+
+$$m_{6}=\frac{\tilde{Y}_{6,post}-Y_{6,pre}}{X_{6,post}-X_{6,pre}}=\frac{\tilde{Y}_{6,post}-135}{1931-1930}=-33$$
+
 - Por tanto, $\tilde{Y}_{6,post}=102$ es el número de bancos que el distrito 6 hubiera tenido si hubiera seguido una tendencia paralela a la del distrito 8
 
 
 
-## Representación gráfica
+## Representación gráfica {.codigo-figura}
 
-- Podemos contruir el contrafactual para el distrito 6 observando la pendiente del distrito 8
+- Podemos construir el contrafactual para el distrito 6 observando la pendiente del distrito 8
 
 ```{r}
+#| echo: true
 #| output-location: column
+#| fig-width: 5
+#| fig-height: 4.6
+#| out-width: "100%"
 
-banks_contrafactual <- banks %>%
-    mutate(banks=ifelse(year==1930 | year==1931,banks,NA)) %>% 
-  filter(year <= 1932) %>% 
-  mutate(tipo="observado")
-  
-d6_contrafactual <- banks_contrafactual %>% 
-  filter(distrito=="bib6") %>% 
-  mutate(banks=ifelse(year==1931,102,banks),
-         tipo="contrafactual")
+banks_cf <- banks |>
+  mutate(banks = ifelse(year == 1930 | year == 1931,
+                        banks, NA)) |>
+  filter(year <= 1932) |>
+  mutate(tipo = "observado")
 
-banks_contrafactual <- rbind(banks_contrafactual,d6_contrafactual)
+d6_cf <- banks_cf |>
+  filter(distrito == "bib6") |>
+  mutate(banks = ifelse(year == 1931, 102, banks),
+         tipo = "contrafactual")
 
-dd_grafica <- banks_contrafactual %>% 
-  ggplot(aes(x=year, y=banks, color=distrito, linetype=tipo))+
-  geom_line(size=2) +
-  scale_linetype_manual(values=c("dashed", "solid")) +
-  scale_y_continuous(limits=c(100,180)) 
+banks_cf <- rbind(banks_cf, d6_cf)
 
-
-dd_grafica
+banks_cf |>
+  ggplot(aes(year, banks,
+             color = distrito, linetype = tipo)) +
+  geom_line(linewidth = 2) +
+  scale_linetype_manual(values = c("dashed", "solid")) +
+  scale_y_continuous(limits = c(100, 180)) +
+  labs(x = "Año", y = "Bancos abiertos",
+       color = "Distrito", linetype = "Tipo")
 ```
 
 
 
 
-## Diferencia en diferencias
+## Un estimador de DID
 
 - Podemos dar así una primera definición de lo que es la diferencia en diferencias del número de bancos que sobrevivieron a la Gran Depresión en Mississippi
 
 $$
 \begin{aligned}
-\delta_{DID}&=(Y_{6,post}-Y_{6,pre})-(Y_{8,post}-Y_{8,pre}) \\
+\hat{\delta}_{DID}&=(Y_{6,post}-Y_{6,pre})-(Y_{8,post}-Y_{8,pre}) \\
 &=(Y_{6,1931}-Y_{6,1930})-(Y_{8,1931}-Y_{8,1930}) \\
 &=(121-135)-(132-165) \\
 &=-14+33 = 19
 \end{aligned}
 $$
 
-- El estimador de DID toma en cuenta las diferencias iniciales
+- El estimador de DID toma en cuenta las diferencias iniciales. El distrito 8 ya tenía más bancos abiertos que el 6 antes de la crisis
 
-- En este caso, el distrito 8 ya tenía más bancos abiertos que el 6 antes de la crisis
-
-- DID construye un contrafactual para las unidades tratadas usando la pendiente de las unidades no tratadas
+- DID construye un contrafactual para las unidades tratadas usando la pendiente de las no tratadas
 
 
-## Diferencia en diferencias
+## DID en el diseño $2\times 2$
 
-- El supuesto fundamental es el de **tendencias comunes**, es decir, que en ausencia del tratamiento, el grupo de tratamiento se hubiera comportado igual al grupo de control
+**Definiciones**
 
-- Si hay varios puntos pre intervención, el supuesto de tendencias comunes puede probarse empíricamente
+- $t\in\{1,2\}$ periodos
+- $D_i=
+\begin{cases}
+1\quad\quad \text{si $i$ es tratado} \\
+0\quad\quad \text{si $i$ no es tratado} \\
+\end{cases}
+$
+- El tratamiento ocurre entre los periodos 1 y 2
+- $Y_{it}$ es la variable de resultados observada
+- Datos en panel con $i=1,\ldots,N$ unidades (puede adaptarse a secciones cruzadas repetidas)
+- $Y_{it}(0)$ y $Y_{it}(1)$ son los resultados potenciales bajo cada valor del tratamiento
+- Estimamos el ATT (*average treatment effect on the treated*):
+$$ATT=E(Y_2(1)-Y_2(0)|D=1)$$
+
+- $Y_2(0)$ no es observado para el grupo con $D=1$
+- Callaway & Sant’Anna (2021) y Roth, Sant’Anna, Bilinski & Poe (2023) usan ATT mientras que CA usa ATET
+
+## Supuestos
+
+**Supuesto 1**: tendencias paralelas
+
+- El cambio promedio en la variable de resultados entre los grupos tratados y no tratados habría sido el mismo en ausencia del tratamiento
+
+$$E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)$$ 
+**Supuesto 2**: no anticipación
+
+- Las unidades que aún no son tratadas no anticipan que lo van a ser, por lo que el tratamiento no afecta el resultado potencial pre intervención
+
+$$Y_{i1}(0) = Y_{i1}(1) \quad \forall \quad \text{$i$ con $D_i = 1$}$$
+
+**Supuesto 3**: SUTVA
+
+
+## DID resuelve el problema contrafactual
+
+- Reacomodando los términos del supuesto de tendencias paralelas para expresar $E(Y_2(0)| D = 1)$ (lo que no vemos):
+
+$$E(Y_2(0)|D=1)=E(Y_1(0)|D=1)+E(Y_2(0)-Y_1(0)|D=0)$$
+
+- Por no anticipación, $E(Y_1(0)|D=1)=E(Y_1(1)|D=1)$, entonces:
+
+$$
+\begin{aligned}
+E(Y_2(0)|D=1)&=E(Y_1(1)|D=1)+E(Y_2(0)-Y_1(0)|D=0) \\
+&=E(Y_1|D=1)+E(Y_2-Y_1|D=0)
+\end{aligned}
+$$
+
+- Sustituyendo en la definición del ATT:
+
+$$ATT=\underbrace{E(Y_2-Y_1|D=1)}_{\text{cambio para } D=1}-\underbrace{E(Y_2-Y_1|D=0)}_{\text{cambio para } D=0}$$
+
+## DID resuelve el problema contrafactual
+
+- La expresión para el $ATT$ puede ser reescrita como:
+
+$$ATT=\underbrace{(E(Y_2|D=1)-E(Y_2|D=0))}_{\text{diferencia entre grupos en $t=2$}}-\underbrace{(E(Y_1|D=1)-E(Y_1|D=0))}_{\text{diferencia
+entre grupos en $t=1$}}$$
 
 
 
-## Regresión en DID
+## Estimador de DID con diferencias de medias
 
-- El método puede generalizarse a más periodos de tiempo 
+- Las ecuaciones anteriores expresan el $ATT$ como una diferencia en diferencias de esperanzas poblacionales
 
-- Aquí, una regresión nos permite identificar el efecto del tratamiento
+- Una forma natural de estimarlo es reemplazar las esperanzas por sus análogos muestrales. Siguiendo la primera expresión para el $ATT$, podemos estimar:
 
-- Tenemos datos sobre el número de bancos en cada distrito en cada año (1929-1934)
+$$\widehat{ATT}=(\bar{Y}_{t=2,D=1}-\bar{Y}_{t=1,D=1})-(\bar{Y}_{t=2,D=0}-\bar{Y}_{t=1,D=0})$$
 
-$$y_{dt}=\alpha+\beta T_d+\gamma POST_t + \delta_{r,DID}(T_d\times POST_t)+e_{dt}$$
-- $T_d$ es una dummy para los distritos tratados (distrito 6 en este caso)
-  
-  - Les llamamos **efectos fijos individuales** y sirven para controlar diferencias entre distritos que no cambian en el tiempo
-  
-- $POST_t$ es una dummy para los periodos post tratamiento (1931 en adelante)
+donde $\bar{Y}_{t=t',D=d}$ es la media muestral de $Y$ para el grupo $d$ en el periodo $t'$
 
-- Al término $T_d\times POST_t$ se le conoce como el **término de interacción**, que es una dummy igual a 1 para los distritos tratados en los años post intervención
+## Estimador de DID con regresión
 
-- $\delta_{r,DID}$ es el estimador de DID del efecto del tratamiento
+- La forma más común de implementar la estimación por DID es usando una regresión
 
+- Definimos $POST_t=\mathbf{1}(t=2)$
 
+$$Y_{it}=\alpha+\beta D_i+\gamma POST_t+\delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$$
 
-## Regresión en DID
-
-
-- Usemos los datos del archivo [banks_mm.csv](banks_mm.csv) que se utilizan en el libro
-
-- Es una forma muy básica de datos en panel: cada fila representa un distrito en un periodo de tiempo
-
-- Podemos identificar si cada fila pertenece a un distrito tratado o no o a un periodo posterior a al tratamiento o no
+- Las medias condicionales de cada grupo y periodo son:
 
 ```{r}
-banks
+#| label: tabla-medias-regresion
+
+tabla_medias <- tibble(
+  grupo = c("\\(D=0\\)", "\\(D=1\\)", "Diferencia"),
+  t1 = c("\\(\\alpha\\)", "\\(\\alpha+\\beta\\)", "\\(\\beta\\)"),
+  t2 = c("\\(\\alpha+\\gamma\\)",
+         "\\(\\alpha+\\beta+\\gamma+\\delta_{DID}\\)",
+         "\\(\\beta+\\delta_{DID}\\)"),
+  dif = c("\\(\\gamma\\)", "\\(\\gamma+\\delta_{DID}\\)",
+          "\\(\\delta_{DID}\\)"))
+
+tabla_medias |>
+  kbl(col.names = c("", "\\(t=1\\)", "\\(t=2\\)", "Diferencia"),
+      align = "cccc",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
+```
+
+## Estimador de DID con regresión
+
+- Lo que la regresión identifica
+  - $\alpha=E(Y_1|D=0)$
+  - $\beta=E(Y_1|D=1)-E(Y_1|D=0)$
+  - $\gamma=E(Y_2|D=0)-E(Y_1|D=0)$
+  - $\delta_{DID}=(E(Y_2|D=1)-E(Y_1|D=1))-(E(Y_2|D=0)-E(Y_1|D=0))$
+
+- Si se cumplen los **supuestos 1, 2 y 3**, $\delta_{DID}=ATT$
+
+- La ventaja de usar regresión es que obtenemos errores estándar y podemos añadir covariables (con cuidado)
+
+## DID con regresión gráficamente {.codigo-figura}
+
+```{r}
+#| echo: true
+#| output-location: column
+#| fig-width: 5
+#| fig-height: 4.6
+#| out-width: "100%"
+
+medias <- tibble(
+  t = rep(1:2, 3), Y = c(2, 3, 4, 7, 4, 5),
+  Grupo = rep(c("D=0", "D=1", "D=1 sin tratamiento"),
+              each = 2))
+medias |>
+  ggplot(aes(t, Y, color = Grupo, linetype = Grupo)) +
+  geom_line(linewidth = 1.5) +
+  annotate("segment", x = 1, xend = 2.05,
+           y = 2, yend = 2, linetype = "dotted") +
+  annotate("segment", x = c(0.95, 2.05, 2.05),
+           xend = c(0.95, 2.05, 2.05),
+           y = c(2, 2, 5), yend = c(4, 3, 7),
+           arrow = arrow(ends = "both",
+                         length = unit(0.1, "in"))) +
+  annotate("text", x = c(1, 0.89, 2.13, 2.18),
+           y = c(1.7, 3, 2.5, 6), parse = TRUE, size = 6,
+           label = c("alpha", "beta", "gamma",
+                     "delta[DID]")) +
+  scale_color_manual(values = c("grey40", "darkred",
+                                "darkred")) +
+  scale_linetype_manual(values = c(1, 1, 2)) +
+  scale_x_continuous(breaks = 1:2,
+                     limits = c(0.85, 2.3)) +
+  labs(x = "Periodo", y = "E(Y)") +
+  theme(legend.position = "bottom")
 ```
 
 
 
-## Regresión en DID
+## Múltiples unidades y periodos pre y post tratamiento
 
-- Estimemos la regresión que acabamos de motivar usando todos los periodos en el panel
+- Como en el ejemplo de las corridas bancarias, donde tenemos datos sobre el número de bancos en cada distrito en cada año (1929-1934), podemos tener varias observaciones pre y post intervención
 
-```{r}
-did_bank <- lm(banks ~ treatment + post+ treatment*post,
-               data=banks)
+- También podemos tener múltiples unidades en los grupos tratado y no tratado
 
-summary(did_bank)
-```
+- Podemos generalizar la regresión sustituyendo las dummies por efectos fijos:
 
+$$Y_{it}=\alpha_i+\lambda_t+\delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$$
 
+- $\alpha_i$: **efectos fijos individuales** (sustituyen a $\alpha+\beta D_i$), diferencias entre unidades que no cambian en el tiempo
 
-## Regresión en DID
+- $\lambda_t$: **efectos fijos de periodo** (sustituyen a $\gamma POST_t$), choques comunes a todas las unidades
 
-- Noten que si solo usamos dos años, obtenemos exactamente lo que obtendríamos haciendo las diferencias *a mano*
+- $D_i\times POST_t$: **término de interacción**, con $POST_t=\mathbf{1}(t\geq t_0)$ y $t_0$ el primer periodo tratado
 
-$$\delta_{DiD}=(Y_{6,1931}-Y_{6,1930})-(Y_{8,1931}-Y_{8,1930})=19$$
+- $\delta_{DID}$ es el efecto de tratamiento
 
-```{r}
-did_bank2 <- lm(banks ~ treatment + post+ treatment*post,
-               data=filter(banks,year==1930 | year==1931))
+- Si hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede probarse empíricamente
 
 
-summary(did_bank2)
-```
-
-
-
-
-
-## Violación a los supuestos
-
-
+## Ejemplo: corridas bancarias con regresión
 
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-- Consideremos cosas que podrían salir mal con respecto al supuesto de tendencias paralelas
+- Usemos los datos del archivo [banks_mm.csv](banks_mm.csv) que se utilizan en MM
 
-- Supongamos que un tratamiento ocurre en el periodo marcado con la línea vertical, por ejemplo, un cambio en una legislación
+- Es una forma muy básica de datos en panel: cada fila representa un distrito en un periodo de tiempo
 
-- En este ejemplo  algo sucedió en Allatsea que produjo un cambio en la trayectoria de mortalidad antes del cambio en la legislación
-
-- El supuesto de tendencias paralelas sí se sostenía hasta antes de este cambio
-
-- Sin embargo, nuestra estrategia de DID atribuiría el efecto al cambio en la legislación cuando en realidad cuando ese cambio ocurrió ya nole pasó nada a Allatsea
-
+- Podemos identificar si cada fila pertenece a un distrito tratado o no o a un periodo posterior al tratamiento o no
 :::
 
 ::: {.column width="50%"}
 ```{r}
-#| echo: false
-#| out.width: "100%"
-#| fig-align: center
-knitr::include_graphics("trends_1.png")
+#| label: tabla-panel-bancos
+
+banks |>
+  kbl(align = "ccccc") |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE,
+              font_size = 22)
+```
+:::
+
+::::
+
+
+
+## Ejemplo: corridas bancarias con regresión
+
+- Estimamos $Y_{it}=\alpha+\beta D_i+\gamma POST_t+\delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$, con $POST_t=\mathbf{1}(t\geq 1931)$
+
+```{r}
+#| echo: true
+#| output-location: column
+
+did_bank <- lm(banks ~ treatment*post,
+               data = banks)
+
+modelsummary(list("Bancos abiertos" = did_bank),
+             coef_map = c("treatment",
+                          "post",
+                          "treatment:post",
+                          "(Intercept)"),
+             gof_map = c("nobs"),
+             stars = c('*' = .1,
+                       '**' = .05,
+                       '***' = 0.01))
+```
+
+
+
+## Ejemplo: corridas bancarias con regresión
+
+- Noten que si solo usamos dos años, obtenemos exactamente lo que obtendríamos haciendo las diferencias *a mano*
+
+$$\hat{\delta}_{DID}=(Y_{6,1931}-Y_{6,1930})-(Y_{8,1931}-Y_{8,1930})=19$$
+
+```{r}
+#| echo: true
+#| output-location: column
+
+did_bank2 <- lm(banks ~ treatment*post,
+                data = filter(banks,
+                              year == 1930 | year == 1931))
+
+# Cuatro observaciones y cuatro coeficientes:
+# no hay errores estándar
+modelsummary(list("Bancos abiertos" = did_bank2),
+             coef_map = c("treatment",
+                          "post",
+                          "treatment:post",
+                          "(Intercept)"),
+             statistic = NULL,
+             gof_map = c("nobs"))
+```
+
+
+
+
+
+## Relajación de los supuestos
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- En estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1974
+
+- Este gráfico muestra un caso de tendencias paralelas
+
+- El estimador de DID captura correctamente el salto por encima de la tendencia en la unidad tratada 
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+# Trayectorias hipotéticas: la no tratada es la misma en los tres ejemplos
+tendencias <- tibble(year = 1970:1985) |>
+  mutate(no_tratada = 81 + (year - 1970),
+         tratada_1 = 91 + (year - 1970) + 7 * (year >= 1975),
+         tratada_2 = 92 + 2 * (year - 1970),
+         tratada_3 = 92 + 2 * (year - 1970) + 7 * (year >= 1975))
+
+grafica_tendencias <- function(tratada) {
+  tendencias |>
+    select(year, "No tratada" = no_tratada, "Tratada" = {{ tratada }}) |>
+    pivot_longer(-year, names_to = "unidad", values_to = "tasa") |>
+    ggplot(aes(year, tasa, color = unidad)) +
+    geom_line(linewidth = 1.5) +
+    geom_vline(xintercept = 1975, linetype = "dashed") +
+    geom_text(data = \(d) filter(d, year == 1980),
+              aes(label = unidad), nudge_y = -4, size = 6) +
+    scale_color_manual(values = c("grey50", "black")) +
+    labs(x = "Año", y = "Tasa de mortalidad (por 100,000)") +
+    theme(legend.position = "none")
+}
+
+grafica_tendencias(tratada_1)
 ```
 
 :::
@@ -321,7 +561,7 @@ knitr::include_graphics("trends_1.png")
 
 
 
-## Violación a los supuestos
+## Relajación de los supuestos
 
 
 :::: {.columns}
@@ -329,16 +569,18 @@ knitr::include_graphics("trends_1.png")
 ::: {.column width="50%"}
 - En este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola
 
-- Aunque en el momento del cambio de la política, la línea de Allatsea es más inclinada, estimar esta relación por DID de nuevo atribuiría a la política diferencias que ya existían antes de la intervención
+- La línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención
+
 
 :::
 
 ::: {.column width="50%"}
 ```{r}
-#| echo: false
-#| out.width: "100%"
-#| fig-align: center
-knitr::include_graphics("trends_2.png")
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+grafica_tendencias(tratada_2)
 ```
 
 
@@ -352,23 +594,30 @@ knitr::include_graphics("trends_2.png")
 
 
 
-## Violación a los supuestos
+## Relajación de los supuestos
 
 :::: {.columns}
 
 ::: {.column width="50%"}
-- En este tercer ejemplo hay tendencias que no son paralelas pre intervención
+- En este tercer ejemplo hay tendencias que no son paralelas pre tratamiento
 
-- Sin embargo, después de la intervención, la trayectoria de Allatsea tiene una pendiente claramente más inclinada que antes de la intervención
+- La pendiente para la unidad tratada es mayor que la de la no tratada en todos los periodos
+
+- Aquí DID detectaría un efecto, pero sobreestimado, pues al salto en la unidad tratada le sumaría la brecha que de todos modos se iba abriendo por tener una tendencia más inclinada que la de la no tratada
+
+- Una forma de separar ambas cosas es incluir tendencias específicas por unidad:
+
+$$Y_{it}=\alpha+\beta D_i+\gamma POST_t + \rho (D_i\times t) + \delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$$
 
 :::
 
 ::: {.column width="50%"}
 ```{r}
-#| echo: false
-#| out.width: "100%"
-#| fig-align: center
-knitr::include_graphics("trends_3.png")
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+grafica_tendencias(tratada_3)
 ```
 
 
@@ -377,9 +626,27 @@ knitr::include_graphics("trends_3.png")
 ::::
 
 
+## Inferencia
+
+- Estamos nuevamente ante un diseño con posible presencia de errores agrupados
+
+- La dimensión relevante ahora es $i$ pues es muy probable que haya características no observadas de las unidades que presentan *correlación serial*
+
+- Con suficientes unidades, podemos usar los resultados de la matriz de varianza agrupada, donde el nivel de agrupación es ahora $i$
+
+- En general, cuando trabajamos con datos en panel, lo relevante es que $N$ sea lo suficientemente grande para usar teoría asintótica (y no solo $NT$)
+
+- Bertrand, Duflo & Mullainathan (2004) analizan 92 artículos de DID y encuentran que la mayoría no reconoce el problema de correlación serial, por lo que subestiman los errores estándar estimados
+
+- En la actualidad, en el trabajo empírico se pone énfasis en la correcta estimación de la matriz de varianzas usando resultados asintóticos o bootstrap por bloques en el caso de tener pocos grupos o *clusters*
+
+
+
+
+
 # Adopción escalonada {.divider background-color="#9B2247" data-state="nochrome"}
 
-## Adopción escalonada en la *antiguedad*
+## Adopción escalonada en la *antigüedad*
 
 - DID es uno de esos campos tan activos en la investigación que cosas que pensábamos superadas o completamente estudiadas se han modificado en los últimos años
 
@@ -387,9 +654,9 @@ knitr::include_graphics("trends_3.png")
 
 - La adopción escalonada ocurre cuando existen varios periodos de tratamiento y algunas unidades van siendo tratadas de forma desfasada
 
-- Por ejemplo, en Méxio las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada
+- En México, las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada
 
-- Hasta los trabajos de Goodman-Bacon (2021) y Chaisemartin & D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos en bidireccionales (sí, suena horrible dicha traducción) o *two-way fixed effects*
+- Hasta los trabajos de Goodman-Bacon (2021) y de de Chaisemartin & D'Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales (sí, suena horrible dicha traducción) o *two-way fixed effects*
 
 - Esta sección presenta el tipo de tratamiento que hoy ya consideramos inapropiado
 
@@ -406,14 +673,15 @@ knitr::include_graphics("trends_3.png")
 
 - Tenemos datos de mortalidad de 1970 a 1983 para personas de entre 18 y 20 años
 
-- Lo que hemos aprendido hasta ahora nos sugiere estimar el impacto por DID comos sigue
+- Lo que hemos aprendido hasta ahora nos sugiere estimar el impacto por DID como sigue
 
-$$y_{st}=\alpha+\beta T_s+\gamma POST_t+\delta_{DID}(T_s\times POST_t)+e_{st}$$
-- $T_s$ es una dummy igual a 0 para Arkansas en todos los periodos e igual a 1 para Alabama en todos los periodos
+$$Y_{st}=\alpha+\beta D_s+\gamma POST_t+\delta_{DID}(D_s\times POST_t)+\varepsilon_{st}$$
+
+- $D_s$ es una dummy igual a 0 para Arkansas en todos los periodos e igual a 1 para Alabama en todos los periodos
 
 - $POST_t$ es igual a cero para el periodo 1970-1975 e igual a 1 para el periodo 1976-1983
 
-- $T_s\times POST_t$ es igual a 1 para las observaciones de Alabama en los años en los que la nueva política ya está en vigor
+- $D_s\times POST_t$ es igual a 1 para las observaciones de Alabama en los años en los que la nueva política ya está en vigor
 
 
 
@@ -427,14 +695,14 @@ $$y_{st}=\alpha+\beta T_s+\gamma POST_t+\delta_{DID}(T_s\times POST_t)+e_{st}$$
 
 - Y en vez de una dummy de tratamiento, incluimos efectos fijos por unidad
 
-- Además, en el cambio en la ley podría no ser el mismo
+- Además, el cambio en la ley podría no ser el mismo
 
   - Algunos estados mueven la edad a 18, otros a 19 y otros a 20
   
   - Podemos definir $LEGAL_{st}$ como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado $s$ y en el año $t$
 
 
-$$y_{st}=\alpha+\delta_{DID}LEGAL_{st}+\sum_k\beta_k STATE_{ks}+\sum_j \gamma_j YEAR_{jt}+e_{st}$$
+$$Y_{st}=\alpha+\delta_{DID}LEGAL_{st}+\sum_k\beta_k STATE_{ks}+\sum_j \gamma_j YEAR_{jt}+\varepsilon_{st}$$
 
 
 
@@ -454,253 +722,273 @@ $$y_{st}=\alpha+\delta_{DID}LEGAL_{st}+\sum_k\beta_k STATE_{ks}+\sum_j \gamma_j 
 
 ## Interpretación
 
-| Muertes por 100,000 habs.: | $\hat{\delta}_{DID}$ |
-|:--- | :---: |
-| Todas | 10.80 |
-| | (4.59)|
-| Accidentes en vehículos | 7.59 |
-| | (2.50) |
-| Suicidio | 0.59|
-| | (0.59) |
-| Causas internas | 1.33 |
-| | (1.59)    |
+:::: {.columns}
 
-
+::: {.column width="50%"}
 - La interpretación de los resultados es directa
 
 - El acceso a alcohol causa un incremento de casi 11 muertes adicionales por cada 100,000 habitantes y este efecto es estadísticamente significativo
 
 - No hay efectos donde no esperaríamos tenerlos
+:::
+
+::: {.column width="50%"}
+```{r}
+#| label: tabla-mlda
+
+causa <- c("Todas", "", "Accidentes en vehículos", "", "Suicidio", "", "Causas internas", "")
+efecto <- c("10.80", "(4.59)", "7.59", "(2.50)", "0.59", "(0.59)", "1.33", "(1.59)")
+
+tabla_mlda <- data.frame(cbind(causa, efecto))
+
+tabla_mlda |>
+  kbl(col.names = c("Muertes por 100,000 habs.:",
+                    "\\(\\hat{\\delta}_{DID}\\)"),
+      align = "lc",
+      escape = FALSE) |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE)
+```
+:::
+
+::::
 
 
 # Descomposición de Goodman-Bacon {.divider background-color="#9B2247" data-state="nochrome"}
 
 ## ¿Qué hace el estimador de TWFE?
 
-Consideremos el siguiente problema de adopción escalonada
+- Consideremos el siguiente problema de adopción escalonada
 
-- Observamos $T$ periodos
-- $k$ denota la unidad tratada temprano
-- $l$ denota la unidad tratada tarde
-- Denotamos $\bar{D}_k$ al tiempo que $k$ pasa tratado
-- Similarmente, $\bar{D}_l$
-- $n_k$ es el número de unidades tratadas temprano
-- $n_l$ es el número de unidades tratadas tarde
-- $n_U$ es el número de unidades nunca tratadas
-- Para cualesquiera dos grupos $a$ y $b$, $a_{ab}=\frac{n_a}{n_a+n_b}$
+  - Observamos $T$ periodos
+  - $k$ denota a las unidades tratadas temprano
+  - $l$ denota a las unidades tratadas tarde
+  - $\bar{D}_k$ es la fracción de los periodos en que las unidades $k$ están tratadas
+  - Similarmente, $\bar{D}_l$
+  - $n_k$ es la proporción de la muestra que corresponde a las unidades tratadas temprano
+  - $n_l$ es la proporción de la muestra que corresponde a las unidades tratadas tarde
+  - $n_U$ es la proporción de la muestra que corresponde a las unidades nunca tratadas
+  - Para cualesquiera dos grupos $a$ y $b$, $n_{ab}=\frac{n_a}{n_a+n_b}$ es la proporción de $a$ en la submuestra formada por ambos
 
 ## ¿Qué hace el estimador de TWFE?
 
 ```{r}
 #| echo: false
+#| fig-align: center
 knitr::include_graphics("gb-decomposition-a.png")
 ```
 
+::: {.aside}
+Fuente: Goodman-Bacon (2021).
+:::
+
 
 ## ¿Qué hace el estimador de TWFE?
 
-Tenemos cuatro posibles comparaciones $2x2$
+**Cuatro posibles comparaciones $2\times 2$**
 
 - Las comparaciones con las unidades nunca tratadas:
 
-$$\hat{\beta}_{jU}=\left(\bar{y}_j^{POST(j)}-\bar{y}_j^{PRE(j)}\right)-\left(\bar{y}_U^{POST(j)}-\bar{y}_U^{PRE(j)}\right),\;j=\{k,l\}$$
+$$\hat{\delta}_{jU}=\left(\bar{Y}_j^{POST(j)}-\bar{Y}_j^{PRE(j)}\right)-\left(\bar{Y}_U^{POST(j)}-\bar{Y}_U^{PRE(j)}\right),\;j\in\{k,l\}$$
 
-- La comparación entre $k$ y $l$ cuando $k$ es tratada, usando los periodos antes de que $l$ sea tratada
+- La comparación entre $k$ y $l$ cuando las unidades $k$ son tratadas, usando los periodos antes de que las unidades $l$ sean tratadas
 
-$$\hat{\beta}^{k}_{kl}=\left(\bar{y}_k^{MID(k,l)}-\bar{y}_k^{PRE(k)}\right)-\left(\bar{y}_l^{MID(k,l)}-\bar{y}_l^{PRE(k)}\right)$$
+$$\hat{\delta}^{k}_{kl}=\left(\bar{Y}_k^{MID(k,l)}-\bar{Y}_k^{PRE(k)}\right)-\left(\bar{Y}_l^{MID(k,l)}-\bar{Y}_l^{PRE(k)}\right)$$
 
-- La comparación entre $l$ y $k$ cuando $l$ es tratada, usando los periodos después de que $k$ fue tratada
+- La comparación entre $l$ y $k$ cuando las unidades $l$ son tratadas, usando los periodos después de que las unidades $k$ fueron tratadas
 
-$$\hat{\beta}^{l}_{kl}=\left(\bar{y}_l^{POST(l)}-\bar{y}_l^{MID(k,l)}\right)-\left(\bar{y}_k^{POST(l)}-\bar{y}_k^{MID(k,l)}\right)$$
+$$\hat{\delta}^{l}_{kl}=\left(\bar{Y}_l^{POST(l)}-\bar{Y}_l^{MID(k,l)}\right)-\left(\bar{Y}_k^{POST(l)}-\bar{Y}_k^{MID(k,l)}\right)$$
 
 ## ¿Qué hace el estimador de TWFE?
 
 ```{r}
 #| echo: false
+#| fig-align: center
 knitr::include_graphics("gb-decomposition-b.png")
 ```
 
+::: {.aside}
+Fuente: Goodman-Bacon (2021).
+:::
+
 
 
 ## ¿Qué hace el estimador de TWFE?
 
-Denotamos $D_{it}=1$ cuando la unidad $i$ es tratada en el periodo $0$
+- Denotamos $D_{it}=1$ cuando la unidad $i$ es tratada en el periodo $t$
 
-Por el teorema de Frisch-Waugh-Lovell sabemos que podemos *purgar* de efectos fijos a la variable $D_{it}$
+- Por el teorema de Frisch-Waugh-Lovell sabemos que podemos *purgar* de efectos fijos a $D_{it}$
 
-Es decir, podemos estimar por MCO:
+- Es decir, podemos estimar por MCO, donde $P_{\tau t}$ son dummies temporales y $S_{ji}$ son dummies individuales:
 
-$$D_{it}=\sum_t \gamma_t P_t + \sum_i \pi S_i + \varepsilon_{it}$$
+$$D_{it}=\sum_{\tau}\gamma_\tau P_{\tau t}+\sum_{j}\pi_j  S_{ji}+\varepsilon_{it}$$
 
-donde $P_t$ son dummies temporales y $S_i$ son dummies individuales
+- Luego obtenemos $\tilde{D}_{it}=D_{it}-\hat{D}_{it}$
 
-Luego obtenemos
+- Y entonces el estimador de TWFE puede escribirse como el coeficiente de una regresión bivariada, donde $\hat{C}(\cdot,\cdot)$ es la covarianza muestral y $\hat{V}^D$ es la varianza de la variable de tratamiento *purgada* de efectos fijos:
 
-$$\tilde{D}_{it}=D_{it}-\hat{D}_{it}$$
-Y entonces el estimador de TWFE puede escribirse como el coeficiente de una regresión bivariada:
+$$\hat{\delta}_{DID}=\frac{\hat{C}(Y_{it}, \tilde{D}_{it})}{\hat{V}^D}$$
 
-$$\hat{\beta}_{DD}=\frac{\hat{C}(y_{it}, \tilde{D}_{it})}{\hat{V}^D}$$
-$\hat{V}^D$ es la varianza de la variable de tratamiento *purgada* de efectos fijos
 
 ## ¿Qué hace el estimador de TWFE?
 
-Goodman-Bacon (2021) muestra que el estimador de TWFE puede descomponerse como:
+- Goodman-Bacon (2021) muestra que el estimador de TWFE puede descomponerse como:
 
-$$\hat{\beta}_{DD}=s_{kU}\hat{\beta}_{kU}+s_{lU}\hat{\beta}_{lU}+s_{kl}^k\hat{\beta}_{kl}^k+s_{kl}^l\hat{\beta}_{kl}^l$$
+$$\hat{\delta}_{DID}=s_{kU}\hat{\delta}_{kU}+s_{lU}\hat{\delta}_{lU}+s_{kl}^k\hat{\delta}_{kl}^k+s_{kl}^l\hat{\delta}_{kl}^l$$
 
-## ¿Qué son los pesos?
+con los pesos dados por:
 
-Goodman-Bacon (2021) muestra que los pesos están dados por:
+  - $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}$
 
-- $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}$
+  - $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}$
 
-- $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}$
+  - $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}$
 
-- $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}$
-
-- $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}$
+  - $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}$
 
 
 
 ## ¿Qué son los pesos?
 
-Las varianzas del tratamiento en la submuestra tienen las siguientes formas: 
+- Podemos desarrollar lo que son las varianzas del tratamiento:
 
-- $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D}$
+  - $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D}$
 
-- $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D}$
+  - $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D}$
 
-- $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D}$
+  - $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D}$
 
-- $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}$
+  - $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}$
 
 ## ¿Qué son los pesos?
 
-Pongamos atención a uno de los pesos, $s_{kU}$ para ver la intuición
+- Pongamos atención a uno de los pesos, $s_{kU}$, para ver la intuición
 
-Vimos que:
+- Vimos que:
 
 $$s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D}$$
 
-
-Primero, noten que el peso depende de $(n_k+n_u)^2$, es decir, la parte de la submuestra que se usa para estimar cada comparación $2x2$
+- Primero, noten que el peso depende de $(n_k+n_U)^2$, es decir, el cuadrado de la proporción de la muestra que se usa para estimar cada comparación $2\times 2$
 
 
 ## ¿Qué son los pesos?
 
-
-Ahora veamos la varianza que entra en este peso:
+- Ahora veamos la varianza que entra en este peso:
 
 $$\hat{V}_{kU}^D=n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)$$
-Una primer cosa que entra en juego es $n_{kU}=\frac{n_k}{n_k+n_U}$, el peso relativo del grupo tratado temprano en la submuestra
 
-Recordemos que $\bar{D}_k$ indica la fracción del tiempo del panel que $k$ permanece tratado
+- Una primera cosa que entra en juego es $n_{kU}=\frac{n_k}{n_k+n_U}$, el peso relativo de las unidades tratadas temprano en la submuestra
 
-Dado que $D_{it}$ es binaria, $\bar{D}_k(1-\bar{D}_k)$ es la varianza de $D_{it}$
+- Recordemos que $\bar{D}_k$ indica la fracción del tiempo del panel que las unidades $k$ permanecen tratadas
 
-¿Qué es lo más grande que puede ser $\bar{D}_k(1-\bar{D}_k)$? 
+- Dado que $D_{it}$ es binaria, $\bar{D}_k(1-\bar{D}_k)$ es la varianza de $D_{it}$ para las unidades $k$
 
-Claramente esto es a lo más 0.5, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel
+- ¿Qué es lo más grande que puede ser $\bar{D}_k(1-\bar{D}_k)$?
 
-## ¿Qué son los pesos?
+- Claramente esto es a lo más 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel ($\bar{D}_k=0.5$)
 
-En resumen, los pesos están dados por
+- En resumen, los pesos están dados por
 
-$$\scriptsize  pesos = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}$$
+$$\scriptsize  \text{peso} = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}$$
 
 ## ¿Qué nos dice la descomposición?
 
-Todos los grupos funcionan como *controles* (algunas veces)
+- Todos los grupos funcionan como *controles* (algunas veces)
 
-Los pesos en cada comparación $2 \times 2$ dependen del tamaño de la muestra usada para estimarlos y del tiempo que las unidades permanecen tratadas
+- Los pesos en cada comparación $2 \times 2$ dependen del tamaño de la muestra usada para estimarlos y del tiempo que las unidades permanecen tratadas
 
-El efecto estimado se modificaría solo por agregar más años al final del panel
+- El efecto estimado se modificaría solo por agregar más años al final del panel
 
-Los términos que dominen pueden incluso cambiar el signo del efecto estimado
+- Los términos que dominen pueden incluso cambiar el signo del efecto estimado
 
-Goodman-Bacon (2021) muestra que, en general usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)
+- Goodman-Bacon (2021) muestra que, en general, usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)
 
 
-# Estimador de Callaway & Sant'Anna {.divider background-color="#9B2247" data-state="nochrome"}
+# Estimador de Callaway & Sant’Anna {.divider background-color="#9B2247" data-state="nochrome"}
 
-## Estimador de Callaway & Sant'Anna
+## Estimador de Callaway & Sant’Anna
 
-El estimador de Callaway & Sant'Anna (2021) es una forma muy sencilla de explotar la información del desfase del tratamiento
+- El estimador de Callaway & Sant’Anna (2021) es una forma muy sencilla de explotar la información del desfase del tratamiento
 
-Además permite una presentación muy intuitiva de los efectos de tratamiento
+- Además permite una presentación muy intuitiva de los efectos de tratamiento
 
-Esencialmente consiste en definir una serie de cohortes de unidades y estimar los impactos para cada cohorte
+- Esencialmente consiste en definir una serie de cohortes de unidades y estimar los impactos para cada cohorte
 
-Luego podemos agregar los impactos por cohorte o presentar la dinámica de los impactos de forma gráfica
+- Luego podemos agregar los impactos por cohorte o presentar la dinámica de los impactos de forma gráfica
 
 ## Definiciones
 
 
 - $G_i=\min\{t:D_{it}=1\}$ es el primer periodo en que $i$ es tratado
-- $G_i=\infty$ indoca que $i$ nunca es tratado
+- $G_i=\infty$ indica que $i$ nunca es tratado
+- $\mathcal{G}$ es el conjunto de periodos en que alguna unidad empieza a ser tratada
 - $t=1,\ldots,T$ son los periodos
 - $D_{it}=1\;\forall\;t\geq G_i$ indica tratamiento absorbente
 
-Definamos el efecto del tratamiento al periodo $t$ para el cohorte que empezó a ser tratado en $g$:
+- Definamos el efecto del tratamiento al periodo $t$ para la cohorte que empezó a ser tratada en $g$:
 
-$$ATT(g,t)=E(y_{it}(g)-y_{it}(\infty)|G_i=g)$$
-Por ejemplo, $ATT(2014,2016)$ es el efecto del tratamiento en 2016 para aquellos tratados empezando en 2014
+$$ATT(g,t)=E(Y_{t}(g)-Y_{t}(\infty)|G=g)$$
 
-## Supuestos
+- Por ejemplo, $ATT(2014,2016)$ es el efecto del tratamiento en 2016 para aquellos tratados empezando en 2014
 
-**Tendencias paralelas en el contexto escalonado**
 
-$$E(y_{it}(\infty)-y_{it'}(\infty)|G_i=g)=E(y_{it}(\infty)-y_{it'}(\infty)|G_i=g')\quad\forall\;t\neq t',\; g\neq q'$$
-
-Este supuesto indica que en el estado contrafactual de nunca haber sido tratados, dos grupos tratados en dos momentos diferentes $g$ y $g'$ habrían tenido una trayectoria igual entre los periodos $t$ y $t'$
-
-**Tendencias paralelas en el contexto escalonado (a)**
-
-Modifica el supuesto anterior pero $\forall \;t,t'\geq g_{min}-1$ donde $g_{min}=\min G$ es el primer periodo en donde alguna unidad es tratada (Callaway y Sant'Anna solo usan este supuesto más débil)
 
 ## Supuestos
 
-**No anticipación en el contexto escalonado**
+**Supuesto 1. Tendencias paralelas en el contexto escalonado**
 
-$$y_{it}(g)=y_{it}(\infty)\quad \forall\;i \;\text{y}\;\forall\;t<g$$
+$$E(Y_{t}(\infty)-Y_{t'}(\infty)|G=g)=E(Y_{t}(\infty)-Y_{t'}(\infty)|G=g')\quad\forall\;t\neq t',\; g\neq g'$$
 
-## Estimador de Callaway & Sant'Anna
+- Este supuesto indica que en el estado contrafactual de nunca haber sido tratados, dos grupos tratados en dos momentos diferentes $g$ y $g'$ habrían tenido una trayectoria igual entre los periodos $t$ y $t'$
 
-El estimador de Callaway & Sant'Anna (2021) se define como:
+**Supuesto 1a. Tendencias paralelas en el contexto escalonado (débil)**
 
-$$ATT(g,t)=E(y_{it}-y_{i,g-1}|G_i=g)-E(y_{it}-y_{i,g-1}|G_i\in\mathcal{G}_{comp})$$
-Queremos comparar el valor de la variable de impacto entre el periodo $g-1$ y el $t$ para el grupo que fue tratado en $g$ con algún grupo de comparación denominado $\mathcal{G}_{comp}$
+- Modifica el supuesto anterior pero $\forall \;t,t'\geq g_{min}-1$ donde $g_{min}=\min_i G_i$ es el primer periodo en donde alguna unidad es tratada (Callaway & Sant’Anna solo usan este supuesto más débil)
 
-Sustituyendo por el análogo muestral:
+## Supuestos
 
-$$\hat{ATT}(g,t)=\frac{1}{N_g}\sum_{i:\;G_i=g}(y_{it}-y_{i,g-1})-\frac{1}{N_{\mathcal{G}_{comp}}}\sum_{i\;G_i\in \mathcal{G}_{comp}}(y_{it}-y_{i,g-1})$$
+**Supuesto 2. No anticipación en el contexto escalonado**
 
-¿Qué es $\mathcal{G}_{comp}$?
+$$Y_{it}(g)=Y_{it}(\infty)\quad \forall\;i \;\text{y}\;\forall\;t<g$$
 
--  $\mathcal{G}_{comp}=\{\infty \}$: aquellas unidades nunca tratadas
--  $\mathcal{G}_{comp}=\{g':g'>t \}$: aquellas unidades aún no tratadas al periodo $t$
+## Estimador de Callaway & Sant’Anna
+
+- Callaway & Sant’Anna (2021) proponen identificar:
+
+$$ATT(g,t)=E(Y_{t}-Y_{g-1}|G=g)-E(Y_{t}-Y_{g-1}|G\in\mathcal{G}_{comp}) \quad \forall\; t\geq g$$
+
+- Queremos comparar el valor de la variable de impacto entre el periodo $g-1$ y el $t$ para el grupo que fue tratado en $g$ con algún grupo de comparación denominado $\mathcal{G}_{comp}$ de tamaño $N_{\mathcal{G}_{comp}}$
+
+- Sustituyendo por el análogo muestral, donde $N_g$ es el número de unidades en la cohorte $g$:
+
+$$\widehat{ATT}(g,t)=\frac{1}{N_g}\sum_{i:\;G_i=g}(Y_{it}-Y_{i,g-1})-\frac{1}{N_{\mathcal{G}_{comp}}}\sum_{i:\;G_i\in \mathcal{G}_{comp}}(Y_{it}-Y_{i,g-1})$$
+
+- ¿Qué es $\mathcal{G}_{comp}$?
+
+  - $\mathcal{G}_{comp}=\{\infty \}$: aquellas unidades nunca tratadas
+  - $\mathcal{G}_{comp}=\{g':g'>t \}$: aquellas unidades aún no tratadas al periodo $t$
 
 ## Reportar resultados
 
-Si tenemos pocos periodos y cohortes puede ser práctico reportar todos los $\hat{ATT}(g,t)$
+- Si tenemos pocos periodos y cohortes puede ser práctico reportar todos los $\widehat{ATT}(g,t)$
 
-También podemos construir medidas agregadas:
+- También podemos construir medidas agregadas:
 
-$$\theta = \sum_{g\in\mathcal{G}}\sum_{t=2}^{\mathcal{T}}w(g,t)ATT(g,t)$$
+$$\theta = \sum_{g\in\mathcal{G}}\sum_{t=g}^{T}w(g,t)ATT(g,t)$$
 
 ## Formas de agregación
 
-La notación usada en el artículo es densa pero en resumen, algunas agregaciones posibles son:
+- La notación usada en el artículo es densa pero en resumen, algunas agregaciones posibles son:
 
 **Efecto de tratamiento por duración de exposición**
 
-- Podemos calcular $\theta(e)$, el efecto promedio $e$ periodos después del tratamiento, donde $e=t-g$ es el tiempo que ocurre desde que se realizó el tratamiento
+- Podemos calcular $\theta(e)$, el efecto promedio $e$ periodos después del tratamiento, donde $e=t-g$ es el tiempo que transcurre desde que se realizó el tratamiento
 
-- Podemos hacer un gráfico de $\theta(e)$ 
+- Podemos hacer un gráfico de $\theta(e)$
 
 **Efecto de tratamiento por grupo o cohorte**
 
-- Lo llamamos $\theta(\tilde{g})$ y nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratados temprano o tarde
+- Lo llamamos $\theta(\tilde{g})$ y nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde
 
 **Efecto de tratamiento acumulado**
 
@@ -708,11 +996,11 @@ La notación usada en el artículo es densa pero en resumen, algunas agregacione
 
 ## Ventajas del estimador
 
-Toma en cuenta la heterogeneidad de los efectos de tratamiento
+- Toma en cuenta la heterogeneidad de los efectos de tratamiento
 
-Los pesos son especificados por el investigador y no mecánicamente con en TWFE
+- Los pesos son especificados por el investigador y no mecánicamente como en TWFE
 
-Hace explícito el grupo de comparación (nunca tratados o aún no tratados)
+- Hace explícito el grupo de comparación (nunca tratados o aún no tratados)
 
 ## Diferencia en diferencias {background-color="#9B2247" data-state="nochrome" .final}
 
