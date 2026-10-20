@@ -745,7 +745,8 @@ D=
 <ul>
 <li>El cambio promedio en la variable de resultados entre los grupos tratados y no tratados habría sido el mismo en ausencia del tratamiento</li>
 </ul>
-<p><span class="math display">\[E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)\]</span> <strong>Supuesto 2</strong>: no anticipación</p>
+<p><span class="math display">\[E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)\]</span></p>
+<p><strong>Supuesto 2</strong>: no anticipación</p>
 <ul>
 <li>Las unidades que aún no son tratadas no anticipan que lo van a ser, por lo que el tratamiento no afecta el resultado potencial pre intervención</li>
 </ul>
@@ -900,7 +901,7 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p><span class="math inline">\(\lambda_t\)</span>: <strong>efectos fijos de periodo</strong> (sustituyen a <span class="math inline">\(\gamma POST_t\)</span>), choques comunes a todas las unidades</p></li>
 <li><p><span class="math inline">\(D_i\times POST_t\)</span>: <strong>término de interacción</strong>, con <span class="math inline">\(POST_t=\mathbf{1}(t\geq t_0)\)</span> y <span class="math inline">\(t_0\)</span> el primer periodo tratado</p></li>
 <li><p><span class="math inline">\(\delta_{DID}\)</span> es el efecto de tratamiento</p></li>
-<li><p>Si hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede probarse empíricamente</p></li>
+<li><p>Si hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede evaluarse empíricamente</p></li>
 </ul>
 </section>
 <section id="ejemplo-corridas-bancarias-con-regresión" class="slide level2">
@@ -1043,25 +1044,25 @@ entre grupos en $t=1$}}\]</span></p>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_kpkak1rc8glttahx4l98 = TinyTable.createTableFunctions("tinytable_kpkak1rc8glttahx4l98");
+      const tableFns_0wpnf921r2dd4pj133ro = TinyTable.createTableFunctions("tinytable_0wpnf921r2dd4pj133ro");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '9', j: 2 } ], css_id: 'tinytable_css_ph5it3pswpv4lrqglf4x',}, 
-          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_hgs69ryvu0nlwnldrgft',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 } ], css_id: 'tinytable_css_hodfmzgluh8imhm66x43',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_gtdfrpk959fs5ovk7iuo',}, 
-          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_yehj8k1x2be2gf1mj0hb',}, 
-          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_sc3vw6phgsagma580vt9',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 } ], css_id: 'tinytable_css_jyr0oapbmjmn8r9n41fl',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_nbe2obt3w3mouk6s46u6',}, 
+          { positions: [ { i: '9', j: 2 } ], css_id: 'tinytable_css_ppfxfkhhkyhsldc42g1d',}, 
+          { positions: [ { i: '8', j: 2 } ], css_id: 'tinytable_css_vxpbj6ma0411zg70tu3c',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 } ], css_id: 'tinytable_css_2k8k5uki4ngor8s5r3z4',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_3628y1b2uys55fzwghrf',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_cy94hocxh0vl6ebsq8ha',}, 
+          { positions: [ { i: '8', j: 1 } ], css_id: 'tinytable_css_sey70wjlekksswxq4njh',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 } ], css_id: 'tinytable_css_s5lmx8s1w11g9fceqf82',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_8q92caiu0mhfdg4hqcsk',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_kpkak1rc8glttahx4l98.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_0wpnf921r2dd4pj133ro.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1070,17 +1071,17 @@ entre grupos en $t=1$}}\]</span></p>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_ph5it3pswpv4lrqglf4x, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_ph5it3pswpv4lrqglf4x {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_hgs69ryvu0nlwnldrgft, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_hgs69ryvu0nlwnldrgft {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_hodfmzgluh8imhm66x43, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_hodfmzgluh8imhm66x43 { text-align: center }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_gtdfrpk959fs5ovk7iuo, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_gtdfrpk959fs5ovk7iuo {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_yehj8k1x2be2gf1mj0hb, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_yehj8k1x2be2gf1mj0hb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_sc3vw6phgsagma580vt9, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_sc3vw6phgsagma580vt9 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_jyr0oapbmjmn8r9n41fl, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_jyr0oapbmjmn8r9n41fl { text-align: left }
-    #tinytable_kpkak1rc8glttahx4l98 td.tinytable_css_nbe2obt3w3mouk6s46u6, #tinytable_kpkak1rc8glttahx4l98 th.tinytable_css_nbe2obt3w3mouk6s46u6 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_ppfxfkhhkyhsldc42g1d, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_ppfxfkhhkyhsldc42g1d {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_vxpbj6ma0411zg70tu3c, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_vxpbj6ma0411zg70tu3c {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_2k8k5uki4ngor8s5r3z4, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_2k8k5uki4ngor8s5r3z4 { text-align: center }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_3628y1b2uys55fzwghrf, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_3628y1b2uys55fzwghrf {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_cy94hocxh0vl6ebsq8ha, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_cy94hocxh0vl6ebsq8ha {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_sey70wjlekksswxq4njh, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_sey70wjlekksswxq4njh {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_s5lmx8s1w11g9fceqf82, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_s5lmx8s1w11g9fceqf82 { text-align: left }
+    #tinytable_0wpnf921r2dd4pj133ro td.tinytable_css_8q92caiu0mhfdg4hqcsk, #tinytable_0wpnf921r2dd4pj133ro th.tinytable_css_8q92caiu0mhfdg4hqcsk {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_kpkak1rc8glttahx4l98" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_0wpnf921r2dd4pj133ro" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1162,25 +1163,25 @@ entre grupos en $t=1$}}\]</span></p>
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_i6zhmm6ni1me35t5zv71 = TinyTable.createTableFunctions("tinytable_i6zhmm6ni1me35t5zv71");
+      const tableFns_af8folfauu1bgxzyjsur = TinyTable.createTableFunctions("tinytable_af8folfauu1bgxzyjsur");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '5', j: 2 } ], css_id: 'tinytable_css_c44xozzhxxkh92jwsk97',}, 
-          { positions: [ { i: '4', j: 2 } ], css_id: 'tinytable_css_ur88q1j82av7ox4dz1qa',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_3s6qes712oibptbcnftg',}, 
-          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_1n4lfyelnhevndjmkd1o',}, 
-          { positions: [ { i: '5', j: 1 } ], css_id: 'tinytable_css_7i1ebymd6hzqhx1dx6fu',}, 
-          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_ng1z15kp22v8zxwsin1y',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 } ], css_id: 'tinytable_css_siaiaolgrepu2at7a0i2',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_g6frguacgtkuph762fay',}, 
+          { positions: [ { i: '5', j: 2 } ], css_id: 'tinytable_css_58jrh4ge37x8efn9ulvr',}, 
+          { positions: [ { i: '4', j: 2 } ], css_id: 'tinytable_css_f1z5n3tv6eejok4i7mi2',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 } ], css_id: 'tinytable_css_tjxicrhaib90eyobsrm3',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_dy4432oazusp5n8ajn70',}, 
+          { positions: [ { i: '5', j: 1 } ], css_id: 'tinytable_css_3vkl5lgttxfkkwh9k39p',}, 
+          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_5blmc0boce08qnwqqwzs',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 } ], css_id: 'tinytable_css_jxcy3qpdg2blqaz8f3id',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_udypgu9emvepx8c7s0kz',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_i6zhmm6ni1me35t5zv71.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_af8folfauu1bgxzyjsur.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1189,17 +1190,17 @@ entre grupos en $t=1$}}\]</span></p>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
     <style>
     /* tinytable css entries after */
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_c44xozzhxxkh92jwsk97, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_c44xozzhxxkh92jwsk97 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_ur88q1j82av7ox4dz1qa, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_ur88q1j82av7ox4dz1qa {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_3s6qes712oibptbcnftg, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_3s6qes712oibptbcnftg { text-align: center }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_1n4lfyelnhevndjmkd1o, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_1n4lfyelnhevndjmkd1o {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_7i1ebymd6hzqhx1dx6fu, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_7i1ebymd6hzqhx1dx6fu {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_ng1z15kp22v8zxwsin1y, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_ng1z15kp22v8zxwsin1y {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_siaiaolgrepu2at7a0i2, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_siaiaolgrepu2at7a0i2 { text-align: left }
-    #tinytable_i6zhmm6ni1me35t5zv71 td.tinytable_css_g6frguacgtkuph762fay, #tinytable_i6zhmm6ni1me35t5zv71 th.tinytable_css_g6frguacgtkuph762fay {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_58jrh4ge37x8efn9ulvr, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_58jrh4ge37x8efn9ulvr {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_f1z5n3tv6eejok4i7mi2, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_f1z5n3tv6eejok4i7mi2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_tjxicrhaib90eyobsrm3, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_tjxicrhaib90eyobsrm3 { text-align: center }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_dy4432oazusp5n8ajn70, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_dy4432oazusp5n8ajn70 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_3vkl5lgttxfkkwh9k39p, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_3vkl5lgttxfkkwh9k39p {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_5blmc0boce08qnwqqwzs, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_5blmc0boce08qnwqqwzs {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_jxcy3qpdg2blqaz8f3id, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_jxcy3qpdg2blqaz8f3id { text-align: left }
+    #tinytable_af8folfauu1bgxzyjsur td.tinytable_css_udypgu9emvepx8c7s0kz, #tinytable_af8folfauu1bgxzyjsur th.tinytable_css_udypgu9emvepx8c7s0kz {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_i6zhmm6ni1me35t5zv71" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_af8folfauu1bgxzyjsur" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
               <tr>
@@ -1241,7 +1242,7 @@ entre grupos en $t=1$}}\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>En estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1974</p></li>
+<li><p>En estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1975</p></li>
 <li><p>Este gráfico muestra un caso de tendencias paralelas</p></li>
 <li><p>El estimador de DID captura correctamente el salto por encima de la tendencia en la unidad tratada</p></li>
 </ul>
@@ -1261,16 +1262,77 @@ entre grupos en $t=1$}}\]</span></p>
 <h2>Relajación de los supuestos</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li><p>En este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola</p></li>
-<li><p>La línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención</p></li>
-</ul>
+<div class="cell">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_g7asjsjhs33lghjjt1u8 = TinyTable.createTableFunctions("tinytable_g7asjsjhs33lghjjt1u8");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '2', j: 2 } ], css_id: 'tinytable_css_nv8v0pikp7zjknai7clt',}, 
+          { positions: [ { i: '1', j: 2 } ], css_id: 'tinytable_css_02o9g4h6rca2nq73pwhd',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_ay2lgr3gx9vlvs2ft8ka',}, 
+          { positions: [ { i: '2', j: 1 } ], css_id: 'tinytable_css_wh4y0vdv5ytxizzw0i7o',}, 
+          { positions: [ { i: '1', j: 1 } ], css_id: 'tinytable_css_9k6fvv2nnw7d3rwkxb8e',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_ymjfcr8huivxk0nkiz3n',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_g7asjsjhs33lghjjt1u8.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_nv8v0pikp7zjknai7clt, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_nv8v0pikp7zjknai7clt {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_02o9g4h6rca2nq73pwhd, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_02o9g4h6rca2nq73pwhd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_ay2lgr3gx9vlvs2ft8ka, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_ay2lgr3gx9vlvs2ft8ka {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_wh4y0vdv5ytxizzw0i7o, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_wh4y0vdv5ytxizzw0i7o {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_9k6fvv2nnw7d3rwkxb8e, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_9k6fvv2nnw7d3rwkxb8e {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_g7asjsjhs33lghjjt1u8 td.tinytable_css_ymjfcr8huivxk0nkiz3n, #tinytable_g7asjsjhs33lghjjt1u8 th.tinytable_css_ymjfcr8huivxk0nkiz3n {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_g7asjsjhs33lghjjt1u8" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Tasa de mortalidad</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">δ (D × POST)</td>
+                  <td data-row="1" data-col="2">7.000</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">Num.Obs.</td>
+                  <td data-row="2" data-col="2">32</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/unnamed-chunk-9-1.png" style="width:100.0%"></p>
+<p><img data-src="figures/unnamed-chunk-10-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1282,18 +1344,222 @@ entre grupos en $t=1$}}\]</span></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>En este tercer ejemplo hay tendencias que no son paralelas pre tratamiento</p></li>
-<li><p>La pendiente para la unidad tratada es mayor que la de la no tratada en todos los periodos</p></li>
-<li><p>Aquí DID detectaría un efecto, pero sobreestimado, pues al salto en la unidad tratada le sumaría la brecha que de todos modos se iba abriendo por tener una tendencia más inclinada que la de la no tratada</p></li>
-<li><p>Una forma de separar ambas cosas es incluir tendencias específicas por unidad:</p></li>
+<li><p>En este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola</p></li>
+<li><p>La línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención</p></li>
 </ul>
-<p><span class="math display">\[Y_{it}=\alpha+\beta D_i+\gamma POST_t + \rho (D_i\times t) + \delta_{DID}(D_i\times POST_t)+\varepsilon_{it}\]</span></p>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="figures/unnamed-chunk-10-1.png" style="width:100.0%"></p>
+<p><img data-src="figures/unnamed-chunk-11-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="relajación-de-los-supuestos-3" class="slide level2">
+<h2>Relajación de los supuestos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_jn1ujtw79m2ii6ttlhte = TinyTable.createTableFunctions("tinytable_jn1ujtw79m2ii6ttlhte");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '2', j: 2 } ], css_id: 'tinytable_css_44xnd6gem2iwp49oqswj',}, 
+          { positions: [ { i: '1', j: 2 } ], css_id: 'tinytable_css_rvcgszs1a5blzdcr3epc',}, 
+          { positions: [ { i: '0', j: 2 } ], css_id: 'tinytable_css_93nb0iy17uvf7h4zteop',}, 
+          { positions: [ { i: '2', j: 1 } ], css_id: 'tinytable_css_ddp8scjyoish54pb5tvw',}, 
+          { positions: [ { i: '1', j: 1 } ], css_id: 'tinytable_css_c3j8w8lg7s8j1zsstqc4',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_50mci9yxo6tp92cyhojy',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_jn1ujtw79m2ii6ttlhte.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_44xnd6gem2iwp49oqswj, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_44xnd6gem2iwp49oqswj {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_rvcgszs1a5blzdcr3epc, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_rvcgszs1a5blzdcr3epc {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_93nb0iy17uvf7h4zteop, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_93nb0iy17uvf7h4zteop {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_ddp8scjyoish54pb5tvw, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_ddp8scjyoish54pb5tvw {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_c3j8w8lg7s8j1zsstqc4, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_c3j8w8lg7s8j1zsstqc4 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_jn1ujtw79m2ii6ttlhte td.tinytable_css_50mci9yxo6tp92cyhojy, #tinytable_jn1ujtw79m2ii6ttlhte th.tinytable_css_50mci9yxo6tp92cyhojy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_jn1ujtw79m2ii6ttlhte" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Tasa de mortalidad</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">δ (D × POST)</td>
+                  <td data-row="1" data-col="2">8.000</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">Num.Obs.</td>
+                  <td data-row="2" data-col="2">32</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-13-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="relajación-de-los-supuestos-4" class="slide level2">
+<h2>Relajación de los supuestos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>En este tercer ejemplo hay tendencias que no son paralelas pre tratamiento</p></li>
+<li><p>La pendiente para la unidad tratada es mayor que la de la no tratada en todos los periodos</p></li>
+<li><p>Aquí DID detectaría un efecto, pero sobreestimado, pues al salto en la unidad tratada le sumaría la brecha que de todos modos se iba abriendo por tener una tendencia más inclinada que la de la no tratada</p></li>
+<li><p>Una forma de separar ambas cosas es incluir tendencias específicas por unidad:</p></li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{it}=&amp;\alpha+\beta D_i+\gamma POST_t + \theta t \\
+&amp;+ \rho (D_i\times t) + \delta_{DID}(D_i\times POST_t)+\varepsilon_{it}
+\end{aligned}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-14-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="relajación-de-los-supuestos-5" class="slide level2">
+<h2>Relajación de los supuestos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_lsv44nhehpz76uydn192 = TinyTable.createTableFunctions("tinytable_lsv44nhehpz76uydn192");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '4', j: 2 }, { i: '4', j: 3 } ], css_id: 'tinytable_css_bhx8teterersgdqu8khh',}, 
+          { positions: [ { i: '3', j: 2 }, { i: '3', j: 3 } ], css_id: 'tinytable_css_u9ak2f0jg6r5rluz7w6k',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 } ], css_id: 'tinytable_css_9zbgg8kd4vbcpjl7c2t7',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_hjhawraicgwb9m6w2ol3',}, 
+          { positions: [ { i: '4', j: 1 } ], css_id: 'tinytable_css_xp1qt1ka76i65cl3i2ky',}, 
+          { positions: [ { i: '3', j: 1 } ], css_id: 'tinytable_css_b26qfuyp4asu17358soq',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 } ], css_id: 'tinytable_css_eidqktydz9kjt95edb0r',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_w20wca6poranknq2xnxb',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_lsv44nhehpz76uydn192.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_bhx8teterersgdqu8khh, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_bhx8teterersgdqu8khh {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_u9ak2f0jg6r5rluz7w6k, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_u9ak2f0jg6r5rluz7w6k {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_9zbgg8kd4vbcpjl7c2t7, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_9zbgg8kd4vbcpjl7c2t7 { text-align: center }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_hjhawraicgwb9m6w2ol3, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_hjhawraicgwb9m6w2ol3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_xp1qt1ka76i65cl3i2ky, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_xp1qt1ka76i65cl3i2ky {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_b26qfuyp4asu17358soq, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_b26qfuyp4asu17358soq {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_eidqktydz9kjt95edb0r, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_eidqktydz9kjt95edb0r { text-align: left }
+    #tinytable_lsv44nhehpz76uydn192 td.tinytable_css_w20wca6poranknq2xnxb, #tinytable_lsv44nhehpz76uydn192 th.tinytable_css_w20wca6poranknq2xnxb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_lsv44nhehpz76uydn192" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">DID simple</th>
+                <th scope="col" data-row="0" data-col="3">Con tendencias</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">δ (D × POST)</td>
+                  <td data-row="1" data-col="2">15.000</td>
+                  <td data-row="1" data-col="3">7.000</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">ρ (D × t)</td>
+                  <td data-row="2" data-col="2"></td>
+                  <td data-row="2" data-col="3">1.000</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">θ (t)</td>
+                  <td data-row="3" data-col="2"></td>
+                  <td data-row="3" data-col="3">1.000</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">Num.Obs.</td>
+                  <td data-row="4" data-col="2">32</td>
+                  <td data-row="4" data-col="3">32</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/unnamed-chunk-16-1.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1310,6 +1576,87 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p>Bertrand, Duflo &amp; Mullainathan (2004) analizan 92 artículos de DID y encuentran que la mayoría no reconoce el problema de correlación serial, por lo que subestiman los errores estándar estimados</p></li>
 <li><p>En la actualidad, en el trabajo empírico se pone énfasis en la correcta estimación de la matriz de varianzas usando resultados asintóticos o bootstrap por bloques en el caso de tener pocos grupos o <em>clusters</em></p></li>
 </ul>
+</section>
+<section id="ejemplo-clásico-cambios-al-salario-mínimo" class="slide level2">
+<h2>Ejemplo clásico: cambios al salario mínimo</h2>
+<ul>
+<li><p>Card &amp; Krueger (1994) estudian el efecto del incremento del salario mínimo (de 4.25 a 5.05 dólares por hora en abril de 1992)</p></li>
+<li><p>El cambio ocurrió en Nueva Jersey y se emplea a la vecina Pensilvania como no tratada</p></li>
+<li><p>Encuestaron a los mismos restaurantes de comida rápida en ambos estados antes y después del cambio al salario mínimo y compararon el empleo equivalente de tiempo completo (FTE)</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-size: 22px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">PA</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">NJ</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">NJ - PA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">FTE antes</td>
+<td style="text-align: center;">23.33</td>
+<td style="text-align: center;">20.44</td>
+<td style="text-align: center;">-2.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;">(1.35)</td>
+<td style="text-align: center;">(0.51)</td>
+<td style="text-align: center;">(1.44)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">FTE después</td>
+<td style="text-align: center;">21.17</td>
+<td style="text-align: center;">21.03</td>
+<td style="text-align: center;">-0.14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;">(0.94)</td>
+<td style="text-align: center;">(0.52)</td>
+<td style="text-align: center;">(1.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cambio en FTE</td>
+<td style="text-align: center;">-2.16</td>
+<td style="text-align: center;">0.59</td>
+<td style="text-align: center;">2.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: center;">(1.25)</td>
+<td style="text-align: center;">(0.54)</td>
+<td style="text-align: center;">(1.36)</td>
+</tr>
+</tbody><tfoot>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota: </span> <sup></sup> Errores estándar entre paréntesis. Fuente: adaptado de la tabla 3 de Card &amp; Krueger (1994).</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tfoot>
+
+</table>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/figura-card-krueger-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section></section>
 <section>
 <section id="adopción-escalonada" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
@@ -1323,39 +1670,18 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p>En esta sección mostramos el tratamiento que MHE y MM dan a los problemas de adopción escalonada</p></li>
 <li><p>La adopción escalonada ocurre cuando existen varios periodos de tratamiento y algunas unidades van siendo tratadas de forma desfasada</p></li>
 <li><p>En México, las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada</p></li>
-<li><p>Hasta los trabajos de Goodman-Bacon (2021) y de de Chaisemartin &amp; D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales (sí, suena horrible dicha traducción) o <em>two-way fixed effects</em></p></li>
+<li><p>Hasta los trabajos de Goodman-Bacon (2021), Borusyak, Jaravel &amp; Spiess (2024) y de Chaisemartin &amp; D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales o <em>two-way fixed effects</em></p></li>
 <li><p>Esta sección presenta el tipo de tratamiento que hoy ya consideramos inapropiado</p></li>
 <li><p>Más adelante se presentan alternativas para los problemas de adopción escalonada</p></li>
 </ul>
 </section>
-<section id="edad-legal-para-beber-en-eua" class="slide level2">
-<h2>Edad legal para beber en EUA</h2>
+<section id="ejemplo-edad-legal-para-beber-en-eua" class="slide level2">
+<h2>Ejemplo: edad legal para beber en EUA</h2>
 <ul>
 <li><p>Diferencias en la edad legal para beber en Estados Unidos</p></li>
 <li><p>¿Las restricciones a la edad mínima para comprar alcohol tienen un impacto en la mortalidad?</p></li>
 <li><p>Alabama redujo la edad legal a 19 en 1975, mientras que, por ejemplo, Arkansas mantuvo la edad en 21</p></li>
-<li><p>Tenemos datos de mortalidad de 1970 a 1983 para personas de entre 18 y 20 años</p></li>
-<li><p>Lo que hemos aprendido hasta ahora nos sugiere estimar el impacto por DID como sigue</p></li>
-</ul>
-<p><span class="math display">\[Y_{st}=\alpha+\beta D_s+\gamma POST_t+\delta_{DID}(D_s\times POST_t)+\varepsilon_{st}\]</span></p>
-<ul>
-<li><p><span class="math inline">\(D_s\)</span> es una dummy igual a 0 para Arkansas en todos los periodos e igual a 1 para Alabama en todos los periodos</p></li>
-<li><p><span class="math inline">\(POST_t\)</span> es igual a cero para el periodo 1970-1975 e igual a 1 para el periodo 1976-1983</p></li>
-<li><p><span class="math inline">\(D_s\times POST_t\)</span> es igual a 1 para las observaciones de Alabama en los años en los que la nueva política ya está en vigor</p></li>
-</ul>
-</section>
-<section id="más-de-un-estado" class="slide level2">
-<h2>Más de un estado</h2>
-<ul>
-<li><p>¿Por qué quedarnos solo con la comparación con Arkansas?</p></li>
-<li><p>Podemos incluir más unidades que implementen cambios en la política en distintos momentos</p></li>
-<li><p>En vez de <span class="math inline">\(POST_t\)</span> usamos efectos fijos por año</p></li>
-<li><p>Y en vez de una dummy de tratamiento, incluimos efectos fijos por unidad</p></li>
-<li><p>Además, el cambio en la ley podría no ser el mismo</p>
-<ul>
-<li><p>Algunos estados mueven la edad a 18, otros a 19 y otros a 20</p></li>
 <li><p>Podemos definir <span class="math inline">\(LEGAL_{st}\)</span> como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado <span class="math inline">\(s\)</span> y en el año <span class="math inline">\(t\)</span></p></li>
-</ul></li>
 </ul>
 <p><span class="math display">\[Y_{st}=\alpha+\delta_{DID}LEGAL_{st}+\sum_k\beta_k STATE_{ks}+\sum_j \gamma_j YEAR_{jt}+\varepsilon_{st}\]</span></p>
 </section>
@@ -1516,24 +1842,28 @@ entre grupos en $t=1$}}\]</span></p>
 </ul>
 <p><span class="math display">\[\hat{\delta}_{DID}=s_{kU}\hat{\delta}_{kU}+s_{lU}\hat{\delta}_{lU}+s_{kl}^k\hat{\delta}_{kl}^k+s_{kl}^l\hat{\delta}_{kl}^l\]</span></p>
 <p>con los pesos dados por:</p>
-<ul>
-<li><p><span class="math inline">\(s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}\)</span></p></li>
-</ul>
+<p><span class="math display">\[
+\begin{aligned}
+s_{kU}&amp;=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D} \\
+s_{lU}&amp;=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D} \\
+s_{kl}^k&amp;=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D} \\
+s_{kl}^l&amp;=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}
+\end{aligned}
+\]</span></p>
 </section>
 <section id="qué-son-los-pesos" class="slide level2">
 <h2>¿Qué son los pesos?</h2>
 <ul>
-<li><p>Podemos desarrollar lo que son las varianzas del tratamiento:</p>
-<ul>
-<li><p><span class="math inline">\(s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D}\)</span></p></li>
-<li><p><span class="math inline">\(s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}\)</span></p></li>
-</ul></li>
+<li>Desarrollando varianzas del tratamiento:</li>
 </ul>
+<p><span class="math display">\[
+\begin{aligned}
+s_{kU}&amp;=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D} \\
+s_{lU}&amp;=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D} \\
+s_{kl}^k&amp;=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D} \\
+s_{kl}^l&amp;=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}
+\end{aligned}
+\]</span></p>
 </section>
 <section id="qué-son-los-pesos-1" class="slide level2">
 <h2>¿Qué son los pesos?</h2>
@@ -1556,20 +1886,100 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p>Una primera cosa que entra en juego es <span class="math inline">\(n_{kU}=\frac{n_k}{n_k+n_U}\)</span>, el peso relativo de las unidades tratadas temprano en la submuestra</p></li>
 <li><p>Recordemos que <span class="math inline">\(\bar{D}_k\)</span> indica la fracción del tiempo del panel que las unidades <span class="math inline">\(k\)</span> permanecen tratadas</p></li>
 <li><p>Dado que <span class="math inline">\(D_{it}\)</span> es binaria, <span class="math inline">\(\bar{D}_k(1-\bar{D}_k)\)</span> es la varianza de <span class="math inline">\(D_{it}\)</span> para las unidades <span class="math inline">\(k\)</span></p></li>
-<li><p>¿Qué es lo más grande que puede ser <span class="math inline">\(\bar{D}_k(1-\bar{D}_k)\)</span>?</p></li>
-<li><p>Claramente esto es a lo más 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel (<span class="math inline">\(\bar{D}_k=0.5\)</span>)</p></li>
+<li><p><span class="math inline">\(\bar{D}_k(1-\bar{D}_k)\)</span> alcanza un máximo de 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel (<span class="math inline">\(\bar{D}_k=0.5\)</span>)</p></li>
 <li><p>En resumen, los pesos están dados por</p></li>
 </ul>
-<p><span class="math display">\[\scriptsize  \text{peso} = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}\]</span></p>
+<p><span class="math display">\[\text{peso} = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}\]</span></p>
 </section>
-<section id="qué-nos-dice-la-descomposición" class="slide level2">
-<h2>¿Qué nos dice la descomposición?</h2>
+<section id="qué-nos-dice-la-descomposición-del-estimador" class="slide level2">
+<h2>¿Qué nos dice la descomposición del estimador?</h2>
 <ul>
 <li><p>Todos los grupos funcionan como <em>controles</em> (algunas veces)</p></li>
 <li><p>Los pesos en cada comparación <span class="math inline">\(2 \times 2\)</span> dependen del tamaño de la muestra usada para estimarlos y del tiempo que las unidades permanecen tratadas</p></li>
 <li><p>El efecto estimado se modificaría solo por agregar más años al final del panel</p></li>
 <li><p>Los términos que dominen pueden incluso cambiar el signo del efecto estimado</p></li>
 <li><p>Goodman-Bacon (2021) muestra que, en general, usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)</p></li>
+</ul>
+</section>
+<section id="qué-parámetro-estima-twfe" class="slide level2">
+<h2>¿Qué parámetro estima TWFE?</h2>
+<ul>
+<li><p>Hasta ahora hemos usado la descomposición de Goodman-Bacon para mostrar lo que hace el estimador de TWFE</p></li>
+<li><p>Ahora mostraremos bajo qué condiciones el estimador de TWFE estima el ATT</p></li>
+<li><p>Para ello escribimos cada comparación <span class="math inline">\(2\times 2\)</span> en términos de resultados potenciales</p>
+<ul>
+<li><span class="math inline">\(t_i\)</span> es el periodo en que la unidad <span class="math inline">\(i\)</span> empieza a ser tratada</li>
+<li><span class="math inline">\(Y_{it}(k)\)</span> es el resultado de <span class="math inline">\(i\)</span> en <span class="math inline">\(t\)</span> si es tratada a partir de <span class="math inline">\(k\)</span></li>
+<li><span class="math inline">\(Y_{it}(0)\)</span> es el resultado de <span class="math inline">\(i\)</span> en <span class="math inline">\(t\)</span> si no es tratada</li>
+</ul></li>
+</ul>
+</section>
+<section id="efectos-y-tendencias-por-grupo" class="slide level2">
+<h2>Efectos y tendencias por grupo</h2>
+<ul>
+<li>El ATT promedio del grupo tratado en <span class="math inline">\(k\)</span> en una ventana de tiempo <span class="math inline">\(W\)</span> con <span class="math inline">\(T_W\)</span> periodos:</li>
+</ul>
+<p><span class="math display">\[ATT_k(W)\equiv\frac{1}{T_W}\sum_{t\in W}E\left[Y_{it}(k)-Y_{it}(0)\,|\,t_i=k\right]\]</span></p>
+<ul>
+<li><p>En la práctica, <span class="math inline">\(W\)</span> serán las ventanas posteriores al tratamiento que aparecen en las comparaciones <span class="math inline">\(2\times 2\)</span> (<span class="math inline">\(POST(k)\)</span>, <span class="math inline">\(MID(k,l)\)</span>, <span class="math inline">\(POST(l)\)</span>)</p></li>
+<li><p>El cambio en el resultado promedio <em>sin tratamiento</em> del grupo <span class="math inline">\(k\)</span> entre dos ventanas <span class="math inline">\(W_0\)</span> y <span class="math inline">\(W_1\)</span>:</p></li>
+</ul>
+<p><span class="math display">\[\Delta Y_k^0(W_1,W_0)\equiv\frac{1}{T_{W_1}}\sum_{t\in W_1}E\left[Y_{it}(0)\,|\,t_i=k\right]-\frac{1}{T_{W_0}}\sum_{t\in W_0}E\left[Y_{it}(0)\,|\,t_i=k\right]\]</span></p>
+</section>
+<section id="cada-comparación-2times-2-tiene-un-sesgo" class="slide level2">
+<h2>Cada comparación <span class="math inline">\(2\times 2\)</span> tiene un sesgo</h2>
+<ul>
+<li>Sumando y restando los resultados sin tratamiento del grupo tratado en cada comparación <span class="math inline">\(2\times 2\)</span>, el límite en probabilidad de cada una de ellas es un ATT más un sesgo por tendencias distintas:</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\delta_{kU}&amp;=ATT_k(POST(k))+\left[\Delta Y_k^0(POST(k),PRE(k))-\Delta Y_U^0(POST(k),PRE(k))\right]\\
+\delta_{kl}^k&amp;=ATT_k(MID(k,l))+\left[\Delta Y_k^0(MID(k,l),PRE(k))-\Delta Y_l^0(MID(k,l),PRE(k))\right]\\
+\delta_{kl}^l&amp;=ATT_l(POST(l))+\left[\Delta Y_l^0(POST(l),MID(k,l))-\Delta Y_k^0(POST(l),MID(k,l))\right]\\
+&amp;\quad-\left[ATT_k(POST(l))-ATT_k(MID(k,l))\right]
+\end{aligned}
+\]</span></p>
+<ul>
+<li><p>En las dos primeras, las tendencias paralelas solo involucran resultados sin tratamiento</p></li>
+<li><p>En la tercera, el control <span class="math inline">\(k\)</span> <em>ya está tratado</em>. Además de tendencias paralelas, tenemos el efecto en <span class="math inline">\(k\)</span> entre <span class="math inline">\(MID(k,l)\)</span> y <span class="math inline">\(POST(l)\)</span></p></li>
+</ul>
+</section>
+<section id="qué-parámetro-estima-twfe-1" class="slide level2">
+<h2>¿Qué parámetro estima TWFE?</h2>
+<ul>
+<li>Sustituyendo las tres expresiones en la descomposición, con <span class="math inline">\(T\)</span> fijo y <span class="math inline">\(N\)</span> creciendo:</li>
+</ul>
+<p><span class="math display">\[\underset{N\to\infty}{\text{plim}}\;\hat{\delta}_{DID}=VWATT+VWCT-\Delta ATT\]</span></p>
+<ul>
+<li>La derivación es bastante tediosa, con algunos pasos presentados en el trabajo de Goodman-Bacon (2021)</li>
+</ul>
+</section>
+<section id="qué-parámetro-estima-twfe-2" class="slide level2">
+<h2>¿Qué parámetro estima TWFE?</h2>
+<p><strong>Efecto de tratamiento promedio ponderado por varianza</strong> (<em>variance-weighted ATT</em>): es un promedio de ATTs por grupo y ventana con pesos positivos</p>
+<p><strong>Tendencias comunes ponderadas por varianza</strong> (<em>variance-weighted common trends</em>): es un promedio de las diferencias en tendencias contrafactuales usando los mismos pesos de la descomposición</p>
+<p><strong>Cambio en los efectos de tratamiento</strong>: es el <em>cambio</em> en los efectos de tratamiento para grupos que sirven como control ya tratados</p>
+<p><span class="math display">\[\Delta ATT\equiv\sum_{k\neq U}\sum_{l&gt;k}\sigma_{kl}^l\left[ATT_k(POST(l))-ATT_k(MID(k,l))\right]\]</span></p>
+<ul>
+<li>En los tres componentes los pesos <span class="math inline">\(\sigma\)</span> son los límites en probabilidad de los pesos <span class="math inline">\(s\)</span> de la descomposición</li>
+</ul>
+</section>
+<section id="bajo-qué-condiciones-twfe-estima-un-efecto-causal" class="slide level2">
+<h2>¿Bajo qué condiciones TWFE estima un efecto causal?</h2>
+<ul>
+<li><p>Si se cumplen tendencias paralelas entre todos los grupos, <span class="math inline">\(VWCT=0\)</span></p></li>
+<li><p>Si además los efectos no cambian en el tiempo, <span class="math inline">\(\Delta ATT=0\)</span> y TWFE estima <span class="math inline">\(VWATT\)</span> (un promedio ponderado de ATTs con pesos que dependen del tamaño de cada grupo y de cuándo fue tratado)</p></li>
+<li><p>TWFE estima el ATT solo si el efecto es constante, <span class="math inline">\(ATT_k(W)=ATT\)</span>, en cuyo caso <span class="math inline">\(\Delta ATT=0\)</span> y <span class="math inline">\(VWATT=ATT\)</span></p></li>
+<li><p>Si los efectos cambian en el tiempo, <span class="math inline">\(\Delta ATT\neq 0\)</span> y TWFE está sesgado respecto a <span class="math inline">\(VWATT\)</span> aunque se cumplan tendencias paralelas (usar a los ya tratados como controles resta los cambios en sus efectos)</p></li>
+</ul>
+</section>
+<section id="otros-estudios-sobre-twfe-en-did" class="slide level2">
+<h2>Otros estudios sobre TWFE en DID</h2>
+<ul>
+<li><p>Goodman-Bacon (2021) no es el único trabajo que estudia las desventajas de usar TWFE con adopción escalonada</p></li>
+<li><p>de Chaisemartin &amp; D’Haultfœuille (2020) parten de los parámetros a estimar y sus resultados son más generales en cuanto a tipos de tratamiento</p></li>
+<li><p>Borusyak, Jaravel &amp; Spiess (2024) se enfocan en problemas con efectos dinámicos</p></li>
+<li><p>Las conclusiones de los tres apuntan en la misma dirección, es mejor considerar otro tipo de estimadores para problemas escalonados y con tipos de tratamiento más complejos</p></li>
 </ul>
 </section></section>
 <section>
@@ -1612,9 +2022,6 @@ entre grupos en $t=1$}}\]</span></p>
 <ul>
 <li>Modifica el supuesto anterior pero <span class="math inline">\(\forall \;t,t'\geq g_{min}-1\)</span> donde <span class="math inline">\(g_{min}=\min_i G_i\)</span> es el primer periodo en donde alguna unidad es tratada (Callaway &amp; Sant’Anna solo usan este supuesto más débil)</li>
 </ul>
-</section>
-<section id="supuestos-2" class="slide level2">
-<h2>Supuestos</h2>
 <p><strong>Supuesto 2. No anticipación en el contexto escalonado</strong></p>
 <p><span class="math display">\[Y_{it}(g)=Y_{it}(\infty)\quad \forall\;i \;\text{y}\;\forall\;t&lt;g\]</span></p>
 </section>
@@ -1644,25 +2051,9 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p>También podemos construir medidas agregadas:</p></li>
 </ul>
 <p><span class="math display">\[\theta = \sum_{g\in\mathcal{G}}\sum_{t=g}^{T}w(g,t)ATT(g,t)\]</span></p>
-</section>
-<section id="formas-de-agregación" class="slide level2">
-<h2>Formas de agregación</h2>
-<ul>
-<li>La notación usada en el artículo es densa pero en resumen, algunas agregaciones posibles son:</li>
-</ul>
-<p><strong>Efecto de tratamiento por duración de exposición</strong></p>
-<ul>
-<li><p>Podemos calcular <span class="math inline">\(\theta(e)\)</span>, el efecto promedio <span class="math inline">\(e\)</span> periodos después del tratamiento, donde <span class="math inline">\(e=t-g\)</span> es el tiempo que transcurre desde que se realizó el tratamiento</p></li>
-<li><p>Podemos hacer un gráfico de <span class="math inline">\(\theta(e)\)</span></p></li>
-</ul>
-<p><strong>Efecto de tratamiento por grupo o cohorte</strong></p>
-<ul>
-<li>Lo llamamos <span class="math inline">\(\theta(\tilde{g})\)</span> y nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde</li>
-</ul>
-<p><strong>Efecto de tratamiento acumulado</strong></p>
-<ul>
-<li>Lo llamamos <span class="math inline">\(\theta(\tilde{t})\)</span> y lo definimos como el efecto promedio por participar en el tratamiento hasta una fecha dada <span class="math inline">\(\tilde{t}\)</span></li>
-</ul>
+<p><strong>Efecto de tratamiento por duración de exposición</strong>: <span class="math inline">\(\theta(e)\)</span>, el efecto promedio <span class="math inline">\(e\)</span> periodos después del tratamiento, donde <span class="math inline">\(e=t-g\)</span> es el tiempo que transcurre desde que se realizó el tratamiento</p>
+<p><strong>Efecto de tratamiento por grupo o cohorte</strong>: <span class="math inline">\(\theta(\tilde{g})\)</span>, nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde</p>
+<p><strong>Efecto de tratamiento acumulado</strong>: <span class="math inline">\(\theta(\tilde{t})\)</span>, es el efecto promedio por participar en el tratamiento hasta una fecha <span class="math inline">\(\tilde{t}\)</span></p>
 </section>
 <section id="ventajas-del-estimador" class="slide level2">
 <h2>Ventajas del estimador</h2>
@@ -1671,6 +2062,277 @@ entre grupos en $t=1$}}\]</span></p>
 <li><p>Los pesos son especificados por el investigador y no mecánicamente como en TWFE</p></li>
 <li><p>Hace explícito el grupo de comparación (nunca tratados o aún no tratados)</p></li>
 </ul>
+</section>
+<section id="otros-estimadores" class="slide level2">
+<h2>Otros estimadores</h2>
+<ul>
+<li><p>El estimador de Callaway &amp; Sant’Anna no es la única forma de explotar los datos de adopción escalonada</p></li>
+<li><p><strong>Sun &amp; Abraham (2021)</strong>: usan un enfoque de regresión de un estudio de evento con interacciones entre cohorte y tiempo relativo al tratamiento, usando como control a los nunca tratados (o a la última cohorte en ser tratada) y luego promedian los efectos por cohorte</p></li>
+<li><p><strong>de Chaisemartin &amp; D’Haultfœuille (2026)</strong>: comparan, periodo a periodo, a las unidades que cambian de estado de tratamiento con unidades que tenían el mismo tratamiento inicial y que aún no cambian. Permite tratamientos que se encienden y apagan o que no son binarios</p></li>
+<li><p><strong>Borusyak, Jaravel &amp; Spiess (2024)</strong>: estiman los efectos fijos de unidad y de tiempo solo con observaciones no tratadas, imputan <span class="math inline">\(Y_{it}(0)\)</span> para las tratadas y promedian las diferencias <span class="math inline">\(Y_{it}-\hat{Y}_{it}(0)\)</span></p></li>
+<li><p><strong>Dube, Girardi, Jordà &amp; Taylor (2025)</strong>: para cada horizonte <span class="math inline">\(h\)</span> realizan una regresión de <span class="math inline">\(Y_{i,t+h}-Y_{i,t-1}\)</span> sobre el inicio del tratamiento, restringiendo la muestra a unidades recién tratadas y a controles limpios (aún no tratados). Se conoce como <em>proyecciones locales</em> y es más usado en macroeconometría</p></li>
+</ul>
+</section></section>
+<section>
+<section id="estudios-de-evento" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Estudios de evento</h1>
+
+</section>
+<section id="estudios-de-evento-1" class="slide level2">
+<h2>Estudios de evento</h2>
+<ul>
+<li><p>Los estudios de evento son una forma de brindar evidencia en favor de las tendencias paralelas</p></li>
+<li><p>La idea es mostrar que existe evidencia de tendencias paralelas en los <strong>periodos pre tratamiento</strong> y asumir que, por tanto, habría tendencias paralelas en los periodos posteriores</p></li>
+<li><p>Sin embargo, las tendencias paralelas en los periodos pre tratamiento no son necesarias para la identificación del ATT</p></li>
+<li><p>Un estudio de evento estima un coeficiente para cada periodo relativo al inicio del tratamiento</p></li>
+</ul>
+</section>
+<section id="estudios-de-evento-2" class="slide level2">
+<h2>Estudios de evento</h2>
+<p><strong>Definiciones</strong></p>
+<ul>
+<li><p><span class="math inline">\(t^*\)</span>: periodo en que inicia el tratamiento</p></li>
+<li><p><span class="math inline">\(k=t-t^*\)</span>: tiempo relativo al inicio del tratamiento, con <span class="math inline">\(k=-K,\ldots,-1,0,\ldots,L\)</span></p></li>
+<li><p>Se plantea la siguiente regresión: <span class="math display">\[Y_{it}=\alpha_i+\lambda_t+\sum_{k=-K}^{-2}\mu_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\sum_{k=0}^{L}\delta_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\varepsilon_{it}\]</span></p></li>
+<li><p><span class="math inline">\(\alpha_i\)</span> y <span class="math inline">\(\lambda_t\)</span> son efectos fijos de unidad y de tiempo</p></li>
+<li><p>Lo que hace este modelo es interactuar el indicador de tratamiento con indicadores de cada periodo relativo, salvo un periodo base</p></li>
+<li><p>Se omite <span class="math inline">\(k=-1\)</span>, el periodo previo al tratamiento y todos los coeficientes se miden respecto a él</p></li>
+<li><p>El periodo base debe ser uno en el que nadie ha sido tratado</p></li>
+</ul>
+</section>
+<section id="interpretación-de-los-coeficientes" class="slide level2">
+<h2>Interpretación de los coeficientes</h2>
+<ul>
+<li>Cada coeficiente es un DID <span class="math inline">\(2\times 2\)</span> entre el periodo <span class="math inline">\(t^*+k\)</span> y el periodo base <span class="math inline">\(t^*-1\)</span></li>
+</ul>
+<p><strong>Adelantos</strong> (<span class="math inline">\(\mu_k\)</span>, con <span class="math inline">\(k\leq -2\)</span>)</p>
+<ul>
+<li>Antes del tratamiento solo observamos resultados potenciales sin tratamiento, por lo que con no anticipación:</li>
+</ul>
+<p><span class="math display">\[\mu_k=\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+k}(0)|D=0)-E(Y_{t^*-1}(0)|D=0)\right)\]</span></p>
+<ul>
+<li><span class="math inline">\(\mu_k\)</span> solo mide la diferencia en tendencias entre tratados y no tratados antes de la intervención</li>
+</ul>
+<p><strong>Rezagos</strong> (<span class="math inline">\(\delta_k\)</span>, con <span class="math inline">\(k\geq 0\)</span>)</p>
+<ul>
+<li><p><span class="math inline">\(\delta_k\)</span> es el efecto del tratamiento sobre los tratados <span class="math inline">\(k\)</span> periodos después del inicio del tratamiento, siempre que se cumplan tendencias paralelas entre <span class="math inline">\(t^*-1\)</span> y <span class="math inline">\(t^*+k\)</span> y no anticipación</p></li>
+<li><p>Los rezagos permiten ver la dinámica del efecto (si aparece de inmediato, si crece o si se desvanece)</p></li>
+</ul>
+</section>
+<section id="lo-que-nos-dicen-los-estudios-de-evento" class="slide level2">
+<h2>Lo que nos dicen los estudios de evento</h2>
+<ul>
+<li><p>El supuesto de tendencias paralelas no puede probarse pues incluye <span class="math inline">\(E(Y_t(0)|D=1)\)</span> después del tratamiento, un contrafactual que no observamos</p></li>
+<li><p>Pero los adelantos <span class="math inline">\(\mu_k\)</span> no involucran contrafactuales, pues son comparaciones de resultados observados antes del tratamiento</p></li>
+<li><p>Si <span class="math inline">\(\mu_k\approx 0\)</span> para <span class="math inline">\(k\leq -2\)</span>, tratados y no tratados seguían trayectorias paralelas antes de la intervención</p></li>
+<li><p>Esto hace más creíble que la trayectoria de los no tratados aproxime el contrafactual de los tratados después de la intervención</p></li>
+<li><p>Si los <span class="math inline">\(\mu_k\)</span> son distintos de cero o muestran una tendencia, hay razones para dudar del diseño</p></li>
+<li><p>El mostrar tendencias paralelas pre tratamiento aporta evidencia sugerente, pero no una prueba, de la plausibilidad del supuesto de tendencias <em>contrafactuales</em> paralelas después del tratamiento</p></li>
+</ul>
+</section>
+<section id="simulación-de-un-estudio-de-evento" class="slide level2">
+<h2>Simulación de un estudio de evento</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li><p>Simulamos un panel de 100 unidades observadas durante 10 periodos, siendo tratadas las primeras 50 (<span class="math inline">\(D_i=1\)</span>)</p></li>
+<li><p>El tratamiento inicia en <span class="math inline">\(t^*=6\)</span>, así que <span class="math inline">\(k\)</span> va de <span class="math inline">\(-5\)</span> a <span class="math inline">\(4\)</span></p></li>
+<li><p>El resultado es <span class="math inline">\(Y_{it}=a_i+0.3t+\tau_{it}+u_{it}\)</span>, con un efecto de unidad <span class="math inline">\(a_i\sim N(0,1)\)</span>, una tendencia común <span class="math inline">\(0.3t\)</span> y <span class="math inline">\(u_{it}\sim N(0,1)\)</span></p></li>
+<li><p>El efecto <span class="math inline">\(\tau_{it}\)</span> es cero antes del tratamiento y <span class="math inline">\(1+0.5k\)</span> para <span class="math inline">\(k\geq 0\)</span> (las tendencias paralelas se cumplen por construcción)</p></li>
+</ul>
+</div><div class="column" style="width:55%;">
+<style>
+.reveal .codigo-grande pre{ font-size:.75em !important; }
+.reveal .codigo-grande pre code{ max-height:none !important; }
+</style>
+<div class="codigo-grande">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">1992</span>)</span>
+<span id="cb6-2"><a aria-label="2"></a></span>
+<span id="cb6-3"><a aria-label="3"></a>panel <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">t =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a aria-label="4"></a>  <span class="fu">mutate</span>(<span class="at">D =</span> <span class="fu">as.numeric</span>(id <span class="sc">&lt;=</span> <span class="dv">50</span>),</span>
+<span id="cb6-5"><a aria-label="5"></a>         <span class="at">k =</span> t <span class="sc">-</span> <span class="dv">6</span>,</span>
+<span id="cb6-6"><a aria-label="6"></a>         <span class="at">efecto =</span> <span class="fu">if_else</span>(D <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> k <span class="sc">&gt;=</span> <span class="dv">0</span>,</span>
+<span id="cb6-7"><a aria-label="7"></a>                          <span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> k, <span class="dv">0</span>),</span>
+<span id="cb6-8"><a aria-label="8"></a>         <span class="at">a_i =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>),</span>
+<span id="cb6-9"><a aria-label="9"></a>         <span class="at">.by =</span> id) <span class="sc">|&gt;</span></span>
+<span id="cb6-10"><a aria-label="10"></a>  <span class="fu">mutate</span>(<span class="at">Y =</span> a_i <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> t <span class="sc">+</span> efecto <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">n</span>()),</span>
+<span id="cb6-11"><a aria-label="11"></a>         <span class="at">k =</span> <span class="fu">relevel</span>(<span class="fu">factor</span>(k), <span class="at">ref =</span> <span class="st">"-1"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="estimación-del-estudio-de-evento" class="slide level2">
+<h2>Estimación del estudio de evento</h2>
+<ul>
+<li><p>Estimamos con <code>felm()</code> con efectos fijos de unidad y de tiempo y errores estándar agrupados por unidad</p></li>
+<li><p><code>D * k</code> interactúa <span class="math inline">\(D_i\)</span> con cada periodo relativo, con <span class="math inline">\(k=-1\)</span> como base</p></li>
+<li><p>Los efectos fijos absorben los términos de <span class="math inline">\(D_i\)</span> y <span class="math inline">\(k\)</span></p></li>
+<li><p>Podemos reportar los coeficientes estimados para cada adelanto y rezago</p></li>
+</ul>
+</section>
+<section id="estimación-del-estudio-de-evento-1" class="slide level2">
+<h2>Estimación del estudio de evento</h2>
+<div class="codigo-grande">
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-label="1"></a>evento <span class="ot">&lt;-</span> <span class="fu">felm</span>(Y <span class="sc">~</span> D <span class="sc">*</span> k <span class="sc">|</span> id <span class="sc">+</span> t <span class="sc">|</span> <span class="dv">0</span> <span class="sc">|</span> id,</span>
+<span id="cb7-2"><a aria-label="2"></a>               <span class="at">data =</span> panel)</span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a><span class="fu">modelsummary</span>(<span class="fu">list</span>(<span class="st">"Y"</span> <span class="ot">=</span> evento),</span>
+<span id="cb7-5"><a aria-label="5"></a>             <span class="at">coef_map =</span> <span class="fu">c</span>(<span class="st">"D:k-5"</span> <span class="ot">=</span> <span class="st">"k = -5"</span>,</span>
+<span id="cb7-6"><a aria-label="6"></a>                          <span class="st">"D:k-4"</span> <span class="ot">=</span> <span class="st">"k = -4"</span>,</span>
+<span id="cb7-7"><a aria-label="7"></a>                          <span class="st">"D:k-3"</span> <span class="ot">=</span> <span class="st">"k = -3"</span>,</span>
+<span id="cb7-8"><a aria-label="8"></a>                          <span class="st">"D:k-2"</span> <span class="ot">=</span> <span class="st">"k = -2"</span>,</span>
+<span id="cb7-9"><a aria-label="9"></a>                          <span class="st">"D:k0"</span> <span class="ot">=</span> <span class="st">"k = 0"</span>,</span>
+<span id="cb7-10"><a aria-label="10"></a>                          <span class="st">"D:k1"</span> <span class="ot">=</span> <span class="st">"k = 1"</span>,</span>
+<span id="cb7-11"><a aria-label="11"></a>                          <span class="st">"D:k2"</span> <span class="ot">=</span> <span class="st">"k = 2"</span>,</span>
+<span id="cb7-12"><a aria-label="12"></a>                          <span class="st">"D:k3"</span> <span class="ot">=</span> <span class="st">"k = 3"</span>,</span>
+<span id="cb7-13"><a aria-label="13"></a>                          <span class="st">"D:k4"</span> <span class="ot">=</span> <span class="st">"k = 4"</span>),</span>
+<span id="cb7-14"><a aria-label="14"></a>             <span class="at">shape =</span> term <span class="sc">~</span> model <span class="sc">+</span> statistic,</span>
+<span id="cb7-15"><a aria-label="15"></a>             <span class="at">statistic =</span> <span class="st">"std.error"</span>,</span>
+<span id="cb7-16"><a aria-label="16"></a>             <span class="at">gof_map =</span> <span class="fu">c</span>(<span class="st">"nobs"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_pu49nuqzragz13ffiltc = TinyTable.createTableFunctions("tinytable_pu49nuqzragz13ffiltc");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '-1', j: 3 } ], css_id: 'tinytable_css_i6dngzjd0n9lfn4x8ogn',}, 
+          { positions: [ { i: '10', j: 2 }, { i: '10', j: 3 } ], css_id: 'tinytable_css_09alglm1u5njngeswpxd',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '6', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 } ], css_id: 'tinytable_css_z7s40eoiszwehoe31fcx',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '9', j: 2 }, { i: '0', j: 3 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_b94miy6faejq4l8cr23x',}, 
+          { positions: [ { i: '-1', j: 2 } ], css_id: 'tinytable_css_2l80z4ypl4zrh960qxy1',}, 
+          { positions: [ { i: '10', j: 1 } ], css_id: 'tinytable_css_najq2917dp9gm5hjh0dy',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '6', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 } ], css_id: 'tinytable_css_gft3di4i9sb3tpwi750w',}, 
+          { positions: [ { i: '0', j: 1 }, { i: '9', j: 1 } ], css_id: 'tinytable_css_fd2rmxpq7kairbq4q33c',}, 
+          { positions: [ { i: '-1', j: 1 } ], css_id: 'tinytable_css_0srjyj9pxudfogfctwxz',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_pu49nuqzragz13ffiltc.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+    <style>
+    /* tinytable css entries after */
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_i6dngzjd0n9lfn4x8ogn, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_i6dngzjd0n9lfn4x8ogn {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_09alglm1u5njngeswpxd, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_09alglm1u5njngeswpxd {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_z7s40eoiszwehoe31fcx, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_z7s40eoiszwehoe31fcx { text-align: center }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_b94miy6faejq4l8cr23x, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_b94miy6faejq4l8cr23x {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_2l80z4ypl4zrh960qxy1, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_2l80z4ypl4zrh960qxy1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_najq2917dp9gm5hjh0dy, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_najq2917dp9gm5hjh0dy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_gft3di4i9sb3tpwi750w, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_gft3di4i9sb3tpwi750w { text-align: left }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_fd2rmxpq7kairbq4q33c, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_fd2rmxpq7kairbq4q33c {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_pu49nuqzragz13ffiltc td.tinytable_css_0srjyj9pxudfogfctwxz, #tinytable_pu49nuqzragz13ffiltc th.tinytable_css_0srjyj9pxudfogfctwxz {  position: relative; --border-bottom: 0; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    </style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_pu49nuqzragz13ffiltc" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+<tr>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="1"> </th>
+<th scope="col" align="center" colspan="2" data-row="-1" data-col="2">Y</th>
+</tr>
+              <tr>
+                <th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">Est.</th>
+                <th scope="col" data-row="0" data-col="3">S.E.</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">k = -5</td>
+                  <td data-row="1" data-col="2">0.350</td>
+                  <td data-row="1" data-col="3">0.280</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">k = -4</td>
+                  <td data-row="2" data-col="2">0.137</td>
+                  <td data-row="2" data-col="3">0.262</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">k = -3</td>
+                  <td data-row="3" data-col="2">0.038</td>
+                  <td data-row="3" data-col="3">0.248</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">k = -2</td>
+                  <td data-row="4" data-col="2">0.156</td>
+                  <td data-row="4" data-col="3">0.308</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">k = 0</td>
+                  <td data-row="5" data-col="2">1.147</td>
+                  <td data-row="5" data-col="3">0.265</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">k = 1</td>
+                  <td data-row="6" data-col="2">1.389</td>
+                  <td data-row="6" data-col="3">0.296</td>
+                </tr>
+                <tr>
+                  <td data-row="7" data-col="1">k = 2</td>
+                  <td data-row="7" data-col="2">2.012</td>
+                  <td data-row="7" data-col="3">0.281</td>
+                </tr>
+                <tr>
+                  <td data-row="8" data-col="1">k = 3</td>
+                  <td data-row="8" data-col="2">2.116</td>
+                  <td data-row="8" data-col="3">0.283</td>
+                </tr>
+                <tr>
+                  <td data-row="9" data-col="1">k = 4</td>
+                  <td data-row="9" data-col="2">3.436</td>
+                  <td data-row="9" data-col="3">0.316</td>
+                </tr>
+                <tr>
+                  <td data-row="10" data-col="1">Num.Obs.</td>
+                  <td data-row="10" data-col="2">1000</td>
+                  <td data-row="10" data-col="3"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div></div>
+</div>
+</section>
+<section id="gráfica-de-estudio-de-evento" class="slide level2">
+<h2>Gráfica de estudio de evento</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li><p>Se grafican los <span class="math inline">\(\widehat{\mu}_k\)</span> y <span class="math inline">\(\widehat{\delta}_k\)</span> con sus intervalos de confianza</p></li>
+<li><p>En el periodo base (<span class="math inline">\(k=-1\)</span>) el coeficiente es cero por construcción</p></li>
+<li><p>En esta simulación, los adelantos son cercanos a cero y el efecto crece con el tiempo de exposición</p></li>
+<li><p>Con adopción escalonada, el estudio de evento por TWFE hereda el problema de pesos de Goodman-Bacon, por lo que se prefiere graficar <span class="math inline">\(\theta(e)\)</span> de Callaway &amp; Sant’Anna</p></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/figura-estudio-evento-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
 </section>
 <section id="diferencia-en-diferencias-2" class="slide level2 final" data-background-color="#9B2247" data-state="nochrome">
 <h2>Diferencia en diferencias</h2>

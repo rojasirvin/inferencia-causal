@@ -2052,7 +2052,7 @@
     "href": "diapositivas/did.html#supuestos",
     "title": "Inferencia Causal 2026",
     "section": "Supuestos",
-    "text": "Supuestos\nSupuesto 1: tendencias paralelas\n\nEl cambio promedio en la variable de resultados entre los grupos tratados y no tratados habría sido el mismo en ausencia del tratamiento\n\n\\[E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)\\] Supuesto 2: no anticipación\n\nLas unidades que aún no son tratadas no anticipan que lo van a ser, por lo que el tratamiento no afecta el resultado potencial pre intervención\n\n\\[Y_{i1}(0) = Y_{i1}(1) \\quad \\forall \\quad \\text{$i$ con $D_i = 1$}\\]\nSupuesto 3: SUTVA"
+    "text": "Supuestos\nSupuesto 1: tendencias paralelas\n\nEl cambio promedio en la variable de resultados entre los grupos tratados y no tratados habría sido el mismo en ausencia del tratamiento\n\n\\[E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)\\]\nSupuesto 2: no anticipación\n\nLas unidades que aún no son tratadas no anticipan que lo van a ser, por lo que el tratamiento no afecta el resultado potencial pre intervención\n\n\\[Y_{i1}(0) = Y_{i1}(1) \\quad \\forall \\quad \\text{$i$ con $D_i = 1$}\\]\nSupuesto 3: SUTVA"
   },
   {
     "objectID": "diapositivas/did.html#did-resuelve-el-problema-contrafactual",
@@ -2101,7 +2101,7 @@
     "href": "diapositivas/did.html#múltiples-unidades-y-periodos-pre-y-post-tratamiento",
     "title": "Inferencia Causal 2026",
     "section": "Múltiples unidades y periodos pre y post tratamiento",
-    "text": "Múltiples unidades y periodos pre y post tratamiento\n\nComo en el ejemplo de las corridas bancarias, donde tenemos datos sobre el número de bancos en cada distrito en cada año (1929-1934), podemos tener varias observaciones pre y post intervención\nTambién podemos tener múltiples unidades en los grupos tratado y no tratado\nPodemos generalizar la regresión sustituyendo las dummies por efectos fijos:\n\n\\[Y_{it}=\\alpha_i+\\lambda_t+\\delta_{DID}(D_i\\times POST_t)+\\varepsilon_{it}\\]\n\n\\(\\alpha_i\\): efectos fijos individuales (sustituyen a \\(\\alpha+\\beta D_i\\)), diferencias entre unidades que no cambian en el tiempo\n\\(\\lambda_t\\): efectos fijos de periodo (sustituyen a \\(\\gamma POST_t\\)), choques comunes a todas las unidades\n\\(D_i\\times POST_t\\): término de interacción, con \\(POST_t=\\mathbf{1}(t\\geq t_0)\\) y \\(t_0\\) el primer periodo tratado\n\\(\\delta_{DID}\\) es el efecto de tratamiento\nSi hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede probarse empíricamente"
+    "text": "Múltiples unidades y periodos pre y post tratamiento\n\nComo en el ejemplo de las corridas bancarias, donde tenemos datos sobre el número de bancos en cada distrito en cada año (1929-1934), podemos tener varias observaciones pre y post intervención\nTambién podemos tener múltiples unidades en los grupos tratado y no tratado\nPodemos generalizar la regresión sustituyendo las dummies por efectos fijos:\n\n\\[Y_{it}=\\alpha_i+\\lambda_t+\\delta_{DID}(D_i\\times POST_t)+\\varepsilon_{it}\\]\n\n\\(\\alpha_i\\): efectos fijos individuales (sustituyen a \\(\\alpha+\\beta D_i\\)), diferencias entre unidades que no cambian en el tiempo\n\\(\\lambda_t\\): efectos fijos de periodo (sustituyen a \\(\\gamma POST_t\\)), choques comunes a todas las unidades\n\\(D_i\\times POST_t\\): término de interacción, con \\(POST_t=\\mathbf{1}(t\\geq t_0)\\) y \\(t_0\\) el primer periodo tratado\n\\(\\delta_{DID}\\) es el efecto de tratamiento\nSi hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede evaluarse empíricamente"
   },
   {
     "objectID": "diapositivas/did.html#ejemplo-corridas-bancarias-con-regresión",
@@ -2129,21 +2129,42 @@
     "href": "diapositivas/did.html#relajación-de-los-supuestos",
     "title": "Inferencia Causal 2026",
     "section": "Relajación de los supuestos",
-    "text": "Relajación de los supuestos\n\n\n\nEn estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1974\nEste gráfico muestra un caso de tendencias paralelas\nEl estimador de DID captura correctamente el salto por encima de la tendencia en la unidad tratada"
+    "text": "Relajación de los supuestos\n\n\n\nEn estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1975\nEste gráfico muestra un caso de tendencias paralelas\nEl estimador de DID captura correctamente el salto por encima de la tendencia en la unidad tratada"
   },
   {
     "objectID": "diapositivas/did.html#relajación-de-los-supuestos-1",
     "href": "diapositivas/did.html#relajación-de-los-supuestos-1",
     "title": "Inferencia Causal 2026",
     "section": "Relajación de los supuestos",
-    "text": "Relajación de los supuestos\n\n\n\nEn este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola\nLa línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención"
+    "text": "Relajación de los supuestos\n\n\n\n\n\n\n    \n\n    \n\n    \n    \n    \n      \n        \n        \n              \n                 \n                Tasa de mortalidad\n              \n        \n        \n        \n                \n                  δ (D × POST)\n                  7.000\n                \n                \n                  Num.Obs.\n                  32"
   },
   {
     "objectID": "diapositivas/did.html#relajación-de-los-supuestos-2",
     "href": "diapositivas/did.html#relajación-de-los-supuestos-2",
     "title": "Inferencia Causal 2026",
     "section": "Relajación de los supuestos",
-    "text": "Relajación de los supuestos\n\n\n\nEn este tercer ejemplo hay tendencias que no son paralelas pre tratamiento\nLa pendiente para la unidad tratada es mayor que la de la no tratada en todos los periodos\nAquí DID detectaría un efecto, pero sobreestimado, pues al salto en la unidad tratada le sumaría la brecha que de todos modos se iba abriendo por tener una tendencia más inclinada que la de la no tratada\nUna forma de separar ambas cosas es incluir tendencias específicas por unidad:\n\n\\[Y_{it}=\\alpha+\\beta D_i+\\gamma POST_t + \\rho (D_i\\times t) + \\delta_{DID}(D_i\\times POST_t)+\\varepsilon_{it}\\]"
+    "text": "Relajación de los supuestos\n\n\n\nEn este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola\nLa línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención"
+  },
+  {
+    "objectID": "diapositivas/did.html#relajación-de-los-supuestos-3",
+    "href": "diapositivas/did.html#relajación-de-los-supuestos-3",
+    "title": "Inferencia Causal 2026",
+    "section": "Relajación de los supuestos",
+    "text": "Relajación de los supuestos\n\n\n\n\n\n\n    \n\n    \n\n    \n    \n    \n      \n        \n        \n              \n                 \n                Tasa de mortalidad\n              \n        \n        \n        \n                \n                  δ (D × POST)\n                  8.000\n                \n                \n                  Num.Obs.\n                  32"
+  },
+  {
+    "objectID": "diapositivas/did.html#relajación-de-los-supuestos-4",
+    "href": "diapositivas/did.html#relajación-de-los-supuestos-4",
+    "title": "Inferencia Causal 2026",
+    "section": "Relajación de los supuestos",
+    "text": "Relajación de los supuestos\n\n\n\nEn este tercer ejemplo hay tendencias que no son paralelas pre tratamiento\nLa pendiente para la unidad tratada es mayor que la de la no tratada en todos los periodos\nAquí DID detectaría un efecto, pero sobreestimado, pues al salto en la unidad tratada le sumaría la brecha que de todos modos se iba abriendo por tener una tendencia más inclinada que la de la no tratada\nUna forma de separar ambas cosas es incluir tendencias específicas por unidad:\n\n\\[\n\\begin{aligned}\nY_{it}=&\\alpha+\\beta D_i+\\gamma POST_t + \\theta t \\\\\n&+ \\rho (D_i\\times t) + \\delta_{DID}(D_i\\times POST_t)+\\varepsilon_{it}\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "diapositivas/did.html#relajación-de-los-supuestos-5",
+    "href": "diapositivas/did.html#relajación-de-los-supuestos-5",
+    "title": "Inferencia Causal 2026",
+    "section": "Relajación de los supuestos",
+    "text": "Relajación de los supuestos\n\n\n\n\n\n\n    \n\n    \n\n    \n    \n    \n      \n        \n        \n              \n                 \n                DID simple\n                Con tendencias\n              \n        \n        \n        \n                \n                  δ (D × POST)\n                  15.000\n                  7.000\n                \n                \n                  ρ (D × t)\n                  \n                  1.000\n                \n                \n                  θ (t)\n                  \n                  1.000\n                \n                \n                  Num.Obs.\n                  32\n                  32"
   },
   {
     "objectID": "diapositivas/did.html#inferencia",
@@ -2153,25 +2174,25 @@
     "text": "Inferencia\n\nEstamos nuevamente ante un diseño con posible presencia de errores agrupados\nLa dimensión relevante ahora es \\(i\\) pues es muy probable que haya características no observadas de las unidades que presentan correlación serial\nCon suficientes unidades, podemos usar los resultados de la matriz de varianza agrupada, donde el nivel de agrupación es ahora \\(i\\)\nEn general, cuando trabajamos con datos en panel, lo relevante es que \\(N\\) sea lo suficientemente grande para usar teoría asintótica (y no solo \\(NT\\))\nBertrand, Duflo & Mullainathan (2004) analizan 92 artículos de DID y encuentran que la mayoría no reconoce el problema de correlación serial, por lo que subestiman los errores estándar estimados\nEn la actualidad, en el trabajo empírico se pone énfasis en la correcta estimación de la matriz de varianzas usando resultados asintóticos o bootstrap por bloques en el caso de tener pocos grupos o clusters"
   },
   {
+    "objectID": "diapositivas/did.html#ejemplo-clásico-cambios-al-salario-mínimo",
+    "href": "diapositivas/did.html#ejemplo-clásico-cambios-al-salario-mínimo",
+    "title": "Inferencia Causal 2026",
+    "section": "Ejemplo clásico: cambios al salario mínimo",
+    "text": "Ejemplo clásico: cambios al salario mínimo\n\nCard & Krueger (1994) estudian el efecto del incremento del salario mínimo (de 4.25 a 5.05 dólares por hora en abril de 1992)\nEl cambio ocurrió en Nueva Jersey y se emplea a la vecina Pensilvania como no tratada\nEncuestaron a los mismos restaurantes de comida rápida en ambos estados antes y después del cambio al salario mínimo y compararon el empleo equivalente de tiempo completo (FTE)\n\n\n\n\n\n\n\n\n\nPA\nNJ\nNJ - PA\n\n\n\n\nFTE antes\n23.33\n20.44\n-2.89\n\n\n\n(1.35)\n(0.51)\n(1.44)\n\n\nFTE después\n21.17\n21.03\n-0.14\n\n\n\n(0.94)\n(0.52)\n(1.07)\n\n\nCambio en FTE\n-2.16\n0.59\n2.76\n\n\n\n(1.25)\n(0.54)\n(1.36)\n\n\n\nNota:   Errores estándar entre paréntesis. Fuente: adaptado de la tabla 3 de Card & Krueger (1994)."
+  },
+  {
     "objectID": "diapositivas/did.html#adopción-escalonada-en-la-antigüedad",
     "href": "diapositivas/did.html#adopción-escalonada-en-la-antigüedad",
     "title": "Inferencia Causal 2026",
     "section": "Adopción escalonada en la antigüedad",
-    "text": "Adopción escalonada en la antigüedad\n\nDID es uno de esos campos tan activos en la investigación que cosas que pensábamos superadas o completamente estudiadas se han modificado en los últimos años\nEn esta sección mostramos el tratamiento que MHE y MM dan a los problemas de adopción escalonada\nLa adopción escalonada ocurre cuando existen varios periodos de tratamiento y algunas unidades van siendo tratadas de forma desfasada\nEn México, las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada\nHasta los trabajos de Goodman-Bacon (2021) y de de Chaisemartin & D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales (sí, suena horrible dicha traducción) o two-way fixed effects\nEsta sección presenta el tipo de tratamiento que hoy ya consideramos inapropiado\nMás adelante se presentan alternativas para los problemas de adopción escalonada"
+    "text": "Adopción escalonada en la antigüedad\n\nDID es uno de esos campos tan activos en la investigación que cosas que pensábamos superadas o completamente estudiadas se han modificado en los últimos años\nEn esta sección mostramos el tratamiento que MHE y MM dan a los problemas de adopción escalonada\nLa adopción escalonada ocurre cuando existen varios periodos de tratamiento y algunas unidades van siendo tratadas de forma desfasada\nEn México, las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada\nHasta los trabajos de Goodman-Bacon (2021), Borusyak, Jaravel & Spiess (2024) y de Chaisemartin & D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales o two-way fixed effects\nEsta sección presenta el tipo de tratamiento que hoy ya consideramos inapropiado\nMás adelante se presentan alternativas para los problemas de adopción escalonada"
   },
   {
-    "objectID": "diapositivas/did.html#edad-legal-para-beber-en-eua",
-    "href": "diapositivas/did.html#edad-legal-para-beber-en-eua",
+    "objectID": "diapositivas/did.html#ejemplo-edad-legal-para-beber-en-eua",
+    "href": "diapositivas/did.html#ejemplo-edad-legal-para-beber-en-eua",
     "title": "Inferencia Causal 2026",
-    "section": "Edad legal para beber en EUA",
-    "text": "Edad legal para beber en EUA\n\nDiferencias en la edad legal para beber en Estados Unidos\n¿Las restricciones a la edad mínima para comprar alcohol tienen un impacto en la mortalidad?\nAlabama redujo la edad legal a 19 en 1975, mientras que, por ejemplo, Arkansas mantuvo la edad en 21\nTenemos datos de mortalidad de 1970 a 1983 para personas de entre 18 y 20 años\nLo que hemos aprendido hasta ahora nos sugiere estimar el impacto por DID como sigue\n\n\\[Y_{st}=\\alpha+\\beta D_s+\\gamma POST_t+\\delta_{DID}(D_s\\times POST_t)+\\varepsilon_{st}\\]\n\n\\(D_s\\) es una dummy igual a 0 para Arkansas en todos los periodos e igual a 1 para Alabama en todos los periodos\n\\(POST_t\\) es igual a cero para el periodo 1970-1975 e igual a 1 para el periodo 1976-1983\n\\(D_s\\times POST_t\\) es igual a 1 para las observaciones de Alabama en los años en los que la nueva política ya está en vigor"
-  },
-  {
-    "objectID": "diapositivas/did.html#más-de-un-estado",
-    "href": "diapositivas/did.html#más-de-un-estado",
-    "title": "Inferencia Causal 2026",
-    "section": "Más de un estado",
-    "text": "Más de un estado\n\n¿Por qué quedarnos solo con la comparación con Arkansas?\nPodemos incluir más unidades que implementen cambios en la política en distintos momentos\nEn vez de \\(POST_t\\) usamos efectos fijos por año\nY en vez de una dummy de tratamiento, incluimos efectos fijos por unidad\nAdemás, el cambio en la ley podría no ser el mismo\n\nAlgunos estados mueven la edad a 18, otros a 19 y otros a 20\nPodemos definir \\(LEGAL_{st}\\) como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado \\(s\\) y en el año \\(t\\)\n\n\n\\[Y_{st}=\\alpha+\\delta_{DID}LEGAL_{st}+\\sum_k\\beta_k STATE_{ks}+\\sum_j \\gamma_j YEAR_{jt}+\\varepsilon_{st}\\]"
+    "section": "Ejemplo: edad legal para beber en EUA",
+    "text": "Ejemplo: edad legal para beber en EUA\n\nDiferencias en la edad legal para beber en Estados Unidos\n¿Las restricciones a la edad mínima para comprar alcohol tienen un impacto en la mortalidad?\nAlabama redujo la edad legal a 19 en 1975, mientras que, por ejemplo, Arkansas mantuvo la edad en 21\nPodemos definir \\(LEGAL_{st}\\) como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado \\(s\\) y en el año \\(t\\)\n\n\\[Y_{st}=\\alpha+\\delta_{DID}LEGAL_{st}+\\sum_k\\beta_k STATE_{ks}+\\sum_j \\gamma_j YEAR_{jt}+\\varepsilon_{st}\\]"
   },
   {
     "objectID": "diapositivas/did.html#estructura-de-datos-en-panel",
@@ -2227,14 +2248,14 @@
     "href": "diapositivas/did.html#qué-hace-el-estimador-de-twfe-5",
     "title": "Inferencia Causal 2026",
     "section": "¿Qué hace el estimador de TWFE?",
-    "text": "¿Qué hace el estimador de TWFE?\n\nGoodman-Bacon (2021) muestra que el estimador de TWFE puede descomponerse como:\n\n\\[\\hat{\\delta}_{DID}=s_{kU}\\hat{\\delta}_{kU}+s_{lU}\\hat{\\delta}_{lU}+s_{kl}^k\\hat{\\delta}_{kl}^k+s_{kl}^l\\hat{\\delta}_{kl}^l\\]\ncon los pesos dados por:\n\n\\(s_{kU}=\\frac{(n_k+n_U)^2\\hat{V}_{kU}^D}{\\hat{V}^D}\\)\n\\(s_{lU}=\\frac{(n_l+n_U)^2\\hat{V}_{lU}^D}{\\hat{V}^D}\\)\n\\(s_{kl}^k=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2\\hat{V}_{kl}^{D,k}}{\\hat{V}^D}\\)\n\\(s_{kl}^l=\\frac{[(n_k+n_l)\\bar{D}_k]^2\\hat{V}_{kl}^{D,l}}{\\hat{V}^D}\\)"
+    "text": "¿Qué hace el estimador de TWFE?\n\nGoodman-Bacon (2021) muestra que el estimador de TWFE puede descomponerse como:\n\n\\[\\hat{\\delta}_{DID}=s_{kU}\\hat{\\delta}_{kU}+s_{lU}\\hat{\\delta}_{lU}+s_{kl}^k\\hat{\\delta}_{kl}^k+s_{kl}^l\\hat{\\delta}_{kl}^l\\]\ncon los pesos dados por:\n\\[\n\\begin{aligned}\ns_{kU}&=\\frac{(n_k+n_U)^2\\hat{V}_{kU}^D}{\\hat{V}^D} \\\\\ns_{lU}&=\\frac{(n_l+n_U)^2\\hat{V}_{lU}^D}{\\hat{V}^D} \\\\\ns_{kl}^k&=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2\\hat{V}_{kl}^{D,k}}{\\hat{V}^D} \\\\\ns_{kl}^l&=\\frac{[(n_k+n_l)\\bar{D}_k]^2\\hat{V}_{kl}^{D,l}}{\\hat{V}^D}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "diapositivas/did.html#qué-son-los-pesos",
     "href": "diapositivas/did.html#qué-son-los-pesos",
     "title": "Inferencia Causal 2026",
     "section": "¿Qué son los pesos?",
-    "text": "¿Qué son los pesos?\n\nPodemos desarrollar lo que son las varianzas del tratamiento:\n\n\\(s_{kU}=\\frac{(n_k+n_U)^2\\hat{V}_{kU}^D}{\\hat{V}^D}=\\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\\bar{D}_k(1-\\bar{D}_k)}{\\hat{V}^D}\\)\n\\(s_{lU}=\\frac{(n_l+n_U)^2\\hat{V}_{lU}^D}{\\hat{V}^D}=\\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\\bar{D}_l(1-\\bar{D}_l)}{\\hat{V}^D}\\)\n\\(s_{kl}^k=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2\\hat{V}_{kl}^{D,k}}{\\hat{V}^D}=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2n_{kl}(1-n_{kl}) \\frac{\\bar{D}_k-\\bar{D}_l}{1-\\bar{D}_l}\\frac{1-\\bar{D}_k}{1-\\bar{D}_l}}{\\hat{V}^D}\\)\n\\(s_{kl}^l=\\frac{[(n_k+n_l)\\bar{D}_k]^2\\hat{V}_{kl}^{D,l}}{\\hat{V}^D}=\\frac{[(n_k+n_l)\\bar{D}_k]^2n_{kl}(1-n_{kl})\\frac{\\bar{D}_l}{\\bar{D}_k}\\frac{\\bar{D}_k-\\bar{D}_l}{\\bar{D}_k}}{\\hat{V}^D}\\)"
+    "text": "¿Qué son los pesos?\n\nDesarrollando varianzas del tratamiento:\n\n\\[\n\\begin{aligned}\ns_{kU}&=\\frac{(n_k+n_U)^2\\hat{V}_{kU}^D}{\\hat{V}^D}=\\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\\bar{D}_k(1-\\bar{D}_k)}{\\hat{V}^D} \\\\\ns_{lU}&=\\frac{(n_l+n_U)^2\\hat{V}_{lU}^D}{\\hat{V}^D}=\\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\\bar{D}_l(1-\\bar{D}_l)}{\\hat{V}^D} \\\\\ns_{kl}^k&=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2\\hat{V}_{kl}^{D,k}}{\\hat{V}^D}=\\frac{[(n_k+n_l)(1-\\bar{D}_l)]^2n_{kl}(1-n_{kl}) \\frac{\\bar{D}_k-\\bar{D}_l}{1-\\bar{D}_l}\\frac{1-\\bar{D}_k}{1-\\bar{D}_l}}{\\hat{V}^D} \\\\\ns_{kl}^l&=\\frac{[(n_k+n_l)\\bar{D}_k]^2\\hat{V}_{kl}^{D,l}}{\\hat{V}^D}=\\frac{[(n_k+n_l)\\bar{D}_k]^2n_{kl}(1-n_{kl})\\frac{\\bar{D}_l}{\\bar{D}_k}\\frac{\\bar{D}_k-\\bar{D}_l}{\\bar{D}_k}}{\\hat{V}^D}\n\\end{aligned}\n\\]"
   },
   {
     "objectID": "diapositivas/did.html#qué-son-los-pesos-1",
@@ -2248,14 +2269,63 @@
     "href": "diapositivas/did.html#qué-son-los-pesos-2",
     "title": "Inferencia Causal 2026",
     "section": "¿Qué son los pesos?",
-    "text": "¿Qué son los pesos?\n\nAhora veamos la varianza que entra en este peso:\n\n\\[\\hat{V}_{kU}^D=n_{kU}(1-n_{kU})\\bar{D}_k(1-\\bar{D}_k)\\]\n\nUna primera cosa que entra en juego es \\(n_{kU}=\\frac{n_k}{n_k+n_U}\\), el peso relativo de las unidades tratadas temprano en la submuestra\nRecordemos que \\(\\bar{D}_k\\) indica la fracción del tiempo del panel que las unidades \\(k\\) permanecen tratadas\nDado que \\(D_{it}\\) es binaria, \\(\\bar{D}_k(1-\\bar{D}_k)\\) es la varianza de \\(D_{it}\\) para las unidades \\(k\\)\n¿Qué es lo más grande que puede ser \\(\\bar{D}_k(1-\\bar{D}_k)\\)?\nClaramente esto es a lo más 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel (\\(\\bar{D}_k=0.5\\))\nEn resumen, los pesos están dados por\n\n\\[\\scriptsize  \\text{peso} = \\frac{(\\text{participación de la submuestra})^2(\\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}\\]"
+    "text": "¿Qué son los pesos?\n\nAhora veamos la varianza que entra en este peso:\n\n\\[\\hat{V}_{kU}^D=n_{kU}(1-n_{kU})\\bar{D}_k(1-\\bar{D}_k)\\]\n\nUna primera cosa que entra en juego es \\(n_{kU}=\\frac{n_k}{n_k+n_U}\\), el peso relativo de las unidades tratadas temprano en la submuestra\nRecordemos que \\(\\bar{D}_k\\) indica la fracción del tiempo del panel que las unidades \\(k\\) permanecen tratadas\nDado que \\(D_{it}\\) es binaria, \\(\\bar{D}_k(1-\\bar{D}_k)\\) es la varianza de \\(D_{it}\\) para las unidades \\(k\\)\n\\(\\bar{D}_k(1-\\bar{D}_k)\\) alcanza un máximo de 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel (\\(\\bar{D}_k=0.5\\))\nEn resumen, los pesos están dados por\n\n\\[\\text{peso} = \\frac{(\\text{participación de la submuestra})^2(\\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}\\]"
   },
   {
-    "objectID": "diapositivas/did.html#qué-nos-dice-la-descomposición",
-    "href": "diapositivas/did.html#qué-nos-dice-la-descomposición",
+    "objectID": "diapositivas/did.html#qué-nos-dice-la-descomposición-del-estimador",
+    "href": "diapositivas/did.html#qué-nos-dice-la-descomposición-del-estimador",
     "title": "Inferencia Causal 2026",
-    "section": "¿Qué nos dice la descomposición?",
-    "text": "¿Qué nos dice la descomposición?\n\nTodos los grupos funcionan como controles (algunas veces)\nLos pesos en cada comparación \\(2 \\times 2\\) dependen del tamaño de la muestra usada para estimarlos y del tiempo que las unidades permanecen tratadas\nEl efecto estimado se modificaría solo por agregar más años al final del panel\nLos términos que dominen pueden incluso cambiar el signo del efecto estimado\nGoodman-Bacon (2021) muestra que, en general, usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)"
+    "section": "¿Qué nos dice la descomposición del estimador?",
+    "text": "¿Qué nos dice la descomposición del estimador?\n\nTodos los grupos funcionan como controles (algunas veces)\nLos pesos en cada comparación \\(2 \\times 2\\) dependen del tamaño de la muestra usada para estimarlos y del tiempo que las unidades permanecen tratadas\nEl efecto estimado se modificaría solo por agregar más años al final del panel\nLos términos que dominen pueden incluso cambiar el signo del efecto estimado\nGoodman-Bacon (2021) muestra que, en general, usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)"
+  },
+  {
+    "objectID": "diapositivas/did.html#qué-parámetro-estima-twfe",
+    "href": "diapositivas/did.html#qué-parámetro-estima-twfe",
+    "title": "Inferencia Causal 2026",
+    "section": "¿Qué parámetro estima TWFE?",
+    "text": "¿Qué parámetro estima TWFE?\n\nHasta ahora hemos usado la descomposición de Goodman-Bacon para mostrar lo que hace el estimador de TWFE\nAhora mostraremos bajo qué condiciones el estimador de TWFE estima el ATT\nPara ello escribimos cada comparación \\(2\\times 2\\) en términos de resultados potenciales\n\n\\(t_i\\) es el periodo en que la unidad \\(i\\) empieza a ser tratada\n\\(Y_{it}(k)\\) es el resultado de \\(i\\) en \\(t\\) si es tratada a partir de \\(k\\)\n\\(Y_{it}(0)\\) es el resultado de \\(i\\) en \\(t\\) si no es tratada"
+  },
+  {
+    "objectID": "diapositivas/did.html#efectos-y-tendencias-por-grupo",
+    "href": "diapositivas/did.html#efectos-y-tendencias-por-grupo",
+    "title": "Inferencia Causal 2026",
+    "section": "Efectos y tendencias por grupo",
+    "text": "Efectos y tendencias por grupo\n\nEl ATT promedio del grupo tratado en \\(k\\) en una ventana de tiempo \\(W\\) con \\(T_W\\) periodos:\n\n\\[ATT_k(W)\\equiv\\frac{1}{T_W}\\sum_{t\\in W}E\\left[Y_{it}(k)-Y_{it}(0)\\,|\\,t_i=k\\right]\\]\n\nEn la práctica, \\(W\\) serán las ventanas posteriores al tratamiento que aparecen en las comparaciones \\(2\\times 2\\) (\\(POST(k)\\), \\(MID(k,l)\\), \\(POST(l)\\))\nEl cambio en el resultado promedio sin tratamiento del grupo \\(k\\) entre dos ventanas \\(W_0\\) y \\(W_1\\):\n\n\\[\\Delta Y_k^0(W_1,W_0)\\equiv\\frac{1}{T_{W_1}}\\sum_{t\\in W_1}E\\left[Y_{it}(0)\\,|\\,t_i=k\\right]-\\frac{1}{T_{W_0}}\\sum_{t\\in W_0}E\\left[Y_{it}(0)\\,|\\,t_i=k\\right]\\]"
+  },
+  {
+    "objectID": "diapositivas/did.html#cada-comparación-2times-2-tiene-un-sesgo",
+    "href": "diapositivas/did.html#cada-comparación-2times-2-tiene-un-sesgo",
+    "title": "Inferencia Causal 2026",
+    "section": "Cada comparación \\(2\\times 2\\) tiene un sesgo",
+    "text": "Cada comparación \\(2\\times 2\\) tiene un sesgo\n\nSumando y restando los resultados sin tratamiento del grupo tratado en cada comparación \\(2\\times 2\\), el límite en probabilidad de cada una de ellas es un ATT más un sesgo por tendencias distintas:\n\n\\[\n\\begin{aligned}\n\\delta_{kU}&=ATT_k(POST(k))+\\left[\\Delta Y_k^0(POST(k),PRE(k))-\\Delta Y_U^0(POST(k),PRE(k))\\right]\\\\\n\\delta_{kl}^k&=ATT_k(MID(k,l))+\\left[\\Delta Y_k^0(MID(k,l),PRE(k))-\\Delta Y_l^0(MID(k,l),PRE(k))\\right]\\\\\n\\delta_{kl}^l&=ATT_l(POST(l))+\\left[\\Delta Y_l^0(POST(l),MID(k,l))-\\Delta Y_k^0(POST(l),MID(k,l))\\right]\\\\\n&\\quad-\\left[ATT_k(POST(l))-ATT_k(MID(k,l))\\right]\n\\end{aligned}\n\\]\n\nEn las dos primeras, las tendencias paralelas solo involucran resultados sin tratamiento\nEn la tercera, el control \\(k\\) ya está tratado. Además de tendencias paralelas, tenemos el efecto en \\(k\\) entre \\(MID(k,l)\\) y \\(POST(l)\\)"
+  },
+  {
+    "objectID": "diapositivas/did.html#qué-parámetro-estima-twfe-1",
+    "href": "diapositivas/did.html#qué-parámetro-estima-twfe-1",
+    "title": "Inferencia Causal 2026",
+    "section": "¿Qué parámetro estima TWFE?",
+    "text": "¿Qué parámetro estima TWFE?\n\nSustituyendo las tres expresiones en la descomposición, con \\(T\\) fijo y \\(N\\) creciendo:\n\n\\[\\underset{N\\to\\infty}{\\text{plim}}\\;\\hat{\\delta}_{DID}=VWATT+VWCT-\\Delta ATT\\]\n\nLa derivación es bastante tediosa, con algunos pasos presentados en el trabajo de Goodman-Bacon (2021)"
+  },
+  {
+    "objectID": "diapositivas/did.html#qué-parámetro-estima-twfe-2",
+    "href": "diapositivas/did.html#qué-parámetro-estima-twfe-2",
+    "title": "Inferencia Causal 2026",
+    "section": "¿Qué parámetro estima TWFE?",
+    "text": "¿Qué parámetro estima TWFE?\nEfecto de tratamiento promedio ponderado por varianza (variance-weighted ATT): es un promedio de ATTs por grupo y ventana con pesos positivos\nTendencias comunes ponderadas por varianza (variance-weighted common trends): es un promedio de las diferencias en tendencias contrafactuales usando los mismos pesos de la descomposición\nCambio en los efectos de tratamiento: es el cambio en los efectos de tratamiento para grupos que sirven como control ya tratados\n\\[\\Delta ATT\\equiv\\sum_{k\\neq U}\\sum_{l&gt;k}\\sigma_{kl}^l\\left[ATT_k(POST(l))-ATT_k(MID(k,l))\\right]\\]\n\nEn los tres componentes los pesos \\(\\sigma\\) son los límites en probabilidad de los pesos \\(s\\) de la descomposición"
+  },
+  {
+    "objectID": "diapositivas/did.html#bajo-qué-condiciones-twfe-estima-un-efecto-causal",
+    "href": "diapositivas/did.html#bajo-qué-condiciones-twfe-estima-un-efecto-causal",
+    "title": "Inferencia Causal 2026",
+    "section": "¿Bajo qué condiciones TWFE estima un efecto causal?",
+    "text": "¿Bajo qué condiciones TWFE estima un efecto causal?\n\nSi se cumplen tendencias paralelas entre todos los grupos, \\(VWCT=0\\)\nSi además los efectos no cambian en el tiempo, \\(\\Delta ATT=0\\) y TWFE estima \\(VWATT\\) (un promedio ponderado de ATTs con pesos que dependen del tamaño de cada grupo y de cuándo fue tratado)\nTWFE estima el ATT solo si el efecto es constante, \\(ATT_k(W)=ATT\\), en cuyo caso \\(\\Delta ATT=0\\) y \\(VWATT=ATT\\)\nSi los efectos cambian en el tiempo, \\(\\Delta ATT\\neq 0\\) y TWFE está sesgado respecto a \\(VWATT\\) aunque se cumplan tendencias paralelas (usar a los ya tratados como controles resta los cambios en sus efectos)"
+  },
+  {
+    "objectID": "diapositivas/did.html#otros-estudios-sobre-twfe-en-did",
+    "href": "diapositivas/did.html#otros-estudios-sobre-twfe-en-did",
+    "title": "Inferencia Causal 2026",
+    "section": "Otros estudios sobre TWFE en DID",
+    "text": "Otros estudios sobre TWFE en DID\n\nGoodman-Bacon (2021) no es el único trabajo que estudia las desventajas de usar TWFE con adopción escalonada\nde Chaisemartin & D’Haultfœuille (2020) parten de los parámetros a estimar y sus resultados son más generales en cuanto a tipos de tratamiento\nBorusyak, Jaravel & Spiess (2024) se enfocan en problemas con efectos dinámicos\nLas conclusiones de los tres apuntan en la misma dirección, es mejor considerar otro tipo de estimadores para problemas escalonados y con tipos de tratamiento más complejos"
   },
   {
     "objectID": "diapositivas/did.html#estimador-de-callaway-santanna-1",
@@ -2276,14 +2346,7 @@
     "href": "diapositivas/did.html#supuestos-1",
     "title": "Inferencia Causal 2026",
     "section": "Supuestos",
-    "text": "Supuestos\nSupuesto 1. Tendencias paralelas en el contexto escalonado\n\\[E(Y_{t}(\\infty)-Y_{t'}(\\infty)|G=g)=E(Y_{t}(\\infty)-Y_{t'}(\\infty)|G=g')\\quad\\forall\\;t\\neq t',\\; g\\neq g'\\]\n\nEste supuesto indica que en el estado contrafactual de nunca haber sido tratados, dos grupos tratados en dos momentos diferentes \\(g\\) y \\(g'\\) habrían tenido una trayectoria igual entre los periodos \\(t\\) y \\(t'\\)\n\nSupuesto 1a. Tendencias paralelas en el contexto escalonado (débil)\n\nModifica el supuesto anterior pero \\(\\forall \\;t,t'\\geq g_{min}-1\\) donde \\(g_{min}=\\min_i G_i\\) es el primer periodo en donde alguna unidad es tratada (Callaway & Sant’Anna solo usan este supuesto más débil)"
-  },
-  {
-    "objectID": "diapositivas/did.html#supuestos-2",
-    "href": "diapositivas/did.html#supuestos-2",
-    "title": "Inferencia Causal 2026",
-    "section": "Supuestos",
-    "text": "Supuestos\nSupuesto 2. No anticipación en el contexto escalonado\n\\[Y_{it}(g)=Y_{it}(\\infty)\\quad \\forall\\;i \\;\\text{y}\\;\\forall\\;t&lt;g\\]"
+    "text": "Supuestos\nSupuesto 1. Tendencias paralelas en el contexto escalonado\n\\[E(Y_{t}(\\infty)-Y_{t'}(\\infty)|G=g)=E(Y_{t}(\\infty)-Y_{t'}(\\infty)|G=g')\\quad\\forall\\;t\\neq t',\\; g\\neq g'\\]\n\nEste supuesto indica que en el estado contrafactual de nunca haber sido tratados, dos grupos tratados en dos momentos diferentes \\(g\\) y \\(g'\\) habrían tenido una trayectoria igual entre los periodos \\(t\\) y \\(t'\\)\n\nSupuesto 1a. Tendencias paralelas en el contexto escalonado (débil)\n\nModifica el supuesto anterior pero \\(\\forall \\;t,t'\\geq g_{min}-1\\) donde \\(g_{min}=\\min_i G_i\\) es el primer periodo en donde alguna unidad es tratada (Callaway & Sant’Anna solo usan este supuesto más débil)\n\nSupuesto 2. No anticipación en el contexto escalonado\n\\[Y_{it}(g)=Y_{it}(\\infty)\\quad \\forall\\;i \\;\\text{y}\\;\\forall\\;t&lt;g\\]"
   },
   {
     "objectID": "diapositivas/did.html#estimador-de-callaway-santanna-2",
@@ -2297,14 +2360,7 @@
     "href": "diapositivas/did.html#reportar-resultados",
     "title": "Inferencia Causal 2026",
     "section": "Reportar resultados",
-    "text": "Reportar resultados\n\nSi tenemos pocos periodos y cohortes puede ser práctico reportar todos los \\(\\widehat{ATT}(g,t)\\)\nTambién podemos construir medidas agregadas:\n\n\\[\\theta = \\sum_{g\\in\\mathcal{G}}\\sum_{t=g}^{T}w(g,t)ATT(g,t)\\]"
-  },
-  {
-    "objectID": "diapositivas/did.html#formas-de-agregación",
-    "href": "diapositivas/did.html#formas-de-agregación",
-    "title": "Inferencia Causal 2026",
-    "section": "Formas de agregación",
-    "text": "Formas de agregación\n\nLa notación usada en el artículo es densa pero en resumen, algunas agregaciones posibles son:\n\nEfecto de tratamiento por duración de exposición\n\nPodemos calcular \\(\\theta(e)\\), el efecto promedio \\(e\\) periodos después del tratamiento, donde \\(e=t-g\\) es el tiempo que transcurre desde que se realizó el tratamiento\nPodemos hacer un gráfico de \\(\\theta(e)\\)\n\nEfecto de tratamiento por grupo o cohorte\n\nLo llamamos \\(\\theta(\\tilde{g})\\) y nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde\n\nEfecto de tratamiento acumulado\n\nLo llamamos \\(\\theta(\\tilde{t})\\) y lo definimos como el efecto promedio por participar en el tratamiento hasta una fecha dada \\(\\tilde{t}\\)"
+    "text": "Reportar resultados\n\nSi tenemos pocos periodos y cohortes puede ser práctico reportar todos los \\(\\widehat{ATT}(g,t)\\)\nTambién podemos construir medidas agregadas:\n\n\\[\\theta = \\sum_{g\\in\\mathcal{G}}\\sum_{t=g}^{T}w(g,t)ATT(g,t)\\]\nEfecto de tratamiento por duración de exposición: \\(\\theta(e)\\), el efecto promedio \\(e\\) periodos después del tratamiento, donde \\(e=t-g\\) es el tiempo que transcurre desde que se realizó el tratamiento\nEfecto de tratamiento por grupo o cohorte: \\(\\theta(\\tilde{g})\\), nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde\nEfecto de tratamiento acumulado: \\(\\theta(\\tilde{t})\\), es el efecto promedio por participar en el tratamiento hasta una fecha \\(\\tilde{t}\\)"
   },
   {
     "objectID": "diapositivas/did.html#ventajas-del-estimador",
@@ -2312,6 +2368,69 @@
     "title": "Inferencia Causal 2026",
     "section": "Ventajas del estimador",
     "text": "Ventajas del estimador\n\nToma en cuenta la heterogeneidad de los efectos de tratamiento\nLos pesos son especificados por el investigador y no mecánicamente como en TWFE\nHace explícito el grupo de comparación (nunca tratados o aún no tratados)"
+  },
+  {
+    "objectID": "diapositivas/did.html#otros-estimadores",
+    "href": "diapositivas/did.html#otros-estimadores",
+    "title": "Inferencia Causal 2026",
+    "section": "Otros estimadores",
+    "text": "Otros estimadores\n\nEl estimador de Callaway & Sant’Anna no es la única forma de explotar los datos de adopción escalonada\nSun & Abraham (2021): usan un enfoque de regresión de un estudio de evento con interacciones entre cohorte y tiempo relativo al tratamiento, usando como control a los nunca tratados (o a la última cohorte en ser tratada) y luego promedian los efectos por cohorte\nde Chaisemartin & D’Haultfœuille (2026): comparan, periodo a periodo, a las unidades que cambian de estado de tratamiento con unidades que tenían el mismo tratamiento inicial y que aún no cambian. Permite tratamientos que se encienden y apagan o que no son binarios\nBorusyak, Jaravel & Spiess (2024): estiman los efectos fijos de unidad y de tiempo solo con observaciones no tratadas, imputan \\(Y_{it}(0)\\) para las tratadas y promedian las diferencias \\(Y_{it}-\\hat{Y}_{it}(0)\\)\nDube, Girardi, Jordà & Taylor (2025): para cada horizonte \\(h\\) realizan una regresión de \\(Y_{i,t+h}-Y_{i,t-1}\\) sobre el inicio del tratamiento, restringiendo la muestra a unidades recién tratadas y a controles limpios (aún no tratados). Se conoce como proyecciones locales y es más usado en macroeconometría"
+  },
+  {
+    "objectID": "diapositivas/did.html#estudios-de-evento-1",
+    "href": "diapositivas/did.html#estudios-de-evento-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Estudios de evento",
+    "text": "Estudios de evento\n\nLos estudios de evento son una forma de brindar evidencia en favor de las tendencias paralelas\nLa idea es mostrar que existe evidencia de tendencias paralelas en los periodos pre tratamiento y asumir que, por tanto, habría tendencias paralelas en los periodos posteriores\nSin embargo, las tendencias paralelas en los periodos pre tratamiento no son necesarias para la identificación del ATT\nUn estudio de evento estima un coeficiente para cada periodo relativo al inicio del tratamiento"
+  },
+  {
+    "objectID": "diapositivas/did.html#estudios-de-evento-2",
+    "href": "diapositivas/did.html#estudios-de-evento-2",
+    "title": "Inferencia Causal 2026",
+    "section": "Estudios de evento",
+    "text": "Estudios de evento\nDefiniciones\n\n\\(t^*\\): periodo en que inicia el tratamiento\n\\(k=t-t^*\\): tiempo relativo al inicio del tratamiento, con \\(k=-K,\\ldots,-1,0,\\ldots,L\\)\nSe plantea la siguiente regresión: \\[Y_{it}=\\alpha_i+\\lambda_t+\\sum_{k=-K}^{-2}\\mu_k\\left(D_i\\times \\mathbf{1}\\{t-t^*=k\\}\\right)+\\sum_{k=0}^{L}\\delta_k\\left(D_i\\times \\mathbf{1}\\{t-t^*=k\\}\\right)+\\varepsilon_{it}\\]\n\\(\\alpha_i\\) y \\(\\lambda_t\\) son efectos fijos de unidad y de tiempo\nLo que hace este modelo es interactuar el indicador de tratamiento con indicadores de cada periodo relativo, salvo un periodo base\nSe omite \\(k=-1\\), el periodo previo al tratamiento y todos los coeficientes se miden respecto a él\nEl periodo base debe ser uno en el que nadie ha sido tratado"
+  },
+  {
+    "objectID": "diapositivas/did.html#interpretación-de-los-coeficientes",
+    "href": "diapositivas/did.html#interpretación-de-los-coeficientes",
+    "title": "Inferencia Causal 2026",
+    "section": "Interpretación de los coeficientes",
+    "text": "Interpretación de los coeficientes\n\nCada coeficiente es un DID \\(2\\times 2\\) entre el periodo \\(t^*+k\\) y el periodo base \\(t^*-1\\)\n\nAdelantos (\\(\\mu_k\\), con \\(k\\leq -2\\))\n\nAntes del tratamiento solo observamos resultados potenciales sin tratamiento, por lo que con no anticipación:\n\n\\[\\mu_k=\\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\\right)-\\left(E(Y_{t^*+k}(0)|D=0)-E(Y_{t^*-1}(0)|D=0)\\right)\\]\n\n\\(\\mu_k\\) solo mide la diferencia en tendencias entre tratados y no tratados antes de la intervención\n\nRezagos (\\(\\delta_k\\), con \\(k\\geq 0\\))\n\n\\(\\delta_k\\) es el efecto del tratamiento sobre los tratados \\(k\\) periodos después del inicio del tratamiento, siempre que se cumplan tendencias paralelas entre \\(t^*-1\\) y \\(t^*+k\\) y no anticipación\nLos rezagos permiten ver la dinámica del efecto (si aparece de inmediato, si crece o si se desvanece)"
+  },
+  {
+    "objectID": "diapositivas/did.html#lo-que-nos-dicen-los-estudios-de-evento",
+    "href": "diapositivas/did.html#lo-que-nos-dicen-los-estudios-de-evento",
+    "title": "Inferencia Causal 2026",
+    "section": "Lo que nos dicen los estudios de evento",
+    "text": "Lo que nos dicen los estudios de evento\n\nEl supuesto de tendencias paralelas no puede probarse pues incluye \\(E(Y_t(0)|D=1)\\) después del tratamiento, un contrafactual que no observamos\nPero los adelantos \\(\\mu_k\\) no involucran contrafactuales, pues son comparaciones de resultados observados antes del tratamiento\nSi \\(\\mu_k\\approx 0\\) para \\(k\\leq -2\\), tratados y no tratados seguían trayectorias paralelas antes de la intervención\nEsto hace más creíble que la trayectoria de los no tratados aproxime el contrafactual de los tratados después de la intervención\nSi los \\(\\mu_k\\) son distintos de cero o muestran una tendencia, hay razones para dudar del diseño\nEl mostrar tendencias paralelas pre tratamiento aporta evidencia sugerente, pero no una prueba, de la plausibilidad del supuesto de tendencias contrafactuales paralelas después del tratamiento"
+  },
+  {
+    "objectID": "diapositivas/did.html#simulación-de-un-estudio-de-evento",
+    "href": "diapositivas/did.html#simulación-de-un-estudio-de-evento",
+    "title": "Inferencia Causal 2026",
+    "section": "Simulación de un estudio de evento",
+    "text": "Simulación de un estudio de evento\n\n\n\nSimulamos un panel de 100 unidades observadas durante 10 periodos, siendo tratadas las primeras 50 (\\(D_i=1\\))\nEl tratamiento inicia en \\(t^*=6\\), así que \\(k\\) va de \\(-5\\) a \\(4\\)\nEl resultado es \\(Y_{it}=a_i+0.3t+\\tau_{it}+u_{it}\\), con un efecto de unidad \\(a_i\\sim N(0,1)\\), una tendencia común \\(0.3t\\) y \\(u_{it}\\sim N(0,1)\\)\nEl efecto \\(\\tau_{it}\\) es cero antes del tratamiento y \\(1+0.5k\\) para \\(k\\geq 0\\) (las tendencias paralelas se cumplen por construcción)\n\n\n\n\n\nset.seed(1992)\n\npanel &lt;- expand_grid(id = 1:100, t = 1:10) |&gt;\n  mutate(D = as.numeric(id &lt;= 50),\n         k = t - 6,\n         efecto = if_else(D == 1 & k &gt;= 0,\n                          1 + 0.5 * k, 0),\n         a_i = rnorm(1),\n         .by = id) |&gt;\n  mutate(Y = a_i + 0.3 * t + efecto + rnorm(n()),\n         k = relevel(factor(k), ref = \"-1\"))"
+  },
+  {
+    "objectID": "diapositivas/did.html#estimación-del-estudio-de-evento",
+    "href": "diapositivas/did.html#estimación-del-estudio-de-evento",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación del estudio de evento",
+    "text": "Estimación del estudio de evento\n\nEstimamos con felm() con efectos fijos de unidad y de tiempo y errores estándar agrupados por unidad\nD * k interactúa \\(D_i\\) con cada periodo relativo, con \\(k=-1\\) como base\nLos efectos fijos absorben los términos de \\(D_i\\) y \\(k\\)\nPodemos reportar los coeficientes estimados para cada adelanto y rezago"
+  },
+  {
+    "objectID": "diapositivas/did.html#estimación-del-estudio-de-evento-1",
+    "href": "diapositivas/did.html#estimación-del-estudio-de-evento-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación del estudio de evento",
+    "text": "Estimación del estudio de evento\n\n\n\nevento &lt;- felm(Y ~ D * k | id + t | 0 | id,\n               data = panel)\n\nmodelsummary(list(\"Y\" = evento),\n             coef_map = c(\"D:k-5\" = \"k = -5\",\n                          \"D:k-4\" = \"k = -4\",\n                          \"D:k-3\" = \"k = -3\",\n                          \"D:k-2\" = \"k = -2\",\n                          \"D:k0\" = \"k = 0\",\n                          \"D:k1\" = \"k = 1\",\n                          \"D:k2\" = \"k = 2\",\n                          \"D:k3\" = \"k = 3\",\n                          \"D:k4\" = \"k = 4\"),\n             shape = term ~ model + statistic,\n             statistic = \"std.error\",\n             gof_map = c(\"nobs\"))\n\n\n\n\n    \n\n    \n\n    \n    \n    \n      \n        \n        \n\n \nY\n\n              \n                 \n                Est.\n                S.E.\n              \n        \n        \n        \n                \n                  k = -5\n                  0.350\n                  0.280\n                \n                \n                  k = -4\n                  0.137\n                  0.262\n                \n                \n                  k = -3\n                  0.038\n                  0.248\n                \n                \n                  k = -2\n                  0.156\n                  0.308\n                \n                \n                  k = 0\n                  1.147\n                  0.265\n                \n                \n                  k = 1\n                  1.389\n                  0.296\n                \n                \n                  k = 2\n                  2.012\n                  0.281\n                \n                \n                  k = 3\n                  2.116\n                  0.283\n                \n                \n                  k = 4\n                  3.436\n                  0.316\n                \n                \n                  Num.Obs.\n                  1000"
+  },
+  {
+    "objectID": "diapositivas/did.html#gráfica-de-estudio-de-evento",
+    "href": "diapositivas/did.html#gráfica-de-estudio-de-evento",
+    "title": "Inferencia Causal 2026",
+    "section": "Gráfica de estudio de evento",
+    "text": "Gráfica de estudio de evento\n\n\n\nSe grafican los \\(\\widehat{\\mu}_k\\) y \\(\\widehat{\\delta}_k\\) con sus intervalos de confianza\nEn el periodo base (\\(k=-1\\)) el coeficiente es cero por construcción\nEn esta simulación, los adelantos son cercanos a cero y el efecto crece con el tiempo de exposición\nCon adopción escalonada, el estudio de evento por TWFE hereda el problema de pesos de Goodman-Bacon, por lo que se prefiere graficar \\(\\theta(e)\\) de Callaway & Sant’Anna"
   },
   {
     "objectID": "diapositivas/did.html#diferencia-en-diferencias-2",
