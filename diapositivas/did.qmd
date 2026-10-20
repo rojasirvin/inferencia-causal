@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 library(tidyverse)
 library(modelsummary)
 library(kableExtra)
+library(lfe)
 
 
 xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
@@ -280,7 +281,8 @@ $$ATT=E(Y_2(1)-Y_2(0)|D=1)$$
 
 - El cambio promedio en la variable de resultados entre los grupos tratados y no tratados habría sido el mismo en ausencia del tratamiento
 
-$$E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)$$ 
+$$E(Y_2(0) - Y_1(0) | D = 1) = E(Y_2(0) - Y_1(0) | D = 0)$$
+
 **Supuesto 2**: no anticipación
 
 - Las unidades que aún no son tratadas no anticipan que lo van a ser, por lo que el tratamiento no afecta el resultado potencial pre intervención
@@ -426,7 +428,7 @@ $$Y_{it}=\alpha_i+\lambda_t+\delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$$
 
 - $\delta_{DID}$ es el efecto de tratamiento
 
-- Si hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede probarse empíricamente
+- Si hay varios puntos pre intervención, el supuesto de tendencias paralelas para ese subperiodo puede evaluarse empíricamente
 
 
 ## Ejemplo: corridas bancarias con regresión
@@ -518,7 +520,7 @@ modelsummary(list("Bancos abiertos" = did_bank2),
 
 ::: {.column width="50%"}
 
-- En estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1974
+- En estos ejemplos hipotéticos asumimos un tratamiento que ocurre en 1975
 
 - Este gráfico muestra un caso de tendencias paralelas
 
@@ -567,6 +569,51 @@ grafica_tendencias(tratada_1)
 :::: {.columns}
 
 ::: {.column width="50%"}
+```{r}
+# DID con los mismos datos de la gráfica: dos unidades observadas de 1970 a 1985
+datos_tendencias <- function(tratada) {
+  tendencias |>
+    select(year, "0" = no_tratada, "1" = {{ tratada }}) |>
+    pivot_longer(-year, names_to = "D", values_to = "tasa") |>
+    mutate(D = as.numeric(D),
+           post = as.numeric(year >= 1975),
+           t = year - 1970)
+}
+
+did_tendencias <- function(tratada) {
+  datos <- datos_tendencias({{ tratada }})
+
+  modelsummary(list("Tasa de mortalidad" = lm(tasa ~ D*post, data = datos)),
+               coef_map = c("D:post" = "δ (D × POST)"),
+               statistic = NULL,
+               gof_map = c("nobs"))
+}
+
+did_tendencias(tratada_1)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+grafica_tendencias(tratada_1)
+```
+
+:::
+
+::::
+
+
+
+## Relajación de los supuestos
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
 - En este segundo ejemplo, el supuesto de tendencias paralelas pre intervención se viola
 
 - La línea de la unidad tratada es más inclinada en todos los periodos y estimar esta relación por DID de nuevo atribuiría a la política la diferencia de tendencias que ya existía antes de la intervención
@@ -583,6 +630,32 @@ grafica_tendencias(tratada_1)
 grafica_tendencias(tratada_2)
 ```
 
+
+:::
+
+::::
+
+
+
+## Relajación de los supuestos
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+did_tendencias(tratada_2)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+grafica_tendencias(tratada_2)
+```
 
 :::
 
@@ -607,8 +680,12 @@ grafica_tendencias(tratada_2)
 
 - Una forma de separar ambas cosas es incluir tendencias específicas por unidad:
 
-$$Y_{it}=\alpha+\beta D_i+\gamma POST_t + \rho (D_i\times t) + \delta_{DID}(D_i\times POST_t)+\varepsilon_{it}$$
-
+$$
+\begin{aligned}
+Y_{it}=&\alpha+\beta D_i+\gamma POST_t + \theta t \\
+&+ \rho (D_i\times t) + \delta_{DID}(D_i\times POST_t)+\varepsilon_{it}
+\end{aligned}
+$$
 :::
 
 ::: {.column width="50%"}
@@ -620,6 +697,40 @@ $$Y_{it}=\alpha+\beta D_i+\gamma POST_t + \rho (D_i\times t) + \delta_{DID}(D_i\
 grafica_tendencias(tratada_3)
 ```
 
+
+:::
+
+::::
+
+
+
+## Relajación de los supuestos
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+datos <- datos_tendencias(tratada_3)
+
+modelsummary(list("DID simple" = lm(tasa ~ D*post, data = datos),
+                  "Con tendencias" = lm(tasa ~ D*post + t + D:t, data = datos)),
+             coef_map = c("D:post" = "δ (D × POST)",
+                          "D:t" = "ρ (D × t)",
+                          "t" = "θ (t)"),
+             statistic = NULL,
+             gof_map = c("nobs"))
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 4.8
+#| out-width: "100%"
+
+grafica_tendencias(tratada_3)
+```
 
 :::
 
@@ -641,7 +752,79 @@ grafica_tendencias(tratada_3)
 - En la actualidad, en el trabajo empírico se pone énfasis en la correcta estimación de la matriz de varianzas usando resultados asintóticos o bootstrap por bloques en el caso de tener pocos grupos o *clusters*
 
 
+## Ejemplo clásico: cambios al salario mínimo
 
+- Card & Krueger (1994) estudian el efecto del incremento del salario mínimo (de 4.25 a 5.05 dólares por hora en abril de 1992)
+
+- El cambio ocurrió en Nueva Jersey y se emplea a la vecina Pensilvania como no tratada
+
+- Encuestaron a los mismos restaurantes de comida rápida en ambos estados antes y después del cambio al salario mínimo y compararon el empleo equivalente de tiempo completo (FTE)
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r}
+#| label: tabla-card-krueger
+
+tabla_ck <- tibble(
+  variable = c("FTE antes", "", "FTE después", "", "Cambio en FTE", ""),
+  pa = c("23.33", "(1.35)", "21.17", "(0.94)", "-2.16", "(1.25)"),
+  nj = c("20.44", "(0.51)", "21.03", "(0.52)", "0.59", "(0.54)"),
+  dif = c("-2.89", "(1.44)", "-0.14", "(1.07)", "2.76", "(1.36)"))
+
+tabla_ck |>
+  kbl(col.names = c("", "PA", "NJ", "NJ - PA"),
+      align = "lccc") |>
+  kable_paper(c("hover", "condensed", "responsive"),
+              full_width = FALSE, font_size = 22) |>
+  footnote(general = "Errores estándar entre paréntesis. Fuente: adaptado de la tabla 3 de Card & Krueger (1994).",
+           general_title = "Nota: ",
+           footnote_as_chunk = TRUE)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| label: figura-card-krueger
+#| fig-width: 6
+#| fig-height: 4
+#| out-width: "100%"
+
+ck <- tibble(
+  mes = rep(1:2, 3),
+  fte = c(23.33, 21.17, 20.44, 21.03, 20.44, 18.28),
+  Grupo = rep(c("Pensilvania", "Nueva Jersey",
+                "Nueva Jersey sin tratamiento"), each = 2))
+
+ck |>
+  ggplot(aes(mes, fte, color = Grupo, linetype = Grupo)) +
+  geom_vline(xintercept = 1.5, color = "grey60") +
+  geom_line(linewidth = 1.5) +
+  geom_point(size = 3) +
+  annotate("segment", x = 1, xend = 2.05,
+           y = 23.33, yend = 23.33, linetype = "dotted") +
+  annotate("segment", x = c(0.95, 2.05, 2.05),
+           xend = c(0.95, 2.05, 2.05),
+           y = c(20.44, 21.17, 18.28), yend = c(23.33, 23.33, 21.03),
+           arrow = arrow(ends = "both",
+                         length = unit(0.1, "in"))) +
+  annotate("text", x = c(1, 0.89, 2.12, 2.12),
+           y = c(23.75, 21.9, 22.25, 19.65), parse = TRUE, size = 6,
+           label = c("alpha", "beta", "gamma", "delta[DID]")) +
+  annotate("text", x = 1.52, y = 17.6, label = "Aumento del salario mínimo",
+           color = "grey40", size = 3.5, hjust = 0) +
+  scale_color_manual(values = c("darkred", "darkred", "grey40")) +
+  scale_linetype_manual(values = c(1, 2, 1)) +
+  scale_x_continuous(breaks = 1:2,
+                     labels = c("Febrero 1992", "Noviembre 1992"),
+                     limits = c(0.85, 2.2)) +
+  labs(x = NULL, y = "FTE promedio", color = NULL, linetype = NULL) +
+  theme(legend.position = "bottom",
+        text = element_text(size = 14))
+```
+:::
+
+::::
 
 
 # Adopción escalonada {.divider background-color="#9B2247" data-state="nochrome"}
@@ -656,14 +839,14 @@ grafica_tendencias(tratada_3)
 
 - En México, las leyes de despenalización del aborto o las que reconocen las uniones entre personas del mismo sexo son buenos ejemplos de tratamientos con adopción escalonada
 
-- Hasta los trabajos de Goodman-Bacon (2021) y de de Chaisemartin & D'Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales (sí, suena horrible dicha traducción) o *two-way fixed effects*
+- Hasta los trabajos de Goodman-Bacon (2021), Borusyak, Jaravel & Spiess (2024) y de Chaisemartin & D’Haultfœuille (2020), los problemas con adopción escalonada se abordaban econométricamente de la misma forma que hemos descrito hasta ahora, conocida como efectos fijos bidireccionales o *two-way fixed effects*
 
 - Esta sección presenta el tipo de tratamiento que hoy ya consideramos inapropiado
 
 - Más adelante se presentan alternativas para los problemas de adopción escalonada
 
 
-## Edad legal para beber en EUA
+## Ejemplo: edad legal para beber en EUA
 
 - Diferencias en la edad legal para beber en Estados Unidos
 
@@ -671,36 +854,7 @@ grafica_tendencias(tratada_3)
 
 - Alabama redujo la edad legal a 19 en 1975, mientras que, por ejemplo, Arkansas mantuvo la edad en 21
 
-- Tenemos datos de mortalidad de 1970 a 1983 para personas de entre 18 y 20 años
-
-- Lo que hemos aprendido hasta ahora nos sugiere estimar el impacto por DID como sigue
-
-$$Y_{st}=\alpha+\beta D_s+\gamma POST_t+\delta_{DID}(D_s\times POST_t)+\varepsilon_{st}$$
-
-- $D_s$ es una dummy igual a 0 para Arkansas en todos los periodos e igual a 1 para Alabama en todos los periodos
-
-- $POST_t$ es igual a cero para el periodo 1970-1975 e igual a 1 para el periodo 1976-1983
-
-- $D_s\times POST_t$ es igual a 1 para las observaciones de Alabama en los años en los que la nueva política ya está en vigor
-
-
-
-## Más de un estado
-
-- ¿Por qué quedarnos solo con la comparación con Arkansas?
-
-- Podemos incluir más unidades que implementen cambios en la política en distintos momentos
-
-- En vez de $POST_t$ usamos efectos fijos por año
-
-- Y en vez de una dummy de tratamiento, incluimos efectos fijos por unidad
-
-- Además, el cambio en la ley podría no ser el mismo
-
-  - Algunos estados mueven la edad a 18, otros a 19 y otros a 20
-  
-  - Podemos definir $LEGAL_{st}$ como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado $s$ y en el año $t$
-
+- Podemos definir $LEGAL_{st}$ como la proporción de individuos de entre 18 y 20 años autorizados para beber en el estado $s$ y en el año $t$
 
 $$Y_{st}=\alpha+\delta_{DID}LEGAL_{st}+\sum_k\beta_k STATE_{ks}+\sum_j \gamma_j YEAR_{jt}+\varepsilon_{st}$$
 
@@ -838,27 +992,28 @@ $$\hat{\delta}_{DID}=s_{kU}\hat{\delta}_{kU}+s_{lU}\hat{\delta}_{lU}+s_{kl}^k\ha
 
 con los pesos dados por:
 
-  - $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}$
-
-  - $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}$
-
-  - $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}$
-
-  - $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}$
-
+$$
+\begin{aligned}
+s_{kU}&=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D} \\
+s_{lU}&=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D} \\
+s_{kl}^k&=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D} \\
+s_{kl}^l&=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}
+\end{aligned}
+$$
 
 
 ## ¿Qué son los pesos?
 
-- Podemos desarrollar lo que son las varianzas del tratamiento:
+- Desarrollando varianzas del tratamiento:
 
-  - $s_{kU}=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D}$
-
-  - $s_{lU}=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D}$
-
-  - $s_{kl}^k=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D}$
-
-  - $s_{kl}^l=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}$
+$$
+\begin{aligned}
+s_{kU}&=\frac{(n_k+n_U)^2\hat{V}_{kU}^D}{\hat{V}^D}=\frac{(n_k+n_U)^2n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)}{\hat{V}^D} \\
+s_{lU}&=\frac{(n_l+n_U)^2\hat{V}_{lU}^D}{\hat{V}^D}=\frac{(n_l+n_U)^2n_{lU}(1-n_{lU})\bar{D}_l(1-\bar{D}_l)}{\hat{V}^D} \\
+s_{kl}^k&=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2\hat{V}_{kl}^{D,k}}{\hat{V}^D}=\frac{[(n_k+n_l)(1-\bar{D}_l)]^2n_{kl}(1-n_{kl}) \frac{\bar{D}_k-\bar{D}_l}{1-\bar{D}_l}\frac{1-\bar{D}_k}{1-\bar{D}_l}}{\hat{V}^D} \\
+s_{kl}^l&=\frac{[(n_k+n_l)\bar{D}_k]^2\hat{V}_{kl}^{D,l}}{\hat{V}^D}=\frac{[(n_k+n_l)\bar{D}_k]^2n_{kl}(1-n_{kl})\frac{\bar{D}_l}{\bar{D}_k}\frac{\bar{D}_k-\bar{D}_l}{\bar{D}_k}}{\hat{V}^D}
+\end{aligned}
+$$
 
 ## ¿Qué son los pesos?
 
@@ -883,15 +1038,13 @@ $$\hat{V}_{kU}^D=n_{kU}(1-n_{kU})\bar{D}_k(1-\bar{D}_k)$$
 
 - Dado que $D_{it}$ es binaria, $\bar{D}_k(1-\bar{D}_k)$ es la varianza de $D_{it}$ para las unidades $k$
 
-- ¿Qué es lo más grande que puede ser $\bar{D}_k(1-\bar{D}_k)$?
-
-- Claramente esto es a lo más 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel ($\bar{D}_k=0.5$)
+- $\bar{D}_k(1-\bar{D}_k)$ alcanza un máximo de 0.25, es decir, la contribución se maximiza cuando el tratamiento ocurre lo más cercano a la mitad del panel ($\bar{D}_k=0.5$)
 
 - En resumen, los pesos están dados por
 
-$$\scriptsize  \text{peso} = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}$$
+$$\text{peso} = \frac{(\text{participación de la submuestra})^2(\text{varianza del tratamiento purgada de efectos fijos en la submuestra})}{\text{varianza del tratamiento purgada de efectos fijos en la muestra completa}}$$
 
-## ¿Qué nos dice la descomposición?
+## ¿Qué nos dice la descomposición del estimador?
 
 - Todos los grupos funcionan como *controles* (algunas veces)
 
@@ -903,6 +1056,90 @@ $$\scriptsize  \text{peso} = \frac{(\text{participación de la submuestra})^2(\t
 
 - Goodman-Bacon (2021) muestra que, en general, usar TWFE solo recupera un efecto de tratamiento bajo supuestos muy fuertes, el más crucial, bajo efectos de tratamiento que no varían en el tiempo (no hay efectos dinámicos)
 
+
+## ¿Qué parámetro estima TWFE?
+
+- Hasta ahora hemos usado la descomposición de Goodman-Bacon para mostrar lo que hace el estimador de TWFE
+
+- Ahora mostraremos bajo qué condiciones el estimador de TWFE estima el ATT
+
+- Para ello escribimos cada comparación $2\times 2$ en términos de resultados potenciales
+
+  - $t_i$ es el periodo en que la unidad $i$ empieza a ser tratada
+  - $Y_{it}(k)$ es el resultado de $i$ en $t$ si es tratada a partir de $k$
+  - $Y_{it}(0)$ es el resultado de $i$ en $t$ si no es tratada
+
+## Efectos y tendencias por grupo
+
+- El ATT promedio del grupo tratado en $k$ en una ventana de tiempo $W$ con $T_W$ periodos:
+
+$$ATT_k(W)\equiv\frac{1}{T_W}\sum_{t\in W}E\left[Y_{it}(k)-Y_{it}(0)\,|\,t_i=k\right]$$
+
+- En la práctica, $W$ serán las ventanas posteriores al tratamiento que aparecen en las comparaciones $2\times 2$ ($POST(k)$, $MID(k,l)$, $POST(l)$)
+
+- El cambio en el resultado promedio *sin tratamiento* del grupo $k$ entre dos ventanas $W_0$ y $W_1$:
+
+$$\Delta Y_k^0(W_1,W_0)\equiv\frac{1}{T_{W_1}}\sum_{t\in W_1}E\left[Y_{it}(0)\,|\,t_i=k\right]-\frac{1}{T_{W_0}}\sum_{t\in W_0}E\left[Y_{it}(0)\,|\,t_i=k\right]$$
+
+## Cada comparación $2\times 2$ tiene un sesgo
+
+- Sumando y restando los resultados sin tratamiento del grupo tratado en cada comparación $2\times 2$, el límite en probabilidad de cada una de ellas es un ATT más un sesgo por tendencias distintas:
+
+$$
+\begin{aligned}
+\delta_{kU}&=ATT_k(POST(k))+\left[\Delta Y_k^0(POST(k),PRE(k))-\Delta Y_U^0(POST(k),PRE(k))\right]\\
+\delta_{kl}^k&=ATT_k(MID(k,l))+\left[\Delta Y_k^0(MID(k,l),PRE(k))-\Delta Y_l^0(MID(k,l),PRE(k))\right]\\
+\delta_{kl}^l&=ATT_l(POST(l))+\left[\Delta Y_l^0(POST(l),MID(k,l))-\Delta Y_k^0(POST(l),MID(k,l))\right]\\
+&\quad-\left[ATT_k(POST(l))-ATT_k(MID(k,l))\right]
+\end{aligned}
+$$
+
+- En las dos primeras, las tendencias paralelas solo involucran resultados sin tratamiento
+
+- En la tercera, el control $k$ *ya está tratado*. Además de tendencias paralelas, tenemos el efecto en $k$ entre $MID(k,l)$ y $POST(l)$
+
+## ¿Qué parámetro estima TWFE?
+
+- Sustituyendo las tres expresiones en la descomposición, con $T$ fijo y $N$ creciendo:
+
+$$\underset{N\to\infty}{\text{plim}}\;\hat{\delta}_{DID}=VWATT+VWCT-\Delta ATT$$
+
+- La derivación es bastante tediosa, con algunos pasos presentados en el trabajo de Goodman-Bacon (2021)
+
+## ¿Qué parámetro estima TWFE?
+
+**Efecto de tratamiento promedio ponderado por varianza** (*variance-weighted ATT*): es un promedio de ATTs por grupo y ventana con pesos positivos
+
+**Tendencias comunes ponderadas por varianza** (*variance-weighted common trends*): es un promedio de las diferencias en tendencias contrafactuales usando los mismos pesos de la descomposición
+
+**Cambio en los efectos de tratamiento**: es el *cambio* en los efectos de tratamiento para grupos que sirven como control ya tratados
+
+$$\Delta ATT\equiv\sum_{k\neq U}\sum_{l>k}\sigma_{kl}^l\left[ATT_k(POST(l))-ATT_k(MID(k,l))\right]$$
+
+  - En los tres componentes los pesos $\sigma$ son los límites en probabilidad de los pesos $s$ de la descomposición
+
+
+## ¿Bajo qué condiciones TWFE estima un efecto causal?
+
+- Si se cumplen tendencias paralelas entre todos los grupos, $VWCT=0$
+
+- Si además los efectos no cambian en el tiempo, $\Delta ATT=0$ y TWFE estima $VWATT$ (un promedio ponderado de ATTs con pesos que dependen del tamaño de cada grupo y de cuándo fue tratado)
+
+- TWFE estima el ATT solo si el efecto es constante, $ATT_k(W)=ATT$, en cuyo caso $\Delta ATT=0$ y $VWATT=ATT$
+
+- Si los efectos cambian en el tiempo, $\Delta ATT\neq 0$ y TWFE está sesgado respecto a $VWATT$ aunque se cumplan tendencias paralelas (usar a los ya tratados como controles resta los cambios en sus efectos)
+
+
+
+## Otros estudios sobre TWFE en DID
+
+- Goodman-Bacon (2021) no es el único trabajo que estudia las desventajas de usar TWFE con adopción escalonada
+
+- de Chaisemartin & D’Haultfœuille (2020) parten de los parámetros a estimar y sus resultados son más generales en cuanto a tipos de tratamiento
+
+- Borusyak, Jaravel & Spiess (2024) se enfocan en problemas con efectos dinámicos
+
+- Las conclusiones de los tres apuntan en la misma dirección, es mejor considerar otro tipo de estimadores para problemas escalonados y con tipos de tratamiento más complejos
 
 # Estimador de Callaway & Sant’Anna {.divider background-color="#9B2247" data-state="nochrome"}
 
@@ -945,8 +1182,6 @@ $$E(Y_{t}(\infty)-Y_{t'}(\infty)|G=g)=E(Y_{t}(\infty)-Y_{t'}(\infty)|G=g')\quad\
 
 - Modifica el supuesto anterior pero $\forall \;t,t'\geq g_{min}-1$ donde $g_{min}=\min_i G_i$ es el primer periodo en donde alguna unidad es tratada (Callaway & Sant’Anna solo usan este supuesto más débil)
 
-## Supuestos
-
 **Supuesto 2. No anticipación en el contexto escalonado**
 
 $$Y_{it}(g)=Y_{it}(\infty)\quad \forall\;i \;\text{y}\;\forall\;t<g$$
@@ -976,23 +1211,11 @@ $$\widehat{ATT}(g,t)=\frac{1}{N_g}\sum_{i:\;G_i=g}(Y_{it}-Y_{i,g-1})-\frac{1}{N_
 
 $$\theta = \sum_{g\in\mathcal{G}}\sum_{t=g}^{T}w(g,t)ATT(g,t)$$
 
-## Formas de agregación
+**Efecto de tratamiento por duración de exposición**: $\theta(e)$, el efecto promedio $e$ periodos después del tratamiento, donde $e=t-g$ es el tiempo que transcurre desde que se realizó el tratamiento
 
-- La notación usada en el artículo es densa pero en resumen, algunas agregaciones posibles son:
+**Efecto de tratamiento por grupo o cohorte**: $\theta(\tilde{g})$, nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde
 
-**Efecto de tratamiento por duración de exposición**
-
-- Podemos calcular $\theta(e)$, el efecto promedio $e$ periodos después del tratamiento, donde $e=t-g$ es el tiempo que transcurre desde que se realizó el tratamiento
-
-- Podemos hacer un gráfico de $\theta(e)$
-
-**Efecto de tratamiento por grupo o cohorte**
-
-- Lo llamamos $\theta(\tilde{g})$ y nos permite conocer si el efecto del tratamiento es distinto para cohortes que fueron tratadas temprano o tarde
-
-**Efecto de tratamiento acumulado**
-
-- Lo llamamos $\theta(\tilde{t})$ y lo definimos como el efecto promedio por participar en el tratamiento hasta una fecha dada $\tilde{t}$
+**Efecto de tratamiento acumulado**: $\theta(\tilde{t})$, es el efecto promedio por participar en el tratamiento hasta una fecha $\tilde{t}$
 
 ## Ventajas del estimador
 
@@ -1001,6 +1224,220 @@ $$\theta = \sum_{g\in\mathcal{G}}\sum_{t=g}^{T}w(g,t)ATT(g,t)$$
 - Los pesos son especificados por el investigador y no mecánicamente como en TWFE
 
 - Hace explícito el grupo de comparación (nunca tratados o aún no tratados)
+
+## Otros estimadores
+
+- El estimador de Callaway & Sant’Anna no es la única forma de explotar los datos de adopción escalonada
+
+- **Sun & Abraham (2021)**: usan un enfoque de regresión de un estudio de evento con interacciones entre cohorte y tiempo relativo al tratamiento, usando como control a los nunca tratados (o a la última cohorte en ser tratada) y luego promedian los efectos por cohorte
+
+- **de Chaisemartin & D’Haultfœuille (2026)**: comparan, periodo a periodo, a las unidades que cambian de estado de tratamiento con unidades que tenían el mismo tratamiento inicial y que aún no cambian. Permite tratamientos que se encienden y apagan o que no son binarios
+
+- **Borusyak, Jaravel & Spiess (2024)**: estiman los efectos fijos de unidad y de tiempo solo con observaciones no tratadas, imputan $Y_{it}(0)$ para las tratadas y promedian las diferencias $Y_{it}-\hat{Y}_{it}(0)$
+
+- **Dube, Girardi, Jordà & Taylor (2025)**: para cada horizonte $h$ realizan una regresión de $Y_{i,t+h}-Y_{i,t-1}$ sobre el inicio del tratamiento, restringiendo la muestra a unidades recién tratadas y a controles limpios (aún no tratados). Se conoce como *proyecciones locales* y es más usado en macroeconometría
+
+
+# Estudios de evento {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Estudios de evento
+
+- Los estudios de evento son una forma de brindar evidencia en favor de las tendencias paralelas
+
+- La idea es mostrar que existe evidencia de tendencias paralelas en los **periodos pre tratamiento** y asumir que, por tanto, habría tendencias paralelas en los periodos posteriores
+
+- Sin embargo, las tendencias paralelas en los periodos pre tratamiento no son necesarias para la identificación del ATT
+
+- Un estudio de evento estima un coeficiente para cada periodo relativo al inicio del tratamiento
+
+## Estudios de evento
+
+**Definiciones**
+
+- $t^*$: periodo en que inicia el tratamiento
+
+- $k=t-t^*$: tiempo relativo al inicio del tratamiento, con $k=-K,\ldots,-1,0,\ldots,L$
+
+- Se plantea la siguiente regresión: 
+$$Y_{it}=\alpha_i+\lambda_t+\sum_{k=-K}^{-2}\mu_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\sum_{k=0}^{L}\delta_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\varepsilon_{it}$$
+
+- $\alpha_i$ y $\lambda_t$ son efectos fijos de unidad y de tiempo
+
+- Lo que hace este modelo es interactuar el indicador de tratamiento con indicadores de cada periodo relativo, salvo un periodo base
+
+- Se omite $k=-1$, el periodo previo al tratamiento y todos los coeficientes se miden respecto a él
+
+- El periodo base debe ser uno en el que nadie ha sido tratado
+
+## Interpretación de los coeficientes
+
+- Cada coeficiente es un DID $2\times 2$ entre el periodo $t^*+k$ y el periodo base $t^*-1$
+
+**Adelantos** ($\mu_k$, con $k\leq -2$)
+
+- Antes del tratamiento solo observamos resultados potenciales sin tratamiento, por lo que con no anticipación:
+
+$$\mu_k=\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+k}(0)|D=0)-E(Y_{t^*-1}(0)|D=0)\right)$$
+
+- $\mu_k$ solo mide la diferencia en tendencias entre tratados y no tratados antes de la intervención
+
+**Rezagos** ($\delta_k$, con $k\geq 0$)
+
+- $\delta_k$ es el efecto del tratamiento sobre los tratados $k$ periodos después del inicio del tratamiento, siempre que se cumplan tendencias paralelas entre $t^*-1$ y $t^*+k$ y no anticipación
+
+- Los rezagos permiten ver la dinámica del efecto (si aparece de inmediato, si crece o si se desvanece)
+
+## Lo que nos dicen los estudios de evento
+
+- El supuesto de tendencias paralelas no puede probarse pues incluye $E(Y_t(0)|D=1)$ después del tratamiento, un contrafactual que no observamos
+
+- Pero los adelantos $\mu_k$ no involucran contrafactuales, pues son comparaciones de resultados observados antes del tratamiento
+
+- Si $\mu_k\approx 0$ para $k\leq -2$, tratados y no tratados seguían trayectorias paralelas antes de la intervención
+
+- Esto hace más creíble que la trayectoria de los no tratados aproxime el contrafactual de los tratados después de la intervención
+
+- Si los $\mu_k$ son distintos de cero o muestran una tendencia, hay razones para dudar del diseño
+
+- El mostrar tendencias paralelas pre tratamiento aporta evidencia sugerente, pero no una prueba, de la plausibilidad del supuesto de tendencias *contrafactuales* paralelas después del tratamiento
+
+## Simulación de un estudio de evento
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- Simulamos un panel de 100 unidades observadas durante 10 periodos, siendo tratadas las primeras 50 ($D_i=1$)
+
+- El tratamiento inicia en $t^*=6$, así que $k$ va de $-5$ a $4$
+
+- El resultado es $Y_{it}=a_i+0.3t+\tau_{it}+u_{it}$, con un efecto de unidad $a_i\sim N(0,1)$, una tendencia común $0.3t$ y $u_{it}\sim N(0,1)$
+
+- El efecto $\tau_{it}$ es cero antes del tratamiento y $1+0.5k$ para $k\geq 0$ (las tendencias paralelas se cumplen por construcción)
+:::
+
+::: {.column width="55%"}
+```{=html}
+<style>
+.reveal .codigo-grande pre{ font-size:.75em !important; }
+.reveal .codigo-grande pre code{ max-height:none !important; }
+</style>
+```
+
+::: {.codigo-grande}
+```{r}
+#| label: simulacion-estudio-evento
+#| echo: true
+
+set.seed(1992)
+
+panel <- expand_grid(id = 1:100, t = 1:10) |>
+  mutate(D = as.numeric(id <= 50),
+         k = t - 6,
+         efecto = if_else(D == 1 & k >= 0,
+                          1 + 0.5 * k, 0),
+         a_i = rnorm(1),
+         .by = id) |>
+  mutate(Y = a_i + 0.3 * t + efecto + rnorm(n()),
+         k = relevel(factor(k), ref = "-1"))
+```
+:::
+:::
+
+::::
+
+
+## Estimación del estudio de evento
+
+- Estimamos con `felm()` con efectos fijos de unidad y de tiempo y errores estándar agrupados por unidad
+
+- `D * k` interactúa $D_i$ con cada periodo relativo, con $k=-1$ como base
+
+- Los efectos fijos absorben los términos de $D_i$ y $k$
+
+- Podemos reportar los coeficientes estimados para cada adelanto y rezago
+
+
+
+## Estimación del estudio de evento
+
+::: {.codigo-grande}
+```{r}
+#| label: estimacion-estudio-evento
+#| echo: true
+#| warning: false
+#| output-location: column
+
+evento <- felm(Y ~ D * k | id + t | 0 | id,
+               data = panel)
+
+modelsummary(list("Y" = evento),
+             coef_map = c("D:k-5" = "k = -5",
+                          "D:k-4" = "k = -4",
+                          "D:k-3" = "k = -3",
+                          "D:k-2" = "k = -2",
+                          "D:k0" = "k = 0",
+                          "D:k1" = "k = 1",
+                          "D:k2" = "k = 2",
+                          "D:k3" = "k = 3",
+                          "D:k4" = "k = 4"),
+             shape = term ~ model + statistic,
+             statistic = "std.error",
+             gof_map = c("nobs"))
+```
+:::
+
+
+
+## Gráfica de estudio de evento
+
+:::: {.columns}
+
+::: {.column width="40%"}
+- Se grafican los $\widehat{\mu}_k$ y $\widehat{\delta}_k$ con sus intervalos de confianza
+
+- En el periodo base ($k=-1$) el coeficiente es cero por construcción
+
+- En esta simulación, los adelantos son cercanos a cero y el efecto crece con el tiempo de exposición
+
+- Con adopción escalonada, el estudio de evento por TWFE hereda el problema de pesos de Goodman-Bacon, por lo que se prefiere graficar $\theta(e)$ de Callaway & Sant’Anna
+:::
+
+::: {.column width="60%"}
+```{r}
+#| label: figura-estudio-evento
+#| fig-width: 7
+#| fig-height: 5
+#| out-width: "100%"
+
+coefs <- tibble(termino = names(coef(evento)),
+                coef = coef(evento),
+                ee = evento$cse) |>
+  filter(str_starts(termino, "D:k")) |>
+  mutate(k = as.numeric(str_remove(termino, "D:k"))) |>
+  bind_rows(tibble(k = -1, coef = 0, ee = 0)) |>
+  mutate(periodo = if_else(k < 0, "Adelantos", "Rezagos"))
+
+coefs |>
+  ggplot(aes(k, coef, color = periodo)) +
+  geom_hline(yintercept = 0, color = "grey60") +
+  geom_vline(xintercept = -0.5, linetype = "dashed") +
+  geom_errorbar(aes(ymin = coef - 1.96 * ee, ymax = coef + 1.96 * ee),
+                width = 0.15, linewidth = 1) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("grey40", "darkred")) +
+  scale_x_continuous(breaks = -5:4) +
+  labs(x = "Periodos relativos al tratamiento (k)",
+       y = "Coeficiente estimado", color = NULL) +
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.02, 0.98),
+        legend.justification = c(0, 1),
+        text = element_text(size = 16))
+```
+:::
+
+::::
+
+
 
 ## Diferencia en diferencias {background-color="#9B2247" data-state="nochrome" .final}
 
