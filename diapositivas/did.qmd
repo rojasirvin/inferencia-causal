@@ -1256,34 +1256,34 @@ $$\theta = \sum_{g\in\mathcal{G}}\sum_{t=g}^{T}w(g,t)ATT(g,t)$$
 
 - $t^*$: periodo en que inicia el tratamiento
 
-- $k=t-t^*$: tiempo relativo al inicio del tratamiento, con $k=-K,\ldots,-1,0,\ldots,L$
+- $e=t-t^*$: tiempo relativo al inicio del tratamiento, con $e=-K,\ldots,-1,0,\ldots,L$
 
 - Se plantea la siguiente regresión: 
-$$Y_{it}=\alpha_i+\lambda_t+\sum_{k=-K}^{-2}\mu_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\sum_{k=0}^{L}\delta_k\left(D_i\times \mathbf{1}\{t-t^*=k\}\right)+\varepsilon_{it}$$
+$$Y_{it}=\alpha_i+\lambda_t+\sum_{e=-K}^{-2}\mu_e\left(D_i\times \mathbf{1}\{t-t^*=e\}\right)+\sum_{e=0}^{L}\delta_e\left(D_i\times \mathbf{1}\{t-t^*=e\}\right)+\varepsilon_{it}$$
 
 - $\alpha_i$ y $\lambda_t$ son efectos fijos de unidad y de tiempo
 
 - Lo que hace este modelo es interactuar el indicador de tratamiento con indicadores de cada periodo relativo, salvo un periodo base
 
-- Se omite $k=-1$, el periodo previo al tratamiento y todos los coeficientes se miden respecto a él
+- Se omite $e=-1$, el periodo previo al tratamiento y todos los coeficientes se miden respecto a él
 
 - El periodo base debe ser uno en el que nadie ha sido tratado
 
 ## Interpretación de los coeficientes
 
-- Cada coeficiente es un DID $2\times 2$ entre el periodo $t^*+k$ y el periodo base $t^*-1$
+- Cada coeficiente es un DID $2\times 2$ entre el periodo $t^*+e$ y el periodo base $t^*-1$
 
-**Adelantos** ($\mu_k$, con $k\leq -2$)
+**Adelantos** ($\mu_e$, con $e\leq -2$)
 
 - Antes del tratamiento solo observamos resultados potenciales sin tratamiento, por lo que con no anticipación:
 
-$$\mu_k=\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+k}(0)|D=0)-E(Y_{t^*-1}(0)|D=0)\right)$$
+$$\mu_e=\left(E(Y_{t^*+e}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+e}(0)|D=0)-E(Y_{t^*-1}(0)|D=0)\right)$$
 
-- $\mu_k$ solo mide la diferencia en tendencias entre tratados y no tratados antes de la intervención
+- $\mu_e$ solo mide la diferencia en tendencias entre tratados y no tratados antes de la intervención
 
-**Rezagos** ($\delta_k$, con $k\geq 0$)
+**Rezagos** ($\delta_e$, con $e\geq 0$)
 
-- $\delta_k$ es el efecto del tratamiento sobre los tratados $k$ periodos después del inicio del tratamiento, siempre que se cumplan tendencias paralelas entre $t^*-1$ y $t^*+k$ y no anticipación
+- $\delta_e$ es el efecto del tratamiento sobre los tratados $e$ periodos después del inicio del tratamiento, siempre que se cumplan tendencias paralelas entre $t^*-1$ y $t^*+e$ y no anticipación
 
 - Los rezagos permiten ver la dinámica del efecto (si aparece de inmediato, si crece o si se desvanece)
 
@@ -1291,13 +1291,13 @@ $$\mu_k=\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+k}(0
 
 - El supuesto de tendencias paralelas no puede probarse pues incluye $E(Y_t(0)|D=1)$ después del tratamiento, un contrafactual que no observamos
 
-- Pero los adelantos $\mu_k$ no involucran contrafactuales, pues son comparaciones de resultados observados antes del tratamiento
+- Pero los adelantos $\mu_e$ no involucran contrafactuales, pues son comparaciones de resultados observados antes del tratamiento
 
-- Si $\mu_k\approx 0$ para $k\leq -2$, tratados y no tratados seguían trayectorias paralelas antes de la intervención
+- Si $\mu_e\approx 0$ para $e\leq -2$, tratados y no tratados seguían trayectorias paralelas antes de la intervención
 
 - Esto hace más creíble que la trayectoria de los no tratados aproxime el contrafactual de los tratados después de la intervención
 
-- Si los $\mu_k$ son distintos de cero o muestran una tendencia, hay razones para dudar del diseño
+- Si los $\mu_e$ son distintos de cero o muestran una tendencia, hay razones para dudar del diseño
 
 - El mostrar tendencias paralelas pre tratamiento aporta evidencia sugerente, pero no una prueba, de la plausibilidad del supuesto de tendencias *contrafactuales* paralelas después del tratamiento
 
@@ -1308,11 +1308,11 @@ $$\mu_k=\left(E(Y_{t^*+k}(0)|D=1)-E(Y_{t^*-1}(0)|D=1)\right)-\left(E(Y_{t^*+k}(0
 ::: {.column width="45%"}
 - Simulamos un panel de 100 unidades observadas durante 10 periodos, siendo tratadas las primeras 50 ($D_i=1$)
 
-- El tratamiento inicia en $t^*=6$, así que $k$ va de $-5$ a $4$
+- El tratamiento inicia en $t^*=6$, así que $e$ va de $-5$ a $4$
 
 - El resultado es $Y_{it}=a_i+0.3t+\tau_{it}+u_{it}$, con un efecto de unidad $a_i\sim N(0,1)$, una tendencia común $0.3t$ y $u_{it}\sim N(0,1)$
 
-- El efecto $\tau_{it}$ es cero antes del tratamiento y $1+0.5k$ para $k\geq 0$ (las tendencias paralelas se cumplen por construcción)
+- El efecto $\tau_{it}$ es cero antes del tratamiento y $1+0.5e$ para $e\geq 0$ (las tendencias paralelas se cumplen por construcción)
 :::
 
 ::: {.column width="55%"}
@@ -1332,13 +1332,13 @@ set.seed(1992)
 
 panel <- expand_grid(id = 1:100, t = 1:10) |>
   mutate(D = as.numeric(id <= 50),
-         k = t - 6,
-         efecto = if_else(D == 1 & k >= 0,
-                          1 + 0.5 * k, 0),
+         e = t - 6,
+         efecto = if_else(D == 1 & e >= 0,
+                          1 + 0.5 * e, 0),
          a_i = rnorm(1),
          .by = id) |>
   mutate(Y = a_i + 0.3 * t + efecto + rnorm(n()),
-         k = relevel(factor(k), ref = "-1"))
+         e = relevel(factor(e), ref = "-1"))
 ```
 :::
 :::
@@ -1350,9 +1350,9 @@ panel <- expand_grid(id = 1:100, t = 1:10) |>
 
 - Estimamos con `felm()` con efectos fijos de unidad y de tiempo y errores estándar agrupados por unidad
 
-- `D * k` interactúa $D_i$ con cada periodo relativo, con $k=-1$ como base
+- `D * e` interactúa $D_i$ con cada periodo relativo, con $e=-1$ como base
 
-- Los efectos fijos absorben los términos de $D_i$ y $k$
+- Los efectos fijos absorben los términos de $D_i$ y $e$
 
 - Podemos reportar los coeficientes estimados para cada adelanto y rezago
 
@@ -1367,19 +1367,19 @@ panel <- expand_grid(id = 1:100, t = 1:10) |>
 #| warning: false
 #| output-location: column
 
-evento <- felm(Y ~ D * k | id + t | 0 | id,
+evento <- felm(Y ~ D * e | id + t | 0 | id,
                data = panel)
 
 modelsummary(list("Y" = evento),
-             coef_map = c("D:k-5" = "k = -5",
-                          "D:k-4" = "k = -4",
-                          "D:k-3" = "k = -3",
-                          "D:k-2" = "k = -2",
-                          "D:k0" = "k = 0",
-                          "D:k1" = "k = 1",
-                          "D:k2" = "k = 2",
-                          "D:k3" = "k = 3",
-                          "D:k4" = "k = 4"),
+             coef_map = c("D:e-5" = "e = -5",
+                          "D:e-4" = "e = -4",
+                          "D:e-3" = "e = -3",
+                          "D:e-2" = "e = -2",
+                          "D:e0" = "e = 0",
+                          "D:e1" = "e = 1",
+                          "D:e2" = "e = 2",
+                          "D:e3" = "e = 3",
+                          "D:e4" = "e = 4"),
              shape = term ~ model + statistic,
              statistic = "std.error",
              gof_map = c("nobs"))
@@ -1393,9 +1393,9 @@ modelsummary(list("Y" = evento),
 :::: {.columns}
 
 ::: {.column width="40%"}
-- Se grafican los $\widehat{\mu}_k$ y $\widehat{\delta}_k$ con sus intervalos de confianza
+- Se grafican los $\widehat{\mu}_e$ y $\widehat{\delta}_e$ con sus intervalos de confianza
 
-- En el periodo base ($k=-1$) el coeficiente es cero por construcción
+- En el periodo base ($e=-1$) el coeficiente es cero por construcción
 
 - En esta simulación, los adelantos son cercanos a cero y el efecto crece con el tiempo de exposición
 
@@ -1412,13 +1412,13 @@ modelsummary(list("Y" = evento),
 coefs <- tibble(termino = names(coef(evento)),
                 coef = coef(evento),
                 ee = evento$cse) |>
-  filter(str_starts(termino, "D:k")) |>
-  mutate(k = as.numeric(str_remove(termino, "D:k"))) |>
-  bind_rows(tibble(k = -1, coef = 0, ee = 0)) |>
-  mutate(periodo = if_else(k < 0, "Adelantos", "Rezagos"))
+  filter(str_starts(termino, "D:e")) |>
+  mutate(e = as.numeric(str_remove(termino, "D:e"))) |>
+  bind_rows(tibble(e = -1, coef = 0, ee = 0)) |>
+  mutate(periodo = if_else(e < 0, "Adelantos", "Rezagos"))
 
 coefs |>
-  ggplot(aes(k, coef, color = periodo)) +
+  ggplot(aes(e, coef, color = periodo)) +
   geom_hline(yintercept = 0, color = "grey60") +
   geom_vline(xintercept = -0.5, linetype = "dashed") +
   geom_errorbar(aes(ymin = coef - 1.96 * ee, ymax = coef + 1.96 * ee),
@@ -1426,7 +1426,7 @@ coefs |>
   geom_point(size = 3) +
   scale_color_manual(values = c("grey40", "darkred")) +
   scale_x_continuous(breaks = -5:4) +
-  labs(x = "Periodos relativos al tratamiento (k)",
+  labs(x = "Periodos relativos al tratamiento (e)",
        y = "Coeficiente estimado", color = NULL) +
   theme(legend.position = "inside",
         legend.position.inside = c(0.02, 0.98),
