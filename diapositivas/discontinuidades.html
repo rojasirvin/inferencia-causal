@@ -34,6 +34,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b653ffaf65bdc9afdd8d06ec44d675b9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -420,6 +486,8 @@
   .reveal .fragment{ text-align:left; }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -443,6 +511,10 @@
 .tiny .remark-code { /*Change made here*/
   font-size: 60% !important;
 }
+/* Láminas con código a la izquierda y gráfico a la derecha: código más grande
+   que el del tema, con interlineado más compacto para que quepa */
+.reveal .codigo-figura div.sourceCode pre code.sourceCode { font-size: 1.2em !important; line-height: 1.35; max-height: none !important; }
+.reveal .codigo-figura div.sourceCode pre { max-height: none !important; }
 </style>
 </div>
 </section>
@@ -452,15 +524,15 @@
 <h1>Diseños con discontinuidades</h1>
 
 </section>
-<section id="ejemplo-edad-legal-para-tomar-en-eu" class="slide level2">
-<h2>Ejemplo: edad legal para tomar en EU</h2>
+<section id="motivación-edad-legal-para-tomar-en-eu" class="slide level2">
+<h2>Motivación: edad legal para tomar en EU</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li><p>En Estados Unidos la edad legal para tomar es de 21 años</p></li>
-<li><p>¿Por qué tenemos una ley para prohibir el consumo de alcohol antes de los 21 (o 18) años?</p></li>
-<li><p>La ley genera una discontinuidad en el acceso a alcohol justo a los 21 años</p></li>
-<li><p>Podemos evaluar la efectividad de la política</p></li>
+<li><p>Claramente no podemos realizar un experimento para estudiar esta relación causal</p></li>
+<li><p>En DID vimos una aproximación al explotar la variación geográfica y temporal del cambio en las leyes de acceso al alcohol</p></li>
+<li><p>Otra manera de aproximar el problema es explotar la discontinuidad en el acceso legal al alcohol justo a los 21 años</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -473,28 +545,35 @@
 </div>
 </div>
 </div></div>
-</section>
-<section id="qué-pasa-en-el-cumpleaños-21" class="slide level2">
-<h2>¿Qué pasa en el cumpleaños 21?</h2>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Carpenter &amp; Dobkin (2009).</p>
+</div></aside></section>
+<section id="motivación-edad-legal-para-tomar-en-eu-1" class="slide level2">
+<h2>Motivación: edad legal para tomar en EU</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>¿Efecto fiesta?</p></li>
-<li><p>Hay una tendendencia a la baja a ambos lados de la discotinuidad</p></li>
-<li><p>Sin embargo, hay un claro salto en el número de muertes a los 21 años</p></li>
+<li><p>Algo pasa en el cumpleaños 21</p></li>
+<li><p>¿Podemos pensar que es el efecto fiesta?</p></li>
+<li><p>Hay una tendencia a la baja a ambos lados de la discontinuidad</p></li>
+<li><p>Sin embargo, hay un claro salto en la tasa de mortalidad a los 21 años</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="alcohol_sharpRD.png" width="7066"></p>
+<p><img data-src="alcohol_sharpRD.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
-</section></section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Carpenter &amp; Dobkin (2009).</p>
+</div></aside></section></section>
 <section>
 <section id="discontinuidades-nítidas" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Discontinuidades nítidas</h1>
@@ -503,7 +582,7 @@
 <section id="discontinuidades-nítidas-1" class="slide level2">
 <h2>Discontinuidades nítidas</h2>
 <ul>
-<li><span class="math inline">\(D_a\)</span> es el estado del tratamiento</li>
+<li><span class="math inline">\(D_a\)</span> indica el estatus de tratamiento</li>
 </ul>
 <p><span class="math display">\[
 D_a =
@@ -514,13 +593,14 @@ D_a =
 \]</span></p>
 <ul>
 <li><p><span class="math inline">\(a\)</span> es conocida como <em>running variable</em>, <em>score</em>, variable de selección, variable de asignación, etc.</p></li>
+<li><p>Llamamos <em>corte</em> o <em>umbral</em> al valor <span class="math inline">\(a_0=21\)</span></p></li>
 <li><p>El tratamiento es una función determinística de <span class="math inline">\(a\)</span></p>
 <ul>
 <li>Si conocemos <span class="math inline">\(a\)</span> entonces conocemos <span class="math inline">\(D_a\)</span></li>
 </ul></li>
-<li><p>El tratamiento es discontinuo sobre <span class="math inline">\(a\)</span></p>
+<li><p>El tratamiento es discontinuo en <span class="math inline">\(a_0\)</span></p>
 <ul>
-<li>No importa qué tanto nos acercamos al corte, el estatus de tratamiento es el mismo hasta <span class="math inline">\(a\)</span></li>
+<li>No importa qué tanto nos acerquemos al corte, el estatus de tratamiento no cambia hasta cruzar <span class="math inline">\(a_0\)</span></li>
 </ul></li>
 </ul>
 </section>
@@ -532,20 +612,22 @@ D_a =
 <li><p>Usamos regresión para aislar los efectos de la regla</p></li>
 </ul>
 <p><span class="math display">\[
-\bar{M}_a=\alpha+\rho D_a + \gamma a + \epsilon_a
+\bar{M}_a=\alpha+\rho D_a + \gamma a + \varepsilon_a
 \]</span></p>
 <ul>
-<li><p><span class="math inline">\(\bar{M}_a\)</span> es la tasa de mortalidad en el mes <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(\bar{M}_a\)</span> es la tasa de mortalidad (por cada 100 mil habitantes) a la edad <span class="math inline">\(a\)</span>, medida en meses</p></li>
 <li><p><span class="math inline">\(\rho\)</span> captura el salto en la mortalidad a los 21 años</p></li>
-<li><p><span class="math inline">\(\hat{\rho}=7.66\)</span> : número de muertes adicionales a los 21 años</p></li>
+<li><p><span class="math inline">\(\hat{\rho}=7.66\)</span> son muertes adicionales por cada 100 mil habitantes a los 21 años</p></li>
 </ul>
 </section>
-<section id="diferencia-con-otros-diseños" class="slide level2">
-<h2>Diferencia con otros diseños</h2>
+<section id="diferencias-respecto-a-otros-diseños" class="slide level2">
+<h2>Diferencias respecto a otros diseños</h2>
 <ul>
-<li><p>A diferencia de los métodos de regresión o pareamiento donde controlamos por un vector <span class="math inline">\(X\)</span> y esperamos que el tratamiento sea aleatorio controlando por <span class="math inline">\(X\)</span></p></li>
-<li><p>Aquí no hay valores de <span class="math inline">\(a\)</span> para los que observemos individuos en ambos estados del tratamiento</p></li>
-<li><p>La interpretación de la RD es en la vecindad de la discontinuidad</p></li>
+<li><p>En los diseños experimentales generamos grupos estadísticamente similares en una serie de características <span class="math inline">\(X\)</span> y que difieren solo en el estatus de tratamiento</p></li>
+<li><p>En los métodos de regresión y de <em>matching</em>, controlamos por un vector <span class="math inline">\(X\)</span> y requerimos que haya soporte común, es decir, que haya individuos tratados y no tratados para cada valor de <span class="math inline">\(X\)</span></p></li>
+<li><p>En DID, para cada periodo de análisis post tratamiento, comparamos a los individuos tratados con algún grupo de comparación no tratado</p></li>
+<li><p>En los diseños con discontinuidades <em>no</em> hay valores de <span class="math inline">\(a\)</span> para los que observemos individuos en ambos estados del tratamiento</p></li>
+<li><p>De forma similar a los diseños experimentales con cumplimiento imperfecto, la interpretación de los efectos en los diseños con discontinuidades es la de un efecto local, en la vecindad de <span class="math inline">\(a_0\)</span></p></li>
 </ul>
 </section>
 <section id="no-linealidad-vs-discontinuidad" class="slide level2">
@@ -553,51 +635,55 @@ D_a =
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>Estimar el modelo de RD cuando la relación entre <span class="math inline">\(E[Y|X]\)</span> es como en el tercer panel nos llevaría a inferir un salto donde no existe</p></li>
-<li><p>Al usar RD debemos asegurarnos que estamos identificando una discontinuidad</p>
+<li><p>En los paneles A y B hay un salto en <span class="math inline">\(E[Y|a]\)</span> en el corte, con una relación lineal y no lineal, respectivamente</p></li>
+<li><p>En el panel C, <span class="math inline">\(E[Y|a]\)</span> es continua pero muy pronunciada cerca de <span class="math inline">\(a_0\)</span>, por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe</p></li>
+<li><p>Al usar un diseño con discontinuidad debemos asegurarnos de que estamos identificando una discontinuidad y no una no linealidad</p>
 <ul>
-<li><p>Modelar la no linealidad (enfoque <em>antiguo</em>)</p></li>
-<li><p>Concentrarnos solo en una ventana cercana a <span class="math inline">\(a_0\)</span> (enfoque más <em>moderno</em>)</p></li>
+<li><p>Modelar la no linealidad (enfoque <em>original</em>)</p></li>
+<li><p>Concentrarnos solo en una ventana cercana a <span class="math inline">\(a_0\)</span> con métodos no paramétricos (enfoque más <em>moderno</em>)</p></li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="discontinuity_nonlinearity.png" width="6163"></p>
+<p><img data-src="figures/no-linealidad-vs-discontinuidad-1.png" class="quarto-figure quarto-figure-center" width="652" height="670"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: elaboración propia con datos simulados, con base en la figura 6.1.1 de Angrist &amp; Pischke (2009).</p>
+</div></aside></section>
 <section id="no-linealidades" class="slide level2">
 <h2>No linealidades</h2>
 <ul>
 <li><p>Podemos usar polinomios de <span class="math inline">\(a\)</span></p></li>
 <li><p>Idealmente, las conclusiones no deberían cambiar de acuerdo al grado del polinomio usado</p></li>
-<li><p>El consejo es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados</p></li>
-<li><p>La Figura 4.2 parece tener una leve curvatura a la derecha de <span class="math inline">\(a\)</span></p></li>
+<li><p>La recomendación práctica es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados</p></li>
+<li><p>La gráfica de mortalidad por edad parece tener una leve curvatura a la derecha de <span class="math inline">\(a_0\)</span></p></li>
 <li><p>Podemos ajustar directamente un polinomio de la edad:</p></li>
 </ul>
 <p><span class="math display">\[
-\bar{M}_a=\alpha+\rho D_a + \gamma_1 a + \gamma_2 a^2 + \epsilon_a
+\bar{M}_a=\alpha+\rho D_a + \gamma_1 a + \gamma_2 a^2 + \varepsilon_a
 \]</span></p>
 </section>
 <section id="no-linealidades-1" class="slide level2">
 <h2>No linealidades</h2>
 <ul>
-<li>O podemos espcificar un coeficiente diferente para <span class="math inline">\(a\)</span> antes y después de <span class="math inline">\(a_0\)</span>:</li>
+<li>O podemos especificar una pendiente diferente para <span class="math inline">\(a\)</span> antes y después de <span class="math inline">\(a_0\)</span>:</li>
 </ul>
 <p><span class="math display">\[
-\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \delta[(a-a_0)D_a] + \epsilon_a
+\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \lambda[(a-a_0)D_a] + \varepsilon_a
 \]</span></p>
 <ul>
 <li>Notemos que en este caso el efecto del tratamiento es:</li>
 </ul>
 <p><span class="math display">\[
-\rho+\delta(a-a_0)
+\rho+\lambda(a-a_0)
 \]</span></p>
 <ul>
 <li><p>Es decir, un efecto que depende de la distancia con <span class="math inline">\(a_0\)</span></p></li>
@@ -611,16 +697,15 @@ D_a =
 </ul>
 <p><span class="math display">\[
 \begin{aligned}
-\bar{M}_a&amp;=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\delta_1[(a-a_0)D_a]+ \delta_2[(a-a_0)^2D_a] + \epsilon_a
+\bar{M}_a&amp;=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\lambda_1[(a-a_0)D_a]+ \lambda_2[(a-a_0)^2D_a] + \varepsilon_a
 \end{aligned}
 \]</span></p>
 <ul>
 <li><p>En esta especificación los términos lineal y cuadrático cambian en <span class="math inline">\(a_0\)</span></p></li>
-<li><p>Y el efecto del tratamiento en este caso es:</p></li>
 <li><p>Notemos que en este caso el efecto del tratamiento es:</p></li>
 </ul>
 <p><span class="math display">\[
-\rho+\delta_1(a-a_0)+\delta_2(a-a_0)^2
+\rho+\lambda_1(a-a_0)+\lambda_2(a-a_0)^2
 \]</span></p>
 <ul>
 <li>En los dos casos anteriores, regularmente se interpreta solo a <span class="math inline">\(\rho\)</span> como el efecto del tratamiento</li>
@@ -631,57 +716,730 @@ D_a =
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p><span class="math inline">\(\hat{\rho}=9.55\)</span></p></li>
+<li><p>Con el polinomio cuadrático interactuado, <span class="math inline">\(\hat{\rho}=9.55\)</span></p></li>
 <li><p>Modelo más elaborado con mejor ajuste</p></li>
 <li><p>Es evidente gráficamente que hay un salto a los 21 años y una caída suave después</p></li>
 <li><p>¿Qué tan robustos son los resultados?</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="alcohol_sharp_flexible.png" width="4502"></p>
+<p><img data-src="alcohol_sharp_flexible.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Carpenter &amp; Dobkin (2009).</p>
+</div></aside></section>
 <section id="efectos-estimados" class="slide level2">
 <h2>Efectos estimados</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-size: 26px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="TRUE">
+Edades 19-22
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="TRUE">
+Edades 20-21
+</div></th>
+</tr>
+<tr class="even">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable dependiente</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(1)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(2)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(3)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(4)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Todas las muertes</td>
+<td style="text-align: center;">7.66 (1.51)</td>
+<td style="text-align: center;">9.55 (1.83)</td>
+<td style="text-align: center;">9.75 (2.06)</td>
+<td style="text-align: center;">9.61 (2.29)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Accidentes de vehículos de motor</td>
+<td style="text-align: center;">4.53 (0.72)</td>
+<td style="text-align: center;">4.66 (1.09)</td>
+<td style="text-align: center;">4.76 (1.08)</td>
+<td style="text-align: center;">5.89 (1.33)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Suicidio</td>
+<td style="text-align: center;">1.79 (0.50)</td>
+<td style="text-align: center;">1.81 (0.78)</td>
+<td style="text-align: center;">1.72 (0.73)</td>
+<td style="text-align: center;">1.30 (1.14)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Homicidio</td>
+<td style="text-align: center;">0.10 (0.45)</td>
+<td style="text-align: center;">0.20 (0.50)</td>
+<td style="text-align: center;">0.16 (0.59)</td>
+<td style="text-align: center;">-0.45 (0.93)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Otras causas externas</td>
+<td style="text-align: center;">0.84 (0.42)</td>
+<td style="text-align: center;">1.80 (0.56)</td>
+<td style="text-align: center;">1.41 (0.59)</td>
+<td style="text-align: center;">1.63 (0.75)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Todas las causas internas</td>
+<td style="text-align: center;">0.39 (0.54)</td>
+<td style="text-align: center;">1.07 (0.80)</td>
+<td style="text-align: center;">1.69 (0.74)</td>
+<td style="text-align: center;">1.25 (1.01)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Causas relacionadas con el alcohol</td>
+<td style="text-align: center;">0.44 (0.21)</td>
+<td style="text-align: center;">0.80 (0.32)</td>
+<td style="text-align: center;">0.74 (0.33)</td>
+<td style="text-align: center;">1.03 (0.41)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Controles</td>
+<td style="text-align: center;">edad</td>
+<td style="text-align: center;">edad, edad², interactuadas</td>
+<td style="text-align: center;">edad</td>
+<td style="text-align: center;">edad, edad², interactuadas</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tamaño de muestra</td>
+<td style="text-align: center;">48</td>
+<td style="text-align: center;">48</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">24</td>
+</tr>
+</tbody><tfoot>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota: </span> <sup></sup> Coeficientes de un indicador de edad mayor o igual a 21 años en regresiones de la tasa de mortalidad por mes de edad, según causa. Los controles de edad se interactúan con el indicador de mayor de 21 en las columnas (2) y (4). Errores estándar entre paréntesis. Fuente: adaptado de la tabla 4.1 de Angrist &amp; Pischke (2014), con datos de Carpenter &amp; Dobkin (2009).</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tfoot>
 
-<img data-src="RDestimates.png" class="quarto-figure quarto-figure-center r-stretch" width="6758"></section>
+</table>
+</div>
+</div>
+</section>
 <section id="efectos-estimados-1" class="slide level2">
 <h2>Efectos estimados</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="alcohol_sharp_flexible_otheroutcomes.png" class="quarto-figure quarto-figure-center" style="width:57.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
-<img data-src="alcohol_sharp_flexible_otheroutcomes.png" class="quarto-figure quarto-figure-center r-stretch" width="413"></section>
-<section id="discontinuidades-nítidas-resumen" class="slide level2">
-<h2>Discontinuidades nítidas: resumen</h2>
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Carpenter &amp; Dobkin (2009).</p>
+</div></aside></section></section>
+<section>
+<section id="ejemplo-transferencias-gubernamentales-y-apoyo-político" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Ejemplo: transferencias gubernamentales y apoyo político</h1>
+
+</section>
+<section id="transferencias-gubernamentales-y-apoyo-político" class="slide level2">
+<h2>Transferencias gubernamentales y apoyo político</h2>
 <ul>
-<li>RD nítida se usa cuando el tratamiento es una función determinística de una variable <span class="math inline">\(x\)</span></li>
+<li><p>Manacorda, Miguel &amp; Vigorito (2011), “Government Transfers and Political Support”, <em>American Economic Journal: Applied Economics</em></p></li>
+<li><p>¿Los programas gubernamentales generan lealtades?</p></li>
+<li><p>Programa Nacional de Emergencia Social (PANES), focalizado con base en un índice de pobreza</p></li>
+<li><p>Existe una discontinuidad en el acceso al programa</p></li>
+</ul>
+</section>
+<section id="contexto" class="slide level2">
+<h2>Contexto</h2>
+<ul>
+<li><p>¿Qué pasó en Uruguay?</p></li>
+<li><p>Crisis económica a inicios de los 2000</p></li>
+<li><p>En abril de 2005 el Frente Amplio toma el poder</p></li>
+<li><p>Expansión del gasto público contra la pobreza (0.41% del PIB)</p></li>
+<li><p>PANES</p>
+<ul>
+<li><p>Ingreso ciudadano: alrededor de US$70 mensuales</p></li>
+<li><p>Otros componentes: alimenticio, empleo, salud, etc.</p></li>
+<li><p>Alcanzó al 10% de los hogares y 14% de la población</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="regla-de-asignación" class="slide level2">
+<h2>Regla de asignación</h2>
+<ul>
+<li><p>¿Cómo se decidió quién recibiría el PANES?</p></li>
+<li><p>Focalizado a los más pobres</p></li>
+<li><p>Modelo probit de ingreso predicho</p></li>
+<li><p>El ingreso observado puede ser un indicador muy ruidoso</p></li>
+<li><p>Se asignó el programa solo a aquellos por debajo de un umbral de ingreso predicho</p></li>
+</ul>
+</section>
+<section id="datos" class="slide level2">
+<h2>Datos</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Se recolectó información de los hogares alrededor de la discontinuidad (tratados y no tratados)</p></li>
+<li><p>Se realizaron dos rondas de seguimiento en 2006-07 y en 2008</p></li>
+<li><p>Variable de interés: apoyo político al gobierno en turno</p></li>
+<li><p>La figura muestra que la elegibilidad determina casi por completo la participación, es decir, tenemos un diseño nítido</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="PANES_implementation.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+
+<aside><div>
+<p>Fuente: Manacorda, Miguel &amp; Vigorito (2011).</p>
+</div></aside></section>
+<section id="cómo-medir-el-apoyo-político" class="slide level2">
+<h2>¿Cómo medir el apoyo político?</h2>
+<ul>
+<li><p>Construcción de un índice del 0 al 1</p></li>
+<li><p>Justo debajo del umbral, los hogares elegibles tenían un apoyo político cercano a 0.90</p></li>
+<li><p>Justo arriba del umbral, los no elegibles mostraban un apoyo de 0.77</p></li>
+<li><p>Esto implica un incremento de 13 puntos porcentuales</p></li>
+</ul>
+</section>
+<section id="evidencia-gráfica-en-2007" class="slide level2">
+<h2>Evidencia gráfica en 2007</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="PANES_effect2007.png" class="quarto-figure quarto-figure-center" style="width:53.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+
+<aside><div>
+<p>Fuente: Manacorda, Miguel &amp; Vigorito (2011).</p>
+</div></aside></section>
+<section id="resultados-de-regresión" class="slide level2">
+<h2>Resultados de regresión</h2>
+<ul>
+<li><p><span class="math inline">\(S_i\)</span> es el score (ingreso predicho) del hogar <span class="math inline">\(i\)</span> y <span class="math inline">\(E\)</span> es el umbral de elegibilidad de PANES</p></li>
+<li><p><span class="math inline">\(N_i=S_i-E\)</span> es el score normalizado; los hogares con <span class="math inline">\(N_i&lt;0\)</span> son elegibles</p></li>
+</ul>
+<p><span class="math display">\[
+y_i=\beta_0+\beta_1 \mathcal{I}(N_i&lt;0) + f_1(N_i) + \mathcal{I}(N_i&lt;0)f_2(N_i)+u_i
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(f_1\)</span> y <span class="math inline">\(f_2\)</span> son polinomios del score normalizado</p></li>
+<li><p><span class="math inline">\(\beta_1\)</span> captura el impacto del programa</p></li>
+</ul>
+</section>
+<section id="efectos-estimados-2" class="slide level2">
+<h2>Efectos estimados</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-size: 23px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide;"></th>
+<th colspan="6" data-quarto-table-cell-role="th" style="text-align: center; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="TRUE">
+Coeficiente (error estándar)
+</div></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; empty-cells: hide;"></th>
+</tr>
+<tr class="even">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable dependiente</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Media no elegibles</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(1)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(2)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(3)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(4)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(5)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">(6)</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Observaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; min-width: 14em;">Recibió PANES alguna vez, 2005-2007</td>
+<td style="text-align: center;">0.004</td>
+<td style="text-align: center;">0.993***</td>
+<td style="text-align: center;">0.987***</td>
+<td style="text-align: center;">0.995***</td>
+<td style="text-align: center;">0.993***</td>
+<td style="text-align: center;">0.988***</td>
+<td style="text-align: center;">0.998***</td>
+<td style="text-align: center;">2,232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; min-width: 14em;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">(0.002)</td>
+<td style="text-align: center;">(0.005)</td>
+<td style="text-align: center;">(0.005)</td>
+<td style="text-align: center;">(0.003)</td>
+<td style="text-align: center;">(0.005)</td>
+<td style="text-align: center;">(0.005)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; min-width: 14em;">Apoyo al gobierno, 2007 (durante el programa)</td>
+<td style="text-align: center;">0.77</td>
+<td style="text-align: center;">0.129***</td>
+<td style="text-align: center;">0.110***</td>
+<td style="text-align: center;">0.130***</td>
+<td style="text-align: center;">0.126***</td>
+<td style="text-align: center;">0.103***</td>
+<td style="text-align: center;">0.125***</td>
+<td style="text-align: center;">2,089</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; min-width: 14em;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">(0.013)</td>
+<td style="text-align: center;">(0.026)</td>
+<td style="text-align: center;">(0.040)</td>
+<td style="text-align: center;">(0.014)</td>
+<td style="text-align: center;">(0.027)</td>
+<td style="text-align: center;">(0.043)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; min-width: 14em;">Apoyo al gobierno, 2008 (después del programa)</td>
+<td style="text-align: center;">0.73</td>
+<td style="text-align: center;">0.118***</td>
+<td style="text-align: center;">0.100***</td>
+<td style="text-align: center;">0.093**</td>
+<td style="text-align: center;">0.119***</td>
+<td style="text-align: center;">0.096***</td>
+<td style="text-align: center;">0.081*</td>
+<td style="text-align: center;">1,948</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; min-width: 14em;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">(0.030)</td>
+<td style="text-align: center;">(0.043)</td>
+<td style="text-align: center;">(0.016)</td>
+<td style="text-align: center;">(0.031)</td>
+<td style="text-align: center;">(0.045)</td>
+<td style="text-align: center;">(0.045)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; min-width: 14em;">Controles del score</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">Ninguno</td>
+<td style="text-align: center;">Lineal</td>
+<td style="text-align: center;">Cuadrático</td>
+<td style="text-align: center;">Ninguno</td>
+<td style="text-align: center;">Lineal</td>
+<td style="text-align: center;">Cuadrático</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left; min-width: 14em;">Otros controles</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">Sí</td>
+<td style="text-align: center;">Sí</td>
+<td style="text-align: center;">Sí</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody><tfoot>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota: </span> <sup></sup> Efecto de la elegibilidad a PANES (score por debajo del umbral) sobre la recepción del programa y el apoyo político. Las columnas (1) a (3) incluyen un polinomio de grado 0, 1 y 2 del score normalizado, interactuado con el indicador de elegibilidad; las columnas (4) a (6) agregan características previas al tratamiento. Errores estándar agrupados por score entre paréntesis. *** p&lt;0.01, ** p&lt;0.05, * p&lt;0.1. Fuente: adaptado de la tabla 1 de Manacorda, Miguel &amp; Vigorito (2011).</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tfoot>
+
+</table>
+</div>
+</div>
+</section>
+<section id="evidencia-gráfica-en-2008" class="slide level2">
+<h2>Evidencia gráfica en 2008</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="PANES_effect2008.png" class="quarto-figure quarto-figure-center" style="width:48.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+
+<aside><div>
+<p>Fuente: Manacorda, Miguel &amp; Vigorito (2011).</p>
+</div></aside></section>
+<section id="robustez" class="slide level2">
+<h2>Robustez</h2>
+<ul>
+<li>Si el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005)</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="lightable-paper lightable-hover caption-top" style="font-size: 25px; font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable dependiente</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Media no elegibles</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Coeficiente</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Error estándar</th>
+<th style="text-align: center;" data-quarto-table-cell-role="th">Observaciones</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Log del ingreso per cápita</td>
+<td style="text-align: center;">6.34</td>
+<td style="text-align: center;">-0.062</td>
+<td style="text-align: center;">(0.059)</td>
+<td style="text-align: center;">2,150</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Años de educación promedio del hogar (16 años o más)</td>
+<td style="text-align: center;">4.05</td>
+<td style="text-align: center;">0.135</td>
+<td style="text-align: center;">(0.198)</td>
+<td style="text-align: center;">2,162</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tamaño del hogar</td>
+<td style="text-align: center;">3.03</td>
+<td style="text-align: center;">-0.350</td>
+<td style="text-align: center;">(0.242)</td>
+<td style="text-align: center;">2,232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Edad promedio del hogar</td>
+<td style="text-align: center;">31.68</td>
+<td style="text-align: center;">-1.195</td>
+<td style="text-align: center;">(2.159)</td>
+<td style="text-align: center;">2,232</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Quien responde es mujer</td>
+<td style="text-align: center;">0.70</td>
+<td style="text-align: center;">-0.025</td>
+<td style="text-align: center;">(0.057)</td>
+<td style="text-align: center;">2,231</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Años de educación de quien responde</td>
+<td style="text-align: center;">6.43</td>
+<td style="text-align: center;">0.228</td>
+<td style="text-align: center;">(0.307)</td>
+<td style="text-align: center;">2,206</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Edad de quien responde</td>
+<td style="text-align: center;">43.63</td>
+<td style="text-align: center;">-0.929</td>
+<td style="text-align: center;">(1.512)</td>
+<td style="text-align: center;">2,231</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">No respuesta sobre apoyo político (2007)</td>
+<td style="text-align: center;">0.41</td>
+<td style="text-align: center;">0.037</td>
+<td style="text-align: center;">(0.044)</td>
+<td style="text-align: center;">2,372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">No respuesta sobre apoyo político (2008)</td>
+<td style="text-align: center;">0.46</td>
+<td style="text-align: center;">0.049</td>
+<td style="text-align: center;">(0.048)</td>
+<td style="text-align: center;">2,372</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Votó en las elecciones de 2004</td>
+<td style="text-align: center;">0.92</td>
+<td style="text-align: center;">0.013</td>
+<td style="text-align: center;">(0.023)</td>
+<td style="text-align: center;">2,200</td>
+</tr>
+</tbody><tfoot>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><span style="font-style: italic;">Nota: </span> <sup></sup> Regresiones de características previas al programa en el indicador de elegibilidad, con la especificación de la columna (2) de la tabla anterior. Fuente: adaptado de la tabla 2 de Manacorda, Miguel &amp; Vigorito (2011).</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tfoot>
+
+</table>
+</div>
+</div>
+</section></section>
+<section>
+<section id="estimación-con-discontinuidades-nítidas" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Estimación con discontinuidades nítidas</h1>
+
+</section>
+<section id="discontinuidades-nítidas-2" class="slide level2">
+<h2>Discontinuidades nítidas</h2>
+<ul>
+<li><p>Generalizamos la notación del ejemplo del alcohol: <span class="math inline">\(x_i\)</span> es la variable de asignación, <span class="math inline">\(c_0\)</span> es el corte y <span class="math inline">\(y_i\)</span> es el resultado</p></li>
+<li><p>Motivamos el uso de una regresión con el siguiente modelo</p></li>
 </ul>
 <p><span class="math display">\[
 D_i =
 \begin{cases}
-1  &amp; \mbox{if } x_i \geq x_0 \\
-0  &amp; \mbox{if } x_i &lt; x_0
+1  &amp; \text{si } x_i \geq c_0 \\
+0  &amp; \text{si } x_i &lt; c_0
 \end{cases}
 \]</span></p>
 <ul>
-<li><p><span class="math inline">\(x_0\)</span> es el <em>umbral</em> o <em>corte</em></p></li>
-<li><p><span class="math inline">\(D_i\)</span> es una función determinística de <span class="math inline">\(x_i\)</span> pues una vez que conocemos <span class="math inline">\(x_i\)</span> entonces conocemos <span class="math inline">\(D_i\)</span></p></li>
-<li><p><span class="math inline">\(D_i\)</span> es una función discontinua en <span class="math inline">\(x_i\)</span> pues no importa que tanto nos acerquemos por la izquierda o por la derecha a <span class="math inline">\(x_0\)</span>, el estado del tratamiento no cambia</p></li>
+<li>Si asumimos efectos de tratamiento constantes</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+y_i^0&amp;=\alpha + \beta x_i + \varepsilon_i \\
+y_i^1&amp;= y_i^0 + \delta
+\end{aligned}
+\]</span></p>
+</section>
+<section id="discontinuidades-nítidas-3" class="slide level2">
+<h2>Discontinuidades nítidas</h2>
+<ul>
+<li>Con nuestro modelo de resultados potenciales</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+y_i &amp;= y_i^0 + (y_i^1 - y_i^0)D_i \\
+&amp;= \alpha + \beta x_i + \varepsilon_i + (\alpha + \beta x_i + \varepsilon_i + \delta - \alpha - \beta x_i - \varepsilon_i)D_i \\
+&amp;= \alpha + \beta x_i + \delta D_i + \varepsilon_i
+\end{align*}
+\]</span></p>
+<ul>
+<li>Como solo usamos la información en la vecindad del corte de elegibilidad, definimos el efecto del tratamiento en el corte como</li>
+</ul>
+<p><span class="math display">\[
+\delta^{RD,N} = E(y_i^1 - y_i^0 | x_i=c_0)
+\]</span></p>
+<ul>
+<li>Bajo el supuesto de continuidad, que formalizamos más adelante, este efecto se identifica con los límites laterales de lo que sí observamos</li>
+</ul>
+<p><span class="math display">\[
+\delta^{RD,N} = \lim_{x\downarrow c_0} E(y_i|x_i = x) - \lim_{x\uparrow c_0} E(y_i|x_i = x)
+\]</span></p>
+</section>
+<section id="discontinuidades-nítidas-4" class="slide level2">
+<h2>Discontinuidades nítidas</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>El efecto estimado es un <em>efecto local</em>, en el sentido de que nuestras conclusiones son válidas solo en la vecindad alrededor de <span class="math inline">\(c_0\)</span></p></li>
+<li><p>A diferencia de otros diseños, aquí no hay traslape</p></li>
+<li><p>Recurrimos a la <em>extrapolación</em></p></li>
+<li><p>Las líneas discontinuas son los resultados potenciales que no observamos, pero extrapolamos usando los puntos que sí observamos</p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/extrapolacion-nitida-1.png" class="quarto-figure quarto-figure-center" width="652" height="670"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+
+<aside><div>
+<p>Fuente: elaboración propia con datos simulados.</p>
+</div></aside></section>
+<section id="supuestos-de-identificación" class="slide level2">
+<h2>Supuestos de identificación</h2>
+<p><strong>Supuesto 1. Continuidad</strong>: <span class="math inline">\(E(y_i^0|x_i)\)</span> y <span class="math inline">\(E(y_i^1|x_i)\)</span> son funciones suaves y continuas de <span class="math inline">\(x_i\)</span> en el corte <span class="math inline">\(c_0\)</span></p>
+<ul>
+<li><p>Los resultados potenciales <em>no saltan</em> en el corte</p></li>
+<li><p>El único salto en <span class="math inline">\(E(y_i|x_i)\)</span> se debe al tratamiento</p></li>
+<li><p>Esto implica que no debe haber otras intervenciones o variables omitidas que salten en <span class="math inline">\(c_0\)</span></p></li>
+<li><p>En el ejemplo del acceso al alcohol, debemos descartar que haya otros factores (como enfermedades) que se disparen a los 21 años</p></li>
+</ul>
+<p><strong>Supuesto 2. SUTVA</strong></p>
+</section>
+<section id="estimación-paramétrica" class="slide level2">
+<h2>Estimación paramétrica</h2>
+<ul>
+<li><p>Se acostumbra construir la versión <em>centrada</em> de la variable de asignación: <span class="math inline">\(\tilde{x}_i=x_i-c_0\)</span></p></li>
+<li><p>Para permitir no linealidades en <span class="math inline">\(x_i\)</span>, podríamos especificar polinomios de alto grado</p></li>
+<li><p>Esta es una mala idea, como lo muestran Gelman &amp; Imbens (2019), <em>“Why High-Order Polynomials Should Not Be Used in Regression Discontinuity Designs”</em></p></li>
 </ul>
 </section>
-<section id="discontinuidades-nítidas-resumen-1" class="slide level2">
-<h2>Discontinuidades nítidas: resumen</h2>
+<section id="estimación-paramétrica-1" class="slide level2">
+<h2>Estimación paramétrica</h2>
 <ul>
-<li><p>A diferencia de los modelos de regresión o de pareamiento, no hay valor de <span class="math inline">\(x_i\)</span> en el que observemos a individuos tratados y no tratados</p></li>
-<li><p>La interpretación del efecto estimado por RD es un efecto local en la vecindad de <span class="math inline">\(x_0\)</span>, donde podemos tener confianza que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a <span class="math inline">\(x_0\)</span></p></li>
-<li><p>Una especificación flexible permite no confundir una discontinuidad con una no linealidad</p></li>
-<li><p>En la práctica, el polinomio de <span class="math inline">\(x_i\)</span> puede ser tan complejo como se desee pero se espera que los resultados no sean muy sensibles a especificaciones de este</p></li>
-<li><p>El método no paramétrico consiste en la estimación de <span class="math inline">\(\rho\)</span> en vecindades cada vez más pequeñas alrededor de <span class="math inline">\(x_0\)</span></p></li>
+<li>A partir del modelo para <span class="math inline">\(y_i\)</span>, donde <span class="math inline">\(\alpha\)</span> es la ordenada sin centrar:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align}
+y_i&amp;=\alpha + \beta x_i + \delta D_i + \varepsilon_i \\
+&amp; = \alpha + \beta c_0 + \beta (x_i - c_0) + \delta D_i + \varepsilon_i \\
+&amp; = \alpha^* + \beta \tilde{x}_i + \delta D_i + \varepsilon_i
+\end{align}
+\]</span> con <span class="math inline">\(\alpha^*=\alpha+\beta c_0\)</span>, la ordenada en el corte</p>
+<ul>
+<li><p>Recentrar solo cambia la ordenada al origen mientras que <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\delta\)</span> no cambian</p></li>
+<li><p>En adelante, para simplificar, escribimos <span class="math inline">\(\alpha\)</span> para la ordenada en el corte</p></li>
+</ul>
+</section>
+<section id="estimación-paramétrica-2" class="slide level2">
+<h2>Estimación paramétrica</h2>
+<ul>
+<li>Permitimos pendientes distintas antes y después de <span class="math inline">\(c_0\)</span></li>
+</ul>
+<p><span class="math display">\[
+\begin{align}
+E(y_i^0|x_i)&amp;=\alpha + \beta_{01} \tilde{x}_i \\
+E(y_i^1|x_i)&amp;=\alpha + \delta + \beta_{11} \tilde{x}_i
+\end{align}
+\]</span></p>
+<p>con <span class="math inline">\(\alpha=E(y_i^0|x_i=c_0)\)</span></p>
+<ul>
+<li>Usando la ecuación de resultados potenciales</li>
+</ul>
+<p><span class="math display">\[
+\begin{align}
+E(y_i|x_i)=\alpha + \beta_{01} \tilde{x}_i + (\alpha + \delta + \beta_{11} \tilde{x}_i-\alpha - \beta_{01} \tilde{x}_i) D_i
+\end{align}
+\]</span></p>
+<ul>
+<li>Dando lugar a la regresión</li>
+</ul>
+<p><span class="math display">\[
+y_i = \alpha +  \beta_{01} \tilde{x}_i + \delta D_i + \beta_1^*\tilde{x}_i D_i+ \varepsilon_i
+\]</span> donde <span class="math inline">\(\beta_1^*=\beta_{11}-\beta_{01}\)</span></p>
+</section>
+<section id="estimación-paramétrica-3" class="slide level2">
+<h2>Estimación paramétrica</h2>
+<ul>
+<li><p>Esto es, una regresión de <span class="math inline">\(y_i\)</span> en <span class="math inline">\(D_i\)</span>, <span class="math inline">\(\tilde{x}_i\)</span> y la interacción <span class="math inline">\(\tilde{x}_i D_i\)</span></p></li>
+<li><p>Interpretamos <span class="math inline">\(\delta\)</span> como el salto en la función o el efecto causal</p></li>
+<li><p>Con un polinomio de segundo orden tendríamos</p></li>
+</ul>
+<p><span class="math display">\[
+y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i^2 + \delta D_i + \beta_1^*\tilde{x}_i D_i+ \beta_2^*\tilde{x}_i^2 D_i+ \varepsilon_i
+\]</span> donde <span class="math inline">\(\beta_{02}\)</span> y <span class="math inline">\(\beta_{12}\)</span> son los coeficientes del término cuadrático antes y después de <span class="math inline">\(c_0\)</span>, y <span class="math inline">\(\beta_2^*=\beta_{12}-\beta_{02}\)</span></p>
+</section>
+<section id="estimación-no-paramétrica" class="slide level2">
+<h2>Estimación no paramétrica</h2>
+<ul>
+<li><p>Muchos autores cuestionan la estimación paramétrica que hemos tratado hasta ahora pues el sesgo puede ser sustancial</p></li>
+<li><p>En muchas aplicaciones se prefiere usar una regresión lineal local (no paramétrica)</p></li>
+<li><p>Es una regresión restringida a una <em>ventana</em> alrededor del corte, con pesos que dependen de la distancia de cada observación a <span class="math inline">\(c_0\)</span></p></li>
+<li><p>Consiste en estimar</p></li>
+</ul>
+<p><span class="math display">\[\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_i-c_0}{h}\right)1(x_i\geq c_0)\]</span></p>
+<ul>
+<li><p>Y lo mismo para <span class="math inline">\(x_i&lt;c_0\)</span>, de donde obtenemos <span class="math inline">\(\hat{a}_{-}\)</span>, para estimar <span class="math inline">\(\hat{\delta}=\hat{a}_{+}-\hat{a}_{-}\)</span></p></li>
+<li><p>El parámetro <span class="math inline">\(h\)</span> indica el <em>ancho de banda</em>, que podemos escoger con criterios como minimizar el error cuadrático medio o validación cruzada</p></li>
+</ul>
+</section>
+<section id="estimación-no-paramétrica-1" class="slide level2">
+<h2>Estimación no paramétrica</h2>
+<ul>
+<li><p>En general, la regresión local se estima en cada valor <span class="math inline">\(x\)</span>, pero en el diseño discontinuo solo nos interesa la predicción en <span class="math inline">\(c_0\)</span> por cada lado</p></li>
+<li><p>Los pesos vienen de una función kernel <span class="math inline">\(K(u)\)</span>, con <span class="math inline">\(u=(x_i-c_0)/h\)</span></p></li>
+<li><p>Todos los kernels, salvo el gaussiano, dan peso cero fuera de <span class="math inline">\(|u|\leq 1\)</span></p></li>
+<li><p>En la práctica, <code>rdrobust</code> elige el <span class="math inline">\(h\)</span> óptimo y estima la regresión local, con kernel triangular por defecto</p></li>
+</ul>
+</section>
+<section id="kernels-en-r" class="slide level2 codigo-figura">
+<h2>Kernels en R</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-label="1"></a>u <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="at">length.out =</span> <span class="dv">601</span>)</span>
+<span id="cb1-2"><a aria-label="2"></a>dentro <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">abs</span>(u) <span class="sc">&lt;=</span> <span class="dv">1</span>)</span>
+<span id="cb1-3"><a aria-label="3"></a></span>
+<span id="cb1-4"><a aria-label="4"></a>kernels <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-5"><a aria-label="5"></a>  <span class="at">u =</span> u,</span>
+<span id="cb1-6"><a aria-label="6"></a>  <span class="at">Uniforme =</span> <span class="fl">0.5</span> <span class="sc">*</span> dentro,</span>
+<span id="cb1-7"><a aria-label="7"></a>  <span class="at">Triangular =</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">abs</span>(u)) <span class="sc">*</span> dentro,</span>
+<span id="cb1-8"><a aria-label="8"></a>  <span class="at">Epanechnikov =</span> <span class="fl">0.75</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> u<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> dentro,</span>
+<span id="cb1-9"><a aria-label="9"></a>  <span class="at">Gaussiano =</span> <span class="fu">dnorm</span>(u)) <span class="sc">|&gt;</span></span>
+<span id="cb1-10"><a aria-label="10"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>u, <span class="at">names_to =</span> <span class="st">"kernel"</span>, <span class="at">values_to =</span> <span class="st">"K"</span>)</span>
+<span id="cb1-11"><a aria-label="11"></a></span>
+<span id="cb1-12"><a aria-label="12"></a>kernels <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a aria-label="13"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(u, K, <span class="at">color =</span> kernel)) <span class="sc">+</span></span>
+<span id="cb1-14"><a aria-label="14"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb1-15"><a aria-label="15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">expression</span>(u <span class="sc">==</span> (x[i] <span class="sc">-</span> c[<span class="dv">0</span>]) <span class="sc">/</span> h),</span>
+<span id="cb1-16"><a aria-label="16"></a>       <span class="at">y =</span> <span class="st">"K(u)"</span>, <span class="at">color =</span> <span class="st">"Kernel"</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a aria-label="17"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-18"><a aria-label="18"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="figures/kernels-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div></div>
+
+<aside><div>
+<p>Fuente: elaboración propia.</p>
+</div></aside></section>
+<section id="últimos-consejos" class="slide level2">
+<h2>Últimos consejos</h2>
+<ul>
+<li><p>Hacer estudios placebo cuando sea posible: probar la especificación principal en variables que no deberían verse afectadas por el tratamiento</p></li>
+<li><p>Mostrar que no haya una discontinuidad en la densidad de la variable de asignación en el corte, lo que sugeriría manipulación</p>
+<ul>
+<li>La prueba de densidad (McCrary, 2008) contrasta si la densidad de <span class="math inline">\(x_i\)</span> salta en <span class="math inline">\(c_0\)</span> (el paquete <code>rddensity</code> implementa la versión más reciente)</li>
+</ul></li>
+<li><p>Verificar que otras covariables sean continuas alrededor del corte</p></li>
 </ul>
 </section></section>
 <section>
@@ -689,8 +1447,8 @@ D_i =
 <h1>Discontinuidades difusas</h1>
 
 </section>
-<section id="la-ilusión-de-la-élite" class="slide level2">
-<h2>La ilusión de la élite</h2>
+<section id="motivación-la-ilusión-de-la-élite" class="slide level2">
+<h2>Motivación: la ilusión de la élite</h2>
 <ul>
 <li><p>Escuelas de élite, <em>exam schools</em>, altamente competitivas en Nueva York y Boston</p></li>
 <li><p>Bajas tasas de admisión</p></li>
@@ -719,7 +1477,10 @@ D_i =
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
+</div></aside></section>
 <section id="la-regla-de-asignación-1" class="slide level2">
 <h2>La regla de asignación</h2>
 <div class="columns">
@@ -738,7 +1499,10 @@ D_i =
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
+</div></aside></section>
 <section id="la-regla-de-asignación-2" class="slide level2">
 <h2>La regla de asignación</h2>
 <div class="columns">
@@ -760,7 +1524,10 @@ D_i =
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
+</div></aside></section>
 <section id="modelo-de-efectos-de-pares" class="slide level2">
 <h2>Modelo de efectos de pares</h2>
 <ul>
@@ -819,7 +1586,10 @@ D_i =
 </div>
 </div>
 </div></div>
-</section>
+
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
+</div></aside></section>
 <section id="modelo-de-vi" class="slide level2">
 <h2>Modelo de VI</h2>
 <ul>
@@ -837,8 +1607,19 @@ D_i =
 </section>
 <section id="modelo-de-vi-1" class="slide level2">
 <h2>Modelo de VI</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/RDfuzzy_enrollment_peers.png" class="quarto-figure quarto-figure-center" style="width:52.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 
-<img data-src="figures/RDfuzzy_enrollment_peers.png" class="quarto-figure quarto-figure-center r-stretch" width="372"></section>
+<aside><div>
+<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
+</div></aside></section>
 <section id="la-ilusión" class="slide level2">
 <h2>La ilusión</h2>
 <ul>
@@ -847,310 +1628,11 @@ D_i =
 <li><p>Posiblemente los egresados de estas escuelas tengan mayores ingresos</p></li>
 <li><p>Las ganancias que se puedan obtener no son vía el efecto de pares o un mejor rendimiento cognitivo</p></li>
 </ul>
-</section>
-<section id="rd-difusa-resumen" class="slide level2">
-<h2>RD difusa: resumen</h2>
-<ul>
-<li><p>RD difusa explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable</p></li>
-<li><p>El resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga</p></li>
-</ul>
-<p><span class="math display">\[
-P(D_i =1|x_i)=
-\begin{cases}
-g_1(x_i)  &amp; \mbox{if } x_i \geq x_0 \\
-g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
-\end{cases}
-\]</span></p>
-<ul>
-<li><p>Las funciones <span class="math inline">\(g_0\)</span> u <span class="math inline">\(g_1\)</span> difieren en <span class="math inline">\(x_0\)</span></p></li>
-<li><p>Supongamos que <span class="math inline">\(g_1(x_0)&gt;g_0(x_0)\)</span>, es decir, <span class="math inline">\(x_i\geq x_0\)</span> hace el tratamiento más probable</p></li>
-</ul>
-</section>
-<section id="rd-difusa-resumen-1" class="slide level2">
-<h2>RD difusa: resumen</h2>
-<ul>
-<li>La relación entre el estado de tratamiento y <span class="math inline">\(x_i\)</span> puede ser escrita como:</li>
-</ul>
-<p><span class="math display">\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\]</span></p>
-<p>con <span class="math inline">\(T_i=\mathcal{I}(x_i\geq x_0)\)</span></p>
-<ul>
-<li>Escribiendo las funciones <span class="math inline">\(g_0\)</span> y <span class="math inline">\(g_1\)</span> como polinomios flexibles de <span class="math inline">\(x_i\)</span></li>
-</ul>
-<p><span class="math display">\[E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i+\ldots+\gamma_{0p}x_i^p +\pi T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i\]</span></p>
-</section>
-<section id="rd-difusa-resumen-2" class="slide level2">
-<h2>RD difusa: resumen</h2>
-<ul>
-<li><p>En la primera etapa podríamos usar <span class="math inline">\(\{x_iTi, x_i^2 T_i,...,x_i^p T_i\}\)</span> como instrumentos para <span class="math inline">\(D_i\)</span></p></li>
-<li><p>Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones</p></li>
-<li><p>La versión más simple solo usa <span class="math inline">\(T_i\)</span> como instrumento</p></li>
-<li><p>La primera etapa será</p></li>
-</ul>
-<p><span class="math display">\[D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}\]</span></p>
-<ul>
-<li>La forma reducida o ITT de este modelo es:</li>
-</ul>
-<p><span class="math display">\[y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}\]</span> - Mientras que la ecuación estructural</p>
-<p><span class="math display">\[y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + u_{i}\]</span> se estima por MC2E usando <span class="math inline">\(T_i\)</span> como instrumento de <span class="math inline">\(D_i\)</span></p>
 </section></section>
 <section>
-<section id="ejemplo-transferencias-gubernamentales-y-apoyo-político" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1>Ejemplo: Transferencias gubernamentales y apoyo político</h1>
+<section id="estimación-con-discontinuidades-difusas" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Estimación con discontinuidades difusas</h1>
 
-</section>
-<section id="transferencias-gubernamentales-y-apoyo-político" class="slide level2">
-<h2>Transferencias gubernamentales y apoyo político</h2>
-<ul>
-<li><p>Manacorda, M., E. Miguel y A. Vigorito (2011), Government Transfers and Political Support</p></li>
-<li><p>¿Los programas gubernamentales generan lealtades?</p></li>
-<li><p>Programa Nacional de Emergencia Social (PANES) basado en un índice de pobreza</p></li>
-<li><p>Existe una discontinudad en el acceso al programa</p></li>
-</ul>
-</section>
-<section id="contexto" class="slide level2">
-<h2>Contexto</h2>
-<ul>
-<li><p>¿Qué pasó en Uruguay?</p></li>
-<li><p>Crisis económica a inicios de los 2000</p></li>
-<li><p>En abril de 2005 el Frente Amplio toma el poder</p></li>
-<li><p>Expansión del gasto público contra la pobreza (0.41% del PIB)</p></li>
-<li><p>PANES</p>
-<ul>
-<li><p>Ingreso ciudadano: US$70</p></li>
-<li><p>Otros componentes: alimenticio, empleo, salud, etc.</p></li>
-<li><p>Alcanzó al 10% de los hogares y 14% de la población</p></li>
-</ul></li>
-</ul>
-</section>
-<section id="regla-de-asignación" class="slide level2">
-<h2>Regla de asignación</h2>
-<ul>
-<li><p>¿Cómo se decidió quién recibiría el PANES?</p></li>
-<li><p>Focalizado a los más pobres</p></li>
-<li><p>Modelo probit de ingreso ajustado</p></li>
-<li><p>El ingreso observado puede ser un indicador muy ruidoso</p></li>
-<li><p>Se asignó el programa solo a aquellos por debajo de un umbral de ingreso ajustado</p></li>
-</ul>
-</section>
-<section id="datos" class="slide level2">
-<h2>Datos</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li><p>Se recolectó información de los hogares alrededor de la discontinuidad (tratados y no tratados)</p></li>
-<li><p>Se realizaron dos rondas de seguimiento en 2006-07 y en 2008</p></li>
-<li><p>Variable de interés: apoyo político al gobierno en turno</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="PANES_implementation.png" class="quarto-figure quarto-figure-center" width="8589"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="cómo-medir-el-apoyo-político" class="slide level2">
-<h2>¿Cómo medir el apoyo político?</h2>
-<ul>
-<li><p>Construcción de un índice del 0 al 1</p></li>
-<li><p>Los hogares que reciben PANES tenían un apoyo político cercano a 0.90</p></li>
-<li><p>Los no elegibles mostraban un apoyo de 0.77</p></li>
-<li><p>Esto implica un incremento de 13 puntos porcentuales</p></li>
-</ul>
-</section>
-<section id="evidencia-gráfica" class="slide level2">
-<h2>Evidencia gráfica</h2>
-
-<img data-src="PANES_effect2007.png" class="quarto-figure quarto-figure-center r-stretch" width="638"></section>
-<section id="resultados-de-regresión" class="slide level2">
-<h2>Resultados de regresión</h2>
-<ul>
-<li><p><span class="math inline">\(E\)</span> es el umbral de elegibilidad de PANES</p></li>
-<li><p><span class="math inline">\(N_i=S_i-E\)</span> es el score normalizado</p></li>
-</ul>
-<p><span class="math display">\[
-y_i=\beta_0+\beta_1 \mathcal{I}(N_i&lt;0) + f_1(N_i) + \mathcal{I}f_2(N_i)+u_i
-\]</span></p>
-<ul>
-<li><span class="math inline">\(\beta_1\)</span> captura el impacto del programa</li>
-</ul>
-</section>
-<section id="efectos-estimados-2" class="slide level2">
-<h2>Efectos estimados</h2>
-
-<img data-src="PANES_regressionresults.png" class="quarto-figure quarto-figure-center r-stretch" width="839"></section>
-<section id="evidencia-gráfica-en-2008" class="slide level2">
-<h2>Evidencia gráfica en 2008</h2>
-
-<img data-src="PANES_effect2008.png" class="quarto-figure quarto-figure-center r-stretch" width="596"></section>
-<section id="robustez" class="slide level2">
-<h2>Robustez</h2>
-
-<img data-src="PANES_validation.png" class="quarto-figure quarto-figure-center r-stretch" width="730"></section></section>
-<section>
-<section id="estimación" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1>Estimación</h1>
-
-</section>
-<section id="discontinuidades-nítidas-2" class="slide level2">
-<h2>Discontinuidades nítidas</h2>
-<ul>
-<li>Motivamos el uso de una regresión con el siguiente modelo</li>
-</ul>
-<p><span class="math display">\[
-D_i =
-\begin{cases}
-1  &amp; \mbox{si } x_i \geq c_0 \\
-0  &amp; \mbox{si } x_i &lt; c_0
-\end{cases}
-\]</span></p>
-<ul>
-<li>Si asumimos efectos de tratamiento constantes</li>
-</ul>
-<p><span class="math display">\[
-y_i^0=\alpha + \beta x_i \\
-y_i^1= y_i^0 + \delta
-\]</span></p>
-</section>
-<section id="discontinuidades-nítidas-3" class="slide level2">
-<h2>Discontinuidades nítidas</h2>
-<ul>
-<li>Con nuestro modelo de resultados contrafactuales</li>
-</ul>
-<p><span class="math display">\[
-\begin{align}
-y_i &amp;= y_i^0 + (y_i^1 - y_i^0)D_i \\
-y_i &amp;= \alpha + \beta x_i + (\alpha + \beta x_i + \delta - \alpha - \beta x_i)D_i \\
-y_i &amp;= \alpha + \beta x_i + \delta D_i + \varepsilon_i
-\end{align}
-\]</span></p>
-<ul>
-<li>Formalmente, el efecto del tratamiento es</li>
-</ul>
-<p><span class="math display">\[
-\delta = \lim_{x_i\to c_o} E(y_i^1|x_i = c_0) - \lim_{x_i\leftarrow c_o} E(y_i^0|x_i = c_0)
-\]</span> - Pero como solo usamos la información en la vecindad del corte de elegibilidad, podemos definir el efecto como</p>
-<p><span class="math display">\[
-\delta^{RD,N} = E(y_i^1 - y_i^0 | x_i=c_0)
-\]</span></p>
-</section>
-<section id="discontinuidades-nítidas-4" class="slide level2">
-<h2>Discontinuidades nítidas</h2>
-<ul>
-<li><p>El efecto estimado es un <em>efecto local</em> en sentido de que nuestras conclusiones son válidas solo en la vecindad alrededor de <span class="math inline">\(c_0\)</span></p></li>
-<li><p>A diferencia de otros diseños, aquí no hay traslape</p></li>
-<li><p>Recurrimos a la extrapolación</p></li>
-</ul>
-
-<img data-src="figures/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
-<section id="supuesto-de-identificación" class="slide level2">
-<h2>Supuesto de identificación</h2>
-<p><strong>Continuidad</strong></p>
-<p><span class="math inline">\(E(y_i^0)\)</span> y <span class="math inline">\(E(y_i^1)\)</span> son funciones suaves y continuas de <span class="math inline">\(x_i\)</span> en el corte <span class="math inline">\(c_0\)</span></p>
-<ul>
-<li><p>En ausencia del tratamiento, los resultados potenciales <em>no saltan</em></p></li>
-<li><p>Esto implica que no debe haber otras interacciones o variables imitidas que salten en <span class="math inline">\(c_0\)</span></p></li>
-<li><p>En el ejemplo del acceso a alcohol, debemos descartar que no hay otros factores (como enfermedades) que se disparen a los 21 años</p></li>
-</ul>
-</section>
-<section id="estimación-1" class="slide level2">
-<h2>Estimación</h2>
-<ul>
-<li><p>Se acostumbra construir la versión <em>centrada</em> de la variable de asignación: <span class="math inline">\(x_i-c_0\)</span></p></li>
-<li><p>Para permitir no linealidades en <span class="math inline">\(x_i\)</span>, podríamos pensar que podemos especificar polinomios de alto grado</p></li>
-<li><p>Esta es una mala idea, como lo muestran Andew &amp; Imbens (20219), “Why Higher-Order Polynomial Shpuld Not Be Used in Regression Discontinuity Designs”</p></li>
-</ul>
-</section>
-<section id="estimación-2" class="slide level2">
-<h2>Estimación</h2>
-<ul>
-<li>Cuando recentramos:</li>
-</ul>
-<p><span class="math display">\[
-\begin{align}
-y_i^*&amp;=\alpha + \beta (x_i-c_0) + \delta D_i + \varepsilon_i \\
-&amp; = \alpha + \beta x_i - \beta c_0 + \delta D_i + \varepsilon_i \\
-&amp; = \alpha^* + \beta x_i + \delta D_i + \varepsilon_i
-\end{align}
-\]</span> con <span class="math inline">\(\alpha^*=\alpha-\beta c_0\)</span></p>
-<ul>
-<li>Es decir, solo se modifica la ordenada al origen en la regresión</li>
-</ul>
-</section>
-<section id="estimación-3" class="slide level2">
-<h2>Estimación</h2>
-<ul>
-<li>Permitimos pendientes distintas antes y despues de <span class="math inline">\(c_0\)</span></li>
-</ul>
-<p><span class="math display">\[
-\begin{align}
-E(y_i^0|x_i)&amp;=\alpha + \beta_{01} \tilde{x}_i \\
-E(y_i^1|x_i)&amp;=\alpha + \delta + \beta_{11} \tilde{x}_i
-\end{align}
-\]</span></p>
-<ul>
-<li>Usando la ecuación de resultados potenciales</li>
-</ul>
-<p><span class="math display">\[
-\begin{align}
-E(y_i|x_i)=\alpha + \beta_{01} \tilde{x}_i + (\alpha + \delta + \beta_{11} \tilde{x}_i-\alpha - \beta_{01} \tilde{x}_i) D_i
-\end{align}
-\]</span></p>
-<ul>
-<li>Dando lugar a la regresión</li>
-</ul>
-<p><span class="math display">\[
-y_i = \alpha +  \beta_{01} \tilde{x}_i + \delta D_i + \beta_1^*\tilde{x}_i D_i+ \varepsilon_i
-\]</span> donde <span class="math inline">\(\beta_1^*=\beta_{11}-\beta_{01}\)</span></p>
-<ul>
-<li><p>Esto es, una regresión de <span class="math inline">\(y_i\)</span> en <span class="math inline">\(D_i\)</span>, <span class="math inline">\(\tilde{x}_i\)</span> y la interacción <span class="math inline">\(\tilde{x}_i D_i\)</span></p></li>
-<li><p>Interpretamos <span class="math inline">\(\delta\)</span> como el salto en la función o el efecto causal</p></li>
-<li><p>Con un polinomio de segundo orden tendríamos</p></li>
-</ul>
-<p><span class="math display">\[
-y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i + \delta D_i + \beta_1^*\tilde{x}_i D_i+ \beta_2^*\tilde{x}_i^2 D_i+ \varepsilon_i
-\]</span></p>
-</section>
-<section id="estimación-no-paramétrica" class="slide level2">
-<h2>Estimación no paramétrica</h2>
-<ul>
-<li><p>Muchos autores cuestionan la estimación paramétrica que hemos tratado hasta ahora pues el sesgo puede ser sustancial</p></li>
-<li><p>En muchas aplicaciones se prefiere usar una regresión lineal no paramétrica</p></li>
-<li><p>Es una regresión restringida a una <em>ventana</em>, con pesos para cada valor de <span class="math inline">\(E(y|x)\)</span></p></li>
-<li><p>Consiste en estimar</p></li>
-</ul>
-<p><span class="math display">\[\hat{a}, \hat{b} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_-c_0}{h}\right)1(x_i\geq 0)\]</span></p>
-<ul>
-<li><p>Y lo mismo para <span class="math inline">\(x_i&lt;c_0\)</span></p></li>
-<li><p>El parámetro <span class="math inline">\(h\)</span> indica el <em>ancho de banda</em>, escogido mediante técnicas de optimización</p></li>
-<li><p>Consiste en estimar una regresión centrada en cada valor de <span class="math inline">\(x_i\)</span> para obtener una predicción de <span class="math inline">\(E(y_i| X_i=x_i)\)</span></p></li>
-</ul>
-</section>
-<section id="estimación-no-paramétrica-1" class="slide level2">
-<h2>Estimación no paramétrica</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li><p>Usamos observaciones a la izquierda y a la derecha de <span class="math inline">\(x_i\)</span></p></li>
-<li><p>Se les otorga un peso de acuerdo con la función <span class="math inline">\(K(\cdot)\)</span></p></li>
-<li><p>Son métodos computacionalmente intensivos</p></li>
-<li><p>En la práctica, el paquete <em>rdrobust</em> elige el <span class="math inline">\(h\)</span> óptimo, estima la regresión local (con un kernel triangular por default) y un polinomio del orden especificado</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Kernels.svg/1920px-Kernels.svg.png" class="quarto-figure quarto-figure-center"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
 </section>
 <section id="discontinuidades-difusas-1" class="slide level2">
 <h2>Discontinuidades difusas</h2>
@@ -1207,14 +1689,84 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \delta T_i + u_i
 <p><span class="math display">\[
 y_i = \pi_0 + \pi_1 x_i + \pi_2 x_i^2 + \lambda D_i + \nu_i
 \]</span> - En términos de código, hacemos lo mismo que en los diseños nítidos</p>
+</section></section>
+<section>
+<section id="resumen" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Resumen</h1>
+
 </section>
-<section id="últimos-consejos" class="slide level2">
-<h2>Últimos consejos</h2>
+<section id="discontinuidades-nítidas-resumen" class="slide level2">
+<h2>Discontinuidades nítidas: resumen</h2>
 <ul>
-<li><p>Hacer estudios placebo cuando sea posible: probar la especificación principal en variables que no deberían verse afectadas por el tratamiento</p></li>
-<li><p>Mostrar que no haya discontinuidades alrededor del corte</p></li>
-<li><p>Verificar que otras covariables sean continuas alrededor del corte</p></li>
+<li>RD nítida se usa cuando el tratamiento es una función determinística de una variable <span class="math inline">\(x\)</span></li>
 </ul>
+<p><span class="math display">\[
+D_i =
+\begin{cases}
+1  &amp; \mbox{if } x_i \geq x_0 \\
+0  &amp; \mbox{if } x_i &lt; x_0
+\end{cases}
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(x_0\)</span> es el <em>umbral</em> o <em>corte</em></p></li>
+<li><p><span class="math inline">\(D_i\)</span> es una función determinística de <span class="math inline">\(x_i\)</span> pues una vez que conocemos <span class="math inline">\(x_i\)</span> entonces conocemos <span class="math inline">\(D_i\)</span></p></li>
+<li><p><span class="math inline">\(D_i\)</span> es una función discontinua en <span class="math inline">\(x_i\)</span> pues no importa que tanto nos acerquemos por la izquierda o por la derecha a <span class="math inline">\(x_0\)</span>, el estado del tratamiento no cambia</p></li>
+</ul>
+</section>
+<section id="discontinuidades-nítidas-resumen-1" class="slide level2">
+<h2>Discontinuidades nítidas: resumen</h2>
+<ul>
+<li><p>A diferencia de los modelos de otros diseños, no hay valor de <span class="math inline">\(x_i\)</span> en el que observemos a individuos tratados y no tratados</p></li>
+<li><p>La interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de <span class="math inline">\(x_0\)</span>, donde podemos tener confianza que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a <span class="math inline">\(x_0\)</span></p></li>
+<li><p>Una especificación flexible permite no confundir una discontinuidad con una no linealidad</p></li>
+<li><p>En la práctica, suele variarse el orden del polinomio de <span class="math inline">\(x_i\)</span> hasta de orden 2 o 3 y se espera que los resultados no sean muy sensibles a especificaciones de este</p></li>
+<li><p>El método no paramétrico consiste en la estimación de <span class="math inline">\(\rho\)</span> en una vecindad de <span class="math inline">\(x_0\)</span> usando métodos locales no paramétricos</p></li>
+</ul>
+</section>
+<section id="rd-difusa-resumen" class="slide level2">
+<h2>RD difusa: resumen</h2>
+<ul>
+<li><p>RD difusa explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable</p></li>
+<li><p>El resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga</p></li>
+</ul>
+<p><span class="math display">\[
+P(D_i =1|x_i)=
+\begin{cases}
+g_1(x_i)  &amp; \mbox{if } x_i \geq x_0 \\
+g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
+\end{cases}
+\]</span></p>
+<ul>
+<li><p>Las funciones <span class="math inline">\(g_0\)</span> u <span class="math inline">\(g_1\)</span> difieren en <span class="math inline">\(x_0\)</span></p></li>
+<li><p>Supongamos que <span class="math inline">\(g_1(x_0)&gt;g_0(x_0)\)</span>, es decir, <span class="math inline">\(x_i\geq x_0\)</span> hace el tratamiento más probable</p></li>
+</ul>
+</section>
+<section id="rd-difusa-resumen-1" class="slide level2">
+<h2>RD difusa: resumen</h2>
+<ul>
+<li>La relación entre el estado de tratamiento y <span class="math inline">\(x_i\)</span> puede ser escrita como:</li>
+</ul>
+<p><span class="math display">\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\]</span></p>
+<p>con <span class="math inline">\(T_i=\mathcal{I}(x_i\geq x_0)\)</span></p>
+<ul>
+<li>Escribiendo las funciones <span class="math inline">\(g_0\)</span> y <span class="math inline">\(g_1\)</span> como polinomios flexibles de <span class="math inline">\(x_i\)</span></li>
+</ul>
+<p><span class="math display">\[E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i+\ldots+\gamma_{0p}x_i^p +\pi T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i\]</span></p>
+</section>
+<section id="rd-difusa-resumen-2" class="slide level2">
+<h2>RD difusa: resumen</h2>
+<ul>
+<li><p>En la primera etapa podríamos usar <span class="math inline">\(\{x_iTi, x_i^2 T_i,...,x_i^p T_i\}\)</span> como instrumentos para <span class="math inline">\(D_i\)</span></p></li>
+<li><p>Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones</p></li>
+<li><p>La versión más simple solo usa <span class="math inline">\(T_i\)</span> como instrumento</p></li>
+<li><p>La primera etapa será</p></li>
+</ul>
+<p><span class="math display">\[D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}\]</span></p>
+<ul>
+<li>La forma reducida o ITT de este modelo es:</li>
+</ul>
+<p><span class="math display">\[y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}\]</span> - Mientras que la ecuación estructural</p>
+<p><span class="math display">\[y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + u_{i}\]</span> se estima por MC2E usando <span class="math inline">\(T_i\)</span> como instrumento de <span class="math inline">\(D_i\)</span></p>
 </section></section>
 <section id="diseños-con-discontinuidades-2" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Diseños con discontinuidades</h1>
@@ -1453,6 +2005,44 @@ y_i = \pi_0 + \pi_1 x_i + \pi_2 x_i^2 + \lambda D_i + \nu_i
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
