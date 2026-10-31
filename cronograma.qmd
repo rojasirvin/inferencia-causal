@@ -64,14 +64,14 @@ El siguiente cronograma es informativo sobre la organización del curso. Las ses
 <div class="cron-month">Noviembre</div>
 <div class="cron-week"><div class="wk">11</div><div class="cron-sessions">
 <div class="cron-ses"><div class="cs-date">Mar · 3 Nov</div><div class="cs-title">Diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
-<div class="cron-ses is-expo"><div class="cs-date">Jue · 5 Nov</div><div class="cs-title">Aplicaciones: diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span><span class="cs-tarea">Tarea 3</span></div></div>
+<div class="cron-ses is-expo"><div class="cs-date">Jue · 5 Nov</div><div class="cs-title">Aplicaciones: diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
 </div></div>
 <div class="cron-week"><div class="wk">12</div><div class="cron-sessions">
 <div class="cron-ses is-lab"><div class="cs-date">Mar · 10 Nov</div><div class="cs-title">R: diseños con discontinuidades</div><div class="cs-tags"><span class="cs-tag">Laboratorio</span></div></div>
 <div class="cron-ses"><div class="cs-date">Jue · 12 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
 </div></div>
 <div class="cron-week"><div class="wk">13</div><div class="cron-sessions">
-<div class="cron-ses"><div class="cs-date">Mar · 17 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span></div></div>
+<div class="cron-ses"><div class="cs-date">Mar · 17 Nov</div><div class="cs-title">Control sintético</div><div class="cs-tags"><span class="cs-tag">Clase</span><span class="cs-tarea">Tarea 3 · Lun 16 Nov</span></div></div>
 <div class="cron-ses is-expo"><div class="cs-date">Jue · 19 Nov</div><div class="cs-title">Aplicaciones: control sintético</div><div class="cs-tags"><span class="cs-tag">Exposiciones</span></div></div>
 </div></div>
 <div class="cron-week"><div class="wk">14</div><div class="cron-sessions">

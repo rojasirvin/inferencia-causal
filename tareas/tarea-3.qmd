@@ -4,4 +4,88 @@ lang: es
 format: html
 ---
 
-**Aún no disponible.** Las preguntas de esta tarea se publicarán más adelante en el semestre.
+
+## Preguntas
+
+Fecha de entrega: **lunes 16 de noviembre a las 20:00 en Teams**
+
+La tarea deberá entregarse en Teams. Deberá incluir dos documentos:
+
+Un primer documento donde se incluyan las respuestas a las preguntas teóricas y conceptuales. Este documento debe estar en formato pdf y debe ser generado usando un software de procesamiento de textos científicos, por ejemplo, usando los leguajes LaTeX o Markdown. En este documento también se deben incluir las conclusiones que se desprenden de las secciones prácticas. Por ejemplo, si una pregunta pide obtener la media de la variable x en cierta base de datos, entonces el documento de respuestas debe incluir la respuesta correspondiente: “la media de la variable x es 32.6”. En este documento también deberán incluirse las tablas y gráficas que se requieran para el análisis.
+
+Un segundo archivo deberá contener el código replicable usado para generar los resultados de la sección práctica, incluyendo las tablas y gráficas. Los archivos de código se verificarán para comprobar su replicabilidad de manera aleatoria.
+
+## Datos
+
+[final_dataset.dta](../files/final_dataset.dta)
+
+[Microdatos de la ENIGH 2024 (INEGI)](https://www.inegi.org.mx/programas/enigh/nc/2024/#microdatos)
+
+
+## Pregunta 1
+
+Suponga que está a cargo de asesorar a un gobierno que está interesado en conocer el impacto de las remesas en el gasto mensual en capital humano (salud y educación) de los hogares en México. Dado que no es posible realizar un experimento en el corto plazo, use un diseño de *propensity score matching* como alternativa para responder esta pregunta. Use la base de datos de su elección, pero se recomienda ampliamente usar la más reciente ENIGH, que incluye preguntas sobre remesas y gasto en diversas categorías. 
+
+a. [5 puntos] Construya una tabla donde muestre las diferencias en las características observadas, así como en el gasto en salud, educación y capital humano, en los hogares que reciben y no reciben remesas. Realice una prueba de significancia estadística para determinar qué características difieren entre grupos.
+
+a. [5 puntos] Describa la especificación que usa para estimar el *propensity score*, estímelo y presente gráficos que muestren el traslape.
+
+a. [10 puntos] Describa el algoritmo de *matching* que usa para asignar uno o varios hogares no tratados a los hogares tratados. Construya un *loveplot* que muestre el balance de las muestras antes y después del emparejamiento.
+
+a. [10 puntos] Estime el impacto de recibir remesas en el gasto en educación, salud y capital humano (la suma de ambos) usando *g-computation*.
+
+a. [5 puntos] Describa los supuestos teóricos que requiere para una interpretación causal de los resultados obtenidos.
+
+
+## Pregunta 2
+
+Dias & Fontes (2024) estudian la reforma psiquiátrica de Brasil, que introdujo los Centros de Atención Psicosocial (CAPS) como sustituto comunitario de la atención psiquiátrica hospitalaria. Los datos en *final_dataset.dta* son un panel de municipios brasileños de 2002 a 2016. La columna **cod** identifica al municipio, **ano** al año y **ca** es un indicador de si el municipio $i$ ya cuenta con un CAPS en el año $t$. Una vez que un municipio recibe un CAPS, **ca** permanece igual a 1 (tratamiento absorbente). Se busca estimar el efecto de la introducción de los CAPS en el número de psiquiatras por cada 10,000 habitantes, **pf_psiqui_total**. Para tener un panel balanceado, excluya los municipios con algún valor faltante en **pf_psiqui_total**.
+
+a. [5 puntos] ¿Por qué decimos que esta es una aplicación de la estimación de efectos de tratamiento con adopción escalonada?
+
+a. [5 puntos] Como punto de partida, estime el efecto del tratamiento sobre **pf_psiqui_total** usando efectos fijos por municipio y año (TWFE) y empleando una librería específica para efectos fijos, como *felm*. Tome en cuenta la agrupación de los errores. Interprete sus resultados.
+
+a. [5 puntos] Compruebe que puede obtener el mismo resultado con una regresión lineal usando el paquete *lm* e incluyendo, además de la variable de tratamiento, dummies de municipio y de año. Dado que hay más de 5,000 municipios, estimar *lm* con una dummy por municipio en toda la muestra es muy costoso computacionalmente. Haga la comprobación usando solo los municipios del estado de Ceará (**uf == 23**), comparando con *felm* en esa misma submuestra.
+
+a. [10 puntos] Ahora muestre que podemos obtener el coeficiente de TWFE a partir de una regresión bivariada entre el número de psiquiatras por cada 10,000 habitantes y **ca**, una vez *purgada* por efectos fijos. Para ello, primero estime una regresión de **ca** en función de los efectos fijos. Obtenga la predicción y luego defina una nueva variable igual a la diferencia entre **ca** y la predicción que acaba de obtener. Finalmente, obtenga el coeficiente de TWFE con una regresión de psiquiatras por cada 10,000 habitantes en función de la diferencia antes definida.
+
+a. [10 puntos] Realice la descomposición de Goodman-Bacon (2021). Construya un gráfico donde muestre en el eje $x$ el peso otorgado a cada comparación 2x2 y en el eje $y$ el efecto estimado correspondiente a cada comparación. Interprete el gráfico obtenido.
+
+    **Sugerencia:** use la función *bacon_rapido* en lugar de *bacon()*. La función *bacon()* del paquete *bacondecomp* estima cada comparación 2x2 con *lm* y dummies de municipio, lo cual es muy lento con más de 5,000 municipios y muchas comparaciones. Se prefiere *bacon_rapido* porque estima cada comparación con *felm*, que absorbe los efectos fijos sin construir las dummies. Los grupos y los pesos se siguen definiendo con las funciones internas de *bacondecomp*, así que la descomposición es la misma.
+
+    ```r
+    bacon_rapido <- function(formula, data, id_var, time_var) {
+      vars <- bacondecomp:::unpack_variable_names(formula(terms(formula, data = data)))
+      data <- bacondecomp:::rename_vars(data, id_var, time_var,
+                                        vars$outcome_var, vars$treated_var)
+      calc <- bacondecomp:::create_treatment_groups(data, vars$control_vars,
+                                                    return_merged_df = TRUE)
+      two_by_twos <- calc$two_by_twos
+      data <- calc$data
+      for (i in seq_len(nrow(two_by_twos))) {
+        k <- two_by_twos[i, "treated"]
+        l <- two_by_twos[i, "untreated"]
+        data1 <- bacondecomp:::subset_data(data, k, l)
+        two_by_twos[i, "weight"]   <- bacondecomp:::calculate_weights(data1, k, l)
+        two_by_twos[i, "estimate"] <- coef(felm(outcome ~ treated | factor(id) + factor(time),
+                                                data = data1))["treated"]
+      }
+      bacondecomp:::scale_weights(two_by_twos)
+    }
+
+    #Los argumentos de la función son los mismos que bacon:
+    
+    df_bacon <- bacon_rapido(y ~ d_it,
+                             data = as.data.frame(mis_datos),
+                             id_var = "panel_id",
+                             time_var = "time_id")
+    ```
+
+    Necesita tener instalados los paquetes *bacondecomp* y *lfe*, y cargar este último con `library(lfe)`.
+
+a. [10 puntos] Implemente el estimador de Callaway & Sant’Anna (2021) para estimar los efectos del tratamiento específicos para cada cohorte, usando el paquete *did*. Utilice como grupo de comparación los municipios *nunca tratados*.
+
+a. [10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway & Sant’Anna (2021), usando una agregación dinámica que muestre los efectos promedio para cada periodo antes y después del tratamiento. Grafique e interprete los resultados.
+
+a. [10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway & Sant’Anna (2021), usando una agregación por grupos que muestre los efectos promedio para cada cohorte del tratamiento. Grafique e interprete los resultados.
+
