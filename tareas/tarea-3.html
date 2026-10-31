@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.10.20">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -42,8 +77,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-17888a1159294d3eb470f19f6f52f5a5.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0ae969d3293726db143f6e9eb89af930.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-9e28db63866a57cb8b6629660376bb7f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -106,6 +141,35 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../fonts/inter.css">
 </head>
@@ -424,9 +488,72 @@ document.addEventListener('DOMContentLoaded', function(){
 </header>
 
 
-<p><strong>Aún no disponible.</strong> Las preguntas de esta tarea se publicarán más adelante en el semestre.</p>
+<section id="preguntas" class="level2">
+<h2 class="anchored" data-anchor-id="preguntas">Preguntas</h2>
+<p>Fecha de entrega: <strong>lunes 16 de noviembre a las 20:00 en Teams</strong></p>
+<p>La tarea deberá entregarse en Teams. Deberá incluir dos documentos:</p>
+<p>Un primer documento donde se incluyan las respuestas a las preguntas teóricas y conceptuales. Este documento debe estar en formato pdf y debe ser generado usando un software de procesamiento de textos científicos, por ejemplo, usando los leguajes LaTeX o Markdown. En este documento también se deben incluir las conclusiones que se desprenden de las secciones prácticas. Por ejemplo, si una pregunta pide obtener la media de la variable x en cierta base de datos, entonces el documento de respuestas debe incluir la respuesta correspondiente: “la media de la variable x es 32.6”. En este documento también deberán incluirse las tablas y gráficas que se requieran para el análisis.</p>
+<p>Un segundo archivo deberá contener el código replicable usado para generar los resultados de la sección práctica, incluyendo las tablas y gráficas. Los archivos de código se verificarán para comprobar su replicabilidad de manera aleatoria.</p>
+</section>
+<section id="datos" class="level2">
+<h2 class="anchored" data-anchor-id="datos">Datos</h2>
+<p><a href="../files/final_dataset.dta">final_dataset.dta</a></p>
+<p><a href="https://www.inegi.org.mx/programas/enigh/nc/2024/#microdatos">Microdatos de la ENIGH 2024 (INEGI)</a></p>
+</section>
+<section id="pregunta-1" class="level2">
+<h2 class="anchored" data-anchor-id="pregunta-1">Pregunta 1</h2>
+<p>Suponga que está a cargo de asesorar a un gobierno que está interesado en conocer el impacto de las remesas en el gasto mensual en capital humano (salud y educación) de los hogares en México. Dado que no es posible realizar un experimento en el corto plazo, use un diseño de <em>propensity score matching</em> como alternativa para responder esta pregunta. Use la base de datos de su elección, pero se recomienda ampliamente usar la más reciente ENIGH, que incluye preguntas sobre remesas y gasto en diversas categorías.</p>
+<ol type="a">
+<li><p>[5 puntos] Construya una tabla donde muestre las diferencias en las características observadas, así como en el gasto en salud, educación y capital humano, en los hogares que reciben y no reciben remesas. Realice una prueba de significancia estadística para determinar qué características difieren entre grupos.</p></li>
+<li><p>[5 puntos] Describa la especificación que usa para estimar el <em>propensity score</em>, estímelo y presente gráficos que muestren el traslape.</p></li>
+<li><p>[10 puntos] Describa el algoritmo de <em>matching</em> que usa para asignar uno o varios hogares no tratados a los hogares tratados. Construya un <em>loveplot</em> que muestre el balance de las muestras antes y después del emparejamiento.</p></li>
+<li><p>[10 puntos] Estime el impacto de recibir remesas en el gasto en educación, salud y capital humano (la suma de ambos) usando <em>g-computation</em>.</p></li>
+<li><p>[5 puntos] Describa los supuestos teóricos que requiere para una interpretación causal de los resultados obtenidos.</p></li>
+</ol>
+</section>
+<section id="pregunta-2" class="level2">
+<h2 class="anchored" data-anchor-id="pregunta-2">Pregunta 2</h2>
+<p>Dias &amp; Fontes (2024) estudian la reforma psiquiátrica de Brasil, que introdujo los Centros de Atención Psicosocial (CAPS) como sustituto comunitario de la atención psiquiátrica hospitalaria. Los datos en <em>final_dataset.dta</em> son un panel de municipios brasileños de 2002 a 2016. La columna <strong>cod</strong> identifica al municipio, <strong>ano</strong> al año y <strong>ca</strong> es un indicador de si el municipio <span class="math inline">\(i\)</span> ya cuenta con un CAPS en el año <span class="math inline">\(t\)</span>. Una vez que un municipio recibe un CAPS, <strong>ca</strong> permanece igual a 1 (tratamiento absorbente). Se busca estimar el efecto de la introducción de los CAPS en el número de psiquiatras por cada 10,000 habitantes, <strong>pf_psiqui_total</strong>. Para tener un panel balanceado, excluya los municipios con algún valor faltante en <strong>pf_psiqui_total</strong>.</p>
+<ol type="a">
+<li><p>[5 puntos] ¿Por qué decimos que esta es una aplicación de la estimación de efectos de tratamiento con adopción escalonada?</p></li>
+<li><p>[5 puntos] Como punto de partida, estime el efecto del tratamiento sobre <strong>pf_psiqui_total</strong> usando efectos fijos por municipio y año (TWFE) y empleando una librería específica para efectos fijos, como <em>felm</em>. Tome en cuenta la agrupación de los errores. Interprete sus resultados.</p></li>
+<li><p>[5 puntos] Compruebe que puede obtener el mismo resultado con una regresión lineal usando el paquete <em>lm</em> e incluyendo, además de la variable de tratamiento, dummies de municipio y de año. Dado que hay más de 5,000 municipios, estimar <em>lm</em> con una dummy por municipio en toda la muestra es muy costoso computacionalmente. Haga la comprobación usando solo los municipios del estado de Ceará (<strong>uf == 23</strong>), comparando con <em>felm</em> en esa misma submuestra.</p></li>
+<li><p>[10 puntos] Ahora muestre que podemos obtener el coeficiente de TWFE a partir de una regresión bivariada entre el número de psiquiatras por cada 10,000 habitantes y <strong>ca</strong>, una vez <em>purgada</em> por efectos fijos. Para ello, primero estime una regresión de <strong>ca</strong> en función de los efectos fijos. Obtenga la predicción y luego defina una nueva variable igual a la diferencia entre <strong>ca</strong> y la predicción que acaba de obtener. Finalmente, obtenga el coeficiente de TWFE con una regresión de psiquiatras por cada 10,000 habitantes en función de la diferencia antes definida.</p></li>
+<li><p>[10 puntos] Realice la descomposición de Goodman-Bacon (2021). Construya un gráfico donde muestre en el eje <span class="math inline">\(x\)</span> el peso otorgado a cada comparación 2x2 y en el eje <span class="math inline">\(y\)</span> el efecto estimado correspondiente a cada comparación. Interprete el gráfico obtenido.</p>
+<p><strong>Sugerencia:</strong> use la función <em>bacon_rapido</em> en lugar de <em>bacon()</em>. La función <em>bacon()</em> del paquete <em>bacondecomp</em> estima cada comparación 2x2 con <em>lm</em> y dummies de municipio, lo cual es muy lento con más de 5,000 municipios y muchas comparaciones. Se prefiere <em>bacon_rapido</em> porque estima cada comparación con <em>felm</em>, que absorbe los efectos fijos sin construir las dummies. Los grupos y los pesos se siguen definiendo con las funciones internas de <em>bacondecomp</em>, así que la descomposición es la misma.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>bacon_rapido <span class="ot">&lt;-</span> <span class="cf">function</span>(formula, data, id_var, time_var) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  vars <span class="ot">&lt;-</span> bacondecomp<span class="sc">:::</span><span class="fu">unpack_variable_names</span>(<span class="fu">formula</span>(<span class="fu">terms</span>(formula, <span class="at">data =</span> data)))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> bacondecomp<span class="sc">:::</span><span class="fu">rename_vars</span>(data, id_var, time_var,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                                    vars<span class="sc">$</span>outcome_var, vars<span class="sc">$</span>treated_var)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  calc <span class="ot">&lt;-</span> bacondecomp<span class="sc">:::</span><span class="fu">create_treatment_groups</span>(data, vars<span class="sc">$</span>control_vars,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">return_merged_df =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  two_by_twos <span class="ot">&lt;-</span> calc<span class="sc">$</span>two_by_twos</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> calc<span class="sc">$</span>data</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(two_by_twos))) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> two_by_twos[i, <span class="st">"treated"</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    l <span class="ot">&lt;-</span> two_by_twos[i, <span class="st">"untreated"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    data1 <span class="ot">&lt;-</span> bacondecomp<span class="sc">:::</span><span class="fu">subset_data</span>(data, k, l)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    two_by_twos[i, <span class="st">"weight"</span>]   <span class="ot">&lt;-</span> bacondecomp<span class="sc">:::</span><span class="fu">calculate_weights</span>(data1, k, l)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    two_by_twos[i, <span class="st">"estimate"</span>] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">felm</span>(outcome <span class="sc">~</span> treated <span class="sc">|</span> <span class="fu">factor</span>(id) <span class="sc">+</span> <span class="fu">factor</span>(time),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">data =</span> data1))[<span class="st">"treated"</span>]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  bacondecomp<span class="sc">:::</span><span class="fu">scale_weights</span>(two_by_twos)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Los argumentos de la función son los mismos que bacon:</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>df_bacon <span class="ot">&lt;-</span> <span class="fu">bacon_rapido</span>(y <span class="sc">~</span> d_it,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                         <span class="at">data =</span> <span class="fu">as.data.frame</span>(mis_datos),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                         <span class="at">id_var =</span> <span class="st">"panel_id"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                         <span class="at">time_var =</span> <span class="st">"time_id"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Necesita tener instalados los paquetes <em>bacondecomp</em> y <em>lfe</em>, y cargar este último con <code>library(lfe)</code>.</p></li>
+<li><p>[10 puntos] Implemente el estimador de Callaway &amp; Sant’Anna (2021) para estimar los efectos del tratamiento específicos para cada cohorte, usando el paquete <em>did</em>. Utilice como grupo de comparación los municipios <em>nunca tratados</em>.</p></li>
+<li><p>[10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway &amp; Sant’Anna (2021), usando una agregación dinámica que muestre los efectos promedio para cada periodo antes y después del tratamiento. Grafique e interprete los resultados.</p></li>
+<li><p>[10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway &amp; Sant’Anna (2021), usando una agregación por grupos que muestre los efectos promedio para cada cohorte del tratamiento. Grafique e interprete los resultados.</p></li>
+</ol>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
