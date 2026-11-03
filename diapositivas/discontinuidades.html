@@ -7,13 +7,13 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-17888a1159294d3eb470f19f6f52f5a5.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.20">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
 
   <title>Inferencia Causal 2026 – discontinuidades</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
@@ -101,7 +101,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-b653ffaf65bdc9afdd8d06ec44d675b9.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-edbe8a8f3bf74852b3023b0f46089b07.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -505,12 +505,6 @@
 </div>
 <div class="cell">
 <style type="text/css">
-.huge .remark-code { /*Change made here*/
-  font-size: 200% !important;
-}
-.tiny .remark-code { /*Change made here*/
-  font-size: 60% !important;
-}
 /* Láminas con código a la izquierda y gráfico a la derecha: código más grande
    que el del tema, con interlineado más compacto para que quepa */
 .reveal .codigo-figura div.sourceCode pre code.sourceCode { font-size: 1.2em !important; line-height: 1.35; max-height: none !important; }
@@ -539,7 +533,7 @@
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="birthdays_funerals.png" width="7162"></p>
+<p><img data-src="birthdays_funerals.png" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -635,8 +629,8 @@ D_a =
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>En los paneles A y B hay un salto en <span class="math inline">\(E[Y|a]\)</span> en el corte, con una relación lineal y no lineal, respectivamente</p></li>
-<li><p>En el panel C, <span class="math inline">\(E[Y|a]\)</span> es continua pero muy pronunciada cerca de <span class="math inline">\(a_0\)</span>, por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe</p></li>
+<li><p>En los paneles A y B hay un salto en <span class="math inline">\(E(y|a)\)</span> en el corte, con una relación lineal y no lineal, respectivamente</p></li>
+<li><p>En el panel C, <span class="math inline">\(E(y|a)\)</span> es continua pero muy pronunciada cerca de <span class="math inline">\(a_0\)</span>, por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe</p></li>
 <li><p>Al usar un diseño con discontinuidad debemos asegurarnos de que estamos identificando una discontinuidad y no una no linealidad</p>
 <ul>
 <li><p>Modelar la no linealidad (enfoque <em>original</em>)</p></li>
@@ -662,7 +656,7 @@ D_a =
 <h2>No linealidades</h2>
 <ul>
 <li><p>Podemos usar polinomios de <span class="math inline">\(a\)</span></p></li>
-<li><p>Idealmente, las conclusiones no deberían cambiar de acuerdo al grado del polinomio usado</p></li>
+<li><p>Idealmente, las conclusiones no deberían cambiar de acuerdo con el grado del polinomio usado</p></li>
 <li><p>La recomendación práctica es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados</p></li>
 <li><p>La gráfica de mortalidad por edad parece tener una leve curvatura a la derecha de <span class="math inline">\(a_0\)</span></p></li>
 <li><p>Podemos ajustar directamente un polinomio de la edad:</p></li>
@@ -677,13 +671,13 @@ D_a =
 <li>O podemos especificar una pendiente diferente para <span class="math inline">\(a\)</span> antes y después de <span class="math inline">\(a_0\)</span>:</li>
 </ul>
 <p><span class="math display">\[
-\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \lambda[(a-a_0)D_a] + \varepsilon_a
+\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \kappa[(a-a_0)D_a] + \varepsilon_a
 \]</span></p>
 <ul>
 <li>Notemos que en este caso el efecto del tratamiento es:</li>
 </ul>
 <p><span class="math display">\[
-\rho+\lambda(a-a_0)
+\rho+\kappa(a-a_0)
 \]</span></p>
 <ul>
 <li><p>Es decir, un efecto que depende de la distancia con <span class="math inline">\(a_0\)</span></p></li>
@@ -697,7 +691,7 @@ D_a =
 </ul>
 <p><span class="math display">\[
 \begin{aligned}
-\bar{M}_a&amp;=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\lambda_1[(a-a_0)D_a]+ \lambda_2[(a-a_0)^2D_a] + \varepsilon_a
+\bar{M}_a&amp;=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\kappa_1[(a-a_0)D_a]+ \kappa_2[(a-a_0)^2D_a] + \varepsilon_a
 \end{aligned}
 \]</span></p>
 <ul>
@@ -705,7 +699,7 @@ D_a =
 <li><p>Notemos que en este caso el efecto del tratamiento es:</p></li>
 </ul>
 <p><span class="math display">\[
-\rho+\lambda_1(a-a_0)+\lambda_2(a-a_0)^2
+\rho+\kappa_1(a-a_0)+\kappa_2(a-a_0)^2
 \]</span></p>
 <ul>
 <li>En los dos casos anteriores, regularmente se interpreta solo a <span class="math inline">\(\rho\)</span> como el efecto del tratamiento</li>
@@ -869,7 +863,7 @@ Edades 20-21
 <ul>
 <li><p>Manacorda, Miguel &amp; Vigorito (2011), “Government Transfers and Political Support”, <em>American Economic Journal: Applied Economics</em></p></li>
 <li><p>¿Los programas gubernamentales generan lealtades?</p></li>
-<li><p>Programa Nacional de Emergencia Social (PANES), focalizado con base en un índice de pobreza</p></li>
+<li><p>Programa Nacional de Emergencia Social (PANES), focalizado con base en un índice de ingreso</p></li>
 <li><p>Existe una discontinuidad en el acceso al programa</p></li>
 </ul>
 </section>
@@ -906,7 +900,7 @@ Edades 20-21
 <li><p>Se recolectó información de los hogares alrededor de la discontinuidad (tratados y no tratados)</p></li>
 <li><p>Se realizaron dos rondas de seguimiento en 2006-07 y en 2008</p></li>
 <li><p>Variable de interés: apoyo político al gobierno en turno</p></li>
-<li><p>La figura muestra que la elegibilidad determina casi por completo la participación, es decir, tenemos un diseño nítido</p></li>
+<li><p>La figura muestra que la elegibilidad determina casi por completo la participación, es decir, el diseño es prácticamente nítido</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -1122,7 +1116,7 @@ Coeficiente (error estándar)
 <section id="robustez" class="slide level2">
 <h2>Robustez</h2>
 <ul>
-<li>Si el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005)</li>
+<li>Si el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005) ni la no respuesta en las encuestas de seguimiento</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
@@ -1381,7 +1375,7 @@ y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i^2 + \delta D_i +
 <li><p>Es una regresión restringida a una <em>ventana</em> alrededor del corte, con pesos que dependen de la distancia de cada observación a <span class="math inline">\(c_0\)</span></p></li>
 <li><p>Consiste en estimar</p></li>
 </ul>
-<p><span class="math display">\[\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_i-c_0}{h}\right)1(x_i\geq c_0)\]</span></p>
+<p><span class="math display">\[\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_i-c_0}{h}\right)\mathcal{I}(x_i\geq c_0)\]</span></p>
 <ul>
 <li><p>Y lo mismo para <span class="math inline">\(x_i&lt;c_0\)</span>, de donde obtenemos <span class="math inline">\(\hat{a}_{-}\)</span>, para estimar <span class="math inline">\(\hat{\delta}=\hat{a}_{+}-\hat{a}_{-}\)</span></p></li>
 <li><p>El parámetro <span class="math inline">\(h\)</span> indica el <em>ancho de banda</em>, que podemos escoger con criterios como minimizar el error cuadrático medio o validación cruzada</p></li>
@@ -1392,7 +1386,7 @@ y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i^2 + \delta D_i +
 <ul>
 <li><p>En general, la regresión local se estima en cada valor <span class="math inline">\(x\)</span>, pero en el diseño discontinuo solo nos interesa la predicción en <span class="math inline">\(c_0\)</span> por cada lado</p></li>
 <li><p>Los pesos vienen de una función kernel <span class="math inline">\(K(u)\)</span>, con <span class="math inline">\(u=(x_i-c_0)/h\)</span></p></li>
-<li><p>Todos los kernels, salvo el gaussiano, dan peso cero fuera de <span class="math inline">\(|u|\leq 1\)</span></p></li>
+<li><p>Todos los kernels de la figura, salvo el gaussiano, dan peso cero fuera de <span class="math inline">\(|u|\leq 1\)</span></p></li>
 <li><p>En la práctica, <code>rdrobust</code> elige el <span class="math inline">\(h\)</span> óptimo y estima la regresión local, con kernel triangular por defecto</p></li>
 </ul>
 </section>
@@ -1447,186 +1441,72 @@ y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i^2 + \delta D_i +
 <h1>Discontinuidades difusas</h1>
 
 </section>
-<section id="motivación-la-ilusión-de-la-élite" class="slide level2">
-<h2>Motivación: la ilusión de la élite</h2>
+<section id="discontinuidades-difusas-1" class="slide level2">
+<h2>Discontinuidades difusas</h2>
 <ul>
-<li><p>Escuelas de élite, <em>exam schools</em>, altamente competitivas en Nueva York y Boston</p></li>
-<li><p>Bajas tasas de admisión</p></li>
-<li><p>¿Cómo diferenciar el valor agregado de la escuela del hecho de que la acta selectividad hace que a estas escuelas asistan solo los alumnos más brillantes?</p></li>
-<li><p>¡Ojalá pudiéramos asignar alumnos al azar!</p></li>
-<li><p>Los estudiantes en estas escuelas de élite comparten clases con estudiantes aventajados</p></li>
+<li>Tenemos un diseño difuso cuando hay un salto en la probabilidad de recibir el tratamiento</li>
+</ul>
+<p><span class="math display">\[
+\lim_{x\downarrow c_0} P(D_i=1|x_i=x) \neq \lim_{x\uparrow c_0} P(D_i=1|x_i=x)
+\]</span></p>
+<ul>
+<li><p>La probabilidad de recibir el tratamiento es discontinua en <span class="math inline">\(c_0\)</span></p></li>
+<li><p>Al igual que en el diseño nítido, para la identificación asumimos que los resultados potenciales son funciones continuas y suaves en <span class="math inline">\(c_0\)</span></p></li>
+<li><p>Recurrimos además a los supuestos de variables instrumentales que revisamos más adelante</p></li>
+<li><p>Ser asignado al tratamiento se vuelve un instrumento para recibir el tratamiento</p></li>
+</ul>
+<p><span class="math display">\[
+P(D_i=1|x_i) =
+\begin{cases}
+g_1(x_i)  &amp; \text{si } x_i \geq c_0 \\
+g_0(x_i)  &amp; \text{si } x_i &lt; c_0
+\end{cases}
+\]</span></p>
+<ul>
+<li>Las funciones <span class="math inline">\(g_0\)</span> y <span class="math inline">\(g_1\)</span> difieren en <span class="math inline">\(c_0\)</span></li>
 </ul>
 </section>
-<section id="la-regla-de-asignación" class="slide level2">
-<h2>La regla de asignación</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="discontinuidades-difusas-2" class="slide level2">
+<h2>Discontinuidades difusas</h2>
 <ul>
-<li><p>Cada escuela tiene un <em>corte</em> de puntaje de admisión</p></li>
-<li><p>En la escuela más competitiva de Boston aquellos estudiantes debajo del corte nunca asisten a dicha escuela</p></li>
-<li><p>Los que están arriba del corte casi siempre acaban en la BLS</p></li>
+<li>Tenemos entonces una primera etapa, que define la relación entre la discontinuidad y la probabilidad de recibir el tratamiento</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/RDfuzzy_enrollment_BLS.png" class="quarto-figure quarto-figure-center" width="5216"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-
-<aside><div>
-<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
-</div></aside></section>
-<section id="la-regla-de-asignación-1" class="slide level2">
-<h2>La regla de asignación</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li>Sin embargo, aquellos que no alcanzan el puntaje mínimo de la BLS acaban de cualquier forma en una escuela de élite</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/RDfuzzy_enrollment_any.png" class="quarto-figure quarto-figure-center" width="4864"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-
-<aside><div>
-<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
-</div></aside></section>
-<section id="la-regla-de-asignación-2" class="slide level2">
-<h2>La regla de asignación</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li><p>Hay una dimensión que genera una discontinuidad: efectos de pares o <em>peer effects</em></p></li>
-<li><p>Es una de las preocupaciones más importantes de política educativa en casi cualquier país</p></li>
-<li><p>Tener buenos (malos) compañeros afecta los resultados del individuo <span class="math inline">\(i\)</span></p></li>
-<li><p>Quienes ingresan a la BLS (séptimo grado) tuvieron compañeros con mejor desempeño en matemáticas cuando iban en cuarto grado</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/RDfuzzy_enrollment_peers.png" class="quarto-figure quarto-figure-center" width="4755"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-
-<aside><div>
-<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
-</div></aside></section>
-<section id="modelo-de-efectos-de-pares" class="slide level2">
-<h2>Modelo de efectos de pares</h2>
-<ul>
-<li>Un modelo de efectos de pares:</li>
-</ul>
-<p><span class="math display">\[Y_i=\theta_0+\theta_1\bar{X}_{(i)}+\theta_2 X_i + u_i\]</span></p>
-<ul>
-<li><p><span class="math inline">\(Y_i\)</span> es el resultado de un examen de matemáticas en el séptimo año del individuo <span class="math inline">\(i\)</span></p></li>
-<li><p><span class="math inline">\(X_i\)</span> es el resultado de un examen de matemáticas en el cuarto año del individuo <span class="math inline">\(i\)</span></p></li>
-<li><p><span class="math inline">\(\bar{X}_{(i)}\)</span> es el resultado promedio de un examen de matemáticas en el cuarto año de los compañeros de <span class="math inline">\(i\)</span> sin incluir <span class="math inline">\(i\)</span></p></li>
-<li><p>Otra notación en la literatura escribe esto como <span class="math inline">\(\bar{X}_{(-i)}\)</span></p></li>
-<li><p>Los resultados están estandarizados por lo que los coeficientes se interpretan en términos de desviaciones estándar: <span class="math inline">\(\hat{\theta}_1=0.25\sigma\)</span></p></li>
-</ul>
+<p><span class="math display">\[
+D_i = \gamma_0 + \gamma_1 x_i + \rho T_i + \xi_i
+\]</span></p>
+<p>donde</p>
+<p><span class="math display">\[
+T_i =
+\begin{cases}
+1  &amp; \text{si } x_i \geq c_0 \\
+0  &amp; \text{si } x_i &lt; c_0
+\end{cases}
+\]</span></p>
 </section>
-<section id="rd-difuso-vi" class="slide level2">
-<h2>RD difuso + VI</h2>
+<section id="discontinuidades-difusas-3" class="slide level2">
+<h2>Discontinuidades difusas</h2>
 <ul>
-<li><p>Problemas</p>
-<ul>
-<li><p>Sabemos que en la discontinuidad, la calidad de los pares cambia drásticamente</p></li>
-<li><p>Características de los hogares (habilidad de los padres)</p></li>
-<li><p>Doble causalidad: <span class="math inline">\(i\)</span> afecta a <span class="math inline">\(j\)</span> pero <span class="math inline">\(j\)</span> afecta a <span class="math inline">\(i\)</span> a la vez</p></li>
-</ul></li>
+<li>La forma reducida presenta la relación entre la variable de resultados y la discontinuidad</li>
 </ul>
-<div class="fragment">
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_i + \delta T_i + u_i
+\]</span></p>
 <ul>
-<li><p>Variables instrumentales:</p>
-<ul>
-<li><p>Queremos conocer el efecto de la calidad de los pares en el desempeño de matemáticas</p></li>
-<li><p>Usamos el corte mínimo para ser aceptado en BLS como instrumento de la calidad de los pares</p></li>
-</ul></li>
+<li>Y la ecuación estructural presenta la relación entre la adopción y la variable de resultados</li>
 </ul>
-</div>
-</section>
-<section id="forma-reducida" class="slide level2">
-<h2>Forma reducida</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<p><span class="math display">\[
+y_i = \pi_0 + \pi_1 x_i + \lambda D_i + \nu_i
+\]</span></p>
 <ul>
-<li>Si solo usamos el corte para ser aceptado en BLS:</li>
+<li><p>La forma reducida es un diseño nítido con <span class="math inline">\(T_i\)</span> en lugar de <span class="math inline">\(D_i\)</span></p></li>
+<li><p><span class="math inline">\(\delta\)</span> es el salto de <span class="math inline">\(y_i\)</span> en el corte</p></li>
+<li><p>El efecto del tratamiento es el cociente de los dos saltos, como en el estimador de Wald</p></li>
 </ul>
-<p><span class="math display">\[Y_i=\alpha_0+\rho D_i + \beta_0 R_i + \epsilon_i\]</span></p>
+<p><span class="math display">\[
+\lambda = \frac{\delta}{\rho}
+\]</span></p>
 <ul>
-<li><p>Se obtiene <span class="math inline">\(\hat{\rho}=-0.02\)</span>, <span class="math inline">\(s.e.=0.10\)</span></p></li>
-<li><p>Este es un modelo de forma reducida (variable de interés en función de la posición respecto al corte)</p></li>
-<li><p>Es el efecto causal de estar antes o después del corte</p></li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/RDfuzzy_reducedform.png" class="quarto-figure quarto-figure-center" width="4678"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-
-<aside><div>
-<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
-</div></aside></section>
-<section id="modelo-de-vi" class="slide level2">
-<h2>Modelo de VI</h2>
-<ul>
-<li>Modelo estructural:</li>
-</ul>
-<p><span class="math display">\[Y_i=\alpha_2+\lambda \bar{X}_{(i)} + \beta_2 R_i + \epsilon_{2i}\]</span></p>
-<ul>
-<li>Con una primera etapa</li>
-</ul>
-<p><span class="math display">\[\bar{X}_{(i)}=\alpha_1 + \phi D_i + \beta_1 R_i + \epsilon_{1i}\]</span></p>
-<ul>
-<li><p>En la primera etapa <span class="math inline">\(\hat{\phi}=0.80\sigma\)</span>, como lo habíamos visto ya en la Figura 4.8</p></li>
-<li><p>En la segunda etapa <span class="math inline">\(\hat{\lambda}=-0.023\)</span>, <span class="math inline">\((s.e.=0.13)\)</span></p></li>
-</ul>
-</section>
-<section id="modelo-de-vi-1" class="slide level2">
-<h2>Modelo de VI</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/RDfuzzy_enrollment_peers.png" class="quarto-figure quarto-figure-center" style="width:52.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-
-<aside><div>
-<p>Fuente: Angrist &amp; Pischke (2014), con datos de Abdulkadiroğlu, Angrist &amp; Pathak (2014).</p>
-</div></aside></section>
-<section id="la-ilusión" class="slide level2">
-<h2>La ilusión</h2>
-<ul>
-<li><p>No hay tal ganancia por compartir clase con alumnos <em>brillantes</em></p></li>
-<li><p>La gente sigue percibiendo que sus hijos ganan al ir a escuelas de élite</p></li>
-<li><p>Posiblemente los egresados de estas escuelas tengan mayores ingresos</p></li>
-<li><p>Las ganancias que se puedan obtener no son vía el efecto de pares o un mejor rendimiento cognitivo</p></li>
+<li>La interpretación es un LATE para los cumplidores en el umbral, bajo los supuestos de VI que revisaremos más adelante</li>
 </ul>
 </section></section>
 <section>
@@ -1634,61 +1514,83 @@ y_i = \alpha +  \beta_{01} \tilde{x}_i + \beta_{02} \tilde{x}_i^2 + \delta D_i +
 <h1>Estimación con discontinuidades difusas</h1>
 
 </section>
-<section id="discontinuidades-difusas-1" class="slide level2">
-<h2>Discontinuidades difusas</h2>
+<section id="estimación-paramétrica-4" class="slide level2">
+<h2>Estimación paramétrica</h2>
 <ul>
-<li>Tenemos un diseño difuso cuando hay un salto en la probabilidad de ser asignado al tratamiento</li>
+<li>La relación entre el estado de tratamiento y <span class="math inline">\(x_i\)</span> puede ser escrita como:</li>
 </ul>
-<p><span class="math display">\[
-\begin{align}
-\lim_{x_i\rightarrow c_0} P(D_i=1|x_i=c_0) \neq \lim_{c_0 \leftarrow x_i}  P(D_i=1|x_i=c_0) \\
-\end{align}
-\]</span></p>
+<p><span class="math display">\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\]</span></p>
+<p>con <span class="math inline">\(T_i=\mathcal{I}(x_i\geq c_0)\)</span></p>
 <ul>
-<li><p>La probabilidad de recibir el tratamiento es discontinua en <span class="math inline">\(c_0\)</span></p></li>
-<li><p>El supuesto de identificación es igual que en el caso nítido, que los resultados potenciales son funciones continuas y suaves en <span class="math inline">\(c_0\)</span></p></li>
-<li><p>Recurrimos a variables instrumentales</p></li>
-<li><p>Ser asignado al tratamiento se vuelve un instrumento para recibir el tratamiento</p></li>
+<li><p>Escribiendo las funciones <span class="math inline">\(g_0\)</span> y <span class="math inline">\(g_1\)</span> como polinomios flexibles de <span class="math inline">\(x_i\)</span></p></li>
+<li><p>Como en el caso nítido, en las ecuaciones paramétricas siguientes, <span class="math inline">\(x_i\)</span> denota la variable de asignación centrada, <span class="math inline">\(\tilde{x}_i = x_i - c_0\)</span>, de modo que <span class="math inline">\(\rho\)</span> es el salto en el corte</p></li>
 </ul>
-<p><span class="math display">\[
-P(D_i=1|x_i) =
-\begin{cases}
-g_1(x_i)  &amp; \mbox{si } x_i \geq c_0 \\
-g_0(x_i)  &amp; \mbox{si } x_i &lt; c_0
-\end{cases}
-\]</span></p>
+<p><span class="math display">\[E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i^2+\ldots+\gamma_{0p}x_i^p +\rho T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i\]</span></p>
 </section>
-<section id="discontinuidades-difusas-2" class="slide level2">
-<h2>Discontinuidades difusas</h2>
+<section id="estimación-paramétrica-5" class="slide level2">
+<h2>Estimación paramétrica</h2>
 <ul>
-<li>Tenemos entonces una primera etapa</li>
+<li><p>En la primera etapa podríamos usar <span class="math inline">\(\{T_i,x_iT_i, x_i^2 T_i,...,x_i^p T_i\}\)</span> como instrumentos para <span class="math inline">\(D_i\)</span></p></li>
+<li><p>Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones</p></li>
+<li><p>La versión sin interacciones solo usa <span class="math inline">\(T_i\)</span> como instrumento</p></li>
+<li><p>La primera etapa será</p></li>
 </ul>
-<p><span class="math display">\[
-D_i = \gamma_0 + \gamma_1 x_i + \gamma_2 x_i^2 + \rho T_i + \varepsilon_i
-\]</span></p>
-<p>donde</p>
-<p><span class="math display">\[
-T_i =
-\begin{cases}
-1  &amp; \mbox{si } x_i \geq c_0 \\
-0  &amp; \mbox{si } x_i &lt; c_0
-\end{cases}
-\]</span></p>
+<p><span class="math display">\[D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}\]</span></p>
 </section>
-<section id="discontinuidades-difusas-3" class="slide level2">
-<h2>Discontinuidades difusas</h2>
+<section id="estimación-paramétrica-6" class="slide level2">
+<h2>Estimación paramétrica</h2>
 <ul>
-<li>La forma reducida es</li>
+<li>La forma reducida o ITT de este modelo es:</li>
+</ul>
+<p><span class="math display">\[y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}\]</span></p>
+<ul>
+<li>Mientras que la ecuación estructural</li>
+</ul>
+<p><span class="math display">\[y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + \nu_{i}\]</span></p>
+<ul>
+<li>Podemos estimar la ecuación estructural con un estimador de VI usando <span class="math inline">\(T_i\)</span> (y sus interacciones) como instrumento de <span class="math inline">\(D_i\)</span> (y sus interacciones)</li>
+</ul>
+</section>
+<section id="estimación-no-paramétrica-2" class="slide level2">
+<h2>Estimación no paramétrica</h2>
+<ul>
+<li>La práctica más usada actualmente sigue el enfoque no paramétrico en dos discontinuidades para obtener:</li>
 </ul>
 <p><span class="math display">\[
-y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \delta T_i + u_i
+\lambda^{RD,D} = \frac{\lim_{x\downarrow c_0} E(y_i|x_i=x) - \lim_{x\uparrow c_0} E(y_i|x_i=x)}{\lim_{x\downarrow c_0} E(D_i|x_i=x) - \lim_{x\uparrow c_0} E(D_i|x_i=x)}
 \]</span></p>
 <ul>
-<li>Y la ecuación estructural es</li>
+<li><p><code>rdrobust</code> estima el numerador y el denominador por separado, usando regresión local no paramétrica</p></li>
+<li><p>Se elige un ancho de banda y un tipo de kernel para ambas regresiones</p></li>
+<li><p><span class="math inline">\(h\)</span> se escoge de forma que se minimice el MSE del cociente</p></li>
+<li><p>La inferencia toma en cuenta el <em>sesgo de suavizamiento</em></p></li>
+</ul>
+</section>
+<section id="vi-nuevamente-en-acción" class="slide level2">
+<h2>VI nuevamente en acción</h2>
+<ul>
+<li><p>Todo lo que se conoce sobre VI es aplicable en este contexto</p></li>
+<li><p>La exogeneidad se argumenta por la asignación <em>como si fuera aleatoria</em> que origina la discontinuidad</p></li>
+<li><p>La exclusión implica que cruzar el corte afecta a <span class="math inline">\(y_i\)</span> solo a través de <span class="math inline">\(D_i\)</span> (no debe haber otras intervenciones que usen el mismo corte)</p></li>
+<li><p>La relevancia requiere que la discontinuidad genere diferencias en la probabilidad de adopción (supuesto que se debe probar)</p></li>
+<li><p>Se asume monotonicidad: cruzar el corte no hace que nadie deje de recibir el tratamiento</p></li>
 </ul>
 <p><span class="math display">\[
-y_i = \pi_0 + \pi_1 x_i + \pi_2 x_i^2 + \lambda D_i + \nu_i
-\]</span> - En términos de código, hacemos lo mismo que en los diseños nítidos</p>
+D_i(1) \geq D_i(0) \quad \text{para todo } i \text{ cerca de } c_0
+\]</span> donde <span class="math inline">\(D_i(1)\)</span> y <span class="math inline">\(D_i(0)\)</span> son el estado de tratamiento de <span class="math inline">\(i\)</span> si <span class="math inline">\(T_i=1\)</span> y si <span class="math inline">\(T_i=0\)</span></p>
+<ul>
+<li>Puede haber un problema de instrumentos débiles, por ejemplo si el salto en la primera etapa es pequeño (por lo que <span class="math inline">\(\lambda=\delta/\rho\)</span> se vuelve inestable)</li>
+</ul>
+</section>
+<section id="últimos-consejos-1" class="slide level2">
+<h2>Últimos consejos</h2>
+<ul>
+<li><p>Reportar la primera etapa y la forma reducida, con sus correspondientes gráficos</p></li>
+<li><p>Evitar polinomios globales de grado alto (Gelman &amp; Imbens, 2019) y, si se reportan, que sea como ejercicio de robustez junto a la estimación local</p></li>
+<li><p>Mostrar que el resultado no depende del ancho de banda y reportar la estimación con el <span class="math inline">\(h\)</span> óptimo y con valores alrededor de este (por ejemplo, <span class="math inline">\(h/2\)</span> y <span class="math inline">\(2h\)</span>)</p></li>
+<li><p>Reportar el número efectivo de observaciones a cada lado del corte</p></li>
+<li><p>Realizar las pruebas recomendadas para el caso nítido</p></li>
+</ul>
 </section></section>
 <section>
 <section id="resumen" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
@@ -1698,75 +1600,59 @@ y_i = \pi_0 + \pi_1 x_i + \pi_2 x_i^2 + \lambda D_i + \nu_i
 <section id="discontinuidades-nítidas-resumen" class="slide level2">
 <h2>Discontinuidades nítidas: resumen</h2>
 <ul>
-<li>RD nítida se usa cuando el tratamiento es una función determinística de una variable <span class="math inline">\(x\)</span></li>
+<li>El diseño nítido se usa cuando el tratamiento es una función determinística de una variable <span class="math inline">\(x_i\)</span></li>
 </ul>
 <p><span class="math display">\[
 D_i =
 \begin{cases}
-1  &amp; \mbox{if } x_i \geq x_0 \\
-0  &amp; \mbox{if } x_i &lt; x_0
+1  &amp; \text{si } x_i \geq c_0 \\
+0  &amp; \text{si } x_i &lt; c_0
 \end{cases}
 \]</span></p>
 <ul>
-<li><p><span class="math inline">\(x_0\)</span> es el <em>umbral</em> o <em>corte</em></p></li>
+<li><p><span class="math inline">\(c_0\)</span> es el <em>umbral</em> o <em>corte</em></p></li>
 <li><p><span class="math inline">\(D_i\)</span> es una función determinística de <span class="math inline">\(x_i\)</span> pues una vez que conocemos <span class="math inline">\(x_i\)</span> entonces conocemos <span class="math inline">\(D_i\)</span></p></li>
-<li><p><span class="math inline">\(D_i\)</span> es una función discontinua en <span class="math inline">\(x_i\)</span> pues no importa que tanto nos acerquemos por la izquierda o por la derecha a <span class="math inline">\(x_0\)</span>, el estado del tratamiento no cambia</p></li>
+<li><p><span class="math inline">\(D_i\)</span> es una función discontinua en <span class="math inline">\(x_i\)</span> pues no importa qué tanto nos acerquemos por la izquierda o por la derecha a <span class="math inline">\(c_0\)</span>, el estado del tratamiento no cambia hasta cruzad <span class="math inline">\(c_0\)</span></p></li>
 </ul>
 </section>
 <section id="discontinuidades-nítidas-resumen-1" class="slide level2">
 <h2>Discontinuidades nítidas: resumen</h2>
 <ul>
 <li><p>A diferencia de los modelos de otros diseños, no hay valor de <span class="math inline">\(x_i\)</span> en el que observemos a individuos tratados y no tratados</p></li>
-<li><p>La interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de <span class="math inline">\(x_0\)</span>, donde podemos tener confianza que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a <span class="math inline">\(x_0\)</span></p></li>
+<li><p>La interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de <span class="math inline">\(c_0\)</span>, donde asumimos que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a <span class="math inline">\(c_0\)</span></p></li>
 <li><p>Una especificación flexible permite no confundir una discontinuidad con una no linealidad</p></li>
-<li><p>En la práctica, suele variarse el orden del polinomio de <span class="math inline">\(x_i\)</span> hasta de orden 2 o 3 y se espera que los resultados no sean muy sensibles a especificaciones de este</p></li>
-<li><p>El método no paramétrico consiste en la estimación de <span class="math inline">\(\rho\)</span> en una vecindad de <span class="math inline">\(x_0\)</span> usando métodos locales no paramétricos</p></li>
+<li><p>En la práctica, suelen usarse polinomios de orden bajo (1 o 2) y se verifica que los resultados no sean sensibles a la especificación</p></li>
+<li><p>La estimación no paramétrica consiste en la estimación de <span class="math inline">\(\delta\)</span> en una vecindad de <span class="math inline">\(c_0\)</span> usando regresión local no paramétrica</p></li>
 </ul>
 </section>
-<section id="rd-difusa-resumen" class="slide level2">
-<h2>RD difusa: resumen</h2>
+<section id="discontinuidades-difusas-resumen" class="slide level2">
+<h2>Discontinuidades difusas: resumen</h2>
 <ul>
-<li><p>RD difusa explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable</p></li>
+<li><p>El diseño difuso explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable</p></li>
 <li><p>El resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga</p></li>
 </ul>
 <p><span class="math display">\[
 P(D_i =1|x_i)=
 \begin{cases}
-g_1(x_i)  &amp; \mbox{if } x_i \geq x_0 \\
-g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
+g_1(x_i)  &amp; \text{si } x_i \geq c_0 \\
+g_0(x_i)  &amp; \text{si } x_i &lt; c_0
 \end{cases}
 \]</span></p>
-<ul>
-<li><p>Las funciones <span class="math inline">\(g_0\)</span> u <span class="math inline">\(g_1\)</span> difieren en <span class="math inline">\(x_0\)</span></p></li>
-<li><p>Supongamos que <span class="math inline">\(g_1(x_0)&gt;g_0(x_0)\)</span>, es decir, <span class="math inline">\(x_i\geq x_0\)</span> hace el tratamiento más probable</p></li>
-</ul>
 </section>
-<section id="rd-difusa-resumen-1" class="slide level2">
-<h2>RD difusa: resumen</h2>
+<section id="discontinuidades-difusas-resumen-1" class="slide level2">
+<h2>Discontinuidades difusas: resumen</h2>
 <ul>
-<li>La relación entre el estado de tratamiento y <span class="math inline">\(x_i\)</span> puede ser escrita como:</li>
+<li><p>La primera etapa es el salto <span class="math inline">\(\rho\)</span> en <span class="math inline">\(P(D_i=1|x_i)\)</span> en <span class="math inline">\(c_0\)</span>, y la forma reducida es el salto <span class="math inline">\(\delta\)</span> en <span class="math inline">\(y_i\)</span> en <span class="math inline">\(c_0\)</span></p></li>
+<li><p>El efecto del tratamiento es el cociente</p></li>
 </ul>
-<p><span class="math display">\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\]</span></p>
-<p>con <span class="math inline">\(T_i=\mathcal{I}(x_i\geq x_0)\)</span></p>
+<p><span class="math display">\[
+\lambda = \frac{\delta}{\rho}
+\]</span></p>
 <ul>
-<li>Escribiendo las funciones <span class="math inline">\(g_0\)</span> y <span class="math inline">\(g_1\)</span> como polinomios flexibles de <span class="math inline">\(x_i\)</span></li>
+<li><p>Se estima con VI usando <span class="math inline">\(T_i\)</span> como instrumento de <span class="math inline">\(D_i\)</span> (paramétrica) o con regresión local a cada lado del corte (no paramétrica)</p></li>
+<li><p>Además de continuidad, se requieren los supuestos de VI (exogeneidad, exclusión, relevancia y monotonicidad)</p></li>
+<li><p>Bajo estos supuestos, <span class="math inline">\(\lambda\)</span> es un LATE para los cumplidores en el corte</p></li>
 </ul>
-<p><span class="math display">\[E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i+\ldots+\gamma_{0p}x_i^p +\pi T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i\]</span></p>
-</section>
-<section id="rd-difusa-resumen-2" class="slide level2">
-<h2>RD difusa: resumen</h2>
-<ul>
-<li><p>En la primera etapa podríamos usar <span class="math inline">\(\{x_iTi, x_i^2 T_i,...,x_i^p T_i\}\)</span> como instrumentos para <span class="math inline">\(D_i\)</span></p></li>
-<li><p>Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones</p></li>
-<li><p>La versión más simple solo usa <span class="math inline">\(T_i\)</span> como instrumento</p></li>
-<li><p>La primera etapa será</p></li>
-</ul>
-<p><span class="math display">\[D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}\]</span></p>
-<ul>
-<li>La forma reducida o ITT de este modelo es:</li>
-</ul>
-<p><span class="math display">\[y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}\]</span> - Mientras que la ecuación estructural</p>
-<p><span class="math display">\[y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + u_{i}\]</span> se estima por MC2E usando <span class="math inline">\(T_i\)</span> como instrumento de <span class="math inline">\(D_i\)</span></p>
 </section></section>
 <section id="diseños-con-discontinuidades-2" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Diseños con discontinuidades</h1>
@@ -1825,7 +1711,7 @@ g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -2118,7 +2004,8 @@ g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }
           // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
           for (var i=0; i<links.length; i++) {
             const link = links[i];
             if (!isInternal(link.href)) {
@@ -2127,8 +2014,69 @@ g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
               if (link.dataset.originalHref !== undefined) {
                 link.href = link.dataset.originalHref;
               }
+              if (!link.classList.contains('no-external-icon')) {
+              }
             }
           }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
         function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
           const config = {
             allowHTML: true,
@@ -2142,6 +2090,7 @@ g_0(x_i)  &amp; \mbox{if } x_i &lt; x_0
             interactiveBorder: 10,
             theme: 'light-border',
             placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
           };
           if (contentFn) {
             config.content = contentFn;

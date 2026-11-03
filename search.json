@@ -1460,28 +1460,28 @@
     "href": "diapositivas/discontinuidades.html#no-linealidad-vs-discontinuidad",
     "title": "Inferencia Causal 2026",
     "section": "No linealidad vs discontinuidad",
-    "text": "No linealidad vs discontinuidad\n\n\n\nEn los paneles A y B hay un salto en \\(E[Y|a]\\) en el corte, con una relación lineal y no lineal, respectivamente\nEn el panel C, \\(E[Y|a]\\) es continua pero muy pronunciada cerca de \\(a_0\\), por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe\nAl usar un diseño con discontinuidad debemos asegurarnos de que estamos identificando una discontinuidad y no una no linealidad\n\nModelar la no linealidad (enfoque original)\nConcentrarnos solo en una ventana cercana a \\(a_0\\) con métodos no paramétricos (enfoque más moderno)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: elaboración propia con datos simulados, con base en la figura 6.1.1 de Angrist & Pischke (2009)."
+    "text": "No linealidad vs discontinuidad\n\n\n\nEn los paneles A y B hay un salto en \\(E(y|a)\\) en el corte, con una relación lineal y no lineal, respectivamente\nEn el panel C, \\(E(y|a)\\) es continua pero muy pronunciada cerca de \\(a_0\\), por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe\nAl usar un diseño con discontinuidad debemos asegurarnos de que estamos identificando una discontinuidad y no una no linealidad\n\nModelar la no linealidad (enfoque original)\nConcentrarnos solo en una ventana cercana a \\(a_0\\) con métodos no paramétricos (enfoque más moderno)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: elaboración propia con datos simulados, con base en la figura 6.1.1 de Angrist & Pischke (2009)."
   },
   {
     "objectID": "diapositivas/discontinuidades.html#no-linealidades",
     "href": "diapositivas/discontinuidades.html#no-linealidades",
     "title": "Inferencia Causal 2026",
     "section": "No linealidades",
-    "text": "No linealidades\n\nPodemos usar polinomios de \\(a\\)\nIdealmente, las conclusiones no deberían cambiar de acuerdo al grado del polinomio usado\nLa recomendación práctica es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados\nLa gráfica de mortalidad por edad parece tener una leve curvatura a la derecha de \\(a_0\\)\nPodemos ajustar directamente un polinomio de la edad:\n\n\\[\n\\bar{M}_a=\\alpha+\\rho D_a + \\gamma_1 a + \\gamma_2 a^2 + \\varepsilon_a\n\\]"
+    "text": "No linealidades\n\nPodemos usar polinomios de \\(a\\)\nIdealmente, las conclusiones no deberían cambiar de acuerdo con el grado del polinomio usado\nLa recomendación práctica es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados\nLa gráfica de mortalidad por edad parece tener una leve curvatura a la derecha de \\(a_0\\)\nPodemos ajustar directamente un polinomio de la edad:\n\n\\[\n\\bar{M}_a=\\alpha+\\rho D_a + \\gamma_1 a + \\gamma_2 a^2 + \\varepsilon_a\n\\]"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#no-linealidades-1",
     "href": "diapositivas/discontinuidades.html#no-linealidades-1",
     "title": "Inferencia Causal 2026",
     "section": "No linealidades",
-    "text": "No linealidades\n\nO podemos especificar una pendiente diferente para \\(a\\) antes y después de \\(a_0\\):\n\n\\[\n\\bar{M}_a=\\alpha+\\rho D_a + \\gamma(a-a_0) + \\lambda[(a-a_0)D_a] + \\varepsilon_a\n\\]\n\nNotemos que en este caso el efecto del tratamiento es:\n\n\\[\n\\rho+\\lambda(a-a_0)\n\\]\n\nEs decir, un efecto que depende de la distancia con \\(a_0\\)\nSin embargo, ¿qué tan válido es evaluar el efecto en, digamos, \\(a=30\\)? ¿O en \\(a=10\\)?"
+    "text": "No linealidades\n\nO podemos especificar una pendiente diferente para \\(a\\) antes y después de \\(a_0\\):\n\n\\[\n\\bar{M}_a=\\alpha+\\rho D_a + \\gamma(a-a_0) + \\kappa[(a-a_0)D_a] + \\varepsilon_a\n\\]\n\nNotemos que en este caso el efecto del tratamiento es:\n\n\\[\n\\rho+\\kappa(a-a_0)\n\\]\n\nEs decir, un efecto que depende de la distancia con \\(a_0\\)\nSin embargo, ¿qué tan válido es evaluar el efecto en, digamos, \\(a=30\\)? ¿O en \\(a=10\\)?"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#no-linealidades-2",
     "href": "diapositivas/discontinuidades.html#no-linealidades-2",
     "title": "Inferencia Causal 2026",
     "section": "No linealidades",
-    "text": "No linealidades\n\nPodemos emplear una combinación de no linealidades y cambios en pendiente:\n\n\\[\n\\begin{aligned}\n\\bar{M}_a&=\\alpha+\\rho D_a + \\gamma_1(a-a_0) +\\gamma_2(a-a_0)^2+\\lambda_1[(a-a_0)D_a]+ \\lambda_2[(a-a_0)^2D_a] + \\varepsilon_a\n\\end{aligned}\n\\]\n\nEn esta especificación los términos lineal y cuadrático cambian en \\(a_0\\)\nNotemos que en este caso el efecto del tratamiento es:\n\n\\[\n\\rho+\\lambda_1(a-a_0)+\\lambda_2(a-a_0)^2\n\\]\n\nEn los dos casos anteriores, regularmente se interpreta solo a \\(\\rho\\) como el efecto del tratamiento"
+    "text": "No linealidades\n\nPodemos emplear una combinación de no linealidades y cambios en pendiente:\n\n\\[\n\\begin{aligned}\n\\bar{M}_a&=\\alpha+\\rho D_a + \\gamma_1(a-a_0) +\\gamma_2(a-a_0)^2+\\kappa_1[(a-a_0)D_a]+ \\kappa_2[(a-a_0)^2D_a] + \\varepsilon_a\n\\end{aligned}\n\\]\n\nEn esta especificación los términos lineal y cuadrático cambian en \\(a_0\\)\nNotemos que en este caso el efecto del tratamiento es:\n\n\\[\n\\rho+\\kappa_1(a-a_0)+\\kappa_2(a-a_0)^2\n\\]\n\nEn los dos casos anteriores, regularmente se interpreta solo a \\(\\rho\\) como el efecto del tratamiento"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#no-linealidades-3",
@@ -1509,7 +1509,7 @@
     "href": "diapositivas/discontinuidades.html#transferencias-gubernamentales-y-apoyo-político",
     "title": "Inferencia Causal 2026",
     "section": "Transferencias gubernamentales y apoyo político",
-    "text": "Transferencias gubernamentales y apoyo político\n\nManacorda, Miguel & Vigorito (2011), “Government Transfers and Political Support”, American Economic Journal: Applied Economics\n¿Los programas gubernamentales generan lealtades?\nPrograma Nacional de Emergencia Social (PANES), focalizado con base en un índice de pobreza\nExiste una discontinuidad en el acceso al programa"
+    "text": "Transferencias gubernamentales y apoyo político\n\nManacorda, Miguel & Vigorito (2011), “Government Transfers and Political Support”, American Economic Journal: Applied Economics\n¿Los programas gubernamentales generan lealtades?\nPrograma Nacional de Emergencia Social (PANES), focalizado con base en un índice de ingreso\nExiste una discontinuidad en el acceso al programa"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#contexto",
@@ -1530,7 +1530,7 @@
     "href": "diapositivas/discontinuidades.html#datos",
     "title": "Inferencia Causal 2026",
     "section": "Datos",
-    "text": "Datos\n\n\n\nSe recolectó información de los hogares alrededor de la discontinuidad (tratados y no tratados)\nSe realizaron dos rondas de seguimiento en 2006-07 y en 2008\nVariable de interés: apoyo político al gobierno en turno\nLa figura muestra que la elegibilidad determina casi por completo la participación, es decir, tenemos un diseño nítido\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Manacorda, Miguel & Vigorito (2011)."
+    "text": "Datos\n\n\n\nSe recolectó información de los hogares alrededor de la discontinuidad (tratados y no tratados)\nSe realizaron dos rondas de seguimiento en 2006-07 y en 2008\nVariable de interés: apoyo político al gobierno en turno\nLa figura muestra que la elegibilidad determina casi por completo la participación, es decir, el diseño es prácticamente nítido\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Manacorda, Miguel & Vigorito (2011)."
   },
   {
     "objectID": "diapositivas/discontinuidades.html#cómo-medir-el-apoyo-político",
@@ -1572,7 +1572,7 @@
     "href": "diapositivas/discontinuidades.html#robustez",
     "title": "Inferencia Causal 2026",
     "section": "Robustez",
-    "text": "Robustez\n\nSi el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005)\n\n\n\n\n\n\nVariable dependiente\nMedia no elegibles\nCoeficiente\nError estándar\nObservaciones\n\n\n\n\nLog del ingreso per cápita\n6.34\n-0.062\n(0.059)\n2,150\n\n\nAños de educación promedio del hogar (16 años o más)\n4.05\n0.135\n(0.198)\n2,162\n\n\nTamaño del hogar\n3.03\n-0.350\n(0.242)\n2,232\n\n\nEdad promedio del hogar\n31.68\n-1.195\n(2.159)\n2,232\n\n\nQuien responde es mujer\n0.70\n-0.025\n(0.057)\n2,231\n\n\nAños de educación de quien responde\n6.43\n0.228\n(0.307)\n2,206\n\n\nEdad de quien responde\n43.63\n-0.929\n(1.512)\n2,231\n\n\nNo respuesta sobre apoyo político (2007)\n0.41\n0.037\n(0.044)\n2,372\n\n\nNo respuesta sobre apoyo político (2008)\n0.46\n0.049\n(0.048)\n2,372\n\n\nVotó en las elecciones de 2004\n0.92\n0.013\n(0.023)\n2,200\n\n\n\nNota:   Regresiones de características previas al programa en el indicador de elegibilidad, con la especificación de la columna (2) de la tabla anterior. Fuente: adaptado de la tabla 2 de Manacorda, Miguel & Vigorito (2011)."
+    "text": "Robustez\n\nSi el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005) ni la no respuesta en las encuestas de seguimiento\n\n\n\n\n\n\nVariable dependiente\nMedia no elegibles\nCoeficiente\nError estándar\nObservaciones\n\n\n\n\nLog del ingreso per cápita\n6.34\n-0.062\n(0.059)\n2,150\n\n\nAños de educación promedio del hogar (16 años o más)\n4.05\n0.135\n(0.198)\n2,162\n\n\nTamaño del hogar\n3.03\n-0.350\n(0.242)\n2,232\n\n\nEdad promedio del hogar\n31.68\n-1.195\n(2.159)\n2,232\n\n\nQuien responde es mujer\n0.70\n-0.025\n(0.057)\n2,231\n\n\nAños de educación de quien responde\n6.43\n0.228\n(0.307)\n2,206\n\n\nEdad de quien responde\n43.63\n-0.929\n(1.512)\n2,231\n\n\nNo respuesta sobre apoyo político (2007)\n0.41\n0.037\n(0.044)\n2,372\n\n\nNo respuesta sobre apoyo político (2008)\n0.46\n0.049\n(0.048)\n2,372\n\n\nVotó en las elecciones de 2004\n0.92\n0.013\n(0.023)\n2,200\n\n\n\nNota:   Regresiones de características previas al programa en el indicador de elegibilidad, con la especificación de la columna (2) de la tabla anterior. Fuente: adaptado de la tabla 2 de Manacorda, Miguel & Vigorito (2011)."
   },
   {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-nítidas-2",
@@ -1635,14 +1635,14 @@
     "href": "diapositivas/discontinuidades.html#estimación-no-paramétrica",
     "title": "Inferencia Causal 2026",
     "section": "Estimación no paramétrica",
-    "text": "Estimación no paramétrica\n\nMuchos autores cuestionan la estimación paramétrica que hemos tratado hasta ahora pues el sesgo puede ser sustancial\nEn muchas aplicaciones se prefiere usar una regresión lineal local (no paramétrica)\nEs una regresión restringida a una ventana alrededor del corte, con pesos que dependen de la distancia de cada observación a \\(c_0\\)\nConsiste en estimar\n\n\\[\\hat{a}_{+}, \\hat{b}_{+} = \\arg \\min_{a,b}\\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\\left(\\frac{x_i-c_0}{h}\\right)1(x_i\\geq c_0)\\]\n\nY lo mismo para \\(x_i&lt;c_0\\), de donde obtenemos \\(\\hat{a}_{-}\\), para estimar \\(\\hat{\\delta}=\\hat{a}_{+}-\\hat{a}_{-}\\)\nEl parámetro \\(h\\) indica el ancho de banda, que podemos escoger con criterios como minimizar el error cuadrático medio o validación cruzada"
+    "text": "Estimación no paramétrica\n\nMuchos autores cuestionan la estimación paramétrica que hemos tratado hasta ahora pues el sesgo puede ser sustancial\nEn muchas aplicaciones se prefiere usar una regresión lineal local (no paramétrica)\nEs una regresión restringida a una ventana alrededor del corte, con pesos que dependen de la distancia de cada observación a \\(c_0\\)\nConsiste en estimar\n\n\\[\\hat{a}_{+}, \\hat{b}_{+} = \\arg \\min_{a,b}\\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\\left(\\frac{x_i-c_0}{h}\\right)\\mathcal{I}(x_i\\geq c_0)\\]\n\nY lo mismo para \\(x_i&lt;c_0\\), de donde obtenemos \\(\\hat{a}_{-}\\), para estimar \\(\\hat{\\delta}=\\hat{a}_{+}-\\hat{a}_{-}\\)\nEl parámetro \\(h\\) indica el ancho de banda, que podemos escoger con criterios como minimizar el error cuadrático medio o validación cruzada"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#estimación-no-paramétrica-1",
     "href": "diapositivas/discontinuidades.html#estimación-no-paramétrica-1",
     "title": "Inferencia Causal 2026",
     "section": "Estimación no paramétrica",
-    "text": "Estimación no paramétrica\n\nEn general, la regresión local se estima en cada valor \\(x\\), pero en el diseño discontinuo solo nos interesa la predicción en \\(c_0\\) por cada lado\nLos pesos vienen de una función kernel \\(K(u)\\), con \\(u=(x_i-c_0)/h\\)\nTodos los kernels, salvo el gaussiano, dan peso cero fuera de \\(|u|\\leq 1\\)\nEn la práctica, rdrobust elige el \\(h\\) óptimo y estima la regresión local, con kernel triangular por defecto"
+    "text": "Estimación no paramétrica\n\nEn general, la regresión local se estima en cada valor \\(x\\), pero en el diseño discontinuo solo nos interesa la predicción en \\(c_0\\) por cada lado\nLos pesos vienen de una función kernel \\(K(u)\\), con \\(u=(x_i-c_0)/h\\)\nTodos los kernels de la figura, salvo el gaussiano, dan peso cero fuera de \\(|u|\\leq 1\\)\nEn la práctica, rdrobust elige el \\(h\\) óptimo y estima la regresión local, con kernel triangular por defecto"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#kernels-en-r",
@@ -1659,130 +1659,95 @@
     "text": "Últimos consejos\n\nHacer estudios placebo cuando sea posible: probar la especificación principal en variables que no deberían verse afectadas por el tratamiento\nMostrar que no haya una discontinuidad en la densidad de la variable de asignación en el corte, lo que sugeriría manipulación\n\nLa prueba de densidad (McCrary, 2008) contrasta si la densidad de \\(x_i\\) salta en \\(c_0\\) (el paquete rddensity implementa la versión más reciente)\n\nVerificar que otras covariables sean continuas alrededor del corte"
   },
   {
-    "objectID": "diapositivas/discontinuidades.html#motivación-la-ilusión-de-la-élite",
-    "href": "diapositivas/discontinuidades.html#motivación-la-ilusión-de-la-élite",
-    "title": "Inferencia Causal 2026",
-    "section": "Motivación: la ilusión de la élite",
-    "text": "Motivación: la ilusión de la élite\n\nEscuelas de élite, exam schools, altamente competitivas en Nueva York y Boston\nBajas tasas de admisión\n¿Cómo diferenciar el valor agregado de la escuela del hecho de que la acta selectividad hace que a estas escuelas asistan solo los alumnos más brillantes?\n¡Ojalá pudiéramos asignar alumnos al azar!\nLos estudiantes en estas escuelas de élite comparten clases con estudiantes aventajados"
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#la-regla-de-asignación",
-    "href": "diapositivas/discontinuidades.html#la-regla-de-asignación",
-    "title": "Inferencia Causal 2026",
-    "section": "La regla de asignación",
-    "text": "La regla de asignación\n\n\n\nCada escuela tiene un corte de puntaje de admisión\nEn la escuela más competitiva de Boston aquellos estudiantes debajo del corte nunca asisten a dicha escuela\nLos que están arriba del corte casi siempre acaban en la BLS\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014)."
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#la-regla-de-asignación-1",
-    "href": "diapositivas/discontinuidades.html#la-regla-de-asignación-1",
-    "title": "Inferencia Causal 2026",
-    "section": "La regla de asignación",
-    "text": "La regla de asignación\n\n\n\nSin embargo, aquellos que no alcanzan el puntaje mínimo de la BLS acaban de cualquier forma en una escuela de élite\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014)."
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#la-regla-de-asignación-2",
-    "href": "diapositivas/discontinuidades.html#la-regla-de-asignación-2",
-    "title": "Inferencia Causal 2026",
-    "section": "La regla de asignación",
-    "text": "La regla de asignación\n\n\n\nHay una dimensión que genera una discontinuidad: efectos de pares o peer effects\nEs una de las preocupaciones más importantes de política educativa en casi cualquier país\nTener buenos (malos) compañeros afecta los resultados del individuo \\(i\\)\nQuienes ingresan a la BLS (séptimo grado) tuvieron compañeros con mejor desempeño en matemáticas cuando iban en cuarto grado\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014)."
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#modelo-de-efectos-de-pares",
-    "href": "diapositivas/discontinuidades.html#modelo-de-efectos-de-pares",
-    "title": "Inferencia Causal 2026",
-    "section": "Modelo de efectos de pares",
-    "text": "Modelo de efectos de pares\n\nUn modelo de efectos de pares:\n\n\\[Y_i=\\theta_0+\\theta_1\\bar{X}_{(i)}+\\theta_2 X_i + u_i\\]\n\n\\(Y_i\\) es el resultado de un examen de matemáticas en el séptimo año del individuo \\(i\\)\n\\(X_i\\) es el resultado de un examen de matemáticas en el cuarto año del individuo \\(i\\)\n\\(\\bar{X}_{(i)}\\) es el resultado promedio de un examen de matemáticas en el cuarto año de los compañeros de \\(i\\) sin incluir \\(i\\)\nOtra notación en la literatura escribe esto como \\(\\bar{X}_{(-i)}\\)\nLos resultados están estandarizados por lo que los coeficientes se interpretan en términos de desviaciones estándar: \\(\\hat{\\theta}_1=0.25\\sigma\\)"
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#rd-difuso-vi",
-    "href": "diapositivas/discontinuidades.html#rd-difuso-vi",
-    "title": "Inferencia Causal 2026",
-    "section": "RD difuso + VI",
-    "text": "RD difuso + VI\n\nProblemas\n\nSabemos que en la discontinuidad, la calidad de los pares cambia drásticamente\nCaracterísticas de los hogares (habilidad de los padres)\nDoble causalidad: \\(i\\) afecta a \\(j\\) pero \\(j\\) afecta a \\(i\\) a la vez\n\n\n\n\nVariables instrumentales:\n\nQueremos conocer el efecto de la calidad de los pares en el desempeño de matemáticas\nUsamos el corte mínimo para ser aceptado en BLS como instrumento de la calidad de los pares"
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#forma-reducida",
-    "href": "diapositivas/discontinuidades.html#forma-reducida",
-    "title": "Inferencia Causal 2026",
-    "section": "Forma reducida",
-    "text": "Forma reducida\n\n\n\nSi solo usamos el corte para ser aceptado en BLS:\n\n\\[Y_i=\\alpha_0+\\rho D_i + \\beta_0 R_i + \\epsilon_i\\]\n\nSe obtiene \\(\\hat{\\rho}=-0.02\\), \\(s.e.=0.10\\)\nEste es un modelo de forma reducida (variable de interés en función de la posición respecto al corte)\nEs el efecto causal de estar antes o después del corte\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014)."
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#modelo-de-vi",
-    "href": "diapositivas/discontinuidades.html#modelo-de-vi",
-    "title": "Inferencia Causal 2026",
-    "section": "Modelo de VI",
-    "text": "Modelo de VI\n\nModelo estructural:\n\n\\[Y_i=\\alpha_2+\\lambda \\bar{X}_{(i)} + \\beta_2 R_i + \\epsilon_{2i}\\]\n\nCon una primera etapa\n\n\\[\\bar{X}_{(i)}=\\alpha_1 + \\phi D_i + \\beta_1 R_i + \\epsilon_{1i}\\]\n\nEn la primera etapa \\(\\hat{\\phi}=0.80\\sigma\\), como lo habíamos visto ya en la Figura 4.8\nEn la segunda etapa \\(\\hat{\\lambda}=-0.023\\), \\((s.e.=0.13)\\)"
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#modelo-de-vi-1",
-    "href": "diapositivas/discontinuidades.html#modelo-de-vi-1",
-    "title": "Inferencia Causal 2026",
-    "section": "Modelo de VI",
-    "text": "Modelo de VI\n\n\n\n\n\n\n\n\n\n\n\nFuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014)."
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#la-ilusión",
-    "href": "diapositivas/discontinuidades.html#la-ilusión",
-    "title": "Inferencia Causal 2026",
-    "section": "La ilusión",
-    "text": "La ilusión\n\nNo hay tal ganancia por compartir clase con alumnos brillantes\nLa gente sigue percibiendo que sus hijos ganan al ir a escuelas de élite\nPosiblemente los egresados de estas escuelas tengan mayores ingresos\nLas ganancias que se puedan obtener no son vía el efecto de pares o un mejor rendimiento cognitivo"
-  },
-  {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-difusas-1",
     "href": "diapositivas/discontinuidades.html#discontinuidades-difusas-1",
     "title": "Inferencia Causal 2026",
     "section": "Discontinuidades difusas",
-    "text": "Discontinuidades difusas\n\nTenemos un diseño difuso cuando hay un salto en la probabilidad de ser asignado al tratamiento\n\n\\[\n\\begin{align}\n\\lim_{x_i\\rightarrow c_0} P(D_i=1|x_i=c_0) \\neq \\lim_{c_0 \\leftarrow x_i}  P(D_i=1|x_i=c_0) \\\\\n\\end{align}\n\\]\n\nLa probabilidad de recibir el tratamiento es discontinua en \\(c_0\\)\nEl supuesto de identificación es igual que en el caso nítido, que los resultados potenciales son funciones continuas y suaves en \\(c_0\\)\nRecurrimos a variables instrumentales\nSer asignado al tratamiento se vuelve un instrumento para recibir el tratamiento\n\n\\[\nP(D_i=1|x_i) =\n\\begin{cases}\ng_1(x_i)  & \\mbox{si } x_i \\geq c_0 \\\\\ng_0(x_i)  & \\mbox{si } x_i &lt; c_0\n\\end{cases}\n\\]"
+    "text": "Discontinuidades difusas\n\nTenemos un diseño difuso cuando hay un salto en la probabilidad de recibir el tratamiento\n\n\\[\n\\lim_{x\\downarrow c_0} P(D_i=1|x_i=x) \\neq \\lim_{x\\uparrow c_0} P(D_i=1|x_i=x)\n\\]\n\nLa probabilidad de recibir el tratamiento es discontinua en \\(c_0\\)\nAl igual que en el diseño nítido, para la identificación asumimos que los resultados potenciales son funciones continuas y suaves en \\(c_0\\)\nRecurrimos además a los supuestos de variables instrumentales que revisamos más adelante\nSer asignado al tratamiento se vuelve un instrumento para recibir el tratamiento\n\n\\[\nP(D_i=1|x_i) =\n\\begin{cases}\ng_1(x_i)  & \\text{si } x_i \\geq c_0 \\\\\ng_0(x_i)  & \\text{si } x_i &lt; c_0\n\\end{cases}\n\\]\n\nLas funciones \\(g_0\\) y \\(g_1\\) difieren en \\(c_0\\)"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-difusas-2",
     "href": "diapositivas/discontinuidades.html#discontinuidades-difusas-2",
     "title": "Inferencia Causal 2026",
     "section": "Discontinuidades difusas",
-    "text": "Discontinuidades difusas\n\nTenemos entonces una primera etapa\n\n\\[\nD_i = \\gamma_0 + \\gamma_1 x_i + \\gamma_2 x_i^2 + \\rho T_i + \\varepsilon_i\n\\]\ndonde\n\\[\nT_i =\n\\begin{cases}\n1  & \\mbox{si } x_i \\geq c_0 \\\\\n0  & \\mbox{si } x_i &lt; c_0\n\\end{cases}\n\\]"
+    "text": "Discontinuidades difusas\n\nTenemos entonces una primera etapa, que define la relación entre la discontinuidad y la probabilidad de recibir el tratamiento\n\n\\[\nD_i = \\gamma_0 + \\gamma_1 x_i + \\rho T_i + \\xi_i\n\\]\ndonde\n\\[\nT_i =\n\\begin{cases}\n1  & \\text{si } x_i \\geq c_0 \\\\\n0  & \\text{si } x_i &lt; c_0\n\\end{cases}\n\\]"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-difusas-3",
     "href": "diapositivas/discontinuidades.html#discontinuidades-difusas-3",
     "title": "Inferencia Causal 2026",
     "section": "Discontinuidades difusas",
-    "text": "Discontinuidades difusas\n\nLa forma reducida es\n\n\\[\ny_i = \\beta_0 + \\beta_1 x_i + \\beta_2 x_i^2 + \\delta T_i + u_i\n\\]\n\nY la ecuación estructural es\n\n\\[\ny_i = \\pi_0 + \\pi_1 x_i + \\pi_2 x_i^2 + \\lambda D_i + \\nu_i\n\\] - En términos de código, hacemos lo mismo que en los diseños nítidos"
+    "text": "Discontinuidades difusas\n\nLa forma reducida presenta la relación entre la variable de resultados y la discontinuidad\n\n\\[\ny_i = \\beta_0 + \\beta_1 x_i + \\delta T_i + u_i\n\\]\n\nY la ecuación estructural presenta la relación entre la adopción y la variable de resultados\n\n\\[\ny_i = \\pi_0 + \\pi_1 x_i + \\lambda D_i + \\nu_i\n\\]\n\nLa forma reducida es un diseño nítido con \\(T_i\\) en lugar de \\(D_i\\)\n\\(\\delta\\) es el salto de \\(y_i\\) en el corte\nEl efecto del tratamiento es el cociente de los dos saltos, como en el estimador de Wald\n\n\\[\n\\lambda = \\frac{\\delta}{\\rho}\n\\]\n\nLa interpretación es un LATE para los cumplidores en el umbral, bajo los supuestos de VI que revisaremos más adelante"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#estimación-paramétrica-4",
+    "href": "diapositivas/discontinuidades.html#estimación-paramétrica-4",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación paramétrica",
+    "text": "Estimación paramétrica\n\nLa relación entre el estado de tratamiento y \\(x_i\\) puede ser escrita como:\n\n\\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\\]\ncon \\(T_i=\\mathcal{I}(x_i\\geq c_0)\\)\n\nEscribiendo las funciones \\(g_0\\) y \\(g_1\\) como polinomios flexibles de \\(x_i\\)\nComo en el caso nítido, en las ecuaciones paramétricas siguientes, \\(x_i\\) denota la variable de asignación centrada, \\(\\tilde{x}_i = x_i - c_0\\), de modo que \\(\\rho\\) es el salto en el corte\n\n\\[E(D_i|x_i)=\\gamma_{00}+\\gamma_{01}x_i+\\gamma_{02}x_i^2+\\ldots+\\gamma_{0p}x_i^p +\\rho T_i + \\gamma_{1}^{*}x_i T_i+ \\gamma_{2}^{*}x_i^2 T_i+\\ldots+ \\gamma_{p}^{*}x_i^p T_i\\]"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#estimación-paramétrica-5",
+    "href": "diapositivas/discontinuidades.html#estimación-paramétrica-5",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación paramétrica",
+    "text": "Estimación paramétrica\n\nEn la primera etapa podríamos usar \\(\\{T_i,x_iT_i, x_i^2 T_i,...,x_i^p T_i\\}\\) como instrumentos para \\(D_i\\)\nUna primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones\nLa versión sin interacciones solo usa \\(T_i\\) como instrumento\nLa primera etapa será\n\n\\[D_i=\\gamma_0+\\gamma_1 x_i + \\gamma_2 x_i^2 + \\ldots + \\gamma_p x_i^p + \\rho T_i + \\xi_{i}\\]"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#estimación-paramétrica-6",
+    "href": "diapositivas/discontinuidades.html#estimación-paramétrica-6",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación paramétrica",
+    "text": "Estimación paramétrica\n\nLa forma reducida o ITT de este modelo es:\n\n\\[y_i=\\beta_0+\\beta_1 x_i + \\beta_2 x_i^2 + \\ldots + \\beta_p x_i^p + \\delta\\ T_i + u_{i}\\]\n\nMientras que la ecuación estructural\n\n\\[y_i=\\pi_0+\\pi_1 x_i + \\pi_2 x_i^2 + \\ldots + \\pi_p x_i^p + \\lambda\\ D_i + \\nu_{i}\\]\n\nPodemos estimar la ecuación estructural con un estimador de VI usando \\(T_i\\) (y sus interacciones) como instrumento de \\(D_i\\) (y sus interacciones)"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#estimación-no-paramétrica-2",
+    "href": "diapositivas/discontinuidades.html#estimación-no-paramétrica-2",
+    "title": "Inferencia Causal 2026",
+    "section": "Estimación no paramétrica",
+    "text": "Estimación no paramétrica\n\nLa práctica más usada actualmente sigue el enfoque no paramétrico en dos discontinuidades para obtener:\n\n\\[\n\\lambda^{RD,D} = \\frac{\\lim_{x\\downarrow c_0} E(y_i|x_i=x) - \\lim_{x\\uparrow c_0} E(y_i|x_i=x)}{\\lim_{x\\downarrow c_0} E(D_i|x_i=x) - \\lim_{x\\uparrow c_0} E(D_i|x_i=x)}\n\\]\n\nrdrobust estima el numerador y el denominador por separado, usando regresión local no paramétrica\nSe elige un ancho de banda y un tipo de kernel para ambas regresiones\n\\(h\\) se escoge de forma que se minimice el MSE del cociente\nLa inferencia toma en cuenta el sesgo de suavizamiento"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#vi-nuevamente-en-acción",
+    "href": "diapositivas/discontinuidades.html#vi-nuevamente-en-acción",
+    "title": "Inferencia Causal 2026",
+    "section": "VI nuevamente en acción",
+    "text": "VI nuevamente en acción\n\nTodo lo que se conoce sobre VI es aplicable en este contexto\nLa exogeneidad se argumenta por la asignación como si fuera aleatoria que origina la discontinuidad\nLa exclusión implica que cruzar el corte afecta a \\(y_i\\) solo a través de \\(D_i\\) (no debe haber otras intervenciones que usen el mismo corte)\nLa relevancia requiere que la discontinuidad genere diferencias en la probabilidad de adopción (supuesto que se debe probar)\nSe asume monotonicidad: cruzar el corte no hace que nadie deje de recibir el tratamiento\n\n\\[\nD_i(1) \\geq D_i(0) \\quad \\text{para todo } i \\text{ cerca de } c_0\n\\] donde \\(D_i(1)\\) y \\(D_i(0)\\) son el estado de tratamiento de \\(i\\) si \\(T_i=1\\) y si \\(T_i=0\\)\n\nPuede haber un problema de instrumentos débiles, por ejemplo si el salto en la primera etapa es pequeño (por lo que \\(\\lambda=\\delta/\\rho\\) se vuelve inestable)"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#últimos-consejos-1",
+    "href": "diapositivas/discontinuidades.html#últimos-consejos-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Últimos consejos",
+    "text": "Últimos consejos\n\nReportar la primera etapa y la forma reducida, con sus correspondientes gráficos\nEvitar polinomios globales de grado alto (Gelman & Imbens, 2019) y, si se reportan, que sea como ejercicio de robustez junto a la estimación local\nMostrar que el resultado no depende del ancho de banda y reportar la estimación con el \\(h\\) óptimo y con valores alrededor de este (por ejemplo, \\(h/2\\) y \\(2h\\))\nReportar el número efectivo de observaciones a cada lado del corte\nRealizar las pruebas recomendadas para el caso nítido"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen",
     "href": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen",
     "title": "Inferencia Causal 2026",
     "section": "Discontinuidades nítidas: resumen",
-    "text": "Discontinuidades nítidas: resumen\n\nRD nítida se usa cuando el tratamiento es una función determinística de una variable \\(x\\)\n\n\\[\nD_i =\n\\begin{cases}\n1  & \\mbox{if } x_i \\geq x_0 \\\\\n0  & \\mbox{if } x_i &lt; x_0\n\\end{cases}\n\\]\n\n\\(x_0\\) es el umbral o corte\n\\(D_i\\) es una función determinística de \\(x_i\\) pues una vez que conocemos \\(x_i\\) entonces conocemos \\(D_i\\)\n\\(D_i\\) es una función discontinua en \\(x_i\\) pues no importa que tanto nos acerquemos por la izquierda o por la derecha a \\(x_0\\), el estado del tratamiento no cambia"
+    "text": "Discontinuidades nítidas: resumen\n\nEl diseño nítido se usa cuando el tratamiento es una función determinística de una variable \\(x_i\\)\n\n\\[\nD_i =\n\\begin{cases}\n1  & \\text{si } x_i \\geq c_0 \\\\\n0  & \\text{si } x_i &lt; c_0\n\\end{cases}\n\\]\n\n\\(c_0\\) es el umbral o corte\n\\(D_i\\) es una función determinística de \\(x_i\\) pues una vez que conocemos \\(x_i\\) entonces conocemos \\(D_i\\)\n\\(D_i\\) es una función discontinua en \\(x_i\\) pues no importa qué tanto nos acerquemos por la izquierda o por la derecha a \\(c_0\\), el estado del tratamiento no cambia hasta cruzad \\(c_0\\)"
   },
   {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen-1",
     "href": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen-1",
     "title": "Inferencia Causal 2026",
     "section": "Discontinuidades nítidas: resumen",
-    "text": "Discontinuidades nítidas: resumen\n\nA diferencia de los modelos de otros diseños, no hay valor de \\(x_i\\) en el que observemos a individuos tratados y no tratados\nLa interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de \\(x_0\\), donde podemos tener confianza que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a \\(x_0\\)\nUna especificación flexible permite no confundir una discontinuidad con una no linealidad\nEn la práctica, suele variarse el orden del polinomio de \\(x_i\\) hasta de orden 2 o 3 y se espera que los resultados no sean muy sensibles a especificaciones de este\nEl método no paramétrico consiste en la estimación de \\(\\rho\\) en una vecindad de \\(x_0\\) usando métodos locales no paramétricos"
+    "text": "Discontinuidades nítidas: resumen\n\nA diferencia de los modelos de otros diseños, no hay valor de \\(x_i\\) en el que observemos a individuos tratados y no tratados\nLa interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de \\(c_0\\), donde asumimos que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a \\(c_0\\)\nUna especificación flexible permite no confundir una discontinuidad con una no linealidad\nEn la práctica, suelen usarse polinomios de orden bajo (1 o 2) y se verifica que los resultados no sean sensibles a la especificación\nLa estimación no paramétrica consiste en la estimación de \\(\\delta\\) en una vecindad de \\(c_0\\) usando regresión local no paramétrica"
   },
   {
-    "objectID": "diapositivas/discontinuidades.html#rd-difusa-resumen",
-    "href": "diapositivas/discontinuidades.html#rd-difusa-resumen",
+    "objectID": "diapositivas/discontinuidades.html#discontinuidades-difusas-resumen",
+    "href": "diapositivas/discontinuidades.html#discontinuidades-difusas-resumen",
     "title": "Inferencia Causal 2026",
-    "section": "RD difusa: resumen",
-    "text": "RD difusa: resumen\n\nRD difusa explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable\nEl resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga\n\n\\[\nP(D_i =1|x_i)=\n\\begin{cases}\ng_1(x_i)  & \\mbox{if } x_i \\geq x_0 \\\\\ng_0(x_i)  & \\mbox{if } x_i &lt; x_0\n\\end{cases}\n\\]\n\nLas funciones \\(g_0\\) u \\(g_1\\) difieren en \\(x_0\\)\nSupongamos que \\(g_1(x_0)&gt;g_0(x_0)\\), es decir, \\(x_i\\geq x_0\\) hace el tratamiento más probable"
+    "section": "Discontinuidades difusas: resumen",
+    "text": "Discontinuidades difusas: resumen\n\nEl diseño difuso explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable\nEl resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga\n\n\\[\nP(D_i =1|x_i)=\n\\begin{cases}\ng_1(x_i)  & \\text{si } x_i \\geq c_0 \\\\\ng_0(x_i)  & \\text{si } x_i &lt; c_0\n\\end{cases}\n\\]"
   },
   {
-    "objectID": "diapositivas/discontinuidades.html#rd-difusa-resumen-1",
-    "href": "diapositivas/discontinuidades.html#rd-difusa-resumen-1",
+    "objectID": "diapositivas/discontinuidades.html#discontinuidades-difusas-resumen-1",
+    "href": "diapositivas/discontinuidades.html#discontinuidades-difusas-resumen-1",
     "title": "Inferencia Causal 2026",
-    "section": "RD difusa: resumen",
-    "text": "RD difusa: resumen\n\nLa relación entre el estado de tratamiento y \\(x_i\\) puede ser escrita como:\n\n\\[E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i\\]\ncon \\(T_i=\\mathcal{I}(x_i\\geq x_0)\\)\n\nEscribiendo las funciones \\(g_0\\) y \\(g_1\\) como polinomios flexibles de \\(x_i\\)\n\n\\[E(D_i|x_i)=\\gamma_{00}+\\gamma_{01}x_i+\\gamma_{02}x_i+\\ldots+\\gamma_{0p}x_i^p +\\pi T_i + \\gamma_{1}^{*}x_i T_i+ \\gamma_{2}^{*}x_i^2 T_i+\\ldots+ \\gamma_{p}^{*}x_i^p T_i\\]"
-  },
-  {
-    "objectID": "diapositivas/discontinuidades.html#rd-difusa-resumen-2",
-    "href": "diapositivas/discontinuidades.html#rd-difusa-resumen-2",
-    "title": "Inferencia Causal 2026",
-    "section": "RD difusa: resumen",
-    "text": "RD difusa: resumen\n\nEn la primera etapa podríamos usar \\(\\{x_iTi, x_i^2 T_i,...,x_i^p T_i\\}\\) como instrumentos para \\(D_i\\)\nUna primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones\nLa versión más simple solo usa \\(T_i\\) como instrumento\nLa primera etapa será\n\n\\[D_i=\\gamma_0+\\gamma_1 x_i + \\gamma_2 x_i^2 + \\ldots + \\gamma_p x_i^p + \\rho T_i + \\xi_{i}\\]\n\nLa forma reducida o ITT de este modelo es:\n\n\\[y_i=\\beta_0+\\beta_1 x_i + \\beta_2 x_i^2 + \\ldots + \\beta_p x_i^p + \\delta\\ T_i + u_{i}\\] - Mientras que la ecuación estructural\n\\[y_i=\\pi_0+\\pi_1 x_i + \\pi_2 x_i^2 + \\ldots + \\pi_p x_i^p + \\lambda\\ D_i + u_{i}\\] se estima por MC2E usando \\(T_i\\) como instrumento de \\(D_i\\)"
+    "section": "Discontinuidades difusas: resumen",
+    "text": "Discontinuidades difusas: resumen\n\nLa primera etapa es el salto \\(\\rho\\) en \\(P(D_i=1|x_i)\\) en \\(c_0\\), y la forma reducida es el salto \\(\\delta\\) en \\(y_i\\) en \\(c_0\\)\nEl efecto del tratamiento es el cociente\n\n\\[\n\\lambda = \\frac{\\delta}{\\rho}\n\\]\n\nSe estima con VI usando \\(T_i\\) como instrumento de \\(D_i\\) (paramétrica) o con regresión local a cada lado del corte (no paramétrica)\nAdemás de continuidad, se requieren los supuestos de VI (exogeneidad, exclusión, relevancia y monotonicidad)\nBajo estos supuestos, \\(\\lambda\\) es un LATE para los cumplidores en el corte"
   },
   {
     "objectID": "diapositivas/causalidad.html#programas-implementados-de-forma-deliberada",
