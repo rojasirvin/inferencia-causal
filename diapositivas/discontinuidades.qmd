@@ -21,19 +21,7 @@ format:
 knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
 
 library(tidyverse)
-library(janitor)
-library(sandwich)
-#library(nnet)
-library(readr)
-library(clubSandwich)
-library(modelsummary)
-library(estimatr)
-library(lubridate)
-library(lfe)
 library(kableExtra)
-
-
-xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 ```
 
 
@@ -49,12 +37,6 @@ Inferencia Causal
 Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 :::
 ```{css, echo = FALSE}
-.huge .remark-code { /*Change made here*/
-  font-size: 200% !important;
-}
-.tiny .remark-code { /*Change made here*/
-  font-size: 60% !important;
-}
 /* Láminas con código a la izquierda y gráfico a la derecha: código más grande
    que el del tema, con interlineado más compacto para que quepa */
 .reveal .codigo-figura div.sourceCode pre code.sourceCode { font-size: 1.2em !important; line-height: 1.35; max-height: none !important; }
@@ -84,8 +66,8 @@ Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 ::: {.column width="50%"}
 ```{r}
 #| echo: false
-knitr::include_graphics("birthdays_funerals.png",
-                        dpi = 10)
+#| out-width: "100%"
+knitr::include_graphics("birthdays_funerals.png")
 ```
 :::
 
@@ -192,9 +174,9 @@ $$
 :::: {.columns}
 
 ::: {.column width="50%"}
-- En los paneles A y B hay un salto en $E[Y|a]$ en el corte, con una relación lineal y no lineal, respectivamente
+- En los paneles A y B hay un salto en $E(y|a)$ en el corte, con una relación lineal y no lineal, respectivamente
 
-- En el panel C, $E[Y|a]$ es continua pero muy pronunciada cerca de $a_0$, por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe
+- En el panel C, $E(y|a)$ es continua pero muy pronunciada cerca de $a_0$, por lo que ajustar una recta a cada lado (líneas discontinuas) nos llevaría a inferir un salto donde no existe
 
 - Al usar un diseño con discontinuidad debemos asegurarnos de que estamos identificando una discontinuidad y no una no linealidad
 
@@ -238,7 +220,7 @@ sim_nl |>
               se = FALSE, linetype = "dashed", color = "#9B2247") +
   geom_vline(xintercept = 0.5, linetype = "dashed") +
   facet_wrap(~panel, ncol = 1) +
-  labs(x = "Variable de asignación (a)", y = "Resultado (Y)") +
+  labs(x = "Variable de asignación (a)", y = "Resultado (y)") +
   theme_minimal(base_size = 15)
 ```
 :::
@@ -255,7 +237,7 @@ Fuente: elaboración propia con datos simulados, con base en la figura 6.1.1 de 
  
 - Podemos usar polinomios de $a$
 
-- Idealmente, las conclusiones no deberían cambiar de acuerdo al grado del polinomio usado
+- Idealmente, las conclusiones no deberían cambiar de acuerdo con el grado del polinomio usado
 
 - La recomendación práctica es intentar varias especificaciones y no solo la que se ajuste más a nuestras expectativas de los resultados
 
@@ -274,13 +256,13 @@ $$
 
 
 $$
-\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \lambda[(a-a_0)D_a] + \varepsilon_a
+\bar{M}_a=\alpha+\rho D_a + \gamma(a-a_0) + \kappa[(a-a_0)D_a] + \varepsilon_a
 $$
 
 - Notemos que en este caso el efecto del tratamiento es:
 
 $$
-\rho+\lambda(a-a_0)
+\rho+\kappa(a-a_0)
 $$
 
 
@@ -294,7 +276,7 @@ $$
 
 $$
 \begin{aligned}
-\bar{M}_a&=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\lambda_1[(a-a_0)D_a]+ \lambda_2[(a-a_0)^2D_a] + \varepsilon_a
+\bar{M}_a&=\alpha+\rho D_a + \gamma_1(a-a_0) +\gamma_2(a-a_0)^2+\kappa_1[(a-a_0)D_a]+ \kappa_2[(a-a_0)^2D_a] + \varepsilon_a
 \end{aligned}
 $$
 
@@ -303,7 +285,7 @@ $$
 - Notemos que en este caso el efecto del tratamiento es:
 
 $$
-\rho+\lambda_1(a-a_0)+\lambda_2(a-a_0)^2
+\rho+\kappa_1(a-a_0)+\kappa_2(a-a_0)^2
 $$
 
 
@@ -405,7 +387,7 @@ Fuente: Angrist & Pischke (2014), con datos de Carpenter & Dobkin (2009).
 
 - ¿Los programas gubernamentales generan lealtades?
 
-- Programa Nacional de Emergencia Social (PANES), focalizado con base en un índice de pobreza
+- Programa Nacional de Emergencia Social (PANES), focalizado con base en un índice de ingreso
 
 - Existe una discontinuidad en el acceso al programa
  
@@ -453,7 +435,7 @@ Fuente: Angrist & Pischke (2014), con datos de Carpenter & Dobkin (2009).
  
 - Variable de interés: apoyo político al gobierno en turno
 
-- La figura muestra que la elegibilidad determina casi por completo la participación, es decir, tenemos un diseño nítido
+- La figura muestra que la elegibilidad determina casi por completo la participación, es decir, el diseño es prácticamente nítido
 :::
 
 ::: {.column width="50%"}
@@ -560,7 +542,7 @@ Fuente: Manacorda, Miguel & Vigorito (2011).
 
 ## Robustez
 
-- Si el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005)
+- Si el diseño es válido, la elegibilidad no debería predecir las características de los hogares antes del programa (2005) ni la no respuesta en las encuestas de seguimiento
 
 ```{r}
 #| label: tabla-panes-balance
@@ -671,12 +653,10 @@ $$
 #| fig-align: center
 set.seed(1711)
 
-x <- runif(1000, -1, 1)
-y <- 3 + 2*x + 5*(x>=0) + rnorm(1000, mean = 0, sd = 0.2)
+datos_nitida <- tibble(x = runif(1000, -1, 1)) |>
+  mutate(y = 3 + 2 * x + 5 * (x >= 0) + rnorm(1000, mean = 0, sd = 0.2))
 
-data.sharp <- data.frame(y, x, c = 0)
-
-data.sharp |>
+datos_nitida |>
   ggplot(aes(x, y)) +
   geom_point(size = 1, alpha = 0.6) +
   # Resultados potenciales observados
@@ -803,7 +783,7 @@ donde $\beta_{02}$ y $\beta_{12}$ son los coeficientes del término cuadrático 
 
 - Consiste en estimar
 
-$$\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_i-c_0}{h}\right)1(x_i\geq c_0)$$
+$$\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\left(\frac{x_i-c_0}{h}\right)\mathcal{I}(x_i\geq c_0)$$
 
 - Y lo mismo para $x_i<c_0$, de donde obtenemos $\hat{a}_{-}$, para estimar $\hat{\delta}=\hat{a}_{+}-\hat{a}_{-}$
 
@@ -817,7 +797,7 @@ $$\hat{a}_{+}, \hat{b}_{+} = \arg \min_{a,b}\sum_{i=1}^n(y_i-a-b(x_i-c_0))^2K\le
 
 - Los pesos vienen de una función kernel $K(u)$, con $u=(x_i-c_0)/h$
 
-- Todos los kernels, salvo el gaussiano, dan peso cero fuera de $|u|\leq 1$
+- Todos los kernels de la figura, salvo el gaussiano, dan peso cero fuera de $|u|\leq 1$
 
 - En la práctica, `rdrobust` elige el $h$ óptimo y estima la regresión local, con kernel triangular por defecto
 
@@ -869,274 +849,38 @@ Fuente: elaboración propia.
 
 # Discontinuidades difusas {.divider background-color="#9B2247" data-state="nochrome"}
 
-
-
-## Motivación: la ilusión de la élite
- 
-- Escuelas de élite, *exam schools*, altamente competitivas en Nueva York y Boston
- 
-- Bajas tasas de admisión
- 
-- ¿Cómo diferenciar el valor agregado de la escuela del hecho de que la acta selectividad hace que a estas escuelas asistan solo los alumnos más brillantes?
- 
-- ¡Ojalá pudiéramos asignar alumnos al azar!
- 
-- Los estudiantes en estas escuelas de élite comparten clases con estudiantes aventajados
- 
- 
-
-
-## La regla de asignación
-
-:::: {.columns}
-
-::: {.column width = "50%"}
-
-- Cada escuela tiene un *corte* de puntaje de admisión
- 
-- En la escuela más competitiva de Boston aquellos estudiantes debajo del corte nunca asisten a dicha escuela
- 
-- Los que están arriba del corte casi siempre acaban en la BLS
-:::
-
-::: {.column width = "50%"}
-
-```{r}
-#| echo: FALSE
-#| fig-align: center
-knitr::include_graphics("figures/RDfuzzy_enrollment_BLS.png",
-                        dpi = 15)
-```
-
-:::
-
-::::
-
-::: {.aside}
-Fuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014).
-:::
-
-
-## La regla de asignación 
-
-:::: {.columns}
-
-::: {.column width = "50%"}
-
-- Sin embargo, aquellos que no alcanzan el puntaje mínimo de la BLS acaban de cualquier forma en una escuela de élite
-
-:::
-
-::: {.column width = "50%"}
-
-```{r}
-#| echo: FALSE
-#| fig-align: center
-knitr::include_graphics("figures/RDfuzzy_enrollment_any.png",
-                        dpi = 15)
-```
-
-:::
-
-::::
-
-::: {.aside}
-Fuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014).
-:::
-
-
-## La regla de asignación
-
-:::: {.columns}
-
-::: {.column width = "50%"}
-
-- Hay una dimensión que genera una discontinuidad: efectos de pares o *peer effects*
- 
-- Es una de las preocupaciones más importantes de política educativa en casi cualquier país
- 
-- Tener buenos (malos) compañeros afecta los resultados del individuo $i$
- 
-- Quienes ingresan a la BLS (séptimo grado) tuvieron compañeros con mejor desempeño en matemáticas cuando iban en cuarto grado
-:::
-
-::: {.column width = "50%"}
-```{r}
-#| echo: FALSE
-#| fig-align: center
-knitr::include_graphics("figures/RDfuzzy_enrollment_peers.png",
-                        dpi = 15)
-```
-
-:::
-
-::::
-
-::: {.aside}
-Fuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014).
-:::
-
-
-## Modelo de efectos de pares
- 
-- Un modelo de efectos de pares:
- 
- 
-$$Y_i=\theta_0+\theta_1\bar{X}_{(i)}+\theta_2 X_i + u_i$$
- 
- 
-- $Y_i$ es el resultado de un examen de matemáticas en el séptimo año del individuo $i$
- 
-- $X_i$ es el resultado de un examen de matemáticas en el cuarto año del individuo $i$
- 
-- $\bar{X}_{(i)}$ es el resultado promedio de un examen de matemáticas en el cuarto año de los compañeros de $i$ sin incluir $i$
- 
-- Otra notación en la literatura escribe esto como $\bar{X}_{(-i)}$
- 
-- Los resultados están estandarizados por lo que los coeficientes se interpretan en términos de desviaciones estándar: $\hat{\theta}_1=0.25\sigma$
- 
-
-
-## RD difuso + VI
- 
-- Problemas
- 
-  - Sabemos que en la discontinuidad, la calidad de los pares cambia drásticamente
-   
-  - Características de los hogares (habilidad de los padres)
-   
-  - Doble causalidad: $i$ afecta a $j$ pero $j$ afecta a $i$ a la vez
-		 
-
-::: {.fragment}
-
-- Variables instrumentales:
- 
-   
-  - Queremos conocer el efecto de la calidad de los pares en el desempeño de matemáticas
-   
-  - Usamos el corte mínimo para ser aceptado en BLS como instrumento de la calidad de los pares
-		 
-:::
-
-
-## Forma reducida
-
-
-:::: {.columns}
-
-::: {.column width = "50%"}
-
-- Si solo usamos el corte para ser aceptado en BLS:
-	 
- 
-$$Y_i=\alpha_0+\rho D_i + \beta_0 R_i + \epsilon_i$$
- 
- 
-- Se obtiene $\hat{\rho}=-0.02$, $s.e.=0.10$
- 
-- Este es un modelo de forma reducida (variable de interés en función de la posición respecto al corte)
- 
-- Es el efecto causal de estar antes o después del corte
-:::
-
-::: {.column width = "50%"}
-
-```{r}
-#| echo: FALSE
-#| fig-align: center
-knitr::include_graphics("figures/RDfuzzy_reducedform.png",
-                        dpi = 15)
-```
-:::
-::::
-
-::: {.aside}
-Fuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014).
-:::
-
-
-## Modelo de VI
- 
-- Modelo estructural:
- 
- 
-$$Y_i=\alpha_2+\lambda \bar{X}_{(i)} + \beta_2 R_i + \epsilon_{2i}$$
- 
- 
-- Con una primera etapa
- 
-	 
-$$\bar{X}_{(i)}=\alpha_1 + \phi D_i + \beta_1 R_i + \epsilon_{1i}$$
- 
- 
-- En la primera etapa $\hat{\phi}=0.80\sigma$, como lo habíamos visto ya en la Figura 4.8
-  
-- En la segunda etapa $\hat{\lambda}=-0.023$, $(s.e.=0.13)$
- 
-
-
-## Modelo de VI
-
-```{r}
-#| echo: FALSE
-#| fig-align: center
-#| out-width: "52%"
-knitr::include_graphics("figures/RDfuzzy_enrollment_peers.png")
-```
-
-::: {.aside}
-Fuente: Angrist & Pischke (2014), con datos de Abdulkadiroğlu, Angrist & Pathak (2014).
-:::
-
-
-## La ilusión
-
-- No hay tal ganancia por compartir clase con alumnos *brillantes*
-
-- La gente sigue percibiendo que sus hijos ganan al ir a escuelas de élite
-
-- Posiblemente los egresados de estas escuelas tengan mayores ingresos
-
-- Las ganancias que se puedan obtener no son vía el efecto de pares o un mejor rendimiento cognitivo
-
-
-
-
-# Estimación con discontinuidades difusas {.divider background-color="#9B2247" data-state="nochrome"}
-
 ## Discontinuidades difusas
 
-- Tenemos un diseño difuso cuando hay un salto en la probabilidad de ser asignado al tratamiento
+- Tenemos un diseño difuso cuando hay un salto en la probabilidad de recibir el tratamiento
 
 $$
-\begin{align}
-\lim_{x_i\rightarrow c_0} P(D_i=1|x_i=c_0) \neq \lim_{c_0 \leftarrow x_i}  P(D_i=1|x_i=c_0) \\
-\end{align}
+\lim_{x\downarrow c_0} P(D_i=1|x_i=x) \neq \lim_{x\uparrow c_0} P(D_i=1|x_i=x)
 $$
 
 - La probabilidad de recibir el tratamiento es discontinua en $c_0$
 
-- El supuesto de identificación es igual que en el caso nítido, que los resultados potenciales son funciones continuas y suaves en $c_0$
+- Al igual que en el diseño nítido, para la identificación asumimos que los resultados potenciales son funciones continuas y suaves en $c_0$
 
-- Recurrimos a variables instrumentales
+- Recurrimos además a los supuestos de variables instrumentales que revisamos más adelante
 
 - Ser asignado al tratamiento se vuelve un instrumento para recibir el tratamiento
 
 $$
 P(D_i=1|x_i) =
 \begin{cases}
-g_1(x_i)  & \mbox{si } x_i \geq c_0 \\
-g_0(x_i)  & \mbox{si } x_i < c_0
+g_1(x_i)  & \text{si } x_i \geq c_0 \\
+g_0(x_i)  & \text{si } x_i < c_0
 \end{cases}
 $$
 
+- Las funciones $g_0$ y $g_1$ difieren en $c_0$
+
 ## Discontinuidades difusas
 
-- Tenemos entonces una primera etapa
+- Tenemos entonces una primera etapa, que define la relación entre la discontinuidad y la probabilidad de recibir el tratamiento
 
 $$
-D_i = \gamma_0 + \gamma_1 x_i + \gamma_2 x_i^2 + \rho T_i + \varepsilon_i
+D_i = \gamma_0 + \gamma_1 x_i + \rho T_i + \xi_i
 $$
 
 donde
@@ -1144,25 +888,130 @@ donde
 $$
 T_i =
 \begin{cases}
-1  & \mbox{si } x_i \geq c_0 \\
-0  & \mbox{si } x_i < c_0
+1  & \text{si } x_i \geq c_0 \\
+0  & \text{si } x_i < c_0
 \end{cases}
 $$
 
 ## Discontinuidades difusas
 
-- La forma reducida es
+- La forma reducida presenta la relación entre la variable de resultados y la discontinuidad
 
 $$
-y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \delta T_i + u_i
+y_i = \beta_0 + \beta_1 x_i + \delta T_i + u_i
 $$
 
-- Y la ecuación estructural es
+- Y la ecuación estructural presenta la relación entre la adopción y la variable de resultados
 
 $$
-y_i = \pi_0 + \pi_1 x_i + \pi_2 x_i^2 + \lambda D_i + \nu_i
+y_i = \pi_0 + \pi_1 x_i + \lambda D_i + \nu_i
 $$
-- En términos de código, hacemos lo mismo que en los diseños nítidos
+
+- La forma reducida es un diseño nítido con $T_i$ en lugar de $D_i$
+
+- $\delta$ es el salto de $y_i$ en el corte
+
+- El efecto del tratamiento es el cociente de los dos saltos, como en el estimador de Wald
+
+$$
+\lambda = \frac{\delta}{\rho}
+$$
+
+- La interpretación es un LATE para los cumplidores en el umbral, bajo los supuestos de VI que revisaremos más adelante
+
+# Estimación con discontinuidades difusas {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+## Estimación paramétrica
+
+- La relación entre el estado de tratamiento y $x_i$ puede ser escrita como:
+
+$$E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i$$
+
+con $T_i=\mathcal{I}(x_i\geq c_0)$
+
+- Escribiendo las funciones $g_0$ y $g_1$ como polinomios flexibles de $x_i$
+
+
+- Como en el caso nítido, en las ecuaciones paramétricas siguientes, $x_i$ denota la variable de asignación centrada, $\tilde{x}_i = x_i - c_0$, de modo que $\rho$ es el salto en el corte
+
+$$E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i^2+\ldots+\gamma_{0p}x_i^p +\rho T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i$$
+
+
+## Estimación paramétrica
+ 
+- En la primera etapa podríamos usar $\{T_i,x_iT_i, x_i^2 T_i,...,x_i^p T_i\}$ como instrumentos para $D_i$
+
+- Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones
+
+- La versión sin interacciones solo usa $T_i$ como instrumento
+
+- La primera etapa será
+
+$$D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}$$
+
+## Estimación paramétrica
+
+- La forma reducida o ITT de este modelo es:
+
+$$y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}$$
+
+- Mientras que la ecuación estructural
+
+
+$$y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + \nu_{i}$$
+
+- Podemos estimar la ecuación estructural con un estimador de VI usando $T_i$ (y sus interacciones) como instrumento de $D_i$ (y sus interacciones)
+
+
+## Estimación no paramétrica
+
+- La práctica más usada actualmente sigue el enfoque no paramétrico en dos discontinuidades para obtener:
+
+$$
+\lambda^{RD,D} = \frac{\lim_{x\downarrow c_0} E(y_i|x_i=x) - \lim_{x\uparrow c_0} E(y_i|x_i=x)}{\lim_{x\downarrow c_0} E(D_i|x_i=x) - \lim_{x\uparrow c_0} E(D_i|x_i=x)}
+$$
+
+- `rdrobust` estima el numerador y el denominador por separado, usando regresión local no paramétrica
+
+- Se elige un ancho de banda y un tipo de kernel para ambas regresiones
+
+- $h$ se escoge de forma que se minimice el MSE del cociente
+
+- La inferencia toma en cuenta el *sesgo de suavizamiento*
+
+## VI nuevamente en acción
+
+- Todo lo que se conoce sobre VI es aplicable en este contexto
+
+- La exogeneidad se argumenta por la asignación *como si fuera aleatoria* que origina la discontinuidad
+
+- La exclusión implica que cruzar el corte afecta a $y_i$ solo a través de $D_i$ (no debe haber otras intervenciones que usen el mismo corte)
+
+- La relevancia requiere que la discontinuidad genere diferencias en la probabilidad de adopción (supuesto que se debe probar)
+
+- Se asume monotonicidad: cruzar el corte no hace que nadie deje de recibir el tratamiento
+
+$$
+D_i(1) \geq D_i(0) \quad \text{para todo } i \text{ cerca de } c_0
+$$
+donde $D_i(1)$ y $D_i(0)$ son el estado de tratamiento de $i$ si $T_i=1$ y si $T_i=0$
+
+- Puede haber un problema de instrumentos débiles, por ejemplo si el salto en la primera etapa es pequeño (por lo que $\lambda=\delta/\rho$ se vuelve inestable)
+
+
+## Últimos consejos
+
+- Reportar la primera etapa y la forma reducida, con sus correspondientes gráficos
+
+- Evitar polinomios globales de grado alto (Gelman & Imbens, 2019) y, si se reportan, que sea como ejercicio de robustez junto a la estimación local
+
+- Mostrar que el resultado no depende del ancho de banda y reportar la estimación con el $h$ óptimo y con valores alrededor de este (por ejemplo, $h/2$ y $2h$)
+
+- Reportar el número efectivo de observaciones a cada lado del corte
+
+- Realizar las pruebas recomendadas para el caso nítido
+
 
 
 
@@ -1171,96 +1020,69 @@ $$
 
 ## Discontinuidades nítidas: resumen
  
-- RD nítida se usa cuando el tratamiento es una función determinística de una variable $x$
+- El diseño nítido se usa cuando el tratamiento es una función determinística de una variable $x_i$
 
 
 $$
 D_i =
 \begin{cases}
-1  & \mbox{if } x_i \geq x_0 \\
-0  & \mbox{if } x_i < x_0
+1  & \text{si } x_i \geq c_0 \\
+0  & \text{si } x_i < c_0
 \end{cases}
 $$
 
 
-- $x_0$ es el *umbral* o *corte*
+- $c_0$ es el *umbral* o *corte*
 
 - $D_i$ es una función determinística de $x_i$ pues una vez que conocemos $x_i$ entonces conocemos $D_i$
 
-- $D_i$ es una función discontinua en $x_i$ pues no importa que tanto nos acerquemos por la izquierda o por la derecha a $x_0$, el estado del tratamiento no cambia
+- $D_i$ es una función discontinua en $x_i$ pues no importa qué tanto nos acerquemos por la izquierda o por la derecha a $c_0$, el estado del tratamiento no cambia hasta cruzad $c_0$
 	
 ## Discontinuidades nítidas: resumen
  
 - A diferencia de los modelos de otros diseños, no hay valor de $x_i$ en el que observemos a individuos tratados y no tratados
  
-- La interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de $x_0$, donde podemos tener confianza que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a $x_0$
+- La interpretación del efecto estimado con diseños discontinuos es un efecto local en la vecindad de $c_0$, donde asumimos que los individuos tratados y no tratados son similares en todas las dimensiones excepto en su posición respecto a $c_0$
  
 - Una especificación flexible permite no confundir una discontinuidad con una no linealidad
  
-- En la práctica, suele variarse el orden del polinomio de $x_i$ hasta de orden 2 o 3 y se espera que los resultados no sean muy sensibles a especificaciones de este
+- En la práctica, suelen usarse polinomios de orden bajo (1 o 2) y se verifica que los resultados no sean sensibles a la especificación
  
-- El método no paramétrico consiste en la estimación de $\rho$ en una vecindad de $x_0$ usando métodos locales no paramétricos
+- La estimación no paramétrica consiste en la estimación de $\delta$ en una vecindad de $c_0$ usando regresión local no paramétrica
 
 
 
 
-## RD difusa: resumen
+## Discontinuidades difusas: resumen
  
-- RD difusa explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable
+- El diseño difuso explota discontinuidades en la probabilidad o valor esperado del tratamiento condicional en una variable
 
 - El resultado es que la discontinuidad se convierte en una VI para el estado del tratamiento en vez de una variable que se prende y apaga
 
 $$
 P(D_i =1|x_i)=
 \begin{cases}
-g_1(x_i)  & \mbox{if } x_i \geq x_0 \\
-g_0(x_i)  & \mbox{if } x_i < x_0
+g_1(x_i)  & \text{si } x_i \geq c_0 \\
+g_0(x_i)  & \text{si } x_i < c_0
 \end{cases}
 $$
 
-- Las funciones $g_0$ u $g_1$ difieren en $x_0$
 
-- Supongamos que $g_1(x_0)>g_0(x_0)$, es decir, $x_i\geq x_0$ hace el tratamiento más probable
+## Discontinuidades difusas: resumen
 
+- La primera etapa es el salto $\rho$ en $P(D_i=1|x_i)$ en $c_0$, y la forma reducida es el salto $\delta$ en $y_i$ en $c_0$
 
+- El efecto del tratamiento es el cociente
 
-## RD difusa: resumen
+$$
+\lambda = \frac{\delta}{\rho}
+$$
 
-- La relación entre el estado de tratamiento y $x_i$ puede ser escrita como:
+- Se estima con VI usando $T_i$ como instrumento de $D_i$ (paramétrica) o con regresión local a cada lado del corte (no paramétrica)
 
-$$E(D_i|x_i)=P(D_i=1|x_i)=g_0(x_i)+[g_1(x_i)-g_0(x_i)]T_i$$
+- Además de continuidad, se requieren los supuestos de VI (exogeneidad, exclusión, relevancia y monotonicidad)
 
-con $T_i=\mathcal{I}(x_i\geq x_0)$
-
-- Escribiendo las funciones $g_0$ y $g_1$ como polinomios flexibles de $x_i$
-
-$$E(D_i|x_i)=\gamma_{00}+\gamma_{01}x_i+\gamma_{02}x_i+\ldots+\gamma_{0p}x_i^p +\pi T_i + \gamma_{1}^{*}x_i T_i+ \gamma_{2}^{*}x_i^2 T_i+\ldots+ \gamma_{p}^{*}x_i^p T_i$$
-
-
-
-## RD difusa: resumen
- 
-- En la primera etapa podríamos usar $\{x_iTi, x_i^2 T_i,...,x_i^p T_i\}$ como instrumentos para $D_i$
-
-- Una primera etapa con interacciones sugeriría emplear una segunda etapa también con interacciones
-
-- La versión más simple solo usa $T_i$ como instrumento
-
-- La primera etapa será
-
-$$D_i=\gamma_0+\gamma_1 x_i + \gamma_2 x_i^2 + \ldots + \gamma_p x_i^p + \rho T_i + \xi_{i}$$
-
-
-- La forma reducida o ITT de este modelo es:
-
-$$y_i=\beta_0+\beta_1 x_i + \beta_2 x_i^2 + \ldots + \beta_p x_i^p + \delta\ T_i + u_{i}$$
-- Mientras que la ecuación estructural
-
-
-$$y_i=\pi_0+\pi_1 x_i + \pi_2 x_i^2 + \ldots + \pi_p x_i^p + \lambda\ D_i + u_{i}$$
-se estima por MC2E usando $T_i$ como instrumento de $D_i$
-
-
+- Bajo estos supuestos, $\lambda$ es un LATE para los cumplidores en el corte
 
 
 # Diseños con discontinuidades {.final background-color="#9B2247" data-state="nochrome"}
