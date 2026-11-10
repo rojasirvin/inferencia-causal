@@ -1014,6 +1014,99 @@ donde $D_i(1)$ y $D_i(0)$ son el estado de tratamiento de $i$ si $T_i=1$ y si $T
 
 
 
+# Manipulación, sesgo e inferencia {.divider background-color="#9B2247" data-state="nochrome"}
+
+## Prueba de densidad de McCrary (2008)
+
+- Si los individuos conocen el corte y pueden manipular su $x_i$, se acumulan del lado de $c_0$ que más les beneficie y los resultados potenciales pueden dejar de ser continuos en el corte
+
+- Esta manipulación puede manifestarse como un salto en la densidad $f(x)$ de $x_i$ en $c_0$
+
+- McCrary (2008) propone probar $H_0: \theta=0$, con
+
+$$
+\theta = \ln \lim_{x\downarrow c_0} f(x) - \ln \lim_{x\uparrow c_0} f(x) = \ln f^{+} - \ln f^{-}
+$$
+
+  1. Construir un histograma de $x_i$, con intervalos que no crucen $c_0$
+
+  2. A cada lado del corte, estimar una regresión lineal local de las frecuencias en los puntos medios de los intervalos para obtener $\hat{f}^{+}$ y $\hat{f}^{-}$
+
+  3. Calcular $\hat{\theta}=\ln \hat{f}^{+}-\ln \hat{f}^{-}$, asintóticamente normal, y contrastar $H_0$
+
+- Hoy se usa `rddensity` (Cattaneo, Jansson & Ma, 2020), con polinomios locales
+
+- No rechazar $H_0$ no prueba que no haya manipulación pues puede suceder que los individuos se hayan movido en ambas direcciones
+
+## El dilema entre sesgo y varianza
+
+- En la regresión local elegimos el orden del polinomio $p$, el kernel $K(\cdot)$ y el ancho de banda $h$
+
+- El estimador $\hat{\delta}=\hat{a}_{+}-\hat{a}_{-}$ tiene sesgo, porque el polinomio solo aproxima a $E(y_i|x_i)$ dentro de la ventana
+
+$$
+\text{MSE}(\hat{\delta}) = \text{Sesgo}^2(\hat{\delta}) + \text{Var}(\hat{\delta})
+$$
+
+- Un $h$ pequeño usa observaciones muy cercanas a $c_0$ por lo que tenemos un menor error de aproximación (sesgo), pero menos observaciones (más varianza)
+
+- Un $h$ grande usa más observaciones (menos varianza), pero observaciones más lejanas en las que el polinomio aproxima peor (más sesgo)
+
+## Ancho de banda óptimo
+
+- Se puede mostrar que al minimizar $\text{MSE}(\hat{\delta})$ con respecto a $h$:
+
+$$
+h_{MSE} = \left(\frac{\mathsf{V}}{2(p+1)\mathsf{B}^2}\right)^{\frac{1}{2p+3}} n^{-\frac{1}{2p+3}}
+$$
+
+donde $\mathsf{B}$ depende de la curvatura de $E(y_i|x_i)$ a cada lado del corte y $\mathsf{V}$ de la varianza condicional de $y_i$ y de la densidad de $x_i$ en $c_0$
+
+- $h_{MSE}$ es mayor cuando hay mucho ruido ($\mathsf{V}$ grande), para ganar precisión, y menor cuando $E(y_i|x_i)$ tiene mucha curvatura ($\mathsf{B}$ grande), para reducir el sesgo
+
+- $\mathsf{B}$ y $\mathsf{V}$ son desconocidos, pero se pueden estimar con los datos (Imbens & Kalyanaraman, 2012; Calonico, Cattaneo & Titiunik, 2014)
+
+## Ancho de banda óptimo
+
+- Con regresión lineal local ($p=1$), y salvo constantes que dependen solo del kernel:
+
+$$
+\mathsf{B} \propto m_{+}''(c_0) - m_{-}''(c_0) \qquad \mathsf{V} \propto \frac{\sigma^2_{+}(c_0) + \sigma^2_{-}(c_0)}{f(c_0)}
+$$
+
+donde $m_{\pm}(x)=E(y_i|x_i=x)$ y $\sigma^2_{\pm}(x)=\text{Var}(y_i|x_i=x)$ a cada lado del corte, y $f$ es la densidad de $x_i$
+
+- En la práctica, cada pieza se estima en una etapa previa con un ancho de banda piloto:
+
+  - $m_{\pm}''(c_0)$ con un polinomio local de orden $p+1$ (cuadrático) a cada lado del corte
+
+  - $\sigma^2_{\pm}(c_0)$ con los residuales de una regresión local preliminar, y $f(c_0)$ con un estimador de densidad
+
+  - Se agrega un término de regularización al denominador para que $h$ no explote cuando la curvatura estimada es casi cero
+
+- $h_{MSE}$ está construido para estimar bien $\delta$, no para hacer inferencia, por lo que se emplean correcciones a los intervalos de confianza
+
+
+## Inferencia robusta con corrección de sesgo
+
+- El intervalo convencional ignora el sesgo: $IC_{us} = \left[\hat{\delta} \pm 1.96\sqrt{\hat{\mathsf{V}}}\right]$
+
+- Podemos restar un estimador del sesgo $\hat{\mathsf{B}}$: $IC_{bc} = \left[(\hat{\delta}-\hat{\mathsf{B}}) \pm 1.96\sqrt{\hat{\mathsf{V}}}\right]$
+
+- Aunque $IC_{bc}$ ignora que $\hat{\mathsf{B}}$ también tiene variabilidad
+
+- El intervalo *robusto con corrección de sesgo* (Calonico, Cattaneo & Titiunik, 2014) ajusta el error estándar por esa variabilidad adicional
+
+$$
+IC_{rbc} = \left[(\hat{\delta}-\hat{\mathsf{B}}) \pm 1.96\sqrt{\hat{\mathsf{V}}_{bc}}\right]
+$$
+
+- `rdrobust` reporta las tres versiones (*Conventional*, *Bias-corrected* y *Robust*)
+
+- Se recomienda reportar el efecto estimado $\hat{\delta}$ con $h_{MSE}$ y hacer inferencia con $IC_{rbc}$
+
+
+
 
 # Resumen {.divider background-color="#9B2247" data-state="nochrome"}
 
