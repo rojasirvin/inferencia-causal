@@ -1593,6 +1593,94 @@ D_i(1) \geq D_i(0) \quad \text{para todo } i \text{ cerca de } c_0
 </ul>
 </section></section>
 <section>
+<section id="manipulación-sesgo-e-inferencia" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Manipulación, sesgo e inferencia</h1>
+
+</section>
+<section id="prueba-de-densidad-de-mccrary-2008" class="slide level2">
+<h2>Prueba de densidad de McCrary (2008)</h2>
+<ul>
+<li><p>Si los individuos conocen el corte y pueden manipular su <span class="math inline">\(x_i\)</span>, se acumulan del lado de <span class="math inline">\(c_0\)</span> que más les beneficie y los resultados potenciales pueden dejar de ser continuos en el corte</p></li>
+<li><p>Esta manipulación puede manifestarse como un salto en la densidad <span class="math inline">\(f(x)\)</span> de <span class="math inline">\(x_i\)</span> en <span class="math inline">\(c_0\)</span></p></li>
+<li><p>McCrary (2008) propone probar <span class="math inline">\(H_0: \theta=0\)</span>, con</p></li>
+</ul>
+<p><span class="math display">\[
+\theta = \ln \lim_{x\downarrow c_0} f(x) - \ln \lim_{x\uparrow c_0} f(x) = \ln f^{+} - \ln f^{-}
+\]</span></p>
+<ol type="1">
+<li><p>Construir un histograma de <span class="math inline">\(x_i\)</span>, con intervalos que no crucen <span class="math inline">\(c_0\)</span></p></li>
+<li><p>A cada lado del corte, estimar una regresión lineal local de las frecuencias en los puntos medios de los intervalos para obtener <span class="math inline">\(\hat{f}^{+}\)</span> y <span class="math inline">\(\hat{f}^{-}\)</span></p></li>
+<li><p>Calcular <span class="math inline">\(\hat{\theta}=\ln \hat{f}^{+}-\ln \hat{f}^{-}\)</span>, asintóticamente normal, y contrastar <span class="math inline">\(H_0\)</span></p></li>
+</ol>
+<ul>
+<li><p>Hoy se usa <code>rddensity</code> (Cattaneo, Jansson &amp; Ma, 2020), con polinomios locales</p></li>
+<li><p>No rechazar <span class="math inline">\(H_0\)</span> no prueba que no haya manipulación pues puede suceder que los individuos se hayan movido en ambas direcciones</p></li>
+</ul>
+</section>
+<section id="el-dilema-entre-sesgo-y-varianza" class="slide level2">
+<h2>El dilema entre sesgo y varianza</h2>
+<ul>
+<li><p>En la regresión local elegimos el orden del polinomio <span class="math inline">\(p\)</span>, el kernel <span class="math inline">\(K(\cdot)\)</span> y el ancho de banda <span class="math inline">\(h\)</span></p></li>
+<li><p>El estimador <span class="math inline">\(\hat{\delta}=\hat{a}_{+}-\hat{a}_{-}\)</span> tiene sesgo, porque el polinomio solo aproxima a <span class="math inline">\(E(y_i|x_i)\)</span> dentro de la ventana</p></li>
+</ul>
+<p><span class="math display">\[
+\text{MSE}(\hat{\delta}) = \text{Sesgo}^2(\hat{\delta}) + \text{Var}(\hat{\delta})
+\]</span></p>
+<ul>
+<li><p>Un <span class="math inline">\(h\)</span> pequeño usa observaciones muy cercanas a <span class="math inline">\(c_0\)</span> por lo que tenemos un menor error de aproximación (sesgo), pero menos observaciones (más varianza)</p></li>
+<li><p>Un <span class="math inline">\(h\)</span> grande usa más observaciones (menos varianza), pero observaciones más lejanas en las que el polinomio aproxima peor (más sesgo)</p></li>
+</ul>
+</section>
+<section id="ancho-de-banda-óptimo" class="slide level2">
+<h2>Ancho de banda óptimo</h2>
+<ul>
+<li>Se puede mostrar que al minimizar <span class="math inline">\(\text{MSE}(\hat{\delta})\)</span> con respecto a <span class="math inline">\(h\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+h_{MSE} = \left(\frac{\mathsf{V}}{2(p+1)\mathsf{B}^2}\right)^{\frac{1}{2p+3}} n^{-\frac{1}{2p+3}}
+\]</span></p>
+<p>donde <span class="math inline">\(\mathsf{B}\)</span> depende de la curvatura de <span class="math inline">\(E(y_i|x_i)\)</span> a cada lado del corte y <span class="math inline">\(\mathsf{V}\)</span> de la varianza condicional de <span class="math inline">\(y_i\)</span> y de la densidad de <span class="math inline">\(x_i\)</span> en <span class="math inline">\(c_0\)</span></p>
+<ul>
+<li><p><span class="math inline">\(h_{MSE}\)</span> es mayor cuando hay mucho ruido (<span class="math inline">\(\mathsf{V}\)</span> grande), para ganar precisión, y menor cuando <span class="math inline">\(E(y_i|x_i)\)</span> tiene mucha curvatura (<span class="math inline">\(\mathsf{B}\)</span> grande), para reducir el sesgo</p></li>
+<li><p><span class="math inline">\(\mathsf{B}\)</span> y <span class="math inline">\(\mathsf{V}\)</span> son desconocidos, pero se pueden estimar con los datos (Imbens &amp; Kalyanaraman, 2012; Calonico, Cattaneo &amp; Titiunik, 2014)</p></li>
+</ul>
+</section>
+<section id="ancho-de-banda-óptimo-1" class="slide level2">
+<h2>Ancho de banda óptimo</h2>
+<ul>
+<li>Con regresión lineal local (<span class="math inline">\(p=1\)</span>), y salvo constantes que dependen solo del kernel:</li>
+</ul>
+<p><span class="math display">\[
+\mathsf{B} \propto m_{+}''(c_0) - m_{-}''(c_0) \qquad \mathsf{V} \propto \frac{\sigma^2_{+}(c_0) + \sigma^2_{-}(c_0)}{f(c_0)}
+\]</span></p>
+<p>donde <span class="math inline">\(m_{\pm}(x)=E(y_i|x_i=x)\)</span> y <span class="math inline">\(\sigma^2_{\pm}(x)=\text{Var}(y_i|x_i=x)\)</span> a cada lado del corte, y <span class="math inline">\(f\)</span> es la densidad de <span class="math inline">\(x_i\)</span></p>
+<ul>
+<li><p>En la práctica, cada pieza se estima en una etapa previa con un ancho de banda piloto:</p>
+<ul>
+<li><p><span class="math inline">\(m_{\pm}''(c_0)\)</span> con un polinomio local de orden <span class="math inline">\(p+1\)</span> (cuadrático) a cada lado del corte</p></li>
+<li><p><span class="math inline">\(\sigma^2_{\pm}(c_0)\)</span> con los residuales de una regresión local preliminar, y <span class="math inline">\(f(c_0)\)</span> con un estimador de densidad</p></li>
+<li><p>Se agrega un término de regularización al denominador para que <span class="math inline">\(h\)</span> no explote cuando la curvatura estimada es casi cero</p></li>
+</ul></li>
+<li><p><span class="math inline">\(h_{MSE}\)</span> está construido para estimar bien <span class="math inline">\(\delta\)</span>, no para hacer inferencia, por lo que se emplean correcciones a los intervalos de confianza</p></li>
+</ul>
+</section>
+<section id="inferencia-robusta-con-corrección-de-sesgo" class="slide level2">
+<h2>Inferencia robusta con corrección de sesgo</h2>
+<ul>
+<li><p>El intervalo convencional ignora el sesgo: <span class="math inline">\(IC_{us} = \left[\hat{\delta} \pm 1.96\sqrt{\hat{\mathsf{V}}}\right]\)</span></p></li>
+<li><p>Podemos restar un estimador del sesgo <span class="math inline">\(\hat{\mathsf{B}}\)</span>: <span class="math inline">\(IC_{bc} = \left[(\hat{\delta}-\hat{\mathsf{B}}) \pm 1.96\sqrt{\hat{\mathsf{V}}}\right]\)</span></p></li>
+<li><p>Aunque <span class="math inline">\(IC_{bc}\)</span> ignora que <span class="math inline">\(\hat{\mathsf{B}}\)</span> también tiene variabilidad</p></li>
+<li><p>El intervalo <em>robusto con corrección de sesgo</em> (Calonico, Cattaneo &amp; Titiunik, 2014) ajusta el error estándar por esa variabilidad adicional</p></li>
+</ul>
+<p><span class="math display">\[
+IC_{rbc} = \left[(\hat{\delta}-\hat{\mathsf{B}}) \pm 1.96\sqrt{\hat{\mathsf{V}}_{bc}}\right]
+\]</span></p>
+<ul>
+<li><p><code>rdrobust</code> reporta las tres versiones (<em>Conventional</em>, <em>Bias-corrected</em> y <em>Robust</em>)</p></li>
+<li><p>Se recomienda reportar el efecto estimado <span class="math inline">\(\hat{\delta}\)</span> con <span class="math inline">\(h_{MSE}\)</span> y hacer inferencia con <span class="math inline">\(IC_{rbc}\)</span></p></li>
+</ul>
+</section></section>
+<section>
 <section id="resumen" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Resumen</h1>
 

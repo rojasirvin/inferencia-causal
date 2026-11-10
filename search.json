@@ -1722,6 +1722,41 @@
     "text": "Últimos consejos\n\nReportar la primera etapa y la forma reducida, con sus correspondientes gráficos\nEvitar polinomios globales de grado alto (Gelman & Imbens, 2019) y, si se reportan, que sea como ejercicio de robustez junto a la estimación local\nMostrar que el resultado no depende del ancho de banda y reportar la estimación con el \\(h\\) óptimo y con valores alrededor de este (por ejemplo, \\(h/2\\) y \\(2h\\))\nReportar el número efectivo de observaciones a cada lado del corte\nRealizar las pruebas recomendadas para el caso nítido"
   },
   {
+    "objectID": "diapositivas/discontinuidades.html#prueba-de-densidad-de-mccrary-2008",
+    "href": "diapositivas/discontinuidades.html#prueba-de-densidad-de-mccrary-2008",
+    "title": "Inferencia Causal 2026",
+    "section": "Prueba de densidad de McCrary (2008)",
+    "text": "Prueba de densidad de McCrary (2008)\n\nSi los individuos conocen el corte y pueden manipular su \\(x_i\\), se acumulan del lado de \\(c_0\\) que más les beneficie y los resultados potenciales pueden dejar de ser continuos en el corte\nEsta manipulación puede manifestarse como un salto en la densidad \\(f(x)\\) de \\(x_i\\) en \\(c_0\\)\nMcCrary (2008) propone probar \\(H_0: \\theta=0\\), con\n\n\\[\n\\theta = \\ln \\lim_{x\\downarrow c_0} f(x) - \\ln \\lim_{x\\uparrow c_0} f(x) = \\ln f^{+} - \\ln f^{-}\n\\]\n\nConstruir un histograma de \\(x_i\\), con intervalos que no crucen \\(c_0\\)\nA cada lado del corte, estimar una regresión lineal local de las frecuencias en los puntos medios de los intervalos para obtener \\(\\hat{f}^{+}\\) y \\(\\hat{f}^{-}\\)\nCalcular \\(\\hat{\\theta}=\\ln \\hat{f}^{+}-\\ln \\hat{f}^{-}\\), asintóticamente normal, y contrastar \\(H_0\\)\n\n\nHoy se usa rddensity (Cattaneo, Jansson & Ma, 2020), con polinomios locales\nNo rechazar \\(H_0\\) no prueba que no haya manipulación pues puede suceder que los individuos se hayan movido en ambas direcciones"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#el-dilema-entre-sesgo-y-varianza",
+    "href": "diapositivas/discontinuidades.html#el-dilema-entre-sesgo-y-varianza",
+    "title": "Inferencia Causal 2026",
+    "section": "El dilema entre sesgo y varianza",
+    "text": "El dilema entre sesgo y varianza\n\nEn la regresión local elegimos el orden del polinomio \\(p\\), el kernel \\(K(\\cdot)\\) y el ancho de banda \\(h\\)\nEl estimador \\(\\hat{\\delta}=\\hat{a}_{+}-\\hat{a}_{-}\\) tiene sesgo, porque el polinomio solo aproxima a \\(E(y_i|x_i)\\) dentro de la ventana\n\n\\[\n\\text{MSE}(\\hat{\\delta}) = \\text{Sesgo}^2(\\hat{\\delta}) + \\text{Var}(\\hat{\\delta})\n\\]\n\nUn \\(h\\) pequeño usa observaciones muy cercanas a \\(c_0\\) por lo que tenemos un menor error de aproximación (sesgo), pero menos observaciones (más varianza)\nUn \\(h\\) grande usa más observaciones (menos varianza), pero observaciones más lejanas en las que el polinomio aproxima peor (más sesgo)"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#ancho-de-banda-óptimo",
+    "href": "diapositivas/discontinuidades.html#ancho-de-banda-óptimo",
+    "title": "Inferencia Causal 2026",
+    "section": "Ancho de banda óptimo",
+    "text": "Ancho de banda óptimo\n\nSe puede mostrar que al minimizar \\(\\text{MSE}(\\hat{\\delta})\\) con respecto a \\(h\\):\n\n\\[\nh_{MSE} = \\left(\\frac{\\mathsf{V}}{2(p+1)\\mathsf{B}^2}\\right)^{\\frac{1}{2p+3}} n^{-\\frac{1}{2p+3}}\n\\]\ndonde \\(\\mathsf{B}\\) depende de la curvatura de \\(E(y_i|x_i)\\) a cada lado del corte y \\(\\mathsf{V}\\) de la varianza condicional de \\(y_i\\) y de la densidad de \\(x_i\\) en \\(c_0\\)\n\n\\(h_{MSE}\\) es mayor cuando hay mucho ruido (\\(\\mathsf{V}\\) grande), para ganar precisión, y menor cuando \\(E(y_i|x_i)\\) tiene mucha curvatura (\\(\\mathsf{B}\\) grande), para reducir el sesgo\n\\(\\mathsf{B}\\) y \\(\\mathsf{V}\\) son desconocidos, pero se pueden estimar con los datos (Imbens & Kalyanaraman, 2012; Calonico, Cattaneo & Titiunik, 2014)"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#ancho-de-banda-óptimo-1",
+    "href": "diapositivas/discontinuidades.html#ancho-de-banda-óptimo-1",
+    "title": "Inferencia Causal 2026",
+    "section": "Ancho de banda óptimo",
+    "text": "Ancho de banda óptimo\n\nCon regresión lineal local (\\(p=1\\)), y salvo constantes que dependen solo del kernel:\n\n\\[\n\\mathsf{B} \\propto m_{+}''(c_0) - m_{-}''(c_0) \\qquad \\mathsf{V} \\propto \\frac{\\sigma^2_{+}(c_0) + \\sigma^2_{-}(c_0)}{f(c_0)}\n\\]\ndonde \\(m_{\\pm}(x)=E(y_i|x_i=x)\\) y \\(\\sigma^2_{\\pm}(x)=\\text{Var}(y_i|x_i=x)\\) a cada lado del corte, y \\(f\\) es la densidad de \\(x_i\\)\n\nEn la práctica, cada pieza se estima en una etapa previa con un ancho de banda piloto:\n\n\\(m_{\\pm}''(c_0)\\) con un polinomio local de orden \\(p+1\\) (cuadrático) a cada lado del corte\n\\(\\sigma^2_{\\pm}(c_0)\\) con los residuales de una regresión local preliminar, y \\(f(c_0)\\) con un estimador de densidad\nSe agrega un término de regularización al denominador para que \\(h\\) no explote cuando la curvatura estimada es casi cero\n\n\\(h_{MSE}\\) está construido para estimar bien \\(\\delta\\), no para hacer inferencia, por lo que se emplean correcciones a los intervalos de confianza"
+  },
+  {
+    "objectID": "diapositivas/discontinuidades.html#inferencia-robusta-con-corrección-de-sesgo",
+    "href": "diapositivas/discontinuidades.html#inferencia-robusta-con-corrección-de-sesgo",
+    "title": "Inferencia Causal 2026",
+    "section": "Inferencia robusta con corrección de sesgo",
+    "text": "Inferencia robusta con corrección de sesgo\n\nEl intervalo convencional ignora el sesgo: \\(IC_{us} = \\left[\\hat{\\delta} \\pm 1.96\\sqrt{\\hat{\\mathsf{V}}}\\right]\\)\nPodemos restar un estimador del sesgo \\(\\hat{\\mathsf{B}}\\): \\(IC_{bc} = \\left[(\\hat{\\delta}-\\hat{\\mathsf{B}}) \\pm 1.96\\sqrt{\\hat{\\mathsf{V}}}\\right]\\)\nAunque \\(IC_{bc}\\) ignora que \\(\\hat{\\mathsf{B}}\\) también tiene variabilidad\nEl intervalo robusto con corrección de sesgo (Calonico, Cattaneo & Titiunik, 2014) ajusta el error estándar por esa variabilidad adicional\n\n\\[\nIC_{rbc} = \\left[(\\hat{\\delta}-\\hat{\\mathsf{B}}) \\pm 1.96\\sqrt{\\hat{\\mathsf{V}}_{bc}}\\right]\n\\]\n\nrdrobust reporta las tres versiones (Conventional, Bias-corrected y Robust)\nSe recomienda reportar el efecto estimado \\(\\hat{\\delta}\\) con \\(h_{MSE}\\) y hacer inferencia con \\(IC_{rbc}\\)"
+  },
+  {
     "objectID": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen",
     "href": "diapositivas/discontinuidades.html#discontinuidades-nítidas-resumen",
     "title": "Inferencia Causal 2026",
