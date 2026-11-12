@@ -436,66 +436,18 @@
 <div class="pa-inst">
 <p>Centro de Investigación y Docencia Económicas<br>Maestría en Economía</p>
 </div>
-<div class="cell">
-<style type="text/css">
-.huge .remark-code { /*Change made here*/
-  font-size: 200% !important;
-}
-.tiny .remark-code { /*Change made here*/
-  font-size: 60% !important;
-}
-</style>
-</div>
-</section>
-<section id="motivación" class="slide level2">
-<h2>Motivación</h2>
-<ul>
-<li><p>Hasta ahora hemos usado situaciones en las que varios individuos resultan tratados y varios resultan no ser tratados</p></li>
-<li><p>Los métodos no experimentales nos permiten identificar el efecto de un tratamiento por medio de supuestos</p></li>
-<li><p>Tratamos de aproximar una situación experimental</p></li>
-<li><p>Los estudios de evento ocurren cuando una política o programa se lleva a cabo a nivel agregado y afecta a unas pocas (a veces una) unidades</p></li>
-</ul>
-</section>
-<section id="motivación-1" class="slide level2">
-<h2>Motivación</h2>
-<ul>
-<li><p>El método de <em>control sintético</em> (CS) ha sido empleado para estudiar el efecto de algunas políticas (o eventos):</p>
-<ul>
-<li><p>El impacto del terrorismo en la región de Cataluña</p></li>
-<li><p>El efecto de una legislación contra el tabaco en California</p></li>
-<li><p>El efecto sobre el crecimiento de la reunificación de Alemania</p></li>
-<li><p>El efecto del flujo masivo de inmigrantes a Miami</p></li>
-</ul></li>
-</ul>
-</section>
-<section id="partimos-del-concepto-de-did" class="slide level2">
-<h2>Partimos del concepto de DID</h2>
-<ul>
-<li><p>Consideremos un modelo simple de diferencia en diferencias</p></li>
-<li><p>Observamos una unidad tratada y una que nunca lo fue antes y después del tratamiento</p></li>
-<li><p>Bajo ciertos supuestos, el estimador de DID es el efecto del tratamiento</p></li>
-<li><p>La implementación consiste en comparar la unidad tratada con una o varias no tratadas</p></li>
-</ul>
-</section>
-<section id="cuál-es-el-efecto-de-la-inmigración-en-los-mercados-laborales" class="slide level2">
-<h2>¿Cuál es el efecto de la inmigración en los mercados laborales?</h2>
-<ul>
-<li><p>Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros</p></li>
-<li><p>Al comparar las tendencias en empleo y salarios con las de este conjunto de ciudades Card concluye que la llegada de inmigrantes no tuvo ningún efecto negativo</p></li>
-</ul>
 </section>
 <section id="los-marieles" class="slide level2">
 <h2>Los marieles</h2>
 
-<img data-src="figures/marieles_newspaper.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: Tomada de internet</p></section>
-<section id="los-marieles-1" class="slide level2">
-<h2>Los marieles</h2>
+<img data-src="figures/marieles_newspaper.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: <em>The Miami News</em>, 29 de abril de 1980</p></section>
+<section id="motivación" class="slide level2">
+<h2>Motivación</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li><p>¿Cuál es el efecto de la inmigración en los mercados laborales?</p></li>
-<li><p>Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros</p></li>
-<li><p>Se compara a Miami con el promedio de Atlanta, Houston, Los Angeles y Tampa</p></li>
+<li><p>Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros (Atlanta, Houston, Los Ángeles y Tampa)</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -510,54 +462,58 @@
 </div>
 </div></div>
 </section>
-<section id="los-marieles-2" class="slide level2">
-<h2>Los marieles</h2>
+<section id="impactos-en-los-ingresos" class="slide level2">
+<h2>Impactos en los ingresos</h2>
 
 <img data-src="figures/Miami_earnings_comparison.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: Card (1990)</p></section>
-<section id="los-marieles-3" class="slide level2">
-<h2>Los marieles</h2>
+<section id="impactos-en-el-empleo" class="slide level2">
+<h2>Impactos en el empleo</h2>
 
 <img data-src="figures/Miami_unemployment_comparison.png" style="width:70.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: Card (1990)</p></section>
-<section id="los-marieles-4" class="slide level2">
-<h2>Los marieles</h2>
+<section id="conclusión-sobre-los-marieles" class="slide level2">
+<h2>Conclusión sobre los marieles</h2>
 <ul>
 <li><p>Al comparar las tendencias en empleo y salarios con las de este conjunto de ciudades Card concluye que la llegada de inmigrantes no tuvo ningún efecto negativo</p></li>
-<li><p>Tampoco encuentran evidencia de que la distribución de ingresos de los no cubanos se hubiera hecho más desigual</p></li>
+<li><p>Tampoco encuentra evidencia de que la distribución de ingresos de los no cubanos se hubiera hecho más desigual</p></li>
 <li><p>Tampoco hubo efectos concentrados en los grupos menos educados</p></li>
 <li><p>Se concluye que Miami tuvo la capacidad para absorber el choque de oferta de trabajo sin efectos en el resto del empleo</p></li>
 </ul>
 </section>
-<section id="otro-ejemplo-clásico-de-did" class="slide level2">
-<h2>Otro ejemplo clásico de DID</h2>
+<section id="cómo-escogemos-las-unidades-de-comparación" class="slide level2">
+<h2>¿Cómo escogemos las unidades de comparación?</h2>
 <ul>
-<li><p>El ejemplo clásico del modelo de DID es el estudio del efecto del salario mínimo en el empleo</p></li>
-<li><p>Card y Krueger (1994) comparan los niveles de empleo en restaurantes de comida rápida en Nueva Jersey y Filadelfia</p></li>
-<li><p>La intuición es que estas dos áreas eran muy similares antes de la subida del salario mínimo en Nueva Jersey</p></li>
-<li><p>Por lo tanto, comparando las variables de resultados entre ciudades, antes y después de la subida del salario mínimo, podemos obtener el efecto del tratamiento</p></li>
-<li><p>Los autores no encuentran evidencia de que la subida del salario mínimo redujera el empleo</p></li>
-</ul>
-</section>
-<section id="crítica-a-did" class="slide level2">
-<h2>Crítica a DID</h2>
-<ul>
-<li><p>¿Cómo escogemos las unidades de comparación?</p></li>
+<li><p>Los estudios de caso comparativos se usan cuando una política o programa se lleva a cabo a nivel agregado y afecta a unas pocas (a veces una) unidades</p></li>
+<li><p>En otras ciencias sociales los estudios de caso comparativos regularmente se realizan mediante un análisis detallado de las condiciones institucionales, políticas e históricas de la unidad tratada</p></li>
+<li><p>En inferencia causal, cuando empleamos DID, usamos un grupo de unidades de comparación</p></li>
 <li><p>¿Cómo podemos saber qué tan buena es la unidad de comparación como contrafactual para reproducir lo que le hubiera pasado a la unidad tratada de no haber recibido el tratamiento?</p></li>
 </ul>
 </section>
 <section id="extender-did-sistemáticamente" class="slide level2">
 <h2>Extender DID sistemáticamente</h2>
 <ul>
-<li><p>El CS permite estudiar sistemáticamente estudios de eventos</p></li>
-<li><p>En otras ciencias sociales los estudios de eventos regularmente se realizan mediante un análisis detallado de las condiciones institucionales, políticas e históricas de la unidad tratada</p></li>
-<li><p>El CS nos permite seleccionar sistemáticamente las unidades de comparación</p></li>
-<li><p>Con las características de las unidades no tratadas se construye una unidad sintética que se emplea para compararla con la unidad tratada y medir el efecto del tratamiento</p></li>
-<li><p>Se trata de crear una unidad sintética que representa a la unidad tratada como si no hubiera recibido el tratamiento</p></li>
+<li><p>El control sintético (CS) permite hacer estudios de caso comparativos de manera sistemática</p></li>
+<li><p>Con las características de las unidades no tratadas se construye una unidad sintética</p></li>
+<li><p>La unidad sintética representa la trayectoria que hubiera seguido la unidad tratada de no haber sido tratada</p></li>
+<li><p>Podemos estimar el efecto causal al comparar la trayectoria de la unidad sintética con la trayectoria que efectivamente siguió la unidad tratada</p></li>
+<li><p>Es un método relativamente reciente con varias extensiones y mejoras sucediendo en nuestros días</p></li>
 </ul>
 </section>
 <section id="lo-único-que-podemos-hacer-son-estudios-cualitativos" class="slide level2">
 <h2>¿Lo único que podemos hacer son estudios cualitativos?</h2>
 
-<img data-src="figures/marieles_castro.jpg" class="quarto-figure quarto-figure-center r-stretch" style="width:75.0%"></section></section>
+<img data-src="figures/marieles_castro.jpg" style="width:75.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: fotograma de <em>Scarface</em> (De Palma, 1983)</p></section>
+<section id="aplicaciones-del-cs" class="slide level2">
+<h2>Aplicaciones del CS</h2>
+<ul>
+<li><p>CS ha sido empleado para estudiar el efecto de algunas políticas (o eventos):</p>
+<ul>
+<li><p>El impacto del terrorismo en el País Vasco</p></li>
+<li><p>El efecto de una legislación contra el tabaco en California</p></li>
+<li><p>El efecto sobre el crecimiento de la reunificación de Alemania</p></li>
+<li><p>El efecto del flujo masivo de inmigrantes a Miami</p></li>
+</ul></li>
+</ul>
+</section></section>
 <section>
 <section id="el-modelo" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
 <h1>El modelo</h1>
@@ -566,27 +522,27 @@
 <section id="el-modelo-1" class="slide level2">
 <h2>El modelo</h2>
 <ul>
-<li><p>Tenemos <span class="math inline">\(J+1\)</span> unidades, siendo <span class="math inline">\({2,...,J+1}\)</span> las no tratadas</p></li>
-<li><p><span class="math inline">\(t=1,...,T\)</span> periodos</p></li>
-<li><p>En <span class="math inline">\(T_0\)</span> ocurre una intervención que solo afecta a <span class="math inline">\(1\)</span></p></li>
-<li><p><span class="math inline">\(Y_{it}^I\)</span> es un individuo intervenido, <span class="math inline">\(Y_{it}^N\)</span> es un individuo no intervenido</p></li>
-<li><p>Asumimos que antes de la intervención, ninguna unidad fue afectada: <span class="math inline">\(Y_{it}^N=Y_{it}^I \quad \forall i,t &lt; T_0\)</span></p></li>
-<li><p>El efecto del tratamiento en es:</p></li>
+<li><p>Tenemos <span class="math inline">\(J+1\)</span> unidades: la unidad <span class="math inline">\(1\)</span> es la tratada y <span class="math inline">\(\{2,\ldots,J+1\}\)</span> son las no tratadas (el <em>donor pool</em>)</p></li>
+<li><p><span class="math inline">\(t=1,\ldots,T\)</span> periodos, de los cuales <span class="math inline">\(1,\ldots,T_0\)</span> son pre-intervención</p></li>
+<li><p>La intervención afecta solo a la unidad <span class="math inline">\(1\)</span>, en los periodos <span class="math inline">\(T_0+1,\ldots,T\)</span></p></li>
+<li><p><span class="math inline">\(Y_{it}(1)\)</span> es el resultado potencial de la unidad <span class="math inline">\(i\)</span> en <span class="math inline">\(t\)</span> si recibe la intervención y <span class="math inline">\(Y_{it}(0)\)</span> es su resultado potencial sin la intervención</p></li>
+<li><p>Asumimos que la intervención no tiene efecto antes de implementarse: <span class="math inline">\(Y_{1t}(0)=Y_{1t}(1) \quad \forall t\in\{1,\ldots,T_0\}\)</span></p></li>
+<li><p>El efecto del tratamiento es:</p></li>
 </ul>
-<p><span class="math display">\[\alpha_1=\left(\alpha_{1T_0+1},..., \alpha_{1T}\right)\]</span></p>
-<p>con <span class="math inline">\(t&gt;T_0\)</span> y <span class="math inline">\(\alpha_{1t}=Y_{1t}^I-Y_{1t}^N\)</span></p>
+<p><span class="math display">\[\alpha_1=\left(\alpha_{1T_0+1},\ldots, \alpha_{1T}\right)\]</span></p>
+<p>con <span class="math inline">\(\alpha_{1t}=Y_{1t}(1)-Y_{1t}(0)\)</span> para <span class="math inline">\(t&gt;T_0\)</span></p>
 </section>
 <section id="el-modelo-2" class="slide level2">
 <h2>El modelo</h2>
 <ul>
 <li>Consideremos un modelo bastante general para la variable de interés (modelo de factores):</li>
 </ul>
-<p><span class="math display">\[Y_{it}^N=\delta_t+\theta_t Z_i + \lambda_t\mu_i+\varepsilon_{it}\]</span></p>
+<p><span class="math display">\[Y_{it}(0)=\delta_t+\theta_t Z_i + \lambda_t\mu_i+\varepsilon_{it}\]</span></p>
 <ul>
 <li><p><span class="math inline">\(Z_i\)</span> son variables no afectadas por la intervención</p></li>
 <li><p><span class="math inline">\(\theta_t\)</span> es un vector de parámetros (que varía en el tiempo)</p></li>
 <li><p><span class="math inline">\(\delta_t\)</span> son factores comunes desconocidos (efectos temporales en un modelo de panel)</p></li>
-<li><p><span class="math inline">\(\mu_i\)</span> es un vector de factores no observados (<em>unknown loadings</em>)</p></li>
+<li><p><span class="math inline">\(\mu_i\)</span> es un vector de cargas factoriales no observadas (<em>unknown loadings</em>)</p></li>
 <li><p><span class="math inline">\(\lambda_t\)</span> son factores comunes no observables</p></li>
 <li><p>DID ocurre cuando <span class="math inline">\(\lambda_t=\lambda\)</span></p></li>
 </ul>
@@ -594,14 +550,14 @@
 <section id="el-modelo-3" class="slide level2">
 <h2>El modelo</h2>
 <ul>
-<li><p>Considere una matriz de pesos <span class="math inline">\(W=\left(w_2,...,w_{J+1}\right)\)</span>, con <span class="math inline">\(w_j \geq 0 \quad \forall j\geq 2\)</span></p></li>
+<li><p>Considere un vector de pesos <span class="math inline">\(W=\left(w_2,\ldots,w_{J+1}\right)'\)</span>, con <span class="math inline">\(w_j \geq 0 \quad \forall j\geq 2\)</span></p></li>
 <li><p>Los pesos están normalizados, <span class="math inline">\(w_2+\ldots+w_{J+1}=1\)</span></p></li>
 <li><p>Cada valor de <span class="math inline">\(W\)</span> representa un potencial CS, es decir, un promedio ponderado de las unidades no tratadas</p></li>
-<li><p>La variable de resultados para un CS (definido por <span class="math inline">\(W\)</span>) es:</p></li>
+<li><p>Como los donantes nunca son tratados, <span class="math inline">\(Y_{jt}=Y_{jt}(0)\)</span> en todo <span class="math inline">\(t\)</span>, y la variable de resultados para un CS (definido por <span class="math inline">\(W\)</span>) es:</p></li>
 </ul>
 <p><span class="math display">\[
 \begin{aligned}
-Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
+Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
     &amp;=\delta_t+\theta_t \left(\sum_{j=2}^{J+1} w_j Z_j\right) + \lambda_t \left(\sum_{j=2}^{J+1} w_j \mu_j \right) + \left(\sum_{j=2}^{J+1} w_j\varepsilon_{jt} \right)
 \end{aligned}
 \]</span></p>
@@ -611,36 +567,44 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 </section>
 <section id="el-control-sintético-replica-el-contrafactual" class="slide level2">
 <h2>El control sintético replica el contrafactual</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
 <ul>
-<li><p>Suponga que existe una matriz <span class="math inline">\(W^*\)</span> tal que el CS replica la unidad tratada antes de la intervención</p></li>
-<li><p>Esto es, el control sintético replica la variable de resultados pre-intervención</p></li>
+<li><p>Suponga que existe un vector de pesos <span class="math inline">\(W^*\)</span> tal que el CS replica la unidad tratada antes de la intervención</p></li>
+<li><p>Esto es, el control sintético replica la variable de resultados pre-intervención y las características no afectadas por la intervención</p></li>
 </ul>
-<p><span class="math display">\[\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t} \quad \forall t\in{1,...,T_0}\]</span> - Y replica las características no afectadas por la intervención</p>
-<p><span class="math display">\[\sum_{j=2}^{J+1} w^*_j Z_j=Z_1\]</span></p>
-</div><div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t} \quad \forall t\in\{1,\ldots,T_0\} \\
+&amp;\sum_{j=2}^{J+1} w^*_j Z_j=Z_1
+\end{aligned}
+\]</span></p>
 <ul>
-<li><p>Abadie, Diamond y Hainmueller (2010) dan las condiciones bajo las que el control sintético replica el contrafactual no observado, es decir, <span class="math inline">\(E\left(Y^N_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}\right)=0\)</span></p></li>
-<li><p>Una de estas condiciones es tener suficientes periodos pre-intervención</p></li>
-<li><p>Por tanto, el efecto del tratamiento puede estimarse como:</p></li>
+<li><p>Abadie, Diamond y Hainmueller (2010) muestran que, si <span class="math inline">\(W^*\)</span> reproduce la trayectoria pre-intervención y las <span class="math inline">\(Z\)</span> de la unidad tratada, el sesgo de <span class="math inline">\(\hat{\alpha}_{1t}\)</span> está acotado por un término que se hace pequeño cuando el número de periodos pre-intervención <span class="math inline">\(T_0\)</span> es grande en relación con la escala de los choques transitorios <span class="math inline">\(\varepsilon_{it}\)</span></p></li>
+<li><p>La intuición es que con muchos periodos pre-intervención, ajustar bien la trayectoria solo es posible si el CS también reproduce los factores no observados <span class="math inline">\(\mu_1\)</span>, y no por azar en los choques</p></li>
 </ul>
-<p><span class="math display">\[\hat{\alpha}_{1t}=Y_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t}-Y_{W^*t}\]</span> para <span class="math inline">\(t\in \{T_0+1,\ldots,T\}\)</span></p>
-</div></div>
+</section>
+<section id="el-estimador-del-control-sintético" class="slide level2">
+<h2>El estimador del control sintético</h2>
+<ul>
+<li>Por tanto, el efecto del tratamiento puede estimarse como:</li>
+</ul>
+<p><span class="math display">\[\hat{\alpha}_{1t}=Y_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t}-Y_{W^*t}(0)\]</span> para <span class="math inline">\(t\in \{T_0+1,\ldots,T\}\)</span></p>
+<ul>
+<li>El problema es que, en la práctica, no sabemos si existe un <span class="math inline">\(W^*\)</span> que replique exactamente a la unidad tratada, ni cuál es</li>
+</ul>
 </section>
 <section id="estimación" class="slide level2">
 <h2>Estimación</h2>
 <ul>
 <li><p>Necesitamos datos de panel pre y post intervención para la variable dependiente</p></li>
-<li><p>Necesitamos algunos puntos pre intervención para las variables <span class="math inline">\(Z\)</span></p></li>
-<li><p>Requerimos suficientes periodos pre intervención para asegurarnos que el CS replica bien a la unidad tratada antes de la intervención</p></li>
+<li><p>Necesitamos algunos puntos pre-intervención para las variables <span class="math inline">\(Z\)</span></p></li>
+<li><p>Requerimos suficientes periodos pre-intervención para asegurarnos de que el CS replica bien a la unidad tratada antes de la intervención</p></li>
 <li><p>¿Cómo escogemos los pesos <span class="math inline">\(W\)</span>?</p></li>
 </ul>
 </section>
 <section id="estimación-1" class="slide level2">
 <h2>Estimación</h2>
 <ul>
-<li><p>Definamos <span class="math inline">\(X_1=(Z_1',\tilde{Y}_1^{K_1},\ldots,\tilde{Y}_1^{K_M})\)</span> el vector que colecciona las características de la unidad tratada preintervención</p></li>
+<li><p>Definamos <span class="math inline">\(X_1=(Z_1',\tilde{Y}_1^{K_1},\ldots,\tilde{Y}_1^{K_M})'\)</span> el vector que colecciona las características de la unidad tratada pre-intervención</p></li>
 <li><p>En el vector <span class="math inline">\(X_1\)</span> permitimos que haya <span class="math inline">\(M\)</span> combinaciones lineales de la variable de resultados pre-intervención</p></li>
 <li><p>Una combinación lineal de la variable de resultados pre-intervención es</p></li>
 </ul>
@@ -656,31 +620,66 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <ul>
 <li>Planteamos entonces una función objetivo para minimizar las discrepancias</li>
 </ul>
-<p><span class="math display">\[\min_{W\in\mathcal{W}}(X_1-X_0W)V'(X_1-X_0W)\]</span> donde <span class="math inline">\(V\)</span> es una matriz positiva definida</p>
+<p><span class="math display">\[\min_{W\in\mathcal{W}}\;(X_1-X_0W)'V(X_1-X_0W)\]</span> donde <span class="math inline">\(\mathcal{W}\)</span> es el conjunto de vectores con <span class="math inline">\(w_j\geq0\)</span> y <span class="math inline">\(\sum_j w_j=1\)</span>, y <span class="math inline">\(V\)</span> es una matriz simétrica y positiva semidefinida (en la aplicación, diagonal y positiva definida)</p>
 <ul>
+<li><p><span class="math inline">\(V\)</span> es de dimensión <span class="math inline">\((k\times k)\)</span>, con <span class="math inline">\(r\)</span> siendo el número de convariables en <span class="math inline">\(Z\)</span></p></li>
 <li><p>La solución a este problema, <span class="math inline">\(W^*(V)\)</span> depende de <span class="math inline">\(V\)</span></p></li>
 <li><p><span class="math inline">\(V\)</span> es una matriz de pesos que refleja la importancia relativa de las variables en <span class="math inline">\(X_1\)</span> y <span class="math inline">\(X_0\)</span></p></li>
-<li><p>Siguiendo a Abadie &amp; Gardeazabal (2003), podemos realizar un proceso que minimice la distancia entre el valor observado de la variable de resultados y el el contrafactual definido por <span class="math inline">\(W^*(V)\)</span></p></li>
+<li><p>Siguiendo a Abadie y Gardeazabal (2003), podemos realizar un proceso que minimice la distancia entre el valor observado de la variable de resultados y el contrafactual definido por <span class="math inline">\(W^*(V)\)</span></p></li>
 </ul>
 </section>
 <section id="estimación-de-pesos-1" class="slide level2">
 <h2>Estimación de pesos</h2>
 <ul>
-<li><p>Definamos <span class="math inline">\(\mathcal{Y_1}\)</span> como el vector de variables de resultados en la unidad tratada para los periodos pre-intervención y <span class="math inline">\(\mathcal{Y_0}\)</span> a la matriz de las mismas variables para los no tratados</p></li>
+<li><p>Definamos <span class="math inline">\(\mathcal{Y}_1\)</span> como el vector de variables de resultados en la unidad tratada para los periodos pre-intervención y <span class="math inline">\(\mathcal{Y}_0\)</span> a la matriz de las mismas variables para los no tratados</p></li>
 <li><p>Entonces, podemos encontrar la <span class="math inline">\(V\)</span> óptima como</p></li>
 </ul>
 <p><span class="math display">\[V^*=\arg\min_{V\in\mathcal{V}}(\mathcal{Y}_1-\mathcal{Y}_0W^*(V))'(\mathcal{Y}_1-\mathcal{Y}_0W^*(V))\]</span></p>
 <ul>
 <li>Y entonces, los pesos para el control sintético estarán dados por <span class="math inline">\(W^*(V^*)\)</span></li>
 </ul>
+</section>
+<section id="supuestos-fundamentales" class="slide level2">
+<h2>Supuestos fundamentales</h2>
+<ul>
+<li><strong>No anticipación</strong>: la intervención no afecta el resultado antes de <span class="math inline">\(T_0+1\)</span>
+<ul>
+<li>Si hubo anticipación (por ejemplo, la ley se anunció antes), podemos redefinir <span class="math inline">\(T_0\)</span> como el último periodo en que el resultado no pudo haber reaccionado</li>
+</ul></li>
+<li><strong>No interferencia</strong>: la intervención en la unidad <span class="math inline">\(1\)</span> no afecta los resultados de los donantes
+<ul>
+<li>Con <em>spillovers</em>, el CS deja de ser un contrafactual válido por lo que conviene excluir del <em>donor pool</em> a las unidades expuestas</li>
+</ul></li>
+<li><strong>No hay choques idiosincráticos en los donantes</strong>: en el periodo post, los donantes no reciben intervenciones parecidas ni choques grandes propios
+<ul>
+<li>Podemos excluir las unidades que adoptaron programas o leyes similares a la estudiada</li>
+</ul></li>
+<li><strong>Modelo para el contrafactual</strong>: <span class="math inline">\(Y_{it}(0)\)</span> sigue (aproximadamente) el modelo de factores, que es lineal en <span class="math inline">\(Z_i\)</span> y <span class="math inline">\(\mu_i\)</span></li>
+</ul>
+</section>
+<section id="consideraciones-prácticas-para-implementar-cs" class="slide level2">
+<h2>Consideraciones prácticas para implementar CS</h2>
+<ul>
+<li><p><strong>Envolvente convexa</strong>: las características pre-intervención de la unidad tratada deben poder reproducirse con un promedio ponderado de los donantes</p>
+<ul>
+<li>Si la unidad tiene valores extremos, ningún CS la reproduce</li>
+<li>Siempre se puede medir y se debe reportar qué tan bueno es el ajuste</li>
+</ul></li>
+<li><p><strong>Sesgo de interpolación</strong>: aun con buen ajuste, promediar unidades muy distintas puede sesgar si la relación no es lineal</p>
+<ul>
+<li>Podemos limitar el <em>donor pool</em> a unidades parecidas a la tratada</li>
+</ul></li>
+<li><p><strong>Suficientes periodos pre-intervención</strong>: con <span class="math inline">\(T_0\)</span> pequeño, un buen ajuste puede deberse al ruido (sobreajuste) y no a reproducir <span class="math inline">\(\mu_1\)</span></p></li>
+<li><p><strong>Suficientes periodos post-intervención</strong>: si el efecto tarda en aparecer, requerimos suficientes periodos para distinguir el efecto respecto a la volatilidad del resultado</p></li>
+</ul>
 </section></section>
 <section>
-<section id="aplicación-la-proposición-99-en-california" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
-<h1>Aplicación: la proposición 99 en California</h1>
+<section id="ejemplo-clásico-la-proposición-99-en-california" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Ejemplo clásico: la Proposición 99 en California</h1>
 
 </section>
 <section id="la-proposición-99-en-california" class="slide level2">
-<h2>La proposición 99 en California</h2>
+<h2>La Proposición 99 en California</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -702,8 +701,8 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 </div>
 </div></div>
 </section>
-<section id="resultados" class="slide level2">
-<h2>Resultados</h2>
+<section id="california-sintética" class="slide level2">
+<h2>California sintética</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -747,9 +746,9 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <section id="pesos-estimados" class="slide level2">
 <h2>Pesos estimados</h2>
 <ul>
-<li><p>El control sintético se caracteriza por una matriz de pesos</p></li>
-<li><p>Muchas unidades no contribuyen para la construcción del contrafactual</p></li>
-<li><p>Tenemos un método que nos permite asignar estos pesos de sistemática y dando más peso a los estados más parecidos a California</p></li>
+<li><p>El control sintético se caracteriza por un vector de pesos</p></li>
+<li><p>Muchas unidades no contribuyen a la construcción del contrafactual</p></li>
+<li><p>Tenemos un método que nos permite asignar estos pesos de manera sistemática y dando más peso a los estados más parecidos a California</p></li>
 </ul>
 
 <img data-src="figures/Proposition99_weights.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Fuente: Abadie, Diamond y Hainmueller (2010)</p></section>
@@ -813,13 +812,13 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <li><p>Medida del ajuste del CS estimado</p></li>
 <li><p>Promedio de las discrepancias cuadradas entre la unidad verdadera y su CS</p></li>
 </ul>
-<p><span class="math display">\[ratio_{j}^{MSPE}=\frac{MSPE_{post}}{MSPE_{pre}}\]</span></p>
+<p><span class="math display">\[r_{j}^{MSPE}=\frac{MSPE_{post}}{MSPE_{pre}}=\frac{\frac{1}{T-T_0}\sum_{t&gt;T_0}\left(Y_{jt}-\hat{Y}_{jt}(0)\right)^2}{\frac{1}{T_0}\sum_{t\leq T_0}\left(Y_{jt}-\hat{Y}_{jt}(0)\right)^2}\]</span></p>
 <ul>
-<li>En esta aplicación <span class="math inline">\(ratio_{CA}^{MSPE}\approx130\)</span></li>
+<li>En esta aplicación <span class="math inline">\(r_1^{MSPE}\approx130\)</span></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <ul>
-<li>Podemos ver la distribución de:</li>
+<li>Podemos ver la distribución de <span class="math inline">\(r_j^{MSPE}\)</span>:</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -831,6 +830,27 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 </div>
 </div>
 </div>
+</div></div>
+</section>
+<section id="inferencia-por-permutación" class="slide level2">
+<h2>Inferencia por permutación</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Para cada unidad <span class="math inline">\(j\)</span>, estimamos su CS y su <span class="math inline">\(r_j^{MSPE}\)</span></p></li>
+<li><p>Obtenemos un valor <span class="math inline">\(p\)</span> definido como la proporción de unidades con un ratio al menos tan grande como el de la unidad tratada</p></li>
+</ul>
+<p><span class="math display">\[p=\frac{1}{J+1}\sum_{j=1}^{J+1}\mathbb{1}\left\{r_j^{MSPE}\geq r_1^{MSPE}\right\}\]</span></p>
+<ul>
+<li>California tiene el mayor ratio de las 39 unidades: <span class="math inline">\(p=1/39\approx0.026\)</span></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>Es la probabilidad de un efecto así de grande si la intervención se asignara al azar entre los estados</p></li>
+<li><p><strong>Placebos con mal ajuste</strong> no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande</p></li>
+<li><p><strong>Placebos en el tiempo</strong>: se impone la intervención antes de <span class="math inline">\(T_0\)</span> y no se espera encontrar ningún efecto</p></li>
+<li><p><strong>Dejar uno fuera</strong>: se quita cada donante con peso positivo; el resultado no debe depender de uno solo</p></li>
+</ul>
 </div></div>
 </section></section>
 <section>
@@ -856,7 +876,7 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <li><p>Desde finales de los 60 ETA comenzó una serie de ataques terroristas</p></li>
 <li><p>El propósito de ETA era promover la independencia del Estado vasco</p></li>
 <li><p>Usando características económicas de otras regiones de España se construye un CS</p></li>
-<li><p>Se estima hasta en % 9 del PIB el costo del terrorismo</p></li>
+<li><p>Tras el inicio del terrorismo, el PIB per cápita del País Vasco cae alrededor de 10 puntos porcentuales respecto a su CS</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -879,8 +899,8 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <section id="el-valor-de-las-conexiones-en-tiempos-turbulentos" class="slide level2">
 <h2>El valor de las conexiones en tiempos turbulentos</h2>
 <ul>
-<li><p>En medio de la crisis financiera de 2008 el entonces presidente Obama nomina a Tim Geithner como Secretario del Tesoro</p></li>
-<li><p>Justo después de su nombramiento, los rendimientos de muchas empresas en las bolsas mostraron una repentina tendencia a la alza</p></li>
+<li><p>En medio de la crisis financiera de 2008 el entonces presidente electo Barack Obama nominó a Tim Geithner como Secretario del Tesoro</p></li>
+<li><p>Justo después de su nombramiento, los rendimientos de muchas empresas en las bolsas mostraron una repentina tendencia al alza</p></li>
 <li><p>Semanas después de haberse anunciado, se rumoró que un problema de impuestos podría impedirle a Geithner tomar el cargo, produciéndose el efecto contrario en el valor de las acciones</p></li>
 <li><p>Acemoglu et al.&nbsp;(2016) estudian si existe una relación entre las empresas <em>conectadas</em> con Geithner y los precios de las acciones</p></li>
 </ul>
@@ -889,8 +909,8 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <h2>Control sintético con más de un tratado</h2>
 <ul>
 <li><p>Los autores identifican las empresas <em>conectadas</em> con Geithner</p></li>
-<li><p>De alrededor de 600 empresas en la muestra empleada, los autores identifican 66 con algún tipo de conexión con Geithner</p></li>
-<li><p>Esto permite construir una unidad sintética para cada una de las unidades tratadas a partir del grupo de donadores</p></li>
+<li><p>De 603 empresas financieras en la muestra, los autores identifican 63 con algún tipo de conexión con Geithner</p></li>
+<li><p>Esto permite construir una unidad sintética para cada una de las unidades tratadas a partir del grupo de donantes</p></li>
 <li><p>La idea es repetir lo que hemos visto en los ejemplos anteriores pero tantas veces como unidades tratadas existan</p></li>
 </ul>
 </section>
@@ -902,8 +922,8 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <li><p>Para cada tratado se calculan los rendimientos anormales como la diferencia entre los rendimientos verdaderos y los rendimientos de la unidad sintética</p></li>
 <li><p>Se promedian los rendimientos anormales</p></li>
 </ul>
-<p><span class="math display">\[\hat{\phi}(\tau,k)=\frac{\sum_{i\in treatment} \frac{\sum^{k}_{t=0} R_{it}-\hat{R}_{it}}{\hat{\sigma}_i}}{\sum_{i\in treatment} \frac{1}{\hat{\sigma}_i}}\]</span></p>
-<p>con <span class="math inline">\(\hat{\sigma}_i=\sqrt{\frac{\sum_{t&lt;t_0}(R_{it}-\hat{R}_{it})^2}{T}}\)</span></p>
+<p><span class="math display">\[\hat{\phi}(\tau,k)=\frac{\sum_{i\in \text{tratados}} \frac{\sum^{k}_{t=0} (R_{it}-\hat{R}_{it})}{\hat{\sigma}_i}}{\sum_{i\in \text{tratados}} \frac{1}{\hat{\sigma}_i}}\]</span></p>
+<p>con <span class="math inline">\(\hat{\sigma}_i=\sqrt{\frac{1}{T_0}\sum_{t=1}^{T_0}\left(R_{it}-\hat{R}_{it}\right)^2}\)</span></p>
 <ul>
 <li>Se encuentran rendimientos anormales en los primeros 10 días de entre 6 y 12%</li>
 </ul>
@@ -912,7 +932,7 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figures/Connections_effects.png" style="width:120.0%"></p>
+<p><img data-src="figures/Connections_effects.png" style="width:100.0%"></p>
 <figcaption>Fuente: Acemoglu et al.&nbsp;(2016)</figcaption>
 </figure>
 </div>
@@ -925,7 +945,71 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <ul>
 <li><p>Se obtienen 5 mil remuestreos de grupos de tratamiento placebo del mismo tamaño que el grupo tratado</p></li>
 <li><p>Se calculan los rendimientos anormales en cada muestra placebo</p></li>
-<li><p>El efecto estimado es significativo al 5% si no pertenece a al intervalo que contiene los percentiles <span class="math inline">\([2.5, 97.5]\)</span> de los efectos placebo</p></li>
+<li><p>El efecto estimado es significativo al 5% si no pertenece al intervalo que contiene los percentiles <span class="math inline">\([2.5, 97.5]\)</span> de los efectos placebo</p></li>
+</ul>
+</section></section>
+<section>
+<section id="extensiones" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
+<h1>Extensiones</h1>
+
+</section>
+<section id="did-sintético" class="slide level2">
+<h2>DID sintético</h2>
+<ul>
+<li><p>Arkhangelsky et al.&nbsp;(2021) combinan las ideas de DID y del CS</p></li>
+<li><p>Se estiman pesos para las unidades de control, <span class="math inline">\(\hat\omega_i\)</span>, como en el CS, y pesos para los periodos pre-intervención, <span class="math inline">\(\hat\lambda_t\)</span>, que dan más importancia a los periodos parecidos a los posteriores</p></li>
+<li><p>El efecto se obtiene con una regresión de efectos fijos de dos vías ponderada:</p></li>
+</ul>
+<p><span class="math display">\[\left(\hat{\tau},\hat{\mu},\hat{\alpha},\hat{\beta}\right)=\arg\min_{\tau,\mu,\alpha,\beta}\sum_{i=1}^{N}\sum_{t=1}^{T}\left(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau\right)^2\hat{\omega}_i\hat{\lambda}_t\]</span></p>
+<ul>
+<li><p>Con pesos uniformes es DID; sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS</p></li>
+<li><p>A diferencia del CS:</p>
+<ul>
+<li>los efectos fijos <span class="math inline">\(\alpha_i\)</span> permiten que el CS difiera de la tratada en un nivel constante: basta reproducir la tendencia</li>
+<li>admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo</li>
+</ul></li>
+</ul>
+</section>
+<section id="control-sintético-aumentado" class="slide level2">
+<h2>Control sintético aumentado</h2>
+<ul>
+<li><p>Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado, y en la práctica el ajuste casi nunca es perfecto</p></li>
+<li><p>Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo de resultados <span class="math inline">\(\hat{m}_t(\cdot)\)</span>, por ejemplo, una regresión <em>ridge</em> de los resultados post en los pre, estimada con los donantes:</p></li>
+</ul>
+<p><span class="math display">\[\hat{Y}_{1t}^{aug}(0)=\sum_{j=2}^{J+1} \hat{w}_j Y_{jt}+\left(\hat{m}_t(X_1)-\sum_{j=2}^{J+1} \hat{w}_j\, \hat{m}_t(X_j)\right)\]</span></p>
+<ul>
+<li><p>El término entre paréntesis estima el sesgo debido al desbalance que deja el CS</p></li>
+<li><p>Es la misma lógica que la corrección de sesgo en <em>matching</em> y que los métodos doblemente robustos</p></li>
+<li><p>El costo: los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización</p></li>
+</ul>
+</section>
+<section id="control-sintético-penalizado" class="slide level2">
+<h2>Control sintético penalizado</h2>
+<ul>
+<li><p>Cuando hay muchos donantes (o muchas unidades tratadas, con datos desagregados), la solución del CS puede no ser única y puede promediar unidades muy distintas a la tratada</p></li>
+<li><p>Abadie y L’Hour (2021) agregan una penalización por la distancia entre la unidad tratada y cada donante que recibe peso:</p></li>
+</ul>
+<p><span class="math display">\[\min_{W\in\mathcal{W}}\;\left\|X_1-\sum_{j=2}^{J+1}w_jX_j\right\|^2+\lambda\sum_{j=2}^{J+1}w_j\left\|X_1-X_j\right\|^2\]</span></p>
+<ul>
+<li><p>Con <span class="math inline">\(\lambda\to0\)</span> se obtiene el CS; con <span class="math inline">\(\lambda\to\infty\)</span>, <em>matching</em> con el vecino más cercano</p></li>
+<li><p>Para <span class="math inline">\(\lambda&gt;0\)</span> la solución es única y rala (pocos donantes con peso positivo), y se reduce el sesgo de interpolación</p></li>
+<li><p><span class="math inline">\(\lambda\)</span> se escoge con validación cruzada, por ejemplo, con los periodos pre-intervención</p></li>
+</ul>
+</section>
+<section id="el-papel-de-las-covariables" class="slide level2">
+<h2>El papel de las covariables</h2>
+<ul>
+<li><p>En la práctica, <span class="math inline">\(X_1\)</span> y <span class="math inline">\(X_0\)</span> mezclan covariables <span class="math inline">\(Z\)</span> y resultados pre-intervención, y los resultados pueden cambiar según qué predictores se incluyan</p></li>
+<li><p>Kaul et al.&nbsp;(2022): si se incluyen <strong>todos</strong> los resultados pre-intervención como predictores, las covariables reciben peso cero en <span class="math inline">\(V^*\)</span> y se vuelven irrelevantes</p>
+<ul>
+<li>Hay que escoger: todos los rezagos del resultado, o algunos rezagos con covariables</li>
+</ul></li>
+<li><p>Botosaru y Ferman (2019): la cota del sesgo de ADH supone balance perfecto en covariables y en resultados pre</p>
+<ul>
+<li>Sin balance en covariables aún se puede acotar el sesgo, pero con supuestos más fuertes y una cota más holgada</li>
+<li>Un ajuste perfecto en los resultados pre <strong>no</strong> implica balance en las covariables, aunque estas sean relevantes: hay que revisarlo</li>
+</ul></li>
+<li><p>Recomendación: decidir la especificación antes de ver los resultados post y reportar la robustez a especificaciones alternativas</p></li>
 </ul>
 </section></section>
 <section>
@@ -938,10 +1022,10 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p>Parte de la motivación del uso del CS fue el estudio de Card (1990) sobre el impacto de los marieles en la economía de Miami</p></li>
+<li><p>Usamos el estudio de Card (1990) sobre el impacto de los marieles en la economía de Miami</p></li>
 <li><p>Criticamos la selección del grupo de comparación</p></li>
-<li><p>Peri y Yasenov (2018) construyen un Miami sintético para estimar el efecto de los marieles</p></li>
-<li><p>Muestran que las conclusiones de Card en general se sostienen</p></li>
+<li><p>Peri y Yasenov (2019) construyen un Miami sintético para estimar el efecto de los marieles</p></li>
+<li><p>Muestran que las conclusiones de Card en general se sostienen, aunque Borjas (2017) encuentra que, con otra muestra, sí se encuentran caídas salariales</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
@@ -949,7 +1033,7 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figures/Mariels_synthetic.png" style="width:100.0%"></p>
-<figcaption>Fuente: Peri y Yasenov (2018)</figcaption>
+<figcaption>Fuente: Peri y Yasenov (2019)</figcaption>
 </figure>
 </div>
 </div>
@@ -963,11 +1047,6 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
 <li><p>El investigador debe ser transparente al mostrar qué tan bueno es el CS que construye</p></li>
 <li><p>Para construir el CS no se usan los datos post-intervención por lo que, al menos en teoría, el investigador no debería seleccionar el CS guiado por las conclusiones que resultan</p></li>
 </ul>
-</section>
-<section id="section" class="slide level2 center middle">
-<h2></h2>
-<p>Material de clase en versión preliminar.</p>
-<p><strong>No reproducir, no distribuir, no citar.</strong></p>
 </section></section>
 <section id="control-sintético-1" class="title-slide slide level1 final center" data-background-color="#9B2247" data-state="nochrome">
 <h1>Control sintético</h1>
@@ -1206,6 +1285,44 @@ Y_{Wt}^N&amp;=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
