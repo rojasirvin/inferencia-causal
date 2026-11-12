@@ -18,29 +18,6 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, fig.path = "figures/")
-
-library(tidyverse)
-library(pacman)
-library(janitor)
-library(sandwich)
-#library(nnet)
-#library(mlogit)
-library(readr)
-library(clubSandwich)
-library(modelsummary)
-library(estimatr)
-library(lubridate)
-library(ExPanDaR) #for describing panel data
-library(lfe)
-library(modelsummary)
-library(estimatr)
-#library(Matching)
-#library(MatchIt)
-#library(Zelig)
-library(gtsummary)
-library(stargazer)
-
-xfun::pkg_load2(c('base64enc', 'htmltools', 'mime'))
 ```
 
 
@@ -56,69 +33,15 @@ Inferencia Causal
 ::: {.pa-inst}
 Centro de Investigación y Docencia Económicas<br>Maestría en Economía
 :::
-```{css, echo = FALSE}
-.huge .remark-code { /*Change made here*/
-  font-size: 200% !important;
-}
-.tiny .remark-code { /*Change made here*/
-  font-size: 60% !important;
-}
-```
-
-## Motivación
- 
-- Hasta ahora hemos usado situaciones en las que varios individuos resultan tratados y varios resultan no ser tratados
- 
-- Los métodos no experimentales nos permiten identificar el efecto de un tratamiento por medio de supuestos
- 
-- Tratamos de aproximar una situación experimental
- 
-- Los estudios de evento ocurren cuando una política o programa se lleva a cabo a nivel agregado y afecta a unas pocas (a veces una) unidades
- 
-
-
-## Motivación
-
-- El método de *control sintético* (CS) ha sido empleado para estudiar el efecto de algunas políticas (o eventos):
- 
-  - El impacto del terrorismo en la región de Cataluña
-
-  - El efecto de una legislación contra el tabaco en California
-
-  - El efecto sobre el crecimiento de la reunificación de Alemania
-
-  - El efecto del flujo masivo de inmigrantes a Miami
-  
-  
- 
-## Partimos del concepto de DID
-
-- Consideremos un modelo simple de diferencia en diferencias
-
-- Observamos una unidad tratada y una que nunca lo fue antes y después del tratamiento
-
-- Bajo ciertos supuestos, el estimador de DID es el efecto del tratamiento
-
-- La implementación consiste en comparar la unidad tratada con una o varias no tratadas
-	 
-
-
-## ¿Cuál es el efecto de la inmigración en los mercados laborales?
-
-- Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros
-
-- Al comparar las tendencias en empleo y salarios con las de este conjunto de ciudades Card concluye que la llegada de inmigrantes no tuvo ningún efecto negativo
-
-
 
 ## Los marieles
 
-```{r, out.width="80%",fig.cap='Fuente: Tomada de internet',fig.align='center'}
+```{r, out.width="80%",fig.cap='Fuente: *The Miami News*, 29 de abril de 1980',fig.align='center'}
 knitr::include_graphics("figures/marieles_newspaper.jpg")
 ```
 
 
-## Los marieles
+## Motivación
 	 
 :::: {.columns}
 
@@ -126,9 +49,8 @@ knitr::include_graphics("figures/marieles_newspaper.jpg")
 
 - ¿Cuál es el efecto de la inmigración en los mercados laborales?
 
-- Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros
+- Card (1990) empleó datos a nivel individual sobre salarios y empleo en el área metropolitana de Miami y los comparó con el promedio de otras cuatro ciudades con proporciones similares de hispanos y negros (Atlanta, Houston, Los Ángeles y Tampa)
 
-- Se compara a Miami con el promedio de Atlanta, Houston, Los Angeles y Tampa
 
 :::
 
@@ -143,7 +65,7 @@ knitr::include_graphics("figures/Miami_immigrants_characteristics.png")
 
 
 
-## Los marieles
+## Impactos en los ingresos
 
 ```{r, out.width="70%",fig.cap='Fuente: Card (1990)',fig.align='center'}
 knitr::include_graphics("figures/Miami_earnings_comparison.png")
@@ -151,19 +73,17 @@ knitr::include_graphics("figures/Miami_earnings_comparison.png")
 
 
 
-## Los marieles
+## Impactos en el empleo
 
 ```{r, out.width="70%",fig.cap='Fuente: Card (1990)',fig.align='center'}
 knitr::include_graphics("figures/Miami_unemployment_comparison.png")
 ```
 
-
-
-## Los marieles
+## Conclusión sobre los marieles
 	 
 - Al comparar las tendencias en empleo y salarios con las de este conjunto de ciudades Card concluye que la llegada de inmigrantes no tuvo ningún efecto negativo
 
-- Tampoco encuentran evidencia de que la distribución de ingresos de los no cubanos se hubiera hecho más desigual
+- Tampoco encuentra evidencia de que la distribución de ingresos de los no cubanos se hubiera hecho más desigual
 
 - Tampoco hubo efectos concentrados en los grupos menos educados
 
@@ -171,50 +91,53 @@ knitr::include_graphics("figures/Miami_unemployment_comparison.png")
 
 
 
-## Otro ejemplo clásico de DID
-	 
-- El ejemplo clásico del modelo de DID es el estudio del efecto del salario mínimo en el empleo
+## ¿Cómo escogemos las unidades de comparación?
 
-- Card y Krueger (1994) comparan los niveles de empleo en restaurantes de comida rápida en Nueva Jersey y Filadelfia
-
-- La intuición es que estas dos áreas eran muy similares antes de la subida del salario mínimo en Nueva Jersey
-
-- Por lo tanto, comparando las variables de resultados entre ciudades, antes y después de la subida del salario mínimo, podemos obtener el efecto del tratamiento
-	 
-- Los autores no encuentran evidencia de que la subida del salario mínimo redujera el empleo
+- Los estudios de caso comparativos se usan cuando una política o programa se lleva a cabo a nivel agregado y afecta a unas pocas (a veces una) unidades
 
 
+- En otras ciencias sociales los estudios de caso comparativos regularmente se realizan mediante un análisis detallado de las condiciones institucionales, políticas e históricas de la unidad tratada
 
-## Crítica a DID
-
-- ¿Cómo escogemos las unidades de comparación?
-
+- En inferencia causal, cuando empleamos DID, usamos un grupo de unidades de comparación
+ 
 - ¿Cómo podemos saber qué tan buena es la unidad de comparación como contrafactual para reproducir lo que le hubiera pasado a la unidad tratada de no haber recibido el tratamiento?
-	 
 
 
 ## Extender DID sistemáticamente
 	 
-- El CS permite estudiar sistemáticamente estudios de eventos
+- El control sintético (CS) permite hacer estudios de caso comparativos de manera sistemática
 
-- En otras ciencias sociales los estudios de eventos regularmente se realizan mediante un análisis detallado de las condiciones institucionales, políticas e históricas de la unidad tratada
+- Con las características de las unidades no tratadas se construye una unidad sintética
 
-- El CS nos permite seleccionar sistemáticamente las unidades de comparación
+- La unidad sintética representa la trayectoria que hubiera seguido la unidad tratada de no haber sido tratada
 
-- Con las características de las unidades no tratadas se construye una unidad sintética que se emplea para compararla con la unidad tratada y medir el efecto del tratamiento
+- Podemos estimar el efecto causal al comparar la trayectoria de la unidad sintética con la trayectoria que efectivamente siguió la unidad tratada
 
-- Se trata de crear una unidad sintética que representa a la unidad tratada como si no hubiera recibido el tratamiento
-	 
+- Es un método relativamente reciente con varias extensiones y mejoras sucediendo en nuestros días 
 
 
 ## ¿Lo único que podemos hacer son estudios cualitativos?
 
-```{r, out.width="75%", fig.align='center'}
+```{r, out.width="75%", fig.cap='Fuente: fotograma de *Scarface* (De Palma, 1983)', fig.align='center'}
 knitr::include_graphics("figures/marieles_castro.jpg")
 ```
 
 
+ 
 
+## Aplicaciones del CS
+
+- CS ha sido empleado para estudiar el efecto de algunas políticas (o eventos):
+ 
+  - El impacto del terrorismo en el País Vasco
+
+  - El efecto de una legislación contra el tabaco en California
+
+  - El efecto sobre el crecimiento de la reunificación de Alemania
+
+  - El efecto del flujo masivo de inmigrantes a Miami
+  
+  
 
 # El modelo {.divider background-color="#9B2247" data-state="nochrome"}
 
@@ -222,21 +145,21 @@ knitr::include_graphics("figures/marieles_castro.jpg")
 
 ## El modelo
  
-- Tenemos $J+1$ unidades, siendo ${2,...,J+1}$ las no tratadas
+- Tenemos $J+1$ unidades: la unidad $1$ es la tratada y $\{2,\ldots,J+1\}$ son las no tratadas (el *donor pool*)
 
-- $t=1,...,T$ periodos
+- $t=1,\ldots,T$ periodos, de los cuales $1,\ldots,T_0$ son pre-intervención
 
-- En $T_0$ ocurre una intervención que solo afecta a $1$
+- La intervención afecta solo a la unidad $1$, en los periodos $T_0+1,\ldots,T$
 
-- $Y_{it}^I$ es un individuo intervenido, $Y_{it}^N$ es un individuo no intervenido
+- $Y_{it}(1)$ es el resultado potencial de la unidad $i$ en $t$ si recibe la intervención y $Y_{it}(0)$ es su resultado potencial sin la intervención
 
-- Asumimos que antes de la intervención, ninguna unidad fue afectada: $Y_{it}^N=Y_{it}^I \quad \forall i,t < T_0$
+- Asumimos que la intervención no tiene efecto antes de implementarse: $Y_{1t}(0)=Y_{1t}(1) \quad \forall t\in\{1,\ldots,T_0\}$
 
-- El efecto del tratamiento en es:
+- El efecto del tratamiento es:
 
-$$\alpha_1=\left(\alpha_{1T_0+1},..., \alpha_{1T}\right)$$
- 
-con $t>T_0$ y $\alpha_{1t}=Y_{1t}^I-Y_{1t}^N$
+$$\alpha_1=\left(\alpha_{1T_0+1},\ldots, \alpha_{1T}\right)$$
+
+con $\alpha_{1t}=Y_{1t}(1)-Y_{1t}(0)$ para $t>T_0$
 
 
 
@@ -244,15 +167,15 @@ con $t>T_0$ y $\alpha_{1t}=Y_{1t}^I-Y_{1t}^N$
  
 - Consideremos un modelo bastante general para la variable de interés (modelo de factores):
 		 
-$$Y_{it}^N=\delta_t+\theta_t Z_i + \lambda_t\mu_i+\varepsilon_{it}$$
- 
+$$Y_{it}(0)=\delta_t+\theta_t Z_i + \lambda_t\mu_i+\varepsilon_{it}$$
+
   - $Z_i$ son variables no afectadas por la intervención
   
   - $\theta_t$ es un vector de parámetros (que varía en el tiempo)
   
   - $\delta_t$ son factores comunes desconocidos (efectos temporales en un modelo de panel)
   
-  - $\mu_i$ es un vector de factores no observados (*unknown loadings*)
+  - $\mu_i$ es un vector de cargas factoriales no observadas (*unknown loadings*)
   
   - $\lambda_t$ son factores comunes no observables
 
@@ -264,18 +187,18 @@ $$Y_{it}^N=\delta_t+\theta_t Z_i + \lambda_t\mu_i+\varepsilon_{it}$$
 
 ## El modelo
  
-- Considere una matriz de pesos $W=\left(w_2,...,w_{J+1}\right)$, con $w_j \geq 0 \quad \forall j\geq 2$
+- Considere un vector de pesos $W=\left(w_2,\ldots,w_{J+1}\right)'$, con $w_j \geq 0 \quad \forall j\geq 2$
 
 - Los pesos están normalizados, $w_2+\ldots+w_{J+1}=1$
  
 - Cada valor de $W$ representa un potencial CS, es decir, un promedio ponderado de las unidades no tratadas
  
-- La variable de resultados para un CS (definido por $W$) es:
- 
- 
+- Como los donantes nunca son tratados, $Y_{jt}=Y_{jt}(0)$ en todo $t$, y la variable de resultados para un CS (definido por $W$) es:
+
+
 $$
 \begin{aligned}
-Y_{Wt}^N&=\sum_{j=2}^{J+1} w_j Y_{jt}= \\
+Y_{Wt}(0)&=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 	&=\delta_t+\theta_t \left(\sum_{j=2}^{J+1} w_j Z_j\right) + \lambda_t \left(\sum_{j=2}^{J+1} w_j \mu_j \right) + \left(\sum_{j=2}^{J+1} w_j\varepsilon_{jt} \right)
 \end{aligned}
 $$
@@ -286,35 +209,31 @@ $$
 
 ## El control sintético replica el contrafactual
  
-:::: {.columns}
+- Suponga que existe un vector de pesos $W^*$ tal que el CS replica la unidad tratada antes de la intervención
 
-::: {.column width = "50%"}
+- Esto es, el control sintético replica la variable de resultados pre-intervención y las características no afectadas por la intervención
 
-- Suponga que existe una matriz $W^*$ tal que el CS replica la unidad tratada antes de la intervención
+$$
+\begin{aligned}
+&\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t} \quad \forall t\in\{1,\ldots,T_0\} \\
+&\sum_{j=2}^{J+1} w^*_j Z_j=Z_1
+\end{aligned}
+$$
 
-- Esto es, el control sintético replica la variable de resultados pre-intervención
 
-$$\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t} \quad \forall t\in{1,...,T_0}$$
-- Y replica las características no afectadas por la intervención
+- Abadie, Diamond y Hainmueller (2010) muestran que, si $W^*$ reproduce la trayectoria pre-intervención y las $Z$ de la unidad tratada, el sesgo de $\hat{\alpha}_{1t}$ está acotado por un término que se hace pequeño cuando el número de periodos pre-intervención $T_0$ es grande en relación con la escala de los choques transitorios $\varepsilon_{it}$
 
-$$\sum_{j=2}^{J+1} w^*_j Z_j=Z_1$$
+- La intuición es que con muchos periodos pre-intervención, ajustar bien la trayectoria solo es posible si el CS también reproduce los factores no observados $\mu_1$, y no por azar en los choques
 
-:::
 
-::: {.column width = "50%"}
-
-- Abadie, Diamond y Hainmueller (2010) dan las condiciones bajo las que el control sintético replica el contrafactual no observado, es decir, $E\left(Y^N_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}\right)=0$
-
-- Una de estas condiciones es tener suficientes periodos pre-intervención
+## El estimador del control sintético
 
 - Por tanto, el efecto del tratamiento puede estimarse como:
 
-$$\hat{\alpha}_{1t}=Y_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t}-Y_{W^*t}$$
+$$\hat{\alpha}_{1t}=Y_{1t}-\sum_{j=2}^{J+1} w^*_j Y_{jt}=Y_{1t}-Y_{W^*t}(0)$$
 para $t\in \{T_0+1,\ldots,T\}$
 
-:::
-
-::::
+- El problema es que, en la práctica, no sabemos si existe un $W^*$ que replique exactamente a la unidad tratada, ni cuál es
 
 
  
@@ -322,9 +241,9 @@ para $t\in \{T_0+1,\ldots,T\}$
  
 - Necesitamos datos de panel pre y post intervención para la variable dependiente
  
-- Necesitamos algunos puntos pre intervención para las variables $Z$
+- Necesitamos algunos puntos pre-intervención para las variables $Z$
  
-- Requerimos suficientes periodos pre intervención para asegurarnos que el CS replica bien a la unidad tratada antes de la intervención
+- Requerimos suficientes periodos pre-intervención para asegurarnos de que el CS replica bien a la unidad tratada antes de la intervención
  
 - ¿Cómo escogemos los pesos $W$?
  
@@ -332,7 +251,7 @@ para $t\in \{T_0+1,\ldots,T\}$
 
 ## Estimación
 
-- Definamos $X_1=(Z_1',\tilde{Y}_1^{K_1},\ldots,\tilde{Y}_1^{K_M})$ el vector que colecciona las características de la unidad tratada preintervención
+- Definamos $X_1=(Z_1',\tilde{Y}_1^{K_1},\ldots,\tilde{Y}_1^{K_M})'$ el vector que colecciona las características de la unidad tratada pre-intervención
 
 - En el vector $X_1$ permitimos que haya $M$ combinaciones lineales de la variable de resultados pre-intervención
 
@@ -353,20 +272,22 @@ $$\tilde{Y}_i^K=\sum_{s=1}^{T_0}k_sY_{is},\quad\quad K=(k_1,\ldots,k_{T_0})'$$
 
 - Planteamos entonces una función objetivo para minimizar las discrepancias
 
-$$\min_{W\in\mathcal{W}}(X_1-X_0W)V'(X_1-X_0W)$$
-donde $V$ es una matriz positiva definida
+$$\min_{W\in\mathcal{W}}\;(X_1-X_0W)'V(X_1-X_0W)$$
+donde $\mathcal{W}$ es el conjunto de vectores con $w_j\geq0$ y $\sum_j w_j=1$, y $V$ es una matriz simétrica y positiva semidefinida (en la aplicación, diagonal y positiva definida) 
+
+- $V$ es de dimensión $(k\times k)$, con $r$ siendo el número de convariables en $Z$
 
 - La solución a este problema, $W^*(V)$ depende de $V$
 
 - $V$ es una matriz de pesos que refleja la importancia relativa de las variables en $X_1$ y $X_0$
 
-- Siguiendo a Abadie & Gardeazabal (2003), podemos realizar un proceso que minimice la distancia entre el valor observado de la variable de resultados y el el contrafactual definido por $W^*(V)$
+- Siguiendo a Abadie y Gardeazabal (2003), podemos realizar un proceso que minimice la distancia entre el valor observado de la variable de resultados y el contrafactual definido por $W^*(V)$
 
 
 
 ## Estimación de pesos
 
-- Definamos $\mathcal{Y_1}$ como el vector de variables de resultados en la unidad tratada para los periodos pre-intervención y $\mathcal{Y_0}$ a la matriz de las mismas variables para los no tratados
+- Definamos $\mathcal{Y}_1$ como el vector de variables de resultados en la unidad tratada para los periodos pre-intervención y $\mathcal{Y}_0$ a la matriz de las mismas variables para los no tratados
 
 - Entonces, podemos encontrar la $V$ óptima como
 
@@ -376,12 +297,41 @@ $$V^*=\arg\min_{V\in\mathcal{V}}(\mathcal{Y}_1-\mathcal{Y}_0W^*(V))'(\mathcal{Y}
 
 
 
+## Supuestos fundamentales
 
-# Aplicación: la proposición 99 en California {.divider background-color="#9B2247" data-state="nochrome"}
+- **No anticipación**: la intervención no afecta el resultado antes de $T_0+1$
+  - Si hubo anticipación (por ejemplo, la ley se anunció antes), podemos redefinir $T_0$ como el último periodo en que el resultado no pudo haber reaccionado
+
+- **No interferencia**: la intervención en la unidad $1$ no afecta los resultados de los donantes
+  - Con *spillovers*, el CS deja de ser un contrafactual válido por lo que conviene excluir del *donor pool* a las unidades expuestas
+
+- **No hay choques idiosincráticos en los donantes**: en el periodo post, los donantes no reciben intervenciones parecidas ni choques grandes propios
+  - Podemos excluir las unidades que adoptaron programas o leyes similares a la estudiada
+
+- **Modelo para el contrafactual**: $Y_{it}(0)$ sigue (aproximadamente) el modelo de factores, que es lineal en $Z_i$ y $\mu_i$
 
 
 
-## La proposición 99 en California
+## Consideraciones prácticas para implementar CS
+
+- **Envolvente convexa**: las características pre-intervención de la unidad tratada deben poder reproducirse con un promedio ponderado de los donantes
+  - Si la unidad tiene valores extremos, ningún CS la reproduce
+  - Siempre se puede medir y se debe reportar qué tan bueno es el ajuste
+
+- **Sesgo de interpolación**: aun con buen ajuste, promediar unidades muy distintas puede sesgar si la relación no es lineal
+  -  Podemos limitar el *donor pool* a unidades parecidas a la tratada
+
+- **Suficientes periodos pre-intervención**: con $T_0$ pequeño, un buen ajuste puede deberse al ruido (sobreajuste) y no a reproducir $\mu_1$
+
+- **Suficientes periodos post-intervención**: si el efecto tarda en aparecer, requerimos suficientes periodos para distinguir el efecto respecto a la volatilidad del resultado 
+
+
+
+# Ejemplo clásico: la Proposición 99 en California {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+
+## La Proposición 99 en California
  
 :::: {.columns}
 
@@ -408,7 +358,7 @@ knitr::include_graphics("figures/Proposition99_CA_allstates.png")
 
 
 
-## Resultados
+## California sintética
  
 :::: {.columns}
 
@@ -453,11 +403,11 @@ knitr::include_graphics("figures/Proposition99_statistics.png")
 
 ## Pesos estimados
 
-- El control sintético se caracteriza por una matriz de pesos
+- El control sintético se caracteriza por un vector de pesos
 
-- Muchas unidades no contribuyen para la construcción del contrafactual
+- Muchas unidades no contribuyen a la construcción del contrafactual
 
-- Tenemos un método que nos permite asignar estos pesos de sistemática y dando más peso a los estados más parecidos a California
+- Tenemos un método que nos permite asignar estos pesos de manera sistemática y dando más peso a los estados más parecidos a California
 
 ```{r, out.width="80%",fig.cap='Fuente: Abadie, Diamond y Hainmueller (2010)',fig.align='center'}
 knitr::include_graphics("figures/Proposition99_weights.png")
@@ -530,19 +480,50 @@ knitr::include_graphics("figures/Proposition99_placebos.png")
 
 - Promedio de las discrepancias cuadradas entre la unidad verdadera y su CS
 
-$$ratio_{j}^{MSPE}=\frac{MSPE_{post}}{MSPE_{pre}}$$
+$$r_{j}^{MSPE}=\frac{MSPE_{post}}{MSPE_{pre}}=\frac{\frac{1}{T-T_0}\sum_{t>T_0}\left(Y_{jt}-\hat{Y}_{jt}(0)\right)^2}{\frac{1}{T_0}\sum_{t\leq T_0}\left(Y_{jt}-\hat{Y}_{jt}(0)\right)^2}$$
 
-- En esta aplicación $ratio_{CA}^{MSPE}\approx130$
+- En esta aplicación $r_1^{MSPE}\approx130$
 
 :::
 
 ::: {.column width = "50%"}
 
-- Podemos ver la distribución de:
+- Podemos ver la distribución de $r_j^{MSPE}$:
 
 ```{r, out.width="100%",fig.cap='Fuente: Abadie, Diamond y Hainmueller (2010)',fig.align='center'}
 knitr::include_graphics("figures/Proposition99_MSPE.png")
 ```
+
+:::
+
+::::
+
+
+
+## Inferencia por permutación
+:::: {.columns}
+
+::: {.column width="50%"}
+
+- Para cada unidad $j$, estimamos su CS y su $r_j^{MSPE}$
+
+- Obtenemos un valor $p$ definido como la proporción de unidades con un ratio al menos tan grande como el de la unidad tratada
+
+$$p=\frac{1}{J+1}\sum_{j=1}^{J+1}\mathbb{1}\left\{r_j^{MSPE}\geq r_1^{MSPE}\right\}$$
+
+- California tiene el mayor ratio de las 39 unidades: $p=1/39\approx0.026$
+
+:::
+
+::: {.column width="50%"}
+
+- Es la probabilidad de un efecto así de grande si la intervención se asignara al azar entre los estados
+
+- **Placebos con mal ajuste** no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande
+
+- **Placebos en el tiempo**: se impone la intervención antes de $T_0$ y no se espera encontrar ningún efecto
+
+- **Dejar uno fuera**: se quita cada donante con peso positivo; el resultado no debe depender de uno solo
 
 :::
 
@@ -579,7 +560,7 @@ knitr::include_graphics("figures/Germany_synthetic.png")
  
 - Usando características económicas de otras regiones de España se construye un CS
  
-- Se estima hasta en % 9 del PIB el costo del terrorismo
+- Tras el inicio del terrorismo, el PIB per cápita del País Vasco cae alrededor de 10 puntos porcentuales respecto a su CS
 
 :::
 
@@ -600,9 +581,9 @@ knitr::include_graphics("figures/Terrorism_synthetic.png")
 
 ## El valor de las conexiones en tiempos turbulentos
 	 
-- En medio de la crisis financiera de 2008 el entonces presidente Obama nomina a Tim Geithner como Secretario del Tesoro
+- En medio de la crisis financiera de 2008 el entonces presidente electo Barack Obama nominó a Tim Geithner como Secretario del Tesoro
  
-- Justo después de su nombramiento, los rendimientos de muchas empresas en las bolsas mostraron una repentina tendencia a la alza
+- Justo después de su nombramiento, los rendimientos de muchas empresas en las bolsas mostraron una repentina tendencia al alza
  
 - Semanas después de haberse anunciado, se rumoró que un problema de impuestos podría impedirle a Geithner tomar el cargo, produciéndose el efecto contrario en el valor de las acciones
  
@@ -614,9 +595,9 @@ knitr::include_graphics("figures/Terrorism_synthetic.png")
 	 
 - Los autores identifican las empresas *conectadas* con Geithner
  
-- De alrededor de 600 empresas en la muestra empleada, los autores identifican 66 con algún tipo de conexión con Geithner
+- De 603 empresas financieras en la muestra, los autores identifican 63 con algún tipo de conexión con Geithner
  
-- Esto permite construir una unidad sintética para cada una de las unidades tratadas a partir del grupo de donadores
+- Esto permite construir una unidad sintética para cada una de las unidades tratadas a partir del grupo de donantes
  
 - La idea es repetir lo que hemos visto en los ejemplos anteriores pero tantas veces como unidades tratadas existan
 	 
@@ -630,17 +611,18 @@ knitr::include_graphics("figures/Terrorism_synthetic.png")
  
 - Se promedian los rendimientos anormales
 
-$$\hat{\phi}(\tau,k)=\frac{\sum_{i\in treatment} \frac{\sum^{k}_{t=0} R_{it}-\hat{R}_{it}}{\hat{\sigma}_i}}{\sum_{i\in treatment} \frac{1}{\hat{\sigma}_i}}$$
+$$\hat{\phi}(\tau,k)=\frac{\sum_{i\in \text{tratados}} \frac{\sum^{k}_{t=0} (R_{it}-\hat{R}_{it})}{\hat{\sigma}_i}}{\sum_{i\in \text{tratados}} \frac{1}{\hat{\sigma}_i}}$$
 	 
-	 
-con $\hat{\sigma}_i=\sqrt{\frac{\sum_{t<t_0}(R_{it}-\hat{R}_{it})^2}{T}}$
+	
+con $\hat{\sigma}_i=\sqrt{\frac{1}{T_0}\sum_{t=1}^{T_0}\left(R_{it}-\hat{R}_{it}\right)^2}$
 
 - Se encuentran rendimientos anormales en los primeros 10 días de entre 6 y 12%
+
 :::
 
 ::: {.column width = "50%"}
 
-```{r, out.width="120%",fig.cap='Fuente: Acemoglu et al. (2016)',fig.align='center'}
+```{r, out.width="100%",fig.cap='Fuente: Acemoglu et al. (2016)',fig.align='center'}
 knitr::include_graphics("figures/Connections_effects.png")
 ```
 
@@ -654,7 +636,77 @@ knitr::include_graphics("figures/Connections_effects.png")
 
 - Se calculan los rendimientos anormales en cada muestra placebo
 
-- El efecto estimado es significativo al 5% si no pertenece a al intervalo que contiene los percentiles $[2.5, 97.5]$ de los efectos placebo
+- El efecto estimado es significativo al 5% si no pertenece al intervalo que contiene los percentiles $[2.5, 97.5]$ de los efectos placebo
+
+
+
+# Extensiones {.divider background-color="#9B2247" data-state="nochrome"}
+
+
+
+## DID sintético
+
+- Arkhangelsky et al. (2021) combinan las ideas de DID y del CS
+
+- Se estiman pesos para las unidades de control, $\hat\omega_i$, como en el CS, y pesos para los periodos pre-intervención, $\hat\lambda_t$, que dan más importancia a los periodos parecidos a los posteriores
+
+- El efecto se obtiene con una regresión de efectos fijos de dos vías ponderada:
+
+$$\left(\hat{\tau},\hat{\mu},\hat{\alpha},\hat{\beta}\right)=\arg\min_{\tau,\mu,\alpha,\beta}\sum_{i=1}^{N}\sum_{t=1}^{T}\left(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau\right)^2\hat{\omega}_i\hat{\lambda}_t$$
+
+
+- Con pesos uniformes es DID; sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS
+
+- A diferencia del CS:
+  - los efectos fijos $\alpha_i$ permiten que el CS difiera de la tratada en un nivel constante: basta reproducir la tendencia
+  - admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo
+
+
+
+## Control sintético aumentado
+
+- Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado, y en la práctica el ajuste casi nunca es perfecto
+
+- Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo de resultados $\hat{m}_t(\cdot)$, por ejemplo, una regresión *ridge* de los resultados post en los pre, estimada con los donantes:
+
+$$\hat{Y}_{1t}^{aug}(0)=\sum_{j=2}^{J+1} \hat{w}_j Y_{jt}+\left(\hat{m}_t(X_1)-\sum_{j=2}^{J+1} \hat{w}_j\, \hat{m}_t(X_j)\right)$$
+
+- El término entre paréntesis estima el sesgo debido al desbalance que deja el CS
+
+- Es la misma lógica que la corrección de sesgo en *matching* y que los métodos doblemente robustos
+
+- El costo: los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización
+
+
+
+## Control sintético penalizado
+
+- Cuando hay muchos donantes (o muchas unidades tratadas, con datos desagregados), la solución del CS puede no ser única y puede promediar unidades muy distintas a la tratada
+
+- Abadie y L'Hour (2021) agregan una penalización por la distancia entre la unidad tratada y cada donante que recibe peso:
+
+$$\min_{W\in\mathcal{W}}\;\left\|X_1-\sum_{j=2}^{J+1}w_jX_j\right\|^2+\lambda\sum_{j=2}^{J+1}w_j\left\|X_1-X_j\right\|^2$$
+
+- Con $\lambda\to0$ se obtiene el CS; con $\lambda\to\infty$, *matching* con el vecino más cercano
+
+- Para $\lambda>0$ la solución es única y rala (pocos donantes con peso positivo), y se reduce el sesgo de interpolación
+
+- $\lambda$ se escoge con validación cruzada, por ejemplo, con los periodos pre-intervención
+
+
+
+## El papel de las covariables
+
+- En la práctica, $X_1$ y $X_0$ mezclan covariables $Z$ y resultados pre-intervención, y los resultados pueden cambiar según qué predictores se incluyan
+
+- Kaul et al. (2022): si se incluyen **todos** los resultados pre-intervención como predictores, las covariables reciben peso cero en $V^*$ y se vuelven irrelevantes
+  - Hay que escoger: todos los rezagos del resultado, o algunos rezagos con covariables
+
+- Botosaru y Ferman (2019): la cota del sesgo de ADH supone balance perfecto en covariables y en resultados pre
+  - Sin balance en covariables aún se puede acotar el sesgo, pero con supuestos más fuertes y una cota más holgada
+  - Un ajuste perfecto en los resultados pre **no** implica balance en las covariables, aunque estas sean relevantes: hay que revisarlo
+
+- Recomendación: decidir la especificación antes de ver los resultados post y reportar la robustez a especificaciones alternativas
 
 
 
@@ -666,18 +718,19 @@ knitr::include_graphics("figures/Connections_effects.png")
 :::: {.columns}
 
 ::: {.column width = "50%"}
-- Parte de la motivación del uso del CS fue el estudio de Card (1990) sobre el impacto de los marieles en la economía de Miami
+- Usamos el estudio de Card (1990) sobre el impacto de los marieles en la economía de Miami
 
 - Criticamos la selección del grupo de comparación
 
-- Peri y Yasenov (2018) construyen un Miami sintético para estimar el efecto de los marieles
+- Peri y Yasenov (2019) construyen un Miami sintético para estimar el efecto de los marieles
 
-- Muestran que las conclusiones de Card en general se sostienen
+- Muestran que las conclusiones de Card en general se sostienen, aunque Borjas (2017) encuentra que, con otra muestra, sí se encuentran caídas salariales
+
 :::
 
 ::: {.column width = "50%"}
 
-```{r, out.width="100%",fig.cap='Fuente: Peri y Yasenov (2018)',fig.align='center'}
+```{r, out.width="100%",fig.cap='Fuente: Peri y Yasenov (2019)',fig.align='center'}
 knitr::include_graphics("figures/Mariels_synthetic.png")
 ```
 
@@ -693,16 +746,6 @@ knitr::include_graphics("figures/Mariels_synthetic.png")
 - El investigador debe ser transparente al mostrar qué tan bueno es el CS que construye
  
 - Para construir el CS no se usan los datos post-intervención por lo que, al menos en teoría, el investigador no debería seleccionar el CS guiado por las conclusiones que resultan
-
-
-
-## {.center .middle}
-
-Material de clase en versión preliminar.
-
-**No reproducir, no distribuir, no citar.**
-
-
 
 
 # Control sintético {.final background-color="#9B2247" data-state="nochrome"}
