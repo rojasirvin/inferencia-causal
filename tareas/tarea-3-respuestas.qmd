@@ -1,7 +1,630 @@
 ---
-title: "Tarea 3 — Respuestas"
+title: "Tarea 3"
 lang: es
 format: html
 ---
 
-**Aún no disponible.** Las respuestas de esta tarea se publicarán *después de la fecha de entrega*, conforme avance el semestre.
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE,
+                      indent = "   ")
+library(tidyverse)
+library(janitor)
+library(haven)
+library(rdrobust)
+library(bacondecomp)
+library(lfe) #linear fixed effects
+library(fixest) #incluye el estimador de SA y el correspondiente gráfico de evento
+library(modelsummary)
+library(MatchIt)
+library(lmtest)
+library(sandwich)
+library(clubSandwich)
+library(cobalt)
+library(did)
+library(marginaleffects)
+library(kableExtra)
+```
+
+
+## Respuestas
+
+## Pregunta 1
+
+Suponga que está a cargo de asesorar a un gobierno que está interesado en conocer el impacto de las remesas en el gasto mensual en capital humano (salud y educación) de los hogares en México. Dado que no es posible realizar un experimento en el corto plazo, use un diseño de *propensity score matching* como alternativa para responder esta pregunta. Use la base de datos de su elección, pero se recomienda ampliamente usar la más reciente ENIGH, que incluye preguntas sobre remesas y gasto en diversas categorías. 
+
+
+a. [5 puntos] Construya una tabla donde muestre las diferencias en las características observadas, así como en el gasto en salud, educación y capital humano, en los hogares que reciben y no reciben remesas. Realice una prueba de significancia estadística para determinar qué características difieren entre grupos.
+
+    *Usamos la tabla `concentradohogar` de la ENIGH 2024, que tiene una fila por hogar, y le agregamos de la tabla `poblacion` un indicador de si la persona que encabeza el hogar habla una lengua indígena. Definimos el tratamiento como recibir remesas del exterior en el trimestre de referencia, es decir, **remesas** $>0$ (clave P041). Las transferencias entre hogares dentro de México no cuentan. Los gastos en **salud** y **educacion** vienen en pesos trimestrales, así que los dividimos entre tres para expresarlos en pesos mensuales. Usamos **educacion** y no **educa_espa**, porque esta última también incluye esparcimiento:*
+
+```{r}
+enigh <- read_csv("../files/concentradohogar.csv",
+                  col_types = cols(folioviv = "c", foliohog = "c",
+                                   ubica_geo = "c", educa_jefe = "c")) |>
+  clean_names() |>
+  select(folioviv, foliohog, ubica_geo, tam_loc, est_socio, factor, edad_jefe,
+         sexo_jefe, educa_jefe, tot_integ, menores, p65mas, ing_cor, remesas,
+         salud, educacion)
+
+#Lengua indígena de quien encabeza el hogar (parentesco 101)
+jefes <- read_csv("../files/poblacion.csv",
+                  col_types = cols(.default = "c")) |>
+  clean_names() |>
+  filter(parentesco == "101") |>
+  select(folioviv, foliohog, hablaind)
+
+enigh <- enigh |>
+  left_join(jefes, by = c("folioviv", "foliohog")) |>
+  mutate(remesa = ifelse(remesas > 0, 1, 0),
+         entidad = factor(substr(ubica_geo, 1, 2)),
+         tam_loc = factor(tam_loc),
+         est_socio = factor(est_socio),
+         educ_jefe = factor(case_when(
+           as.numeric(educa_jefe) <= 3 ~ "Sin primaria",
+           as.numeric(educa_jefe) <= 5 ~ "Primaria",
+           as.numeric(educa_jefe) <= 7 ~ "Secundaria",
+           as.numeric(educa_jefe) <= 9 ~ "Preparatoria",
+           TRUE ~ "Superior"),
+           levels = c("Sin primaria", "Primaria", "Secundaria",
+                      "Preparatoria", "Superior")),
+         lengua_ind = ifelse(hablaind == "1", 1, 0),
+         g_educ = educacion / 3,
+         g_salud = salud / 3,
+         g_kh = g_educ + g_salud)
+
+#MatchIt no corre con NA
+enigh <- enigh[complete.cases(enigh), ]
+
+enigh |>
+  summarize(hogares = n(),
+            remesas_mes = mean(remesas / 3),
+            ceros_educ = mean(g_educ == 0),
+            ceros_salud = mean(g_salud == 0),
+            .by = remesa)
+```
+
+    *Hay 5,105 hogares tratados y 86,309 hogares sin remesas. Los tratados reciben en promedio 5,319 pesos mensuales. También notamos que muchos hogares reportan gasto cero en el trimestre: 64% de los no tratados en educación y 39% en salud. Por eso estimamos en niveles y no en logaritmos.*
+
+    *La siguiente tabla compara las medias de ambos grupos y prueba si la diferencia es distinta de cero, con errores robustos a heterocedasticidad. Omitimos las dummies de las 32 entidades para que la tabla sea legible:*
+
+```{r}
+enigh |>
+  transmute(Grupo = factor(remesa, levels = c(0, 1),
+                           labels = c("Sin remesas", "Con remesas")),
+            `Gasto en educación` = g_educ,
+            `Gasto en salud` = g_salud,
+            `Gasto en capital humano` = g_kh,
+            `Ingreso corriente mensual` = ing_cor / 3,
+            `Edad de jefe/a` = edad_jefe,
+            `Jefe/a mujer` = ifelse(sexo_jefe == 2, 1, 0),
+            `Jefe/a habla lengua indígena` = lengua_ind,
+            `Jefe/a sin primaria` = ifelse(educ_jefe == "Sin primaria", 1, 0),
+            `Jefe/a con primaria` = ifelse(educ_jefe == "Primaria", 1, 0),
+            `Jefe/a con secundaria` = ifelse(educ_jefe == "Secundaria", 1, 0),
+            `Jefe/a con preparatoria` = ifelse(educ_jefe == "Preparatoria", 1, 0),
+            `Jefe/a con superior` = ifelse(educ_jefe == "Superior", 1, 0),
+            `Integrantes del hogar` = tot_integ,
+            `Menores de 12 años` = menores,
+            `Personas de 65 años o más` = p65mas,
+            `Localidad de 100,000 hab. o más` = ifelse(tam_loc == 1, 1, 0),
+            `Localidad de 15,000 a 99,999 hab.` = ifelse(tam_loc == 2, 1, 0),
+            `Localidad de 2,500 a 14,999 hab.` = ifelse(tam_loc == 3, 1, 0),
+            `Localidad de menos de 2,500 hab.` = ifelse(tam_loc == 4, 1, 0),
+            `Estrato bajo` = ifelse(est_socio == 1, 1, 0),
+            `Estrato medio bajo` = ifelse(est_socio == 2, 1, 0),
+            `Estrato medio alto` = ifelse(est_socio == 3, 1, 0),
+            `Estrato alto` = ifelse(est_socio == 4, 1, 0)) |>
+  datasummary_balance(~ Grupo,
+                      data = _,
+                      fmt = "%.2f",
+                      dinm_statistic = "p.value",
+                      title = "Diferencias entre hogares con y sin remesas",
+                      notes = "Fuente: ENIGH 2024, sin factor de expansión. Gasto e ingreso en pesos mensuales.")
+```
+
+    *Los hogares con remesas gastan 169 pesos mensuales menos en educación y 183 pesos más en salud, y ambas diferencias son significativas al 1%. Se compensan casi por completo, por lo que en capital humano la diferencia es de solo 14 pesos y no es significativa ($p=0.74$).*
+
+    *Los grupos son muy distintos en sus características observables. De las 20 características de la tabla, 18 difieren al 1%. Las únicas excepciones son tener jefe o jefa del hogar con educación secundaria ($p=0.09$) y vivir en localidades de 2,500 a 14,999 habitantes ($p=0.76$). Los hogares con remesas viven mucho más en localidades de menos de 2,500 habitantes (67% contra 38%) y mucho menos en las de 100,000 o más (13% contra 39%). Además, su jefatura tiene menos escolaridad: 4% tiene educación superior, contra 14%, y 33% no terminó la primaria, contra 19%. Son también hogares con más jefatura femenina (52% contra 31%), más menores y más personas mayores. Su ingreso corriente es 5,105 pesos mensuales menor, a pesar de que este ingreso incluye las remesas.*
+
+    *Dos advertencias. Con más de 91 mil hogares, incluso diferencias pequeñas resultan significativas. Esto es claro en la de lengua indígena, con una diferencia de un punto porcentual y $p<0.01$. Por eso importa más el tamaño de la diferencia, y en el inciso c. evaluamos el balance con diferencias estandarizadas. Además, estas son 23 pruebas sin corrección por múltiples hipótesis, aunque casi todos los valores $p$ están tan cerca de cero que la conclusión no cambiaría.*
+
+    *Lo importante es que estas diferencias no son efectos de las remesas. Los hogares que las reciben viven en lugares y tienen características asociadas con distintos patrones de gasto, así que comparar medias simples confunde el efecto de las remesas con esa selección. Esto motiva el _matching_ realizado en esta pregunta.*
+
+a. [5 puntos] Describa la especificación que usa para estimar el _propensity score_, estímelo y presente gráficos que muestren el traslape.
+
+    *La elección de covariables es la parte delicada. Solo deben entrar variables que **no hayan sido afectadas por el tratamiento**. Por eso **excluimos** el ingreso (las remesas son parte de él), el empleo y las características y bienes de la vivienda, que pueden cambiar con las remesas. También excluimos el tamaño del hogar y el sexo de quien lo encabeza, porque cambian justamente cuando alguien migra (el 52% de los hogares tratados tiene jefatura femenina, contra 31% de los no tratados). Incluimos entonces las siguientes características en la estimación del *propensity score*:*
+
+    - *Edad (y su cuadrado), escolaridad y lengua indígena de quien encabeza el hogar. Son características determinadas en buena medida antes de recibir remesas.*
+    - *Número de menores de 12 años y de personas de 65 años o más. Quienes migran suelen estar en edad de trabajar, así que estos conteos deberían cambiar menos con la migración. Además, determinan directamente la demanda de educación y de salud.*
+    - *Tamaño de localidad, estrato sociodemográfico y entidad federativa, que aproximan la tradición migratoria regional y la oferta local de escuelas y servicios de salud.*
+
+    *El _propensity score_ se estima con un modelo logit:*
+
+```{r}
+binaria <- "remesa"
+variables <- c("edad_jefe", "I(edad_jefe^2)", "educ_jefe", "lengua_ind", "menores",
+               "p65mas", "tam_loc", "est_socio", "entidad")
+
+ps <- as.formula(paste(binaria, paste(variables, collapse = "+"), sep = " ~ "))
+
+ps.est <- glm(formula = ps,
+              family = binomial(link = "logit"),
+              data = enigh)
+
+enigh <- enigh |>
+  mutate(ps_hat = predict(ps.est, type = "response"))
+
+modelsummary(list("Recibe remesas" = ps.est),
+             coef_map = c("edad_jefe" = "Edad de jefe/a",
+                          "I(edad_jefe^2)" = "Edad de jefe/a al cuadrado",
+                          "educ_jefePrimaria" = "Jefe/a con primaria",
+                          "educ_jefeSecundaria" = "Jefe/a con secundaria",
+                          "educ_jefePreparatoria" = "Jefe/a con preparatoria",
+                          "educ_jefeSuperior" = "Jefe/a con superior",
+                          "lengua_ind" = "Jefe/a habla lengua indígena",
+                          "menores" = "Menores de 12 años",
+                          "p65mas" = "Personas de 65 años o más",
+                          "tam_loc2" = "Localidad de 15,000 a 99,999 hab.",
+                          "tam_loc3" = "Localidad de 2,500 a 14,999 hab.",
+                          "tam_loc4" = "Localidad de menos de 2,500 hab.",
+                          "est_socio2" = "Estrato medio bajo",
+                          "est_socio3" = "Estrato medio alto",
+                          "est_socio4" = "Estrato alto",
+                          "(Intercept)" = "Constante"),
+             fmt = 4,
+             gof_map = c("nobs"),
+             stars = c('*' = .1, '**' = .05, '***' = 0.01),
+             title = "Propensity score: modelo logit",
+             notes = "Coeficientes del logit. Incluye dummies de entidad, no reportadas. Categorías base: jefe/a sin primaria, localidad de 100,000 hab. o más y estrato bajo.")
+```
+
+    *Los coeficientes tienen sentido. La probabilidad de recibir remesas cae con la escolaridad, es mayor en localidades pequeñas (**tam_loc** 4 son las de menos de 2,500 habitantes) y aumenta con el número de menores. El traslape se ve en las distribuciones del _propensity score_ por grupo:*
+
+```{r}
+enigh |>
+  mutate(grupo = ifelse(remesa == 1, "Con remesas", "Sin remesas")) |>
+  ggplot(aes(x = ps_hat)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 50,
+                 colour = "black", fill = "white") +
+  facet_wrap(~grupo) +
+  xlab("Probabilidad de recibir remesas") +
+  ylab("Densidad") +
+  theme_bw()
+
+enigh |>
+  summarize(minimo = min(ps_hat),
+            p1 = quantile(ps_hat, .01),
+            mediana = median(ps_hat),
+            p99 = quantile(ps_hat, .99),
+            maximo = max(ps_hat),
+            .by = remesa)
+```
+
+    *El traslape es aceptable. El rango del _propensity score_ de los tratados (de 0.001 a 0.45) está contenido en el de los no tratados (de 0.0005 a 0.54), así que todo hogar con remesas tiene candidatos comparables. La distribución de los tratados está desplazada a la derecha, con una mediana de 0.11 contra 0.03, pero como hay casi 17 no tratados por cada tratado, hay controles suficientes incluso en la cola derecha.*
+
+a. [10 puntos] Describa el algoritmo de *matching* que usa para asignar uno o varios hogares no tratados a los hogares tratados. Construya un *loveplot* que muestre el balance de las muestras antes y después del emparejamiento.
+
+    *Usamos vecino más cercano 1:1 sin reemplazo sobre el _propensity score_. A cada hogar tratado le asignamos el hogar no tratado con el _propensity score_ más parecido y ese hogar ya no puede volver a usarse. Como comparación, estimamos también una versión con dos vecinos y un _caliper_ de 0.05, que descarta emparejamientos demasiado lejanos:*
+
+```{r}
+set.seed(1021)
+
+m.out <- matchit(formula = ps,
+                 method = "nearest",
+                 ratio = 1,
+                 distance = "glm",
+                 link = "logit",
+                 replace = FALSE,
+                 estimand = "ATT",
+                 data = enigh)
+
+m.out2 <- matchit(formula = ps,
+                  method = "nearest",
+                  ratio = 2,
+                  caliper = .05,
+                  distance = "glm",
+                  link = "logit",
+                  replace = FALSE,
+                  estimand = "ATT",
+                  data = enigh)
+
+summary(m.out)$nn
+summary(m.out2)$nn
+```
+
+    *Con el vecino más cercano emparejamos a los 5,105 hogares tratados. Con el _caliper_, cinco hogares tratados se quedan sin pareja. El _loveplot_ compara las diferencias de medias estandarizadas (SMD) antes y después del emparejamiento:*
+
+```{r}
+#| fig-height: 10
+love.plot(bal.tab(m.out, binary = "std"),
+          threshold = .1,
+          abs = TRUE,
+          var.order = "unadjusted")
+```
+
+    *Antes del emparejamiento, la mayor SMD absoluta es 0.85 y corresponde al propio _propensity score_. Entre las covariables destaca vivir en una localidad grande (0.76). Después del emparejamiento, todas las diferencias quedan por debajo del umbral de 0.1. La mayor es 0.08, en el número de menores. Con dos vecinos y _caliper_ la mayor baja a 0.04. El emparejamiento es exitoso en lo que puede lograr, equilibrar los observables, aunque no dice nada sobre los no observables.*
+
+a. [10 puntos] Estime el impacto de recibir remesas en el gasto en educación, salud y capital humano (la suma de ambos) usando *g-computation*.
+
+    *Estimamos un modelo para el gasto en la muestra emparejada y usamos _avg_comparisons_ para promediar el efecto sobre los hogares tratados, con errores agrupados a nivel pareja (**subclass**). Reportamos tres especificaciones: sin covariables, con la interacción entre tratamiento y covariables, y esta última con dos vecinos y _caliper_. Agregamos la diferencia simple de medias para ver cómo cambia la respuesta ante distintas comparaciones:*
+
+```{r}
+m.data <- match.data(m.out)
+m.data2 <- match.data(m.out2)
+
+x <- paste(variables, collapse = "+")
+
+resultados <- data.frame()
+
+for (y in c("g_educ", "g_salud", "g_kh"))
+{
+  dif.simple <- lm(as.formula(paste(y, "~ remesa")), data = enigh)
+
+  tt1 <- lm(as.formula(paste(y, "~ remesa")),
+            data = m.data,
+            weights = weights)
+
+  tt2 <- lm(as.formula(paste0(y, " ~ remesa*(", x, ")")),
+            data = m.data,
+            weights = weights)
+
+  tt3 <- lm(as.formula(paste0(y, " ~ remesa*(", x, ")")),
+            data = m.data2,
+            weights = weights)
+
+  tot1 <- avg_comparisons(tt1,
+                          variables = "remesa",
+                          vcov = ~subclass,
+                          newdata = subset(remesa == 1))
+
+  tot2 <- avg_comparisons(tt2,
+                          variables = "remesa",
+                          vcov = ~subclass,
+                          newdata = subset(remesa == 1))
+
+  tot3 <- avg_comparisons(tt3,
+                          variables = "remesa",
+                          vcov = ~subclass,
+                          newdata = subset(remesa == 1),
+                          wts = "weights")
+
+  resultados <- rbind(resultados,
+                      data.frame(gasto = y,
+                                 metodo = c("Diferencia simple", "NN-1",
+                                            "NN-1 + X", "NN-2 + caliper + X"),
+                                 efecto = c(coef(dif.simple)["remesa"],
+                                            tot1$estimate, tot2$estimate,
+                                            tot3$estimate),
+                                 ee = c(coeftest(dif.simple, vcov. = vcovHC,
+                                                 type = "HC1")["remesa", 2],
+                                        tot1$std.error, tot2$std.error,
+                                        tot3$std.error),
+                                 n = c(nobs(dif.simple), nobs(tt1), nobs(tt2),
+                                       nobs(tt3))))
+}
+
+#Tabla con un panel por tipo de gasto y una columna por comparación
+tabla_tot <- function(res, nota) {
+  num <- function(v, d) formatC(v, format = "f", digits = d, big.mark = ",")
+
+  tabla <- res |>
+    mutate(p = 2 * pnorm(-abs(efecto / ee)),
+           estrellas = case_when(p < .01 ~ "***",
+                                 p < .05 ~ "**",
+                                 p < .1 ~ "*",
+                                 TRUE ~ ""),
+           Efecto = paste0(num(efecto, 1), estrellas),
+           Error = paste0("(", num(ee, 1), ")"),
+           gasto = factor(gasto, levels = c("g_salud", "g_educ", "g_kh"))) |>
+    select(gasto, metodo, Efecto, Error) |>
+    pivot_longer(c(Efecto, Error), names_to = "fila", values_to = "valor") |>
+    pivot_wider(names_from = metodo, values_from = valor) |>
+    arrange(gasto) |>
+    mutate(fila = ifelse(fila == "Efecto", "Efecto estimado", "Error estándar")) |>
+    select(-gasto)
+
+  obs <- res |>
+    distinct(metodo, n) |>
+    mutate(n = num(n, 0)) |>
+    pivot_wider(names_from = metodo, values_from = n) |>
+    mutate(fila = "Observaciones")
+
+  bind_rows(tabla, obs) |>
+    kbl(col.names = c("", names(tabla)[-1]),
+        align = c("l", rep("c", ncol(tabla) - 1)),
+        caption = "Efecto de recibir remesas en el gasto mensual (pesos)") |>
+    kable_styling(full_width = FALSE) |>
+    pack_rows("Panel A: Salud", 1, 2) |>
+    pack_rows("Panel B: Educación", 3, 4) |>
+    pack_rows("Panel C: Capital humano", 5, 6) |>
+    footnote(general = nota, general_title = "Notas: ", footnote_as_chunk = TRUE)
+}
+
+tabla_tot(resultados,
+          "Diferencia simple con errores robustos HC1. Las demás columnas son el TOT por g-computation, con errores agrupados a nivel pareja. * p < 0.1, ** p < 0.05, *** p < 0.01.")
+```
+
+    *Los resultados están en pesos mensuales. Tomamos como especificación principal **NN-1 + X**, porque combina el emparejamiento con el ajuste por covariables. Recibir remesas aumenta el gasto mensual en **educación en 77 pesos** (e.e. 29), en **salud en 217 pesos** (e.e. 41) y en **capital humano en 294 pesos** (e.e. 51). Los tres efectos son estadísticamente significativos al 1% y las otras dos especificaciones dan magnitudes parecidas.*
+
+    *El resultado más ilustrativo es el de educación. La diferencia simple es de **-169 pesos**, es decir, parecería que los hogares con remesas gastan menos. Pero estos hogares tienen menor escolaridad y viven más en localidades pequeñas, donde el gasto educativo es bajo. Al compararlos con hogares similares, el signo se invierte. En capital humano, la diferencia simple de 14 pesos también escondía un efecto bastante mayor.*
+
+    *El efecto de 294 pesos equivale a cerca de 5.5% de los 5,319 pesos mensuales de remesas promedio y la mayor parte del efecto se concentra en salud.*
+
+a. [5 puntos] Describa los supuestos teóricos que requiere para una interpretación causal de los resultados obtenidos.
+
+    *Se necesitan dos supuestos para identificar el TOT, además de SUTVA:*
+
+    ***Independencia condicional (selección por observables):** condicional en $X$, el gasto potencial sin remesas debe ser independiente de recibirlas: $Y_i(0) \perp D_i \mid X_i$. Para el TOT basta esta versión sobre $Y(0)$. Es el supuesto más difícil de defender aquí y no se puede probar con los datos. El balance del inciso c. solo se refiere a lo observable.*
+
+    ***Traslape:** se requiere $P(D_i=1 \mid X_i)<1$ para los valores de $X$ de los tratados, de modo que para cada hogar tratado haya no tratados comparables. Este supuesto sí se puede evaluar y el inciso b. muestra que se cumple.*
+
+    ***SUTVA:** el tratamiento de un hogar no debe afectar el resultado de otro y debe haber una sola versión del tratamiento. Ambas cosas son debatibles. En comunidades con mucha migración, las remesas pueden afectar a los vecinos por préstamos, demanda local o precios.*
+
+    *Adicionalmente, las covariables no deben haber sido afectadas por el tratamiento. Por eso las elegimos como lo explicamos en el inciso b. Aun así, **menores** y **p65mas** podrían cambiar si migran familias completas o si los hijos se quedan al cuidado de abuelos.*
+
+    *Con todo esto, podemos concluir que los resultados son evidencia sugerente, no un efecto causal establecido sólidamente. Los resultados muestran que, entre hogares observablemente similares, los que reciben remesas gastan más en capital humano. Para un estudio más creíble se necesitaría un panel de hogares o una fuente de variación exógena en las remesas.*
+
+## Pregunta 2
+
+Dias & Fontes (2024) estudian la reforma psiquiátrica de Brasil, que introdujo los Centros de Atención Psicosocial (CAPS) como sustituto comunitario de la atención psiquiátrica hospitalaria. Los datos en *final_dataset.dta* son un panel de municipios brasileños de 2002 a 2016. La columna **cod** identifica al municipio, **ano** al año y **ca** es un indicador de si el municipio $i$ ya cuenta con un CAPS en el año $t$. Una vez que un municipio recibe un CAPS, **ca** permanece igual a 1 (tratamiento absorbente). Se busca estimar el efecto de la introducción de los CAPS en el número de psiquiatras por cada 10,000 habitantes, **pf_psiqui_total**. Para tener un panel balanceado, excluya los municipios con algún valor faltante en **pf_psiqui_total**.
+
+a. [5 puntos] ¿Por qué decimos que esta es una aplicación de la estimación de efectos de tratamiento con adopción escalonada?
+
+    *En esta aplicación, cada municipio comienza a ser tratado en distintos momentos del tiempo. Construimos el primer año en que cada municipio tiene un CAPS, **first_year**, y le asignamos 0 a los municipios que nunca son tratados (la convención del paquete *did*). Si hacemos un tabulado de **first_year** notamos cuántos municipios se vuelven tratados en cada año:*
+
+```{r}
+brasil <- read_dta("../files/final_dataset.dta") |>
+  mutate(cod = as.numeric(cod),
+         ano = as.numeric(ano),
+         ca = as.numeric(ca))
+
+#Excluimos los municipios con algún NA en el outcome
+cods_con_na <- unique(brasil$cod[is.na(brasil$pf_psiqui_total)])
+
+brasil <- brasil |>
+  filter(!(cod %in% cods_con_na))
+
+#Primer año de tratamiento
+first_treat <- brasil |>
+  filter(ca == 1) |>
+  summarize(first_year = min(ano), .by = cod)
+
+brasil <- brasil |>
+  left_join(first_treat, by = "cod") |>
+  mutate(first_year = replace_na(first_year, 0))
+
+table(filter(brasil, ano == 2016)$first_year)
+```
+
+    *El panel comienza en 2002 y tiene `r format(n_distinct(brasil$cod), big.mark = ",")` municipios. 296 municipios ya tienen un CAPS en 2002 (en la práctica, siempre tratados), 47 lo reciben en 2003, 70 en 2004 y así sucesivamente hasta 2016. 3,829 municipios nunca son tratados.*
+
+a. [5 puntos] Como punto de partida, estime el efecto del tratamiento sobre **pf_psiqui_total** usando efectos fijos por municipio y año (TWFE) y empleando una librería específica para efectos fijos, como *felm*. Tome en cuenta la agrupación de los errores. Interprete sus resultados.
+
+    *Usando felm podemos incorporar ya el nivel de agrupación de los errores:*
+
+```{r}
+twfe <- felm(pf_psiqui_total ~ ca | cod + ano | 0 | cod,
+              data = brasil)
+
+modelsummary(twfe,
+             coef_map = c('ca'),
+             stars = c('*' = .1, '**' = .05, '***'= 0.01),
+             gof_map = c('nobs'),
+             output = 'gt')
+```
+
+    *El estimador TWFE indica que contar con un CAPS se asocia con 0.246 psiquiatras adicionales por cada 10,000 habitantes, con un error estándar agrupado a nivel municipio de 0.012. El efecto es estadísticamente significativo y grande: el promedio del outcome en 2016 es de alrededor de 0.39 psiquiatras por cada 10,000 habitantes. Sin embargo, con adopción escalonada y efectos heterogéneos, este coeficiente puede estar sesgado, lo cual analizamos más adelante.*
+
+
+a. [5 puntos] Compruebe que puede obtener el mismo resultado con una regresión lineal usando el paquete *lm* e incluyendo, además de la variable de tratamiento, dummies de municipio y de año. Dado que hay más de 5,000 municipios, estimar *lm* con una dummy por municipio en toda la muestra es muy costoso computacionalmente. Haga la comprobación usando solo los municipios del estado de Ceará (**uf == 23**), comparando con *felm* en esa misma submuestra.
+
+    *Nos quedamos con los municipios de Ceará y estimamos con felm y con dummies:*
+
+```{r}
+ceara <- brasil |>
+  filter(uf == 23)
+
+twfe_ce <- felm(pf_psiqui_total ~ ca | cod + ano | 0 | cod,
+                data = ceara)
+
+m1 <- lm(pf_psiqui_total ~ ca + factor(cod) + factor(ano),
+              data = ceara)
+```
+
+    *Luego presentamos con errores clásicos y errores agrupados:*
+
+```{r}
+modelsummary(list("felm" = twfe_ce, "lm" = m1, "lm" = m1),
+             coef_map = c('ca'),
+             vcov=list(NULL, NULL, clubSandwich::vcovCR(m1, type='CR1', cluster=ceara$cod)),
+             stars = c('*' = .1, '**' = .05, '***'= 0.01),
+             gof_map = c('nobs'),
+             output = 'gt')
+```
+
+    *En Ceará, felm y lm con dummies dan exactamente el mismo coeficiente, 0.244. Con errores agrupados por municipio, el error estándar también coincide (0.029). Los errores clásicos de lm, en cambio, ignoran la correlación de los errores dentro de cada municipio.*
+
+
+a. [10 puntos] Ahora muestre que podemos obtener el coeficiente de TWFE a partir de una regresión bivariada entre el número de psiquiatras por cada 10,000 habitantes y **ca**, una vez *purgada* por efectos fijos. Para ello, primero estime una regresión de **ca** en función de los efectos fijos. Obtenga la predicción y luego defina una nueva variable igual a la diferencia entre **ca** y la predicción que acaba de obtener. Finalmente, obtenga el coeficiente de TWFE con una regresión de psiquiatras por cada 10,000 habitantes en función de la diferencia antes definida.
+
+    *Corremos la primera regresión para purgar los efectos fijos. Con más de 5,000 municipios, usamos felm para absorber los efectos fijos en toda la muestra:*
+
+
+```{r}
+d1 <- felm(ca ~ 0 | cod + ano,
+              data = brasil)
+```
+
+
+    *Definimos la nueva variable (los residuales de felm son justamente **ca** menos la predicción):*
+
+```{r}
+brasil <- brasil |>
+  mutate(ca_hat = as.numeric(d1$residuals))
+
+```
+
+    *Y finalmente estimamos:*
+
+```{r}
+m2 <- lm(pf_psiqui_total ~ ca_hat,
+        data = brasil)
+```
+
+    *Obtenemos el mismo coeficiente que con TWFE en la muestra completa. Frisch–Waugh–Lovell tenían razón:*
+
+
+```{r}
+modelsummary(list("TWFE" = twfe, "FWL" = m2),
+             coef_map = c('ca' = 'ca', 'ca_hat' = 'ca'),
+             stars = c('*' = .1, '**' = .05, '***'= 0.01),
+             gof_map = c('nobs'),
+             output = 'gt')
+```
+
+
+
+a. [10 puntos] Realice la descomposición de Goodman-Bacon (2021). Construya un gráfico donde muestre en el eje $x$ el peso otorgado a cada comparación 2x2 y en el eje $y$ el efecto estimado correspondiente a cada comparación. Interprete el gráfico obtenido.
+
+    **Sugerencia:** use la función *bacon_rapido* en lugar de *bacon()*. La función *bacon()* del paquete *bacondecomp* estima cada comparación 2x2 con *lm* y dummies de municipio, lo cual es muy lento con más de 5,000 municipios y muchas comparaciones. Se prefiere *bacon_rapido* porque estima cada comparación con *felm*, que absorbe los efectos fijos sin construir las dummies. Los grupos y los pesos se siguen definiendo con las funciones internas de *bacondecomp*, así que la descomposición es la misma.
+
+    ```r
+    bacon_rapido <- function(formula, data, id_var, time_var) {
+      vars <- bacondecomp:::unpack_variable_names(formula(terms(formula, data = data)))
+      data <- bacondecomp:::rename_vars(data, id_var, time_var,
+                                        vars$outcome_var, vars$treated_var)
+      calc <- bacondecomp:::create_treatment_groups(data, vars$control_vars,
+                                                    return_merged_df = TRUE)
+      two_by_twos <- calc$two_by_twos
+      data <- calc$data
+      for (i in seq_len(nrow(two_by_twos))) {
+        k <- two_by_twos[i, "treated"]
+        l <- two_by_twos[i, "untreated"]
+        data1 <- bacondecomp:::subset_data(data, k, l)
+        two_by_twos[i, "weight"]   <- bacondecomp:::calculate_weights(data1, k, l)
+        two_by_twos[i, "estimate"] <- coef(felm(outcome ~ treated | factor(id) + factor(time),
+                                                data = data1))["treated"]
+      }
+      bacondecomp:::scale_weights(two_by_twos)
+    }
+
+    #Los argumentos de la función son los mismos que bacon:
+
+    df_bacon <- bacon_rapido(y ~ d_it,
+                             data = as.data.frame(mis_datos),
+                             id_var = "panel_id",
+                             time_var = "time_id")
+    ```
+
+    Necesita tener instalados los paquetes *bacondecomp* y *lfe*, y cargar este último con `library(lfe)`.
+
+```{r}
+bacon_rapido <- function(formula, data, id_var, time_var) {
+  vars <- bacondecomp:::unpack_variable_names(formula(terms(formula, data = data)))
+  data <- bacondecomp:::rename_vars(data, id_var, time_var,
+                                    vars$outcome_var, vars$treated_var)
+  calc <- bacondecomp:::create_treatment_groups(data, vars$control_vars,
+                                                return_merged_df = TRUE)
+  two_by_twos <- calc$two_by_twos
+  data <- calc$data
+  for (i in seq_len(nrow(two_by_twos))) {
+    k <- two_by_twos[i, "treated"]
+    l <- two_by_twos[i, "untreated"]
+    data1 <- bacondecomp:::subset_data(data, k, l)
+    two_by_twos[i, "weight"]   <- bacondecomp:::calculate_weights(data1, k, l)
+    two_by_twos[i, "estimate"] <- coef(felm(outcome ~ treated | factor(id) + factor(time),
+                                            data = data1))["treated"]
+  }
+  bacondecomp:::scale_weights(two_by_twos)
+}
+
+#Goodman-Bacon decomposition
+df_bacon <- bacon_rapido(pf_psiqui_total ~ ca,
+                         data = as.data.frame(brasil),
+                         id_var = "cod",
+                         time_var = "ano")
+
+coef_bacon <- sum(df_bacon$estimate * df_bacon$weight)
+print(paste("Weighted sum of decomposition =", round(coef_bacon, 4)))
+
+#Resumen por tipo de comparación
+df_bacon |>
+  summarize(peso = sum(weight),
+            estimado_prom = sum(estimate * weight) / sum(weight),
+            .by = type)
+
+#Gráfico
+df_bacon |>
+  ggplot(aes(x=weight,
+             y=estimate,
+             shape=type)) +
+  geom_point() +
+  geom_hline(yintercept = round(twfe$coefficients[1], 4))
+
+
+```
+
+    *La suma ponderada de las 210 comparaciones 2x2 es 0.2462, igual al estimador TWFE. Las comparaciones que más pesan son las de municipios tratados contra los nunca tratados: en conjunto reciben 81% del peso, con un efecto promedio de 0.27. La comparación individual con más peso es la de la cohorte de 2006 contra los nunca tratados (peso de 0.137 y efecto de 0.26). Las comparaciones entre cohortes tratadas tempranas y tardías reciben alrededor de 6% del peso cada una. Las comparaciones problemáticas son las que usan como control a los 296 municipios que ya tienen CAPS en 2002 (*Later vs Always Treated*): reciben 6% del peso, tienen un efecto promedio de apenas 0.01 e incluyen estimados negativos, como el de la cohorte de 2006 (-0.18). En estas comparaciones el grupo de control ya está tratado, por lo que, si el efecto cambia con el tiempo, estos 2x2 no recuperan un efecto causal. Los estimados individuales van de -0.35 a 0.44, lo que sugiere efectos heterogéneos entre cohortes.*
+
+
+a. [10 puntos] Implemente el estimador de Callaway & Sant’Anna (2021) para estimar los efectos del tratamiento específicos para cada cohorte, usando el paquete *did*. Utilice como grupo de comparación los municipios *nunca tratados*.
+
+```{r}
+set.seed(1021)
+
+atts_never <- att_gt(yname = "pf_psiqui_total",
+                      tname = "ano",
+                      idname = "cod",
+                      gname = "first_year",
+                      data = brasil,
+                      control_group = "nevertreated",
+                      est_method = 'reg',
+                      bstrap = TRUE,
+                      biters = 1000,
+                      print_details = FALSE,
+                      panel = TRUE)
+
+
+summary(atts_never)
+
+ggdid(atts_never)
+
+```
+
+    *El paquete did descarta los 296 municipios que ya están tratados en 2002, pues para ellos no hay ningún periodo antes del tratamiento. Obtenemos un ATT(g,t) para cada cohorte y año. Después del tratamiento, la gran mayoría de los efectos son positivos. Hay que tener cuidado con las cohortes de 2003 a 2005: **pf_psiqui_total** vale cero para todos los municipios entre 2002 y 2004, pues los datos de profesionales comienzan en 2005. Por ello, para estas cohortes los periodos previos al tratamiento no son informativos.*
+
+a. [10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway & Sant’Anna (2021), usando una agregación dinámica que muestre los efectos promedio para cada periodo antes y después del tratamiento. Grafique e interprete los resultados.
+
+    *Graficamos:*
+
+```{r}
+agg.es <- aggte(atts_never,
+                type = "dynamic")
+summary(agg.es)
+
+ggdid(agg.es)
+
+```
+
+    *El efecto promedio de la agregación dinámica es de 0.198 psiquiatras por cada 10,000 habitantes (error estándar de 0.017). En los periodos previos al tratamiento, los efectos son cercanos a cero (entre -0.003 y 0.04), aunque algunos son estadísticamente distintos de cero. El año previo al tratamiento muestra un efecto de 0.078, que se interpreta como anticipación: los municipios comienzan a contratar psiquiatras antes de que el CAPS esté acreditado, igual que en el artículo original. El efecto es de 0.14 en el año de la apertura, alcanza 0.22 un año después y se mantiene entre 0.17 y 0.22 en los años siguientes. Los periodos más lejanos (11 a 13 años) se estiman con pocas cohortes y son poco precisos.*
+
+a. [10 puntos] Reporte los resultados agregados obtenidos a partir del estimador Callaway & Sant’Anna (2021), usando una agregación por grupos que muestre los efectos promedio para cada cohorte del tratamiento. Grafique e interprete los resultados.
+
+    *Graficamos:*
+
+```{r}
+agg.gs <- aggte(atts_never,
+                type = "group")
+summary(agg.gs)
+
+ggdid(agg.gs)
+
+```
+
+    *El efecto promedio de la agregación por cohortes es de 0.168 (error estándar de 0.013), cercano al efecto de 0.151 que reportan Dias & Fontes (2024) para psiquiatras, y menor que el estimador TWFE de 0.246. Los efectos son heterogéneos entre cohortes: van de 0.40 para la cohorte de 2004 a efectos no significativos para las cohortes de 2011, 2013 y 2016, según las bandas de confianza simultáneas. Para la cohorte de 2016 solo observamos el año de apertura. Los efectos grandes de las cohortes de 2004 y 2005 deben tomarse con cautela, pues su periodo base tiene el outcome igual a cero, como se mencionó antes.*
+

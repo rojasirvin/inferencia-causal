@@ -15,7 +15,7 @@ project:
     # o se publicará sin que nadie lo note.
     # Tarea 1 publicada el 23 de septiembre de 2026 (entrega: lunes 22).
     # Tarea 2 publicada el 6 de octubre de 2026 (entrega: martes 6).
-    - "!tareas/tarea-3-respuestas.qmd"
+    # Tarea 3 publicada el 17 de noviembre de 2026 (entrega: lunes 16).
     - "!tareas/tarea-4-respuestas.qmd"
 
 execute:
