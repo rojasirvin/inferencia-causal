@@ -262,7 +262,7 @@ $$\tilde{Y}_i^K=\sum_{s=1}^{T_0}k_sY_{is},\quad\quad K=(k_1,\ldots,k_{T_0})'$$
 - Por ejemplo, podemos incluir el valor de la variable de resultados en algunos años pre-intervención o el promedio de todos los años pre-intervención
 
 
-- Tenemos lo mismo, pero para las unidades no tratadas, en la matriz $X_0$
+- Para las unidades no tratadas, se ordena la información análoga en la matriz $X_0$ de dimensión $(r+M)\times J$
 
 - Definimos $X_1-X_0W$ como una medida de discrepancia entre $X_1$ y $X_0W$
 
@@ -275,7 +275,7 @@ $$\tilde{Y}_i^K=\sum_{s=1}^{T_0}k_sY_{is},\quad\quad K=(k_1,\ldots,k_{T_0})'$$
 $$\min_{W\in\mathcal{W}}\;(X_1-X_0W)'V(X_1-X_0W)$$
 donde $\mathcal{W}$ es el conjunto de vectores con $w_j\geq0$ y $\sum_j w_j=1$, y $V$ es una matriz simétrica y positiva semidefinida (en la aplicación, diagonal y positiva definida) 
 
-- $V$ es de dimensión $(k\times k)$, con $r$ siendo el número de convariables en $Z$
+- $V$ es de dimensión $(r+M \times  r+M)$, con $r$ siendo el número de covariables en $Z$ y $M$ el número de combinaciones lineales de la variable de resultados pre-intervención
 
 - La solución a este problema, $W^*(V)$ depende de $V$
 
@@ -519,7 +519,7 @@ $$p=\frac{1}{J+1}\sum_{j=1}^{J+1}\mathbb{1}\left\{r_j^{MSPE}\geq r_1^{MSPE}\righ
 
 - Es la probabilidad de un efecto así de grande si la intervención se asignara al azar entre los estados
 
-- **Placebos con mal ajuste** no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande
+- **Placebos con mal ajuste**: no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande
 
 - **Placebos en el tiempo**: se impone la intervención antes de $T_0$ y no se espera encontrar ningún efecto
 
@@ -528,11 +528,66 @@ $$p=\frac{1}{J+1}\sum_{j=1}^{J+1}\mathbb{1}\left\{r_j^{MSPE}\geq r_1^{MSPE}\righ
 :::
 
 ::::
-	 
+
+
+
+## Inferencia conforme
+
+- Chernozhukov, Wüthrich y Zhu (2021) proponen un método basado en la permutación de **periodos** en lugar de unidades, útil cuando hay pocos donantes
+
+- Esta propuesta cambia la fuente de aleatoriedad: en la permutación de ADH es la asignación entre estados; aquí, los choques en el tiempo
+
+- Planteamos una hipótesis nula sobre la trayectoria completa del efecto: $H_0:\alpha_{1t}=\alpha_t^0$ para $t>T_0$
+
+- Bajo $H_0$ conocemos el contrafactual de la tratada en el periodo post: $Y_{1t}(0)=Y_{1t}-\alpha_t^0$ (y en el pre, $Y_{1t}(0)=Y_{1t}$)
+
+- Con este contrafactual imputado reestimamos los pesos usando **todos** los periodos y calculamos los residuales
+
+$$\hat{u}_t=Y_{1t}(0)-\sum_{j=2}^{J+1}\hat{w}_jY_{jt},\quad t=1,\ldots,T$$
+
+- Aquí se usan los periodos post para que los residuales pre y post se traten igual (si los pesos solo se ajustan al pre, los residuales pre son pequeños por construcción)
+
+
+
+
+## Inferencia conforme: valor $p$
+
+- Si $H_0$ es cierta, nada debería distinguir al periodo post y sus residuales deberían parecerse a cualquier otro bloque de residuales
+
+- Definimos el estadístico $S$ como el tamaño de los residuales post
+
+$$S(\hat{u})=\frac{1}{\sqrt{T-T_0}}\sum_{t>T_0}|\hat{u}_t|$$
+
+- Realizamos permutaciones por bloques desplazando los residuales $k$ periodos de forma circular (al pasar de $T$ se vuelve al inicio) y obtenemos $\hat{u}^{(k)}$, para $k=0,\ldots,T-1$
+
+- Por ejemplo, si hubiera solo dos periodos post
+  - Para $k=0$, $S(\hat{u}^{(0)})=S(\hat{u})$
+  - Para $k=1$, $S(\hat{u}^{(1)})$ se calcula con los residuales de los periodos $T$ y 1
+  - Para $k=2$, $S(\hat{u}^{(2)})$ se calcula con los residuales de los periodos 1 y 2
+  - Y así hasta $k=T-1$
+
+- Se calcula entonces:
+
+$$p=\frac{1}{T}\sum_{k=0}^{T-1}\mathbb{1}\left\{S\big(\hat{u}^{(k)}\big)\geq S(\hat{u})\right\}$$
+
+
+- Si $S(\hat u)$ es grande en comparación con los valores que se obtienen al permutar, hay evidencia contra $H_0$
+
+- Los desplazamientos circulares conservan la dependencia temporal de los residuales
+
+
+## Inferencia conforme: intervalos de confianza
+
+- Probamos muchos valores candidatos del efecto, $\alpha_t^0$
+
+- Para cada $H_0$ imputamos el contrafactual, reestimamos los pesos y calculamos $p$
+
+- El intervalo al 90% está formado por los valores con $p>0.10$, es decir, los efectos que los datos no permiten descartar
+
+- Para obtener un intervalo para cada periodo post, aplicamos el procedimiento con los periodos pre y un solo periodo post a la vez
+
 
 # Otros estudios que usan control sintético {.divider background-color="#9B2247" data-state="nochrome"}
-
-
 
 ## La reunificación de Alemania
  
@@ -650,32 +705,38 @@ knitr::include_graphics("figures/Connections_effects.png")
 
 - Se estiman pesos para las unidades de control, $\hat\omega_i$, como en el CS, y pesos para los periodos pre-intervención, $\hat\lambda_t$, que dan más importancia a los periodos parecidos a los posteriores
 
-- El efecto se obtiene con una regresión de efectos fijos de dos vías ponderada:
+- El efecto se obtiene con una regresión de TWFE ponderada:
 
 $$\left(\hat{\tau},\hat{\mu},\hat{\alpha},\hat{\beta}\right)=\arg\min_{\tau,\mu,\alpha,\beta}\sum_{i=1}^{N}\sum_{t=1}^{T}\left(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau\right)^2\hat{\omega}_i\hat{\lambda}_t$$
 
 
-- Con pesos uniformes es DID; sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS
+- Con pesos uniformes, esta regresión equivale a DID
+
+- Sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS
 
 - A diferencia del CS:
-  - los efectos fijos $\alpha_i$ permiten que el CS difiera de la tratada en un nivel constante: basta reproducir la tendencia
-  - admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo
+  - Los efectos fijos $\alpha_i$ permiten que el CS difiera de la tratada en un nivel constante (basta reproducir la tendencia)
+  - Admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo
 
 
 
 ## Control sintético aumentado
 
-- Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado, y en la práctica el ajuste casi nunca es perfecto
+- Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado (en la práctica el ajuste casi nunca es perfecto)
 
-- Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo de resultados $\hat{m}_t(\cdot)$, por ejemplo, una regresión *ridge* de los resultados post en los pre, estimada con los donantes:
+- Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo $\hat{m}_t(\cdot)$ que predice el resultado en cada periodo post $T_0$ a partir de la trayectoria pre-intervención $X_j=(Y_{j1},\ldots,Y_{jT_0})'$
+  - Para cada $t>T_0$, se regresa $Y_{jt}$ sobre $Y_{j1},\ldots,Y_{jT_0}$, solo con el grupo donador
+  - Suele usarse una regresión *ridge*, porque hay muchos rezagos, muy correlacionados, y pocos donantes
 
 $$\hat{Y}_{1t}^{aug}(0)=\sum_{j=2}^{J+1} \hat{w}_j Y_{jt}+\left(\hat{m}_t(X_1)-\sum_{j=2}^{J+1} \hat{w}_j\, \hat{m}_t(X_j)\right)$$
 
 - El término entre paréntesis estima el sesgo debido al desbalance que deja el CS
 
+- Con un modelo lineal, el término es $\hat\beta_t'\left(X_1-\sum_j \hat w_j X_j\right)$, el desbalance pre-intervención por cuánto predice el resultado post (con ajuste perfecto, la corrección es cero)
+
 - Es la misma lógica que la corrección de sesgo en *matching* y que los métodos doblemente robustos
 
-- El costo: los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización
+- El costo es que los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización
 
 
 
@@ -687,26 +748,11 @@ $$\hat{Y}_{1t}^{aug}(0)=\sum_{j=2}^{J+1} \hat{w}_j Y_{jt}+\left(\hat{m}_t(X_1)-\
 
 $$\min_{W\in\mathcal{W}}\;\left\|X_1-\sum_{j=2}^{J+1}w_jX_j\right\|^2+\lambda\sum_{j=2}^{J+1}w_j\left\|X_1-X_j\right\|^2$$
 
-- Con $\lambda\to0$ se obtiene el CS; con $\lambda\to\infty$, *matching* con el vecino más cercano
+- Con $\lambda\to0$ se obtiene el CS y con $\lambda\to\infty$, *matching* con el vecino más cercano
 
-- Para $\lambda>0$ la solución es única y rala (pocos donantes con peso positivo), y se reduce el sesgo de interpolación
+- Para $\lambda>0$ la solución es única y dispersa (pocos donantes con peso positivo, *sparse* en inglés), y se reduce el sesgo de interpolación
 
 - $\lambda$ se escoge con validación cruzada, por ejemplo, con los periodos pre-intervención
-
-
-
-## El papel de las covariables
-
-- En la práctica, $X_1$ y $X_0$ mezclan covariables $Z$ y resultados pre-intervención, y los resultados pueden cambiar según qué predictores se incluyan
-
-- Kaul et al. (2022): si se incluyen **todos** los resultados pre-intervención como predictores, las covariables reciben peso cero en $V^*$ y se vuelven irrelevantes
-  - Hay que escoger: todos los rezagos del resultado, o algunos rezagos con covariables
-
-- Botosaru y Ferman (2019): la cota del sesgo de ADH supone balance perfecto en covariables y en resultados pre
-  - Sin balance en covariables aún se puede acotar el sesgo, pero con supuestos más fuertes y una cota más holgada
-  - Un ajuste perfecto en los resultados pre **no** implica balance en las covariables, aunque estas sean relevantes: hay que revisarlo
-
-- Recomendación: decidir la especificación antes de ver los resultados post y reportar la robustez a especificaciones alternativas
 
 
 
