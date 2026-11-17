@@ -611,7 +611,7 @@ Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 <p><span class="math display">\[\tilde{Y}_i^K=\sum_{s=1}^{T_0}k_sY_{is},\quad\quad K=(k_1,\ldots,k_{T_0})'\]</span></p>
 <ul>
 <li><p>Por ejemplo, podemos incluir el valor de la variable de resultados en algunos años pre-intervención o el promedio de todos los años pre-intervención</p></li>
-<li><p>Tenemos lo mismo, pero para las unidades no tratadas, en la matriz <span class="math inline">\(X_0\)</span></p></li>
+<li><p>Para las unidades no tratadas, se ordena la información análoga en la matriz <span class="math inline">\(X_0\)</span> de dimensión <span class="math inline">\((r+M)\times J\)</span></p></li>
 <li><p>Definimos <span class="math inline">\(X_1-X_0W\)</span> como una medida de discrepancia entre <span class="math inline">\(X_1\)</span> y <span class="math inline">\(X_0W\)</span></p></li>
 </ul>
 </section>
@@ -622,7 +622,7 @@ Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 </ul>
 <p><span class="math display">\[\min_{W\in\mathcal{W}}\;(X_1-X_0W)'V(X_1-X_0W)\]</span> donde <span class="math inline">\(\mathcal{W}\)</span> es el conjunto de vectores con <span class="math inline">\(w_j\geq0\)</span> y <span class="math inline">\(\sum_j w_j=1\)</span>, y <span class="math inline">\(V\)</span> es una matriz simétrica y positiva semidefinida (en la aplicación, diagonal y positiva definida)</p>
 <ul>
-<li><p><span class="math inline">\(V\)</span> es de dimensión <span class="math inline">\((k\times k)\)</span>, con <span class="math inline">\(r\)</span> siendo el número de convariables en <span class="math inline">\(Z\)</span></p></li>
+<li><p><span class="math inline">\(V\)</span> es de dimensión <span class="math inline">\((r+M \times  r+M)\)</span>, con <span class="math inline">\(r\)</span> siendo el número de covariables en <span class="math inline">\(Z\)</span> y <span class="math inline">\(M\)</span> el número de combinaciones lineales de la variable de resultados pre-intervención</p></li>
 <li><p>La solución a este problema, <span class="math inline">\(W^*(V)\)</span> depende de <span class="math inline">\(V\)</span></p></li>
 <li><p><span class="math inline">\(V\)</span> es una matriz de pesos que refleja la importancia relativa de las variables en <span class="math inline">\(X_1\)</span> y <span class="math inline">\(X_0\)</span></p></li>
 <li><p>Siguiendo a Abadie y Gardeazabal (2003), podemos realizar un proceso que minimice la distancia entre el valor observado de la variable de resultados y el contrafactual definido por <span class="math inline">\(W^*(V)\)</span></p></li>
@@ -847,11 +847,58 @@ Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 </div><div class="column" style="width:50%;">
 <ul>
 <li><p>Es la probabilidad de un efecto así de grande si la intervención se asignara al azar entre los estados</p></li>
-<li><p><strong>Placebos con mal ajuste</strong> no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande</p></li>
+<li><p><strong>Placebos con mal ajuste</strong>: no son informativos, por lo que se sugiere eliminar los CS placebo con un MSPE grande</p></li>
 <li><p><strong>Placebos en el tiempo</strong>: se impone la intervención antes de <span class="math inline">\(T_0\)</span> y no se espera encontrar ningún efecto</p></li>
 <li><p><strong>Dejar uno fuera</strong>: se quita cada donante con peso positivo; el resultado no debe depender de uno solo</p></li>
 </ul>
 </div></div>
+</section>
+<section id="inferencia-conforme" class="slide level2">
+<h2>Inferencia conforme</h2>
+<ul>
+<li><p>Chernozhukov, Wüthrich y Zhu (2021) proponen un método basado en la permutación de <strong>periodos</strong> en lugar de unidades, útil cuando hay pocos donantes</p></li>
+<li><p>Esta propuesta cambia la fuente de aleatoriedad: en la permutación de ADH es la asignación entre estados; aquí, los choques en el tiempo</p></li>
+<li><p>Planteamos una hipótesis nula sobre la trayectoria completa del efecto: <span class="math inline">\(H_0:\alpha_{1t}=\alpha_t^0\)</span> para <span class="math inline">\(t&gt;T_0\)</span></p></li>
+<li><p>Bajo <span class="math inline">\(H_0\)</span> conocemos el contrafactual de la tratada en el periodo post: <span class="math inline">\(Y_{1t}(0)=Y_{1t}-\alpha_t^0\)</span> (y en el pre, <span class="math inline">\(Y_{1t}(0)=Y_{1t}\)</span>)</p></li>
+<li><p>Con este contrafactual imputado reestimamos los pesos usando <strong>todos</strong> los periodos y calculamos los residuales</p></li>
+</ul>
+<p><span class="math display">\[\hat{u}_t=Y_{1t}(0)-\sum_{j=2}^{J+1}\hat{w}_jY_{jt},\quad t=1,\ldots,T\]</span></p>
+<ul>
+<li>Aquí se usan los periodos post para que los residuales pre y post se traten igual (si los pesos solo se ajustan al pre, los residuales pre son pequeños por construcción)</li>
+</ul>
+</section>
+<section id="inferencia-conforme-valor-p" class="slide level2">
+<h2>Inferencia conforme: valor <span class="math inline">\(p\)</span></h2>
+<ul>
+<li><p>Si <span class="math inline">\(H_0\)</span> es cierta, nada debería distinguir al periodo post y sus residuales deberían parecerse a cualquier otro bloque de residuales</p></li>
+<li><p>Definimos el estadístico <span class="math inline">\(S\)</span> como el tamaño de los residuales post</p></li>
+</ul>
+<p><span class="math display">\[S(\hat{u})=\frac{1}{\sqrt{T-T_0}}\sum_{t&gt;T_0}|\hat{u}_t|\]</span></p>
+<ul>
+<li><p>Realizamos permutaciones por bloques desplazando los residuales <span class="math inline">\(k\)</span> periodos de forma circular (al pasar de <span class="math inline">\(T\)</span> se vuelve al inicio) y obtenemos <span class="math inline">\(\hat{u}^{(k)}\)</span>, para <span class="math inline">\(k=0,\ldots,T-1\)</span></p></li>
+<li><p>Por ejemplo, si hubiera solo dos periodos post</p>
+<ul>
+<li>Para <span class="math inline">\(k=0\)</span>, <span class="math inline">\(S(\hat{u}^{(0)})=S(\hat{u})\)</span></li>
+<li>Para <span class="math inline">\(k=1\)</span>, <span class="math inline">\(S(\hat{u}^{(1)})\)</span> se calcula con los residuales de los periodos <span class="math inline">\(T\)</span> y 1</li>
+<li>Para <span class="math inline">\(k=2\)</span>, <span class="math inline">\(S(\hat{u}^{(2)})\)</span> se calcula con los residuales de los periodos 1 y 2</li>
+<li>Y así hasta <span class="math inline">\(k=T-1\)</span></li>
+</ul></li>
+<li><p>Se calcula entonces:</p></li>
+</ul>
+<p><span class="math display">\[p=\frac{1}{T}\sum_{k=0}^{T-1}\mathbb{1}\left\{S\big(\hat{u}^{(k)}\big)\geq S(\hat{u})\right\}\]</span></p>
+<ul>
+<li><p>Si <span class="math inline">\(S(\hat u)\)</span> es grande en comparación con los valores que se obtienen al permutar, hay evidencia contra <span class="math inline">\(H_0\)</span></p></li>
+<li><p>Los desplazamientos circulares conservan la dependencia temporal de los residuales</p></li>
+</ul>
+</section>
+<section id="inferencia-conforme-intervalos-de-confianza" class="slide level2">
+<h2>Inferencia conforme: intervalos de confianza</h2>
+<ul>
+<li><p>Probamos muchos valores candidatos del efecto, <span class="math inline">\(\alpha_t^0\)</span></p></li>
+<li><p>Para cada <span class="math inline">\(H_0\)</span> imputamos el contrafactual, reestimamos los pesos y calculamos <span class="math inline">\(p\)</span></p></li>
+<li><p>El intervalo al 90% está formado por los valores con <span class="math inline">\(p&gt;0.10\)</span>, es decir, los efectos que los datos no permiten descartar</p></li>
+<li><p>Para obtener un intervalo para cada periodo post, aplicamos el procedimiento con los periodos pre y un solo periodo post a la vez</p></li>
+</ul>
 </section></section>
 <section>
 <section id="otros-estudios-que-usan-control-sintético" class="title-slide slide level1 divider center" data-background-color="#9B2247" data-state="nochrome">
@@ -958,29 +1005,35 @@ Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 <ul>
 <li><p>Arkhangelsky et al.&nbsp;(2021) combinan las ideas de DID y del CS</p></li>
 <li><p>Se estiman pesos para las unidades de control, <span class="math inline">\(\hat\omega_i\)</span>, como en el CS, y pesos para los periodos pre-intervención, <span class="math inline">\(\hat\lambda_t\)</span>, que dan más importancia a los periodos parecidos a los posteriores</p></li>
-<li><p>El efecto se obtiene con una regresión de efectos fijos de dos vías ponderada:</p></li>
+<li><p>El efecto se obtiene con una regresión de TWFE ponderada:</p></li>
 </ul>
 <p><span class="math display">\[\left(\hat{\tau},\hat{\mu},\hat{\alpha},\hat{\beta}\right)=\arg\min_{\tau,\mu,\alpha,\beta}\sum_{i=1}^{N}\sum_{t=1}^{T}\left(Y_{it}-\mu-\alpha_i-\beta_t-D_{it}\tau\right)^2\hat{\omega}_i\hat{\lambda}_t\]</span></p>
 <ul>
-<li><p>Con pesos uniformes es DID; sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS</p></li>
+<li><p>Con pesos uniformes, esta regresión equivale a DID</p></li>
+<li><p>Sin efectos fijos de unidad ni pesos de tiempo, es (casi) el CS</p></li>
 <li><p>A diferencia del CS:</p>
 <ul>
-<li>los efectos fijos <span class="math inline">\(\alpha_i\)</span> permiten que el CS difiera de la tratada en un nivel constante: basta reproducir la tendencia</li>
-<li>admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo</li>
+<li>Los efectos fijos <span class="math inline">\(\alpha_i\)</span> permiten que el CS difiera de la tratada en un nivel constante (basta reproducir la tendencia)</li>
+<li>Admite varias unidades tratadas que empiezan el tratamiento al mismo tiempo</li>
 </ul></li>
 </ul>
 </section>
 <section id="control-sintético-aumentado" class="slide level2">
 <h2>Control sintético aumentado</h2>
 <ul>
-<li><p>Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado, y en la práctica el ajuste casi nunca es perfecto</p></li>
-<li><p>Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo de resultados <span class="math inline">\(\hat{m}_t(\cdot)\)</span>, por ejemplo, una regresión <em>ridge</em> de los resultados post en los pre, estimada con los donantes:</p></li>
+<li><p>Si el ajuste pre-intervención no es bueno, el CS puede estar sesgado (en la práctica el ajuste casi nunca es perfecto)</p></li>
+<li><p>Ben-Michael, Feller y Rothstein (2021) corrigen el sesgo con un modelo <span class="math inline">\(\hat{m}_t(\cdot)\)</span> que predice el resultado en cada periodo post <span class="math inline">\(T_0\)</span> a partir de la trayectoria pre-intervención <span class="math inline">\(X_j=(Y_{j1},\ldots,Y_{jT_0})'\)</span></p>
+<ul>
+<li>Para cada <span class="math inline">\(t&gt;T_0\)</span>, se regresa <span class="math inline">\(Y_{jt}\)</span> sobre <span class="math inline">\(Y_{j1},\ldots,Y_{jT_0}\)</span>, solo con el grupo donador</li>
+<li>Suele usarse una regresión <em>ridge</em>, porque hay muchos rezagos, muy correlacionados, y pocos donantes</li>
+</ul></li>
 </ul>
 <p><span class="math display">\[\hat{Y}_{1t}^{aug}(0)=\sum_{j=2}^{J+1} \hat{w}_j Y_{jt}+\left(\hat{m}_t(X_1)-\sum_{j=2}^{J+1} \hat{w}_j\, \hat{m}_t(X_j)\right)\]</span></p>
 <ul>
 <li><p>El término entre paréntesis estima el sesgo debido al desbalance que deja el CS</p></li>
+<li><p>Con un modelo lineal, el término es <span class="math inline">\(\hat\beta_t'\left(X_1-\sum_j \hat w_j X_j\right)\)</span>, el desbalance pre-intervención por cuánto predice el resultado post (con ajuste perfecto, la corrección es cero)</p></li>
 <li><p>Es la misma lógica que la corrección de sesgo en <em>matching</em> y que los métodos doblemente robustos</p></li>
-<li><p>El costo: los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización</p></li>
+<li><p>El costo es que los pesos implícitos pueden ser negativos, es decir, hay algo de extrapolación, pero controlada por la penalización</p></li>
 </ul>
 </section>
 <section id="control-sintético-penalizado" class="slide level2">
@@ -991,25 +1044,9 @@ Y_{Wt}(0)&amp;=\sum_{j=2}^{J+1} w_j Y_{jt} \\
 </ul>
 <p><span class="math display">\[\min_{W\in\mathcal{W}}\;\left\|X_1-\sum_{j=2}^{J+1}w_jX_j\right\|^2+\lambda\sum_{j=2}^{J+1}w_j\left\|X_1-X_j\right\|^2\]</span></p>
 <ul>
-<li><p>Con <span class="math inline">\(\lambda\to0\)</span> se obtiene el CS; con <span class="math inline">\(\lambda\to\infty\)</span>, <em>matching</em> con el vecino más cercano</p></li>
-<li><p>Para <span class="math inline">\(\lambda&gt;0\)</span> la solución es única y rala (pocos donantes con peso positivo), y se reduce el sesgo de interpolación</p></li>
+<li><p>Con <span class="math inline">\(\lambda\to0\)</span> se obtiene el CS y con <span class="math inline">\(\lambda\to\infty\)</span>, <em>matching</em> con el vecino más cercano</p></li>
+<li><p>Para <span class="math inline">\(\lambda&gt;0\)</span> la solución es única y dispersa (pocos donantes con peso positivo, <em>sparse</em> en inglés), y se reduce el sesgo de interpolación</p></li>
 <li><p><span class="math inline">\(\lambda\)</span> se escoge con validación cruzada, por ejemplo, con los periodos pre-intervención</p></li>
-</ul>
-</section>
-<section id="el-papel-de-las-covariables" class="slide level2">
-<h2>El papel de las covariables</h2>
-<ul>
-<li><p>En la práctica, <span class="math inline">\(X_1\)</span> y <span class="math inline">\(X_0\)</span> mezclan covariables <span class="math inline">\(Z\)</span> y resultados pre-intervención, y los resultados pueden cambiar según qué predictores se incluyan</p></li>
-<li><p>Kaul et al.&nbsp;(2022): si se incluyen <strong>todos</strong> los resultados pre-intervención como predictores, las covariables reciben peso cero en <span class="math inline">\(V^*\)</span> y se vuelven irrelevantes</p>
-<ul>
-<li>Hay que escoger: todos los rezagos del resultado, o algunos rezagos con covariables</li>
-</ul></li>
-<li><p>Botosaru y Ferman (2019): la cota del sesgo de ADH supone balance perfecto en covariables y en resultados pre</p>
-<ul>
-<li>Sin balance en covariables aún se puede acotar el sesgo, pero con supuestos más fuertes y una cota más holgada</li>
-<li>Un ajuste perfecto en los resultados pre <strong>no</strong> implica balance en las covariables, aunque estas sean relevantes: hay que revisarlo</li>
-</ul></li>
-<li><p>Recomendación: decidir la especificación antes de ver los resultados post y reportar la robustez a especificaciones alternativas</p></li>
 </ul>
 </section></section>
 <section>
