@@ -373,6 +373,8 @@ a. [5 puntos] Describa los supuestos teóricos que requiere para una interpretac
 
 Dias & Fontes (2024) estudian la reforma psiquiátrica de Brasil, que introdujo los Centros de Atención Psicosocial (CAPS) como sustituto comunitario de la atención psiquiátrica hospitalaria. Los datos en *final_dataset.dta* son un panel de municipios brasileños de 2002 a 2016. La columna **cod** identifica al municipio, **ano** al año y **ca** es un indicador de si el municipio $i$ ya cuenta con un CAPS en el año $t$. Una vez que un municipio recibe un CAPS, **ca** permanece igual a 1 (tratamiento absorbente). Se busca estimar el efecto de la introducción de los CAPS en el número de psiquiatras por cada 10,000 habitantes, **pf_psiqui_total**. Para tener un panel balanceado, excluya los municipios con algún valor faltante en **pf_psiqui_total**.
 
+**Nota: Esta pregunta estuvo basada en el estudio de Dias & Fontes (2024).[^1]**
+
 a. [5 puntos] ¿Por qué decimos que esta es una aplicación de la estimación de efectos de tratamiento con adopción escalonada?
 
     *En esta aplicación, cada municipio comienza a ser tratado en distintos momentos del tiempo. Construimos el primer año en que cada municipio tiene un CAPS, **first_year**, y le asignamos 0 a los municipios que nunca son tratados (la convención del paquete *did*). Si hacemos un tabulado de **first_year** notamos cuántos municipios se vuelven tratados en cada año:*
@@ -628,3 +630,5 @@ ggdid(agg.gs)
 
     *El efecto promedio de la agregación por cohortes es de 0.168 (error estándar de 0.013), cercano al efecto de 0.151 que reportan Dias & Fontes (2024) para psiquiatras, y menor que el estimador TWFE de 0.246. Los efectos son heterogéneos entre cohortes: van de 0.40 para la cohorte de 2004 a efectos no significativos para las cohortes de 2011, 2013 y 2016, según las bandas de confianza simultáneas. Para la cohorte de 2016 solo observamos el año de apertura. Los efectos grandes de las cohortes de 2004 y 2005 deben tomarse con cautela, pues su periodo base tiene el outcome igual a cero, como se mencionó antes.*
 
+
+[^1]: Dias, M., & Fontes, L. F. (2024). The Effects of a Large-Scale Mental Health Reform: Evidence from Brazil. *American Economic Journal: Economic Policy*, 16(3), 257-89. <https://doi.org/10.1257/pol.20220246>
